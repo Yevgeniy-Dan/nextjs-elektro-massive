@@ -9,6 +9,15 @@ export const GET_PRODUCTS = gql`
           name
           vendor_code
           price
+          photo {
+            data {
+              id
+              attributes {
+                url
+                alternativeText
+              }
+            }
+          }
         }
       }
     }

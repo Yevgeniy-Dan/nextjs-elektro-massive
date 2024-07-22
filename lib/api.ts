@@ -7,11 +7,23 @@ export interface ProductItem {
     name: string;
     vendor_code: string;
     price: number;
+    photo: {
+      data: [
+        {
+          id: string;
+          attributes: {
+            url: string;
+            alternativeText: string;
+          };
+        }
+      ];
+    };
   };
 }
 
 async function getProducts(): Promise<ProductItem[]> {
   const { data } = await client.query({ query: GET_PRODUCTS });
+
   return data.products.data;
 }
 
