@@ -1,0 +1,56 @@
+"use client";
+
+import Image from "next/image";
+import React from "react";
+import Slider from "react-slick";
+
+const Carousel = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false,
+  };
+
+  return (
+    <div className="relative py-8">
+      <div className="overflow-x-hidden pb-8">
+        <Slider {...settings} className="px-10 ">
+          <div>
+            <Image
+              src="/carousel-1.png"
+              alt="Carousel 1"
+              className="w-full h-96 object-cover pointer-events-none"
+              width={1200}
+              height={600}
+            />
+          </div>
+          <div>
+            <Image
+              src="/carousel-2.png"
+              alt="Carousel 2"
+              className=" w-full h-96 object-cover pointer-events-none"
+              width={1200}
+              height={600}
+            />
+          </div>
+          <div>
+            <Image
+              src="/carousel-3.png"
+              alt="Carousel 3"
+              className=" w-full h-96 object-cover pointer-events-none"
+              width={1200}
+              height={600}
+            />
+          </div>
+        </Slider>
+      </div>
+    </div>
+  );
+};
+
+export default Carousel;

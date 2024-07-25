@@ -17,6 +17,7 @@ const ProductList: React.FC<{ items: ProductItem[] }> = ({ items }) => {
             <div className="relative h-64">
               <Image
                 src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${item.attributes.photo.data[0].attributes.url}`}
+                // src="https://plus.unsplash.com/premium_photo-1676760960725-1092d4ee9a2e?q=80&w=1588&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt={item.attributes.photo.data[0].attributes.alternativeText}
                 layout="fill"
                 objectFit="cover"
@@ -25,7 +26,7 @@ const ProductList: React.FC<{ items: ProductItem[] }> = ({ items }) => {
             </div>
             <div className="p-4">
               <h2 className="text-lg font-semibold mb-2 truncate">
-                {item.attributes.name}
+                {item.attributes.name} Drill
               </h2>
               <p className="text-gray-600 mb-4">{item.attributes.price} грн.</p>
               <button className="w-full bg-red-700 text-white py-2 rounded-md transition-colors duration-300 hover:bg-red-800">

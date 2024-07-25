@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Collage styles for about us section on the main page */
+.collage {
+  position: relative;
+  width: 600px;
+  height: 500px;
+}
+.collage img {
+  position: absolute;
+}
+.photo1 {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
+.photo2 {
+  top: 50%;
+  left: 0;
+  width: 50%;
+  height: auto;
+  transform: translateY(-50%);
+}
+.photo3 {
+  top: 50%;
+  right: 0;
+  width: 50%;
+  height: auto;
+  transform: translateY(-50%);
+}

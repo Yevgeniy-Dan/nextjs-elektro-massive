@@ -1,15 +1,31 @@
 import Image from "next/image";
 import { strapiApi } from "../../lib/api";
-import ProductList from "../components/ProductList";
+import ProductList from "../components/product-list";
+import Header from "@/components/header";
+import Carousel from "@/components/carousel";
+import TopCard from "@/components/top-card";
+import TopCardCarousel from "@/components/top-card-carousel";
+import CategoryGrid from "@/components/category-grid";
+import WhyUsSection from "@/components/why-us-section";
+import AboutSection from "@/components/about-section";
+import Footer from "@/components/footer";
 
 export default async function Home() {
-  const products = await strapiApi.getProducts();
+  // const products = await strapiApi.getProducts();
+  const products: any[] = [];
 
   return (
-    <main className=" min-h-screen p-24">
-      <div className="w-full">
-        <ProductList items={products} />
+    <div className="w-full">
+      <Header />
+      {/* <ProductList items={products} /> */}
+      <div className="p-20">
+        <Carousel />
+        <TopCardCarousel />
+        <CategoryGrid />
+        <WhyUsSection />
+        <AboutSection />
       </div>
-    </main>
+      <Footer />
+    </div>
   );
 }
