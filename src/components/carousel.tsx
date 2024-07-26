@@ -19,8 +19,8 @@ const Carousel = () => {
   return (
     <div className="relative py-8">
       <div className="overflow-x-hidden pb-8">
-        <Slider {...settings} className="px-10 ">
-          <div>
+        <Slider {...settings}>
+          <div className="rounded-2xl overflow-hidden">
             <Image
               src="/carousel-1.png"
               alt="Carousel 1"

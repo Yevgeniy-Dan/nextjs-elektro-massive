@@ -2,11 +2,13 @@ import React from "react";
 
 const CategoryGrid = () => {
   return (
-    <div className=" text-white  px-4">
-      <h2 className="bg-gradient-to-r from-[#960806] to-[#343333] text-white text-lg font-bold mb-2 px-8 py-5">
-        Електротовари
-      </h2>
-      <div className="grid grid-cols-1  md:grid-cols-4 gap-4 p-5">
+    <div className=" text-white my-10">
+      <div className=" -ml-10">
+        <h2 className="bg-gradient-elektro-massive text-white  font-bold mb-2 px-28 py-5 rounded-r-3xl text-2xl">
+          Електротовари
+        </h2>
+      </div>
+      <div className="grid grid-cols-1  md:grid-cols-4 gap-4 p-10 px-24">
         <div className="relative">
           <div className="bg-gray-300 h-48 md:h-64 rounded-3xl overflow-hidden">
             <img

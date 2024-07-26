@@ -3,7 +3,7 @@ import React from "react";
 
 const AboutSection = () => {
   return (
-    <div className="flex items-center pb-32">
+    <div className="flex items-center my-10 pb-32">
       <div className="w-2/4 p-4 mx-9">
         <p className="text-gray-700 text-lg text-justify max-w-prose mx-auto">
           Якість електротоварів, сантехніки та будівельних матеріалів відіграє

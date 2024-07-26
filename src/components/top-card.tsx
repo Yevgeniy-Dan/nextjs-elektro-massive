@@ -3,7 +3,7 @@ import React from "react";
 
 const TopCard = () => {
   return (
-    <div className=" bg-white border border-gray-700 rounded-lg shadow-lg overflow-hidden">
+    <div className=" bg-white   rounded-lg  overflow-hidden shadow-light hover:shadow-xl transition-shadow duration-300 w-52 h-auto my-2">
       <div className="relative">
         <div className="absolute top-2 right-2 flex">
           <svg
@@ -37,14 +37,14 @@ const TopCard = () => {
         </div>
       </div>
       <div className="pt-4">
-        <h2 className="text-base font-bold mb-1 px-3">
+        <h2 className="text-base font-normal mb-1 px-3">
           LED лампа VIDEX Filament Globe G27 1800K
         </h2>
         <div className="flex bg-transparent text-black ">
           <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
             1445 грн
           </div>
-          <div className="bg-gradient-to-r from-[#960806] to-[#343333] py-2 px-4 text-white text-sm text-center w-2/3 -ml-6">
+          <div className="bg-gradient-elektro-massive py-2 px-4 text-white text-sm text-center w-2/3 -ml-6">
             Купити
           </div>
         </div>

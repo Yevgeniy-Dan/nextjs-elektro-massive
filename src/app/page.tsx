@@ -18,9 +18,11 @@ export default async function Home() {
     <div className="w-full">
       <Header />
       {/* <ProductList items={products} /> */}
-      <div className="p-20">
+      <div className="mx-10">
         <Carousel />
-        <TopCardCarousel />
+        <TopCardCarousel title="Популярне" />
+        <TopCardCarousel title="Акції" rows={1} />
+        <TopCardCarousel title="Гарячі новинки" rows={1} />
         <CategoryGrid />
         <WhyUsSection />
         <AboutSection />

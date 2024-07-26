@@ -3,7 +3,7 @@ import React from "react";
 
 const WhyUsSection = () => {
   return (
-    <div className="bg-gray-800 py-10 my-10 flex justify-around">
+    <div className="bg-gray-800 py-10 my-10 flex justify-around -ml-10 rounded-r-3xl">
       <div className="text-center text-white">
         <Image
           src="/collaboration.png"

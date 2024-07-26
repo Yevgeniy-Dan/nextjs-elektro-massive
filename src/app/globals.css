@@ -31,3 +31,12 @@
   height: auto;
   transform: translateY(-50%);
 }
+
+.slick-dots li button:before {
+  font-size: 12px !important;
+}
+
+.slick-dots li {
+  width: 10px !important;
+  /* margin: 0 !important; */
+}
