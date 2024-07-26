@@ -4,9 +4,9 @@ import Dropdown from "./dropdown";
 
 const Header = () => {
   return (
-    <div className="bg-gradient-elektro-massive mr-10 rounded-r-3xl">
-      <header className="mt-2  py-2 font-medium">
-        <div className="container mx-auto flex justify-between items-center">
+    <div className="bg-gradient-elektro-massive mr-16 rounded-r-3xl pl-16 pr-2">
+      <header className="mt-2  py-2 font-medium ">
+        <div className="flex justify-between items-center w-full">
           <div className="flex items-center">
             <Image
               src="/logo.png"
@@ -91,11 +91,11 @@ const Header = () => {
           </div>
         </div>
       </header>
-      <nav className="py-10">
-        <div className="container px-16 mx-auto flex justify-between items-center gap-4">
-          <div className="flex items-center text-white border border-white px-4 py-2 rounded-xl">
+      <nav className="flex justify-between  items-center w-full py-10">
+        <div className="  flex justify-between items-center gap-4 w-full">
+          <div className="flex items-center text-white border border-white  py-2 rounded-xl">
             <span className="text-white font-black px-5">Каталог товарів</span>
-            <button className="ml-4 hover:text-gray-300">
+            <button className="ml-4 px-3 hover:text-gray-300">
               <Image
                 src="/menu-hamburger.png"
                 alt="Menu icon"
@@ -109,7 +109,7 @@ const Header = () => {
             <div className="flex items-center relative">
               <input
                 type="text"
-                className="bg-transparent border border-white text-white px-4 py-2 rounded-full focus:outline-none pr-14 w-full"
+                className="bg-gray-500 border border-white text-white px-4 py-2 rounded-full focus:outline-none pr-14 w-full"
               />
               <button className="absolute inset-y-0 right-0 flex items-center  pointer-events-none ml-4">
                 <div className="bg-gray-500 p-2 pl-5 rounded-r-full rounded-l-2xl ">

@@ -17,8 +17,8 @@ const Carousel = () => {
   };
 
   return (
-    <div className="relative py-8">
-      <div className="overflow-x-hidden pb-8">
+    <div className="relative py-2">
+      <div className="rounded-2xl overflow-x-hidden pb-8">
         <Slider {...settings}>
           <div className="rounded-2xl overflow-hidden">
             <Image
@@ -29,7 +29,7 @@ const Carousel = () => {
               height={600}
             />
           </div>
-          <div>
+          <div className="rounded-2xl overflow-hidden">
             <Image
               src="/carousel-2.png"
               alt="Carousel 2"
@@ -38,7 +38,7 @@ const Carousel = () => {
               height={600}
             />
           </div>
-          <div>
+          <div className="rounded-2xl overflow-hidden">
             <Image
               src="/carousel-3.png"
               alt="Carousel 3"

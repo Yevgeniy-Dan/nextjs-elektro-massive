@@ -40,3 +40,7 @@
   width: 10px !important;
   /* margin: 0 !important; */
 }
+
+.swiper-slide {
+  margin-right: -40px !important;
+}

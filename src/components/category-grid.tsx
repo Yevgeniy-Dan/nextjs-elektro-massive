@@ -3,7 +3,7 @@ import React from "react";
 const CategoryGrid = () => {
   return (
     <div className=" text-white my-10">
-      <div className=" -ml-10">
+      <div className=" -ml-16">
         <h2 className="bg-gradient-elektro-massive text-white  font-bold mb-2 px-28 py-5 rounded-r-3xl text-2xl">
           Електротовари
         </h2>

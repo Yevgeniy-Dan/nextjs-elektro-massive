@@ -10,7 +10,10 @@ const config: Config = {
     extend: {
       boxShadow: {
         light: "0px 1px 4px rgba(0, 0, 0, 0.16)",
+        hover_card:
+          "rgba(14, 30, 37, 0.3) 0px 4px 8px 0px, rgba(14, 30, 37, 0.6) 0px 4px 24px 0px",
       },
+
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
