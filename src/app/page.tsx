@@ -2,7 +2,7 @@ import Image from "next/image";
 import { strapiApi } from "../../lib/api";
 import ProductList from "../components/product-list";
 import Header from "@/components/header";
-import Carousel from "@/components/carousel";
+import Banner from "@/components/banner";
 import TopCard from "@/components/top-card";
 import TopCardCarousel from "@/components/top-card-carousel";
 import CategoryGrid from "@/components/category-grid";
@@ -19,7 +19,7 @@ export default async function Home() {
       <Header />
       {/* <ProductList items={products} /> */}
       <div className="mx-16">
-        <Carousel />
+        <Banner />
         <TopCardCarousel title="Популярне" />
         <TopCardCarousel title="Акції" rows={1} />
         <TopCardCarousel title="Гарячі новинки" rows={1} />

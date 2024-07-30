@@ -17,7 +17,7 @@ const Header = () => {
             />
             <span className="text-white font-bold">ELEKTROMASSIVE</span>
           </div>
-          <div className="flex items-center text-white">
+          <div className="flex items-center text-white text-sm">
             <a href="#" className="mr-4  border border-white px-2 py-2">
               Послуги
             </a>
@@ -92,9 +92,9 @@ const Header = () => {
         </div>
       </header>
       <nav className="flex justify-between  items-center w-full py-10">
-        <div className="  flex justify-between items-center gap-4 w-full">
-          <div className="flex items-center text-white border border-white  py-2 rounded-xl">
-            <span className="text-white font-black px-5">Каталог товарів</span>
+        <div className="  flex justify-between items-center gap-3 w-full">
+          <div className="flex items-center text-white border border-white  py-2 rounded-l-2xl bg-gray-800">
+            <span className="text-white font-black pl-14 px-5">Каталог товарів</span>
             <button className="ml-4 px-3 hover:text-gray-300">
               <Image
                 src="/menu-hamburger.png"
@@ -105,18 +105,18 @@ const Header = () => {
               />
             </button>
           </div>
-          <div className="flex-grow ml-4">
+          <div className="flex-grow">
             <div className="flex items-center relative">
               <input
                 type="text"
-                className="bg-gray-500 border border-white text-white px-4 py-2 rounded-full focus:outline-none pr-14 w-full"
+                className="bg-transparent border border-white text-white px-4 py-2 rounded-r-2xl focus:outline-none pr-14 w-full"
               />
               <button className="absolute inset-y-0 right-0 flex items-center  pointer-events-none ml-4">
-                <div className="bg-gray-500 p-2 pl-5 rounded-r-full rounded-l-2xl ">
+                <div className="bg-transparent p-2 pr-4 rounded-r-full rounded-l-2xl ">
                   <Image
                     src="/search.png"
                     alt="Search icon"
-                    className="h-6 w-6 "
+                    className="h-6 w-6 invert"
                     width={32}
                     height={32}
                   />

@@ -40,28 +40,28 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({ title, rows = 2 }) => {
             slidesPerView: 1,
           },
           640: {
-            slidesPerView: 2,
+            slidesPerView: 1,
           },
           // when window width is >= 768px
           768: {
-            slidesPerView: 3,
+            slidesPerView: 2,
           },
           // when window width is >= 1024px
           1024: {
-            slidesPerView: 4,
+            slidesPerView: 3,
           },
           1236: {
-            slidesPerView: 5,
+            slidesPerView: 4,
           },
           1536: {
-            slidesPerView: 6,
+            slidesPerView: 5,
           },
           // when window width is >= 2048px
           2048: {
-            slidesPerView: 8,
+            slidesPerView: 6,
           },
           2536: {
-            slidesPerView: 10,
+            slidesPerView: 7,
           },
         }}
       >
