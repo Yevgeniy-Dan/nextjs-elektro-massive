@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import TopCard from "./top-card";
 
@@ -13,16 +13,18 @@ interface TopCardCarousel {
 }
 
 const TopCardCarousel: React.FC<TopCardCarousel> = ({ title, rows = 2 }) => {
+  const [allowSlideNext, setAllowSlideNext] = useState(true);
+
   return (
     <div className="mb-5">
       <h2 className="text-2xl font-bold">{title}</h2>
       <Swiper
-        slidesPerView={5}
+        slidesPerView="auto"
         grid={{
           rows,
           fill: "row",
         }}
-        spaceBetween={0}
+        spaceBetween={4}
         navigation={true}
         pagination={{
           clickable: true,
@@ -34,6 +36,20 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({ title, rows = 2 }) => {
         }}
         centeredSlides={true}
         centeredSlidesBounds={true}
+        allowSlideNext={allowSlideNext}
+        onSlideChange={(swiper) => {
+          const slideWidth = 256; // 64 * 4 (учитывая rem)
+          const visibleWidth = swiper.width;
+          const totalWidth = swiper.slides.length * slideWidth;
+          const currentPosition = swiper.translate * -1;
+
+          if (currentPosition + visibleWidth >= totalWidth) {
+            swiper.setTranslate(-(totalWidth - visibleWidth));
+            swiper.allowSlideNext = false;
+          } else {
+            swiper.allowSlideNext = true;
+          }
+        }}
         breakpoints={{
           // when window width is >= 640px
           0: {
@@ -66,7 +82,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({ title, rows = 2 }) => {
         }}
       >
         {Array.from({ length: 16 }, (_, index: number) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={index} className="!w-64">
             <TopCard />
           </SwiperSlide>
         ))}

@@ -16,16 +16,18 @@ export default async function Home() {
 
   return (
     <div className="w-full">
-      <Header />
-      {/* <ProductList items={products} /> */}
-      <div className="mx-16">
-        <Banner />
-        <TopCardCarousel title="Популярне" />
-        <TopCardCarousel title="Акції" rows={1} />
-        <TopCardCarousel title="Гарячі новинки" rows={1} />
-        <CategoryGrid />
-        <WhyUsSection />
-        <AboutSection />
+      <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
+        <Header />
+        {/* <ProductList items={products} /> */}
+        <div className="max-w-7xl mx-auto">
+          <Banner />
+          <TopCardCarousel title="Популярне" />
+          <TopCardCarousel title="Акції" rows={1} />
+          <TopCardCarousel title="Гарячі новинки" rows={1} />
+          <CategoryGrid />
+          <WhyUsSection />
+          <AboutSection />
+        </div>
       </div>
       <Footer />
     </div>
