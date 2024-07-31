@@ -32,26 +32,23 @@ const AboutSection = () => {
         <Image
           src="/filament-bulbs.jpg"
           alt="Image 1"
-          layout="fill"
-          objectFit="contain"
-          className="rounded-lg"
+          fill
+          className="rounded-lg object-contain"
         />
         <div className="absolute w-1/2 h-3/4 bottom-[-50%] left-[5%] z-10">
           <Image
             src="/build-tools.png"
             alt="Image 2"
-            layout="fill"
-            objectFit="contain"
-            className="rounded-lg"
+            fill
+            className="rounded-lg object-contain"
           />
         </div>
         <div className="absolute w-1/2 h-1/2 left-[65%] top-[115%] transform -translate-x-1/2 -translate-y-1/2 z-20">
           <Image
             src="/faucet.png"
             alt="Image 3"
-            layout="fill"
-            objectFit="contain"
-            className="rounded-lg"
+            fill
+            className="rounded-lg object-contain"
           />
         </div>
       </div>
