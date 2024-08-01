@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useSnapCarousel } from "react-snap-carousel";
 
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+import { Carousel, CarouselItem } from "./shared/Carousel";
 
 const categories = [
   {
@@ -48,6 +49,11 @@ const categories = [
     image:
       "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
   },
+  {
+    name: "Щити та шафи",
+    image:
+      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
+  },
 ];
 
 const CategoryGrid = () => {
@@ -65,7 +71,34 @@ const CategoryGrid = () => {
           Електротовари
         </h2>
       </div>
-      <div className="relative">
+      <div className="relative p-4">
+        <Carousel
+          className="grid-rows-1 md:grid-rows-2"
+          items={categories}
+          renderItem={({ item, isSnapPoint }) => (
+            <CarouselItem isSnapPoint={isSnapPoint}>
+              <div className="flex flex-col items-center">
+                <div className="relative">
+                  <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full md:rounded-lg overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
+                  <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 static transform-none">
+                    <p className=" text-black text-center text-base md:text-lg md:text-white font-semibold mt-2">
+                      {item.name}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+          )}
+        />
+      </div>
+      {/* <div className="relative">
         <div
           ref={scrollRef}
           className="flex overflow-x-hidden snap-x snap-mandatory"
@@ -88,18 +121,6 @@ const CategoryGrid = () => {
             </div>
           ))}
         </div>
-        {/* <button
-          onClick={() => prev()}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2  text-black p-2 rounded-full"
-        >
-          <FaChevronLeft className="text-[#990000] text-5xl stroke-none" />
-        </button>
-        <button
-          onClick={() => next()}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2  text-black p-2 rounded-full"
-        >
-          <FaChevronRight className="text-[#990000] text-5xl stroke-none" />
-        </button> */}
         {currentIndex > 0 && (
           <button
             onClick={() => prev()}
@@ -116,7 +137,7 @@ const CategoryGrid = () => {
             <FaChevronRight className="text-[#990000] text-5xl" />
           </button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
