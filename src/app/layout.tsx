@@ -11,6 +11,8 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { Providers } from "./providers";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -28,7 +30,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <main className=" min-h-screen">
-          <Providers>{children}</Providers>
+          <Providers>
+            <div className="w-full">
+              <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
+                <Header />
+                <div className="max-w-7xl mx-auto">{children}</div>
+              </div>
+              <Footer />
+            </div>
+          </Providers>
         </main>
       </body>
     </html>
