@@ -14,9 +14,9 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-elektro-massive text-white py-8">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center sm:text-left">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
           <div className="relative  mb-6 sm:mb-0 mx-auto sm:m-0">
-            <div className="relative w-40 h-16 -mb-14">
+            <div className="relative w-64 h-24 -mb-24 ">
               <Image
                 src="/logo-label.png"
                 alt="ElektroMassive Label"
@@ -24,12 +24,11 @@ const Footer = () => {
                 className="object-contain"
               />
             </div>
-            <div className="relative z-10">
+            <div className="relative w-64 h-64 z-10">
               <Image
                 src="/logo.png"
                 alt="Elektro Massive Logo"
-                width={150}
-                height={50}
+                fill
                 className="mb-4"
               />
             </div>
