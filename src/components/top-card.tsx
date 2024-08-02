@@ -1,9 +1,13 @@
 import Image from "next/image";
 import React from "react";
 
-const TopCard = () => {
+interface TopCardProps {
+  productLabelPath?: string;
+}
+
+const TopCard: React.FC<TopCardProps> = ({ productLabelPath }) => {
   return (
-    <div className=" bg-white   rounded-lg  overflow-hidden shadow-light hover:shadow-hover_card transition-shadow duration-300 w-52 h-auto my-2">
+    <div className=" bg-white   rounded-lg   shadow-light hover:shadow-hover_card transition-shadow duration-300 w-52 h-auto my-2 mt-5">
       <div className="relative">
         <div className="absolute top-2 right-2 flex">
           <svg
@@ -33,9 +37,20 @@ const TopCard = () => {
           width={1000}
           height={224}
         />
-        <div className="absolute top-0 left-0 bg-orange-500 text-white px-2 py-1 rounded-br-lg">
-          TOP
-        </div>
+        {productLabelPath ? (
+          <div className="absolute  -top-7 left-0 w-1/3 h-1/3 z-50">
+            <Image
+              src={productLabelPath}
+              alt={productLabelPath}
+              fill
+              className="object-contain"
+            />
+          </div>
+        ) : (
+          <div className="absolute top-0 left-0 bg-orange-500 text-white px-2 py-1 rounded-br-lg">
+            TOP
+          </div>
+        )}
       </div>
       <div className="pt-4">
         <h2 className="text-sm font-normal mb-1 px-3 py-3">

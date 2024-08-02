@@ -13,8 +13,16 @@ export default async function Home() {
     <>
       <Banner />
       <TopCardCarousel title="Популярне" />
-      <TopCardCarousel title="Акції" rows={1} />
-      <TopCardCarousel title="Гарячі новинки" rows={1} />
+      <TopCardCarousel
+        title="Акції"
+        rows={1}
+        productLabelPath="/new-product-label.png"
+      />
+      <TopCardCarousel
+        title="Гарячі новинки"
+        rows={1}
+        productLabelPath="/shares.png"
+      />
       <CategoryGrid />
       <WhyUsSection />
       <AboutSection />

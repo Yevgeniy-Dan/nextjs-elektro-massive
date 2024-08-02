@@ -10,9 +10,14 @@ import { Grid, Navigation } from "swiper/modules";
 interface TopCardCarousel {
   title: string;
   rows?: number;
+  productLabelPath?: string;
 }
 
-const TopCardCarousel: React.FC<TopCardCarousel> = ({ title, rows = 2 }) => {
+const TopCardCarousel: React.FC<TopCardCarousel> = ({
+  title,
+  rows = 2,
+  productLabelPath,
+}) => {
   const [allowSlideNext, setAllowSlideNext] = useState(true);
 
   return (
@@ -83,7 +88,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({ title, rows = 2 }) => {
       >
         {Array.from({ length: 16 }, (_, index: number) => (
           <SwiperSlide key={index} className="!w-64">
-            <TopCard />
+            <TopCard productLabelPath={productLabelPath} />
           </SwiperSlide>
         ))}
       </Swiper>

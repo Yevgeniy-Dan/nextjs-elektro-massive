@@ -55,7 +55,7 @@ const Footer = () => {
             </a>
           </div>
           <div className="flex flex-col ">
-            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 lg:grid lg:grid-cols-2  xl:flex lg:flex-nowrap  mb-4">
+            <div className="flex flex-wrap justify-center sm:justify-start items-center lg:grid lg:grid-cols-2  xl:flex lg:flex-nowrap  mb-4">
               <a
                 href="#"
                 className="text-white hover:text-gray-300 hover:opacity-75 transition-opacity mr-4"
