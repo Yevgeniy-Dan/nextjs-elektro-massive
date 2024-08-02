@@ -99,9 +99,9 @@ const Header = () => {
         </div>
       </header>
       <nav className="flex flex-row  justify-start items-center w-full pb-3 gap-2 max-w-7xl mx-auto  ">
-        <div className="relative ">
+        <div className="relative md:w-1/4 md:min-w-[200px]">
           <button
-            className=" px-3 hover:text-gray-300 flex items-center text-white border border-white py-2 rounded-l-2xl bg-gray-800 md:w-auto"
+            className="w-auto md:w-full px-3 hover:text-gray-300 flex items-center justify-between text-white border border-white py-2 rounded-l-2xl bg-gray-800 "
             onClick={toggleMenu}
           >
             <span className="text-white font-black px-4 sm:px-5 whitespace-nowrap hidden md:inline">
@@ -116,96 +116,106 @@ const Header = () => {
             />
           </button>
 
-          <div
-            className={`   ${
-              isMenuOpen
-                ? "max-h-screen absolute mt-3 top-full left-0  w-screen  sm:w-[500%] md:w-[150%]  bg-gray-800 text-white rounded-r-3xl   sm:rounded-r-none sm:rounded-l-2xl  shadow-lg z-50 -ml-6 sm:-ml-0 transition-all duration-300"
-                : "max-h-0"
-            }`}
-          >
-            <div className="flex flex-col items-stretch relative">
-              {menuItems.map((item, index) => (
-                <div key={index} className="group">
-                  <div
-                    className={`flex items-center justify-between p-6 py-5  hover:text-gray-700 hover:bg-white ${
-                      index === 0
-                        ? "rounded-tl-2xl"
-                        : index === menuItems.length - 1
-                        ? "rounded-bl-2xl"
-                        : ""
-                    }`}
-                    onClick={() =>
-                      setOpenSubmenu(openSubmenu === index ? null : index)
-                    }
-                  >
-                    <p>{item.name}</p>
-                    <FaChevronDown
-                      className={` ml-2 transition-transform sm:hidden ${
-                        openSubmenu === index ? "rotate-180" : ""
+          {isMenuOpen && (
+            <div className="absolute mt-3 top-full left-0  w-screen  sm:w-[500%] md:w-[150%]  bg-gray-800 text-white rounded-r-3xl   sm:rounded-r-none sm:rounded-l-2xl  shadow-lg z-50 -ml-6 sm:-ml-0">
+              <div className="flex flex-col items-stretch relative">
+                {menuItems.map((item, index) => (
+                  <div key={index} className="group">
+                    <div
+                      className={`flex items-center justify-between p-6 py-5  hover:text-gray-700 hover:bg-white border-b border-gray-200 sm:border-none ${
+                        index === 0
+                          ? "rounded-tl-2xl"
+                          : index === menuItems.length - 1
+                          ? "rounded-bl-2xl "
+                          : ""
                       }`}
-                    />
-                  </div>
-                  <div
-                    className={`sm:hidden ${
-                      openSubmenu === index ? "block" : "hidden"
-                    } bg-gray-800 text-white w-full`}
-                  >
-                    {/* Submenu for small screens */}
-                    <div className="grid grid-cols-2 gap-4">
-                      {item.submenu.map((subitem, subindex) => (
-                        <Link
-                          href={"#"}
-                          key={subindex}
-                          className="flex flex-row items-center space-x-3 p-6  hover:text-gray-700 hover:bg-white w-full"
-                        >
-                          <div className="flex-shrink-0 w-9 h-9">
-                            <Image
-                              src={`https://via.placeholder.com/24x24`}
-                              alt={subitem}
-                              width={36}
-                              height={36}
-                              className="rounded-sm object-cover"
-                            />
-                          </div>
-                          <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
-                            {subitem}
-                          </span>
-                        </Link>
-                      ))}
+                      onClick={() =>
+                        setOpenSubmenu(openSubmenu === index ? null : index)
+                      }
+                    >
+                      <p>{item.name}</p>
+                      <FaChevronDown
+                        className={` ml-2 transition-transform sm:hidden ${
+                          openSubmenu === index ? "rotate-180" : ""
+                        }`}
+                      />
+                    </div>
+                    <div
+                      className={`sm:hidden ${
+                        openSubmenu === index ? "block" : "hidden"
+                      } bg-gray-800 text-white w-full`}
+                    >
+                      {/* Submenu for small screens */}
+                      <div className="grid grid-cols-2 gap-4">
+                        {item.submenu.map((subitem, subindex) => (
+                          <Link
+                            href={"#"}
+                            key={subindex}
+                            className="flex flex-row items-center space-x-3 p-6  hover:text-gray-700 hover:bg-white w-full"
+                          >
+                            <div className="flex-shrink-0 w-9 h-9">
+                              <Image
+                                src={`https://via.placeholder.com/24x24`}
+                                alt={subitem}
+                                width={36}
+                                height={36}
+                                className="rounded-sm object-cover"
+                              />
+                            </div>
+                            <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
+                              {subitem}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="hidden sm:group-hover:block absolute top-full left-0 sm:top-0 sm:left-full  bg-gray-800 text-white w-full sm:w-[120%] lg:w-[180%]">
+                      {/* Submenu for large screens */}
+                      <div className="grid grid-cols-2 lg:grid-cols-3 ">
+                        {item.submenu.map((subitem, subindex) => (
+                          <Link
+                            href={"#"}
+                            key={subindex}
+                            className="flex flex-row items-center space-x-3 p-4  hover:text-gray-700 hover:bg-white w-full"
+                          >
+                            <div className="flex-shrink-0 w-9 h-9">
+                              <Image
+                                src={`https://via.placeholder.com/24x24`}
+                                alt={subitem}
+                                width={36}
+                                height={36}
+                                className="rounded-sm object-cover"
+                              />
+                            </div>
+                            <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
+                              {subitem}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <div className="hidden group-hover:block absolute top-full left-0 sm:top-0 sm:left-full  bg-gray-800 text-white w-full sm:w-[120%] lg:w-[180%]">
-                    {/* Submenu for large screens */}
-                    <div className="grid grid-cols-2 lg:grid-cols-3 ">
-                      {item.submenu.map((subitem, subindex) => (
-                        <Link
-                          href={"#"}
-                          key={subindex}
-                          className="flex flex-row items-center space-x-3 p-4  hover:text-gray-700 hover:bg-white w-full"
-                        >
-                          <div className="flex-shrink-0 w-9 h-9">
-                            <Image
-                              src={`https://via.placeholder.com/24x24`}
-                              alt={subitem}
-                              width={36}
-                              height={36}
-                              className="rounded-sm object-cover"
-                            />
-                          </div>
-                          <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
-                            {subitem}
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+                ))}
+                <div className="flex flex-col py-5 sm:hidden">
+                  <a href="#" className=" p-6 py-2">
+                    Послуги
+                  </a>
+                  <a href="#" className=" p-6 py-2">
+                    Про нас
+                  </a>
+                  <a href="#" className=" p-6 py-2">
+                    Співпраця
+                  </a>
+                  <a href="#" className=" p-6 py-2">
+                    Оплата та доставка
+                  </a>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
-        <div className="flex-grow w-full sm:w-auto max-w-4xl">
+        <div className="flex-grow w-auto sm:w-3/4  max-w-4xl">
           <div className="flex items-center relative">
             <input
               type="text"
