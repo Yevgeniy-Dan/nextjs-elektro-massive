@@ -16,11 +16,11 @@ const Header = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   return (
-    <div className="bg-gradient-elektro-massive  rounded-r-3xl pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-2 -ml-6 md:-ml-16">
-      <header className="mt-2  font-medium  max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row justify-between items-center w-full">
-          <div className="flex items-center  mb-4 lg:mb-0">
-            <div className="relative w-64 h-24 ">
+    <div className="bg-gradient-elektro-massive  rounded-r-3xl  pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-2 -ml-6 md:-ml-16">
+      <header className="mt-2  font-medium  ">
+        <div className="flex flex-row md:flex-col lg:flex-row justify-between items-center w-full">
+          <div className="flex items-center w-1/3 md:w-auto  ">
+            <div className="relative w-48 h-16 md:w-64 md:h-24 ">
               <Image
                 src="/logo-label.png"
                 alt="ElektroMassive Label"
@@ -44,22 +44,24 @@ const Header = () => {
             </a>
           </div>
           <div className="flex flex-col xl:flex-row  items-center text-white">
-            <Dropdown
-              className="mb-4  lg:mb-0 lg:mr-4 bg-gray-800 px-3 py-2"
-              title="Служба підтримки"
-              items={[
-                { name: "Account settings", href: "#" },
-                { name: "Support", href: "#" },
-              ]}
-            />
-            <div className="flex flex-col lg:flex-row mt-4 xl:mt-0 items-center text-white">
-              <div className="flex items-center  flex-row mt-4 md:mt-0">
+            <div className="hidden md:block">
+              <Dropdown
+                className=" mb-4  lg:mb-0 lg:mr-4 bg-gray-800 px-3 py-2"
+                title="Служба підтримки"
+                items={[
+                  { name: "Account settings", href: "#" },
+                  { name: "Support", href: "#" },
+                ]}
+              />
+            </div>
+            <div className="flex flex-col lg:flex-row  items-center text-white">
+              <div className="flex items-center  flex-row md:mb-3 xl:mb-0">
                 <div className="flex items-center">
                   <a href="#" className="mr-2 hover:text-gray-300">
                     <Image
                       src="/bucket.png"
                       alt="Bucket icon"
-                      className="h-10 w-10 invert"
+                      className="h-6 w-6 md:h-10 md:w-10 invert"
                       width={32}
                       height={32}
                     />
@@ -70,16 +72,19 @@ const Header = () => {
                   <Image
                     src="/call.png"
                     alt="Phone icon"
-                    className="h-8 w-8 invert"
+                    className="h-6 w-6 md:h-10 md:w-10 invert"
                     width={32}
                     height={32}
                   />
                 </a>
-                <a href="#" className="ml-4 hover:text-gray-300 relative">
+                <a
+                  href="#"
+                  className="hidden md:block ml-4 hover:text-gray-300 relative"
+                >
                   <Image
                     src="/bell.png"
                     alt="Notification icon"
-                    className="h-8 w-8 invert"
+                    className="h-6 w-6 md:h-10 md:w-10 invert"
                     width={32}
                     height={32}
                   />
@@ -91,7 +96,7 @@ const Header = () => {
                   <Image
                     src="/avatar.png"
                     alt="Avatar icon"
-                    className="h-8 w-8 invert"
+                    className="h-6 w-6 md:h-10 md:w-10 invert"
                     width={32}
                     height={32}
                   />
@@ -101,15 +106,20 @@ const Header = () => {
           </div>
         </div>
       </header>
-      <nav className="flex flex-row  justify-start items-center w-full pb-3 gap-2 max-w-7xl mx-auto  ">
-        <div className="relative md:w-1/4 md:min-w-[200px]">
+      <nav
+        className="flex flex-row  justify-start items-center w-full pb-3 gap-2 max-w-7xl mx-auto  "
+        ref={dropdownRef}
+      >
+        <div className="relative md:w-1/5 md:min-w-[200px]">
           <button
             className="w-auto md:w-full px-3 hover:text-gray-300 flex items-center justify-between text-white border border-white py-2 rounded-l-2xl bg-gray-800 "
             onClick={toggleMenu}
           >
-            <span className="text-white font-black px-4 sm:px-5 whitespace-nowrap hidden md:inline">
-              Каталог товарів
-            </span>
+            <div className="flex justify-center w-full">
+              <span className="text-white font-black px-4 sm:px-5 whitespace-nowrap hidden md:inline">
+                Каталог товарів
+              </span>
+            </div>
             <Image
               src="/menu-hamburger.png"
               alt="Menu icon"
@@ -120,10 +130,7 @@ const Header = () => {
           </button>
 
           {isMenuOpen && (
-            <div
-              className="absolute mt-3 top-full left-0  w-screen  sm:w-[500%] md:w-[150%]  bg-gray-800 text-white rounded-r-3xl   sm:rounded-r-none sm:rounded-l-2xl  shadow-lg z-50 -ml-6 sm:-ml-0"
-              ref={dropdownRef}
-            >
+            <div className="absolute mt-3 top-full left-0  w-screen  sm:w-[500%] md:w-[150%]  bg-gray-800 text-white rounded-r-3xl   sm:rounded-r-none sm:rounded-l-2xl  shadow-lg z-50 -ml-6 sm:-ml-0">
               <div className="flex flex-col items-stretch relative">
                 {menuItems.map((item, index) => (
                   <div key={index} className="group">
@@ -232,7 +239,7 @@ const Header = () => {
           )}
         </div>
 
-        <div className="flex-grow w-auto sm:w-3/4  lg:w-2/3 max-w-[685px]">
+        <div className="flex-grow w-auto sm:w-3/4  lg:w-2/3 max-w-[730px]">
           <div className="flex items-center relative">
             <input
               type="text"

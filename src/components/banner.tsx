@@ -24,7 +24,7 @@ const Banner = () => {
             <Image
               src="/carousel-1.png"
               alt="Carousel 1"
-              className="w-full h-[30rem] object-cover pointer-events-none"
+              className="w-full h-[15rem] md:h-[30rem] object-cover pointer-events-none"
               width={1200}
               height={600}
             />
@@ -33,7 +33,7 @@ const Banner = () => {
             <Image
               src="/carousel-2.png"
               alt="Carousel 2"
-              className=" w-full h-[30rem]  object-cover pointer-events-none"
+              className=" w-full h-[15rem] md:h-[30rem]  object-cover pointer-events-none"
               width={1200}
               height={600}
             />
@@ -42,7 +42,7 @@ const Banner = () => {
             <Image
               src="/carousel-3.png"
               alt="Carousel 3"
-              className=" w-full h-[30rem]  object-cover pointer-events-none"
+              className=" w-full h-[15rem] md:h-[30rem]  object-cover pointer-events-none"
               width={1200}
               height={600}
             />

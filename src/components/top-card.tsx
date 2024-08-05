@@ -38,7 +38,7 @@ const TopCard: React.FC<TopCardProps> = ({ productLabelPath }) => {
           height={224}
         />
         {productLabelPath ? (
-          <div className="absolute  -top-7 left-0 w-1/3 h-1/3 z-50">
+          <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
             <Image
               src={productLabelPath}
               alt={productLabelPath}

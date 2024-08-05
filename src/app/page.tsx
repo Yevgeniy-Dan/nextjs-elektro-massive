@@ -10,7 +10,7 @@ export default async function Home() {
   const products: any[] = [];
 
   return (
-    <>
+    <div className="w-full">
       <Banner />
       <TopCardCarousel title="Популярне" />
       <TopCardCarousel
@@ -21,11 +21,11 @@ export default async function Home() {
       <TopCardCarousel
         title="Гарячі новинки"
         rows={1}
-        productLabelPath="/shares.png"
+        productLabelPath="/sale.png"
       />
       <CategoryGrid />
       <WhyUsSection />
       <AboutSection />
-    </>
+    </div>
   );
 }

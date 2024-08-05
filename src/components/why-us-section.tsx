@@ -10,10 +10,13 @@ const features = [
 
 const WhyUsSection = () => {
   return (
-    <div className="bg-gray-800 py-10 my-10 flex justify-around xl:ml-0 -ml-16 rounded-r-3xl xl:rounded-3xl">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div className="bg-gray-800 py-10 my-10 flex justify-around rounded-none sm:rounded-r-3xl xl:rounded-3xl -mx-4 sm:-ml-10 md:-ml-16 lg:ml-0">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {features.map((feature, index) => (
-          <div key={index} className="text-center text-white">
+          <div
+            key={index}
+            className="flex flex-col items-center text-center  text-white"
+          >
             <Image
               src={feature.icon}
               alt={`${feature.text} Icon`}

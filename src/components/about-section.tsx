@@ -17,12 +17,12 @@ const AboutSection = () => {
           декору, що змінює атмосферу.
         </p>
 
-        <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10  md:-mx-12 h-64">
-          <p className="flex items-center bg-gray-200 text-gray-950 font-semibold  text-base sm:text-lg text-justify max-w-prose mx-auto w-2/5  p-6 overflow-hidden break-words">
+        <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10  md:-mx-12 h-80 sm:h-64 ">
+          <p className="flex items-center bg-gray-200 text-gray-950 font-semibold  text-base sm:text-lg text-justify max-w-prose mx-auto w-3/5 px-5 sm:px-12 overflow-hidden break-words">
             Освітлення – це не лише функціональність, але й важливий елемент
             декору, що змінює атмосферу.
           </p>
-          <div className="relative w-3/5 -my-2 rounded-xl">
+          <div className="relative w-2/5 -my-2 rounded-xl">
             <Image
               src="/filament-bulbs.jpg"
               alt="Image 1"
@@ -36,8 +36,8 @@ const AboutSection = () => {
           дозволяючи реалізувати будь-які дизайнерські рішення.
         </p>
 
-        <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10  md:-mx-12 h-64">
-          <div className="relative w-3/5 -my-2 rounded-xl">
+        <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10  md:-mx-12 h-80 sm:h-64">
+          <div className="relative w-2/5 -my-2 rounded-xl">
             <Image
               src="/build-tools.png"
               alt="Image 1"
@@ -45,7 +45,7 @@ const AboutSection = () => {
               className=" lg:hidden object-cover rounded-xl"
             />
           </div>
-          <p className="flex items-center bg-gray-200 text-gray-950 font-semibold  text-base sm:text-lg text-justify max-w-prose mx-auto w-2/5  p-6 overflow-hidden break-words">
+          <p className="flex items-center bg-gray-200 text-gray-950 font-semibold  text-base sm:text-lg text-justify max-w-prose mx-auto w-3/5 px-5 sm:px-12 overflow-hidden break-words">
             Якісні будівельні матеріали гарантують міцність і довговічність,
             дозволяючи реалізувати будь-які дизайнерські рішення.
           </p>
@@ -56,12 +56,12 @@ const AboutSection = () => {
           ванній кімнаті.
         </p>
 
-        <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10  md:-mx-12 h-64 mb-12">
-          <p className="flex items-center bg-gray-200 text-gray-950 font-semibold  text-base sm:text-lg text-justify max-w-prose mx-auto w-2/5  p-6 overflow-hidden break-words">
+        <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10  md:-mx-12 h-80 sm:h-64 mb-12">
+          <p className="flex items-center bg-gray-200 text-gray-950 font-semibold  text-base sm:text-lg text-justify max-w-prose mx-auto w-3/5 px-5 sm:px-12 overflow-hidden break-words">
             Сучасна сантехніка поєднує зручність і стиль, додаючи вишуканості
             ванній кімнаті.
           </p>
-          <div className="relative w-3/5 -my-2 rounded-xl">
+          <div className="relative w-2/5 -my-2 rounded-xl">
             <Image
               src="/faucet.png"
               alt="Image 1"
