@@ -67,7 +67,7 @@ const CategoryGrid = () => {
   return (
     <div className=" text-white my-10">
       <div className="-ml-4 sm:-ml-8 md:-ml-12 lg:-ml-16 xl:ml-0 mb-10">
-        <h2 className="bg-gradient-elektro-massive text-white  font-bold mb-2 pl-4 sm:pl-12 pr-28 py-5 rounded-r-3xl xl:rounded-full text-2xl uppercase tracking-wide">
+        <h2 className="bg-gradient-elektro-massive text-white  font-bold mb-2 pl-4 sm:pl-12 pr-28 py-5 rounded-r-3xl xl:rounded-full text-xl uppercase tracking-wide">
           Електротовари
         </h2>
       </div>

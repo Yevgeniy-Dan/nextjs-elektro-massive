@@ -72,7 +72,7 @@ const Header = () => {
                   <Image
                     src="/call.png"
                     alt="Phone icon"
-                    className="h-6 w-6 md:h-10 md:w-10 invert"
+                    className="h-4 w-4 md:h-8 md:w-8 invert"
                     width={32}
                     height={32}
                   />
@@ -84,7 +84,7 @@ const Header = () => {
                   <Image
                     src="/bell.png"
                     alt="Notification icon"
-                    className="h-6 w-6 md:h-10 md:w-10 invert"
+                    className="h-4 w-4 md:h-8 md:w-8 invert"
                     width={32}
                     height={32}
                   />
@@ -96,7 +96,7 @@ const Header = () => {
                   <Image
                     src="/avatar.png"
                     alt="Avatar icon"
-                    className="h-6 w-6 md:h-10 md:w-10 invert"
+                    className="h-4 w-4 md:h-8 md:w-8 invert"
                     width={32}
                     height={32}
                   />
