@@ -31,7 +31,7 @@ const ServiceCard: React.FC<IServiceCard> = ({ title, description }) => {
               </span>
             </div>
           </div>
-          <div className="flex items-center justify-between py-3 bg-gradient-elektro-massive px-6">
+          <div className="flex items-center justify-between py-3 bg-gradient-elektro-massive-horizontal px-6">
             <div>
               <p className="text-white mr-2">+380 (97) 63 23 159</p>
             </div>

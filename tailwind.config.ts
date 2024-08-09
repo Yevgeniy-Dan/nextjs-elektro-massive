@@ -21,8 +21,10 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        "gradient-elektro-massive":
+        "gradient-elektro-massive-horizontal":
           "linear-gradient(to right, #990000, #663333, #333333)",
+        "gradient-elektro-massive-vertical":
+          "linear-gradient(to bottom, #663333, #5A3449, #343165)",
       },
     },
   },

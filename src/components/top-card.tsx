@@ -60,7 +60,7 @@ const TopCard: React.FC<TopCardProps> = ({ productLabelPath }) => {
           <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
             1445 грн
           </div>
-          <div className="bg-gradient-elektro-massive py-2 px-4 text-white text-sm text-center w-2/3 -ml-6">
+          <div className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-sm text-center w-2/3 -ml-6">
             Купити
           </div>
         </div>
