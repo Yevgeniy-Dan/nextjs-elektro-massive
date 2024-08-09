@@ -5,7 +5,9 @@ import { useSnapCarousel } from "react-snap-carousel";
 // https://github.com/richardscarrott/react-snap-carousel
 
 const styles = {
-  root: {},
+  root: {
+    position: "relative",
+  },
   scroll: {
     position: "relative",
     display: "grid",
@@ -32,16 +34,16 @@ const styles = {
     width: "100%",
   },
   leftButton: {
-    position: "absolute",
-    left: "10px",
-    top: "50%",
-    transform: "translateY(-50%)",
+    //   position: "absolute",
+    //   left: "-10px",
+    //   top: "50%",
+    //   transform: "translateY(-50%)",
   },
   rightButton: {
-    position: "absolute",
-    right: "10px",
-    top: "50%",
-    transform: "translateY(-50%)",
+    //   position: "absolute",
+    //   right: "10px",
+    //   top: "50%",
+    //   transform: "translateY(-50%)",
   },
   nextPrevButton: {},
   nextPrevButtonDisabled: { opacity: 0.3 },
@@ -108,6 +110,7 @@ export const Carousel = <T extends any>({
           ...(activePageIndex === 0 ? styles.nextPrevButtonDisabled : {}),
         }}
         onClick={() => prev()}
+        className="absolute left-[-10px] top-1/2 -translate-y-[80%]"
       >
         <FaChevronLeft className="text-[#990000] text-5xl" />
       </button>
@@ -120,46 +123,10 @@ export const Carousel = <T extends any>({
             : {}),
         }}
         onClick={() => next()}
+        className="absolute right-[-10px] top-1/2 -translate-y-[80%]"
       >
         <FaChevronRight className="text-[#990000] text-5xl" />
       </button>
-      {/* <div style={styles.controls} aria-hidden>
-        <button
-          style={{
-            ...styles.nextPrevButton,
-            ...(activePageIndex === 0 ? styles.nextPrevButtonDisabled : {}),
-          }}
-          onClick={() => prev()}
-        >
-          {String.fromCharCode(8592)}
-        </button>
-        {pages.map((_, i) => (
-          <button
-            key={i}
-            style={{
-              ...styles.paginationButton,
-              ...(activePageIndex === i ? styles.paginationButtonActive : {}),
-            }}
-            onClick={() => goTo(i)}
-          >
-            {i + 1}
-          </button>
-        ))}
-        <button
-          style={{
-            ...styles.nextPrevButton,
-            ...(activePageIndex === pages.length - 1
-              ? styles.nextPrevButtonDisabled
-              : {}),
-          }}
-          onClick={() => next()}
-        >
-          {String.fromCharCode(8594)}
-        </button>
-      </div> */}
-      {/* <div style={styles.pageIndicator}>
-        {activePageIndex + 1} / {pages.length}
-      </div> */}
     </div>
   );
 };

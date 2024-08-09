@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      scrollBehavior: {
+        smooth: "smooth",
+      },
       boxShadow: {
         light: "0px 1px 4px rgba(0, 0, 0, 0.16)",
         hover_card:

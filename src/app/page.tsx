@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <div className="w-full">
       <Banner />
-      <TopCardCarousel title="Популярне" />
+      <TopCardCarousel title="Популярне" rows={1} />
       <TopCardCarousel
         title="Акції"
         rows={1}

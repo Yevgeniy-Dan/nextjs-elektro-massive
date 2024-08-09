@@ -7,8 +7,8 @@ interface TopCardProps {
 
 const TopCard: React.FC<TopCardProps> = ({ productLabelPath }) => {
   return (
-    <div className=" bg-white   rounded-lg   shadow-light hover:shadow-hover_card transition-shadow duration-300 w-52 h-auto my-2 mt-5">
-      <div className="relative">
+    <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 w-52 h-auto my-2 mt-5">
+      <div className="relative rounded-t-xl overflow-hidden">
         <div className="absolute top-2 right-2 flex">
           <svg
             className="w-5 h-5 text-white mr-2"
@@ -52,7 +52,7 @@ const TopCard: React.FC<TopCardProps> = ({ productLabelPath }) => {
           </div>
         )}
       </div>
-      <div className="pt-4">
+      <div className="pt-4 rounded-b-xl overflow-hidden">
         <h2 className="text-sm font-normal mb-1 px-3 py-3">
           LED лампа VIDEX Filament Globe G27 1800K
         </h2>

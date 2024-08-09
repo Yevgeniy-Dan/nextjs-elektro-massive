@@ -19,7 +19,7 @@ const Header = () => {
     <div className="bg-gradient-elektro-massive  rounded-r-3xl  pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-2 -ml-6 md:-ml-16">
       <header className="mt-2  font-medium  ">
         <div className="flex flex-row md:flex-col lg:flex-row justify-between items-center w-full">
-          <div className="flex items-center w-1/3 md:w-auto  ">
+          <div className="flex items-center w-1/2 sm:2/3 md:w-auto  ">
             <div className="relative w-48 h-16 md:w-64 md:h-24 ">
               <Image
                 src="/logo-label.png"
@@ -46,7 +46,7 @@ const Header = () => {
           <div className="flex flex-col xl:flex-row  items-center text-white">
             <div className="hidden md:block">
               <Dropdown
-                className=" mb-4  lg:mb-0 lg:mr-4 bg-gray-800 px-3 py-2"
+                className=" my-4  xl:my-0 lg:mr-4 bg-gray-800 px-3 py-2"
                 title="Служба підтримки"
                 items={[
                   { name: "Account settings", href: "#" },
@@ -55,52 +55,56 @@ const Header = () => {
               />
             </div>
             <div className="flex flex-col lg:flex-row  items-center text-white">
-              <div className="flex items-center  flex-row md:mb-3 xl:mb-0">
+              <div className="flex items-center gap-1 md:gap-3  flex-row md:mb-3 xl:mb-0">
                 <div className="flex items-center">
-                  <a href="#" className="mr-2 hover:text-gray-300">
+                  <a href="#" className="mr-1 hover:text-gray-300">
                     <Image
                       src="/bucket.png"
                       alt="Bucket icon"
-                      className="h-6 w-6 md:h-10 md:w-10 invert"
+                      className="h-8 w-8 md:h-10 md:w-10 invert"
                       width={32}
                       height={32}
                     />
                   </a>
-                  <span className="text-white">0.00 грн</span>
-                </div>
-                <a href="#" className="ml-4 hover:text-gray-300">
-                  <Image
-                    src="/call.png"
-                    alt="Phone icon"
-                    className="h-4 w-4 md:h-8 md:w-8 invert"
-                    width={32}
-                    height={32}
-                  />
-                </a>
-                <a
-                  href="#"
-                  className="hidden md:block ml-4 hover:text-gray-300 relative"
-                >
-                  <Image
-                    src="/bell.png"
-                    alt="Notification icon"
-                    className="h-4 w-4 md:h-8 md:w-8 invert"
-                    width={32}
-                    height={32}
-                  />
-                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                    1
+                  <span className="text-xs sm:text-sm md:text-base text-white">
+                    0.00 грн
                   </span>
-                </a>
-                <a href="#" className="ml-4 hover:text-gray-300">
-                  <Image
-                    src="/avatar.png"
-                    alt="Avatar icon"
-                    className="h-4 w-4 md:h-8 md:w-8 invert"
-                    width={32}
-                    height={32}
-                  />
-                </a>
+                </div>
+                <div className="flex items-center justify-center space-x-4">
+                  <a href="#" className=" hover:text-gray-300">
+                    <Image
+                      src="/call.png"
+                      alt="Phone icon"
+                      className="h-6 w-6 md:h-8 md:w-8 invert"
+                      width={32}
+                      height={32}
+                    />
+                  </a>
+                  <a
+                    href="#"
+                    className="hidden md:block  hover:text-gray-300 relative"
+                  >
+                    <Image
+                      src="/bell.png"
+                      alt="Notification icon"
+                      className="h-6 w-6 md:h-8 md:w-8 invert"
+                      width={32}
+                      height={32}
+                    />
+                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                      1
+                    </span>
+                  </a>
+                  <a href="#" className=" hover:text-gray-300">
+                    <Image
+                      src="/avatar.png"
+                      alt="Avatar icon"
+                      className="h-6 w-6 md:h-8 md:w-8 invert"
+                      width={32}
+                      height={32}
+                    />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
