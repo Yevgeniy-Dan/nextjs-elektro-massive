@@ -4,7 +4,7 @@ import React from "react";
 const PartnershipPage = () => {
   return (
     <div className="py-5">
-      <h1 className="text-sm font-bold">Головна/Співпраця</h1>
+      <p className="text-sm font-bold">Головна/Співпраця</p>
       <div className="bg-gradient-elektro-massive-vertical text-white  py-10 px-6   my-4 space-y-4 rounded-none  -mx-4 sm:-ml-10 md:-ml-16 lg:ml-0 ">
         <p className="text-lg md:text-xl lg:text-2xl">Співпраця</p>
 
