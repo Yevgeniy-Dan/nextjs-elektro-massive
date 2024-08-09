@@ -20,25 +20,28 @@ const Header = () => {
       <header className="mt-2  font-medium  ">
         <div className="flex flex-row md:flex-col lg:flex-row justify-between items-center w-full">
           <div className="flex items-center w-1/2 sm:2/3 md:w-auto  ">
-            <div className="relative w-48 h-16 md:w-64 md:h-24 ">
+            <Link href={"/"} className="relative w-48 h-16 md:w-64 md:h-24 ">
               <Image
                 src="/logo-label.png"
                 alt="ElektroMassive Label"
                 fill
                 className="object-contain"
               />
-            </div>
+            </Link>
           </div>
           <div className="hidden md:flex flex-wrap justify-center items-center text-white text-sm gap-2 sm:gap-4 mb-4 lg:mb-0">
-            <a href="#" className="border border-white px-2 py-2">
+            <Link href={"/services"} className="border border-white px-2 py-2">
               Послуги
-            </a>
-            <a href="#" className="border border-white px-2 py-2">
+            </Link>
+            <Link href={"/about"} className="border border-white px-2 py-2">
               Про нас
-            </a>
-            <a href="#" className="border border-white px-2 py-2">
+            </Link>
+            <Link
+              href={"/partnership"}
+              className="border border-white px-2 py-2"
+            >
               Співпраця
-            </a>
+            </Link>
             <a href="#" className="border border-white px-2 py-2">
               Оплата та доставка
             </a>
@@ -225,15 +228,15 @@ const Header = () => {
                   </div>
                 ))}
                 <div className="flex flex-col py-5 sm:hidden">
-                  <a href="#" className=" p-6 py-2">
+                  <Link href={"/services"} className="p-6 py-2">
                     Послуги
-                  </a>
-                  <a href="#" className=" p-6 py-2">
+                  </Link>
+                  <Link href={"/about"} className="p-6 py-2">
                     Про нас
-                  </a>
-                  <a href="#" className=" p-6 py-2">
+                  </Link>
+                  <Link href={"/partnership"} className="p-6 py-2">
                     Співпраця
-                  </a>
+                  </Link>
                   <a href="#" className=" p-6 py-2">
                     Оплата та доставка
                   </a>

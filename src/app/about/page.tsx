@@ -37,7 +37,7 @@ const AboutPage = () => {
                 забезпеченні зручного сервісу для наших клієнтів.
               </span>
             </p>
-            <div className="relative w-3/5 -my-2 rounded-xl object-contain">
+            <div className="relative w-3/5 -my-2 rounded-xl">
               <Image
                 src="/about/about_company.png"
                 alt="Image 1"
