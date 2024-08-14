@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+p {
+  margin: 1rem 0;
+}
+
 /* Collage styles for about us section on the main page */
 
 .slick-dots li button:before {

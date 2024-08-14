@@ -21,58 +21,66 @@ const AboutPage = () => {
       <div className="flex flex-col items-start  my-10 pb-0  xl:pb-32 ">
         <div className="w-full  mb-8 relative">
           {/* ABOUT COMPANY */}
-          <div className="flex justify-between  relative mt-10  h-auto ">
-            <p className="flex flex-col items-center bg-gray-200 text-gray-950 font-thin  text-sm sm:text-lg text-justify max-w-prose  w-2/5  overflow-hidden rounded-2xl">
-              <span className="block w-full text-center uppercase border border-b-8 border-b-white py-4 text-3xl font-semibold">
-                Про компанію
-              </span>
-              <span className="px-16 py-5 sm:px-16">
-                Ми розпочали свою діяльність у 2017 році як дистриб&apos;ютори
-                електротехнічних товарів, прагнучи надати українському ринку
-                тільки найкращу продукцію від перевірених виробників. Наша
-                компанія швидко здобула репутацію надійного партнера завдяки
-                увазі до деталей і якісному обслуговуванню. Всего через три
-                роки, у 2020 році, ми відкрили великий спеціалізований магазин,
-                що стало важливим етапом у розширенні нашого бізнесу та
-                забезпеченні зручного сервісу для наших клієнтів.
-              </span>
-            </p>
-            <div className="relative w-3/5 -my-2 rounded-xl">
-              <Image
-                src="/about/about_company.png"
-                alt="Image 1"
-                fill
-                className=" object-contain rounded-xl"
-              />
+          <div className="flex flex-col md:flex-row items-center justify-between  relative mt-10  h-auto space-y-3">
+            <div className="w-full md:w-1/2">
+              <p className="flex flex-col items-center bg-gray-200 text-gray-950 font-thin  text-sm sm:text-lg text-justify     overflow-hidden rounded-2xl">
+                <span className="block w-full text-center uppercase border border-b-8 border-b-white py-4 text-3xl font-semibold">
+                  Про компанію
+                </span>
+                <span className="px-16 py-5 sm:px-16">
+                  Ми розпочали свою діяльність у 2017 році як дистриб&apos;ютори
+                  електротехнічних товарів, прагнучи надати українському ринку
+                  тільки найкращу продукцію від перевірених виробників. Наша
+                  компанія швидко здобула репутацію надійного партнера завдяки
+                  увазі до деталей і якісному обслуговуванню. Всего через три
+                  роки, у 2020 році, ми відкрили великий спеціалізований
+                  магазин, що стало важливим етапом у розширенні нашого бізнесу
+                  та забезпеченні зручного сервісу для наших клієнтів.
+                </span>
+              </p>
+            </div>
+            <div className="w-full md:w-1/2">
+              <div className="relative aspect-video w-full h-full">
+                <Image
+                  src="/about/about_company.png"
+                  alt="Image 1"
+                  fill
+                  className=" object-contain rounded-xl"
+                />
+              </div>
             </div>
           </div>
 
           {/* Development */}
-          <div className="flex justify-between  relative mt-10  h-auto ">
-            <div className="relative w-3/5 -my-2 rounded-xl">
-              <Image
-                src="/about/development.jpg"
-                alt="Image 1"
-                fill
-                className=" object-cover rounded-xl"
-              />
+          <div className="flex flex-col md:flex-row items-center justify-between  relative mt-10  h-auto ">
+            <div className="w-full md:w-1/2  my-4 md:my-0">
+              <div className="relative aspect-video w-full h-full">
+                <Image
+                  src="/about/development.jpg"
+                  alt="Image 1"
+                  fill
+                  className=" object-cover rounded-xl"
+                />
+              </div>
             </div>
-            <p className="flex flex-col items-center bg-gray-200 text-gray-950 font-thin  text-sm sm:text-lg text-justify max-w-prose  w-2/5  overflow-hidden rounded-2xl">
-              <span className="block w-full text-center uppercase border border-b-8 border-b-white py-4 text-3xl font-semibold">
-                Розвиток
-              </span>
-              <span className="px-16 py-5 sm:px-16">
-                З 2020 року наш бізнес продовжив зростати, і ми сформували
-                команду досвідчених електриків та інженерів, які не тільки
-                реалізують нашу продукцію, але й пропонують професійні послуги з
-                проектування та монтажу електричних систем. У 2022 році ми
-                зробили ще один важливий крок, відкривши новий магазин, що
-                спеціалізується на будівельних матеріалах і сантехніці. Це
-                дозволило нам розширити наш асортимент і запропонувати нашим
-                клієнтам комплексні рішення для їх будівельних та ремонтних
-                потреб.
-              </span>
-            </p>
+            <div className="w-full md:w-1/2">
+              <p className="flex flex-col items-center bg-gray-200 text-gray-950 font-thin  text-sm sm:text-lg text-justify overflow-hidden rounded-2xl">
+                <span className="block w-full text-center uppercase border border-b-8 border-b-white py-4 text-3xl font-semibold">
+                  Розвиток
+                </span>
+                <span className="px-16 py-5 sm:px-16">
+                  З 2020 року наш бізнес продовжив зростати, і ми сформували
+                  команду досвідчених електриків та інженерів, які не тільки
+                  реалізують нашу продукцію, але й пропонують професійні послуги
+                  з проектування та монтажу електричних систем. У 2022 році ми
+                  зробили ще один важливий крок, відкривши новий магазин, що
+                  спеціалізується на будівельних матеріалах і сантехніці. Це
+                  дозволило нам розширити наш асортимент і запропонувати нашим
+                  клієнтам комплексні рішення для їх будівельних та ремонтних
+                  потреб.
+                </span>
+              </p>
+            </div>
           </div>
 
           {/* Achievments */}
