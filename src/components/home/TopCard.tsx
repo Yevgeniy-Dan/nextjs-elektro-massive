@@ -3,9 +3,19 @@ import React from "react";
 
 interface TopCardProps {
   productLabelPath?: string;
+  title: string;
+  retail: number;
+  // imageSrc: string;
+  currency: string;
 }
 
-const TopCard: React.FC<TopCardProps> = ({ productLabelPath }) => {
+const TopCard: React.FC<TopCardProps> = ({
+  productLabelPath,
+  title,
+  retail,
+  currency,
+  // imageSrc,
+}) => {
   return (
     <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 w-52 h-auto my-2 mt-5">
       <div className="relative rounded-t-xl overflow-hidden">
@@ -31,7 +41,7 @@ const TopCard: React.FC<TopCardProps> = ({ productLabelPath }) => {
           />
         </div>
         <Image
-          src="https://plus.unsplash.com/premium_photo-1677234147181-2510b2c1ea75?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src={"/imageSrc"}
           alt="Product Image"
           className="w-full h-56 object-cover"
           width={1000}
@@ -53,12 +63,10 @@ const TopCard: React.FC<TopCardProps> = ({ productLabelPath }) => {
         )}
       </div>
       <div className="pt-4 rounded-b-xl overflow-hidden">
-        <h2 className="text-sm font-normal mb-1 px-3 py-3">
-          LED лампа VIDEX Filament Globe G27 1800K
-        </h2>
+        <h2 className="text-sm font-normal mb-1 px-3 py-3">{title}</h2>
         <div className="flex bg-transparent text-black ">
           <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
-            1445 грн
+            {retail} {currency}
           </div>
           <div className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-sm text-center w-2/3 -ml-6">
             Купити

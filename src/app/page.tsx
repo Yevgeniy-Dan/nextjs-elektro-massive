@@ -1,9 +1,8 @@
-import { strapiApi } from "../../lib/api";
-import Banner from "@/components/banner";
-import TopCardCarousel from "@/components/top-card-carousel";
-import CategoryGrid from "@/components/category-grid";
-import WhyUsSection from "@/components/why-us-section";
-import AboutSection from "@/components/about-section";
+import AboutSection from "@/components/home/AboutSection";
+import Banner from "@/components/home/Banner";
+import CategoryGrid from "@/components/home/CategoryGrid";
+import TopCardCarousel from "@/components/home/TopCardCarousel";
+import WhyUsSection from "@/components/home/WhyUsSection";
 
 export default async function Home() {
   // const products = await strapiApi.getProducts();

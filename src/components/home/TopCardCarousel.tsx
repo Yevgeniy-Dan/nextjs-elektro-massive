@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Slider from "react-slick";
-import TopCard from "./top-card";
+import TopCard from "./TopCard";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Grid, Navigation } from "swiper/modules";
@@ -88,7 +88,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
       >
         {Array.from({ length: 16 }, (_, index: number) => (
           <SwiperSlide key={index} className="!w-64">
-            <TopCard productLabelPath={productLabelPath} />
+            {/* <TopCard productLabelPath={productLabelPath} /> */}
           </SwiperSlide>
         ))}
       </Swiper>

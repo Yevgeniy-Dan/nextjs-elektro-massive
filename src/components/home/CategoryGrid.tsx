@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useSnapCarousel } from "react-snap-carousel";
 
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
-import { Carousel, CarouselItem } from "./shared/Carousel";
+import { Carousel, CarouselItem } from "../shared/Carousel";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Grid, Navigation } from "swiper/modules";
 

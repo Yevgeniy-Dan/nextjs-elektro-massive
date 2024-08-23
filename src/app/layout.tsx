@@ -11,8 +11,8 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { Providers } from "./providers";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
+import Header from "@/components/shared/Header";
+import Footer from "@/components/shared/Footer";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 

@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import Dropdown from "./dropdown";
 import { menuItems } from "@/data/menuItems";
 import { FaChevronDown } from "react-icons/fa6";
 import Link from "next/link";
 import useOutsideClick from "@/hooks/useOutsideClick";
+import Dropdown from "../home/dropdown";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
