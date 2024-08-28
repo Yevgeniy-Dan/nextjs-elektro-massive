@@ -18,6 +18,16 @@ const nextConfig = {
         hostname: "via.placeholder.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "b2b.allegro-opt.com.ua",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "admin.elektromassive.com",
+        pathname: "/**",
+      },
     ],
   },
 };

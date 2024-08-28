@@ -1,24 +1,31 @@
-interface ProductTypeAttributes {
-  title: string;
-  slug: string;
-}
+// interface ProductTypeAttributes {
+//   title: string;
+//   slug: string;
+//   icon: {
+//     data: {
+//       attributes: {
+//         url: string;
+//       };
+//     };
+//   };
+// }
 
-interface ProductType {
-  id: string;
-  attributes: ProductTypeAttributes;
-}
+// export interface ProductType {
+//   id: string;
+//   attributes: ProductTypeAttributes;
+// }
 
-interface PaginationMeta {
-  pagination: {
-    total: number;
-  };
-}
+// interface PaginationMeta {
+//   pagination: {
+//     total: number;
+//   };
+// }
 
-interface ProductTypesData {
-  data: ProductType[];
-  meta: PaginationMeta;
-}
+// interface ProductTypesData {
+//   data: ProductType[];
+//   meta: PaginationMeta;
+// }
 
-export interface ProductTypesResponse {
-  productTypes: ProductTypesData;
-}
+// export interface ProductTypesResponse {
+//   productTypes: ProductTypesData;
+// }

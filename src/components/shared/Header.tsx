@@ -6,7 +6,7 @@ import { menuItems } from "@/data/menuItems";
 import { FaChevronDown } from "react-icons/fa6";
 import Link from "next/link";
 import useOutsideClick from "@/hooks/useOutsideClick";
-import Dropdown from "../home/dropdown";
+import Dropdown from "../home/Dropdown";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

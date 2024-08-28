@@ -5,7 +5,7 @@ interface TopCardProps {
   productLabelPath?: string;
   title: string;
   retail: number;
-  // imageSrc: string;
+  imageSrc: string;
   currency: string;
 }
 
@@ -14,7 +14,7 @@ const TopCard: React.FC<TopCardProps> = ({
   title,
   retail,
   currency,
-  // imageSrc,
+  imageSrc,
 }) => {
   return (
     <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 w-52 h-auto my-2 mt-5">
@@ -41,13 +41,13 @@ const TopCard: React.FC<TopCardProps> = ({
           />
         </div>
         <Image
-          src={"/imageSrc"}
+          src={`${imageSrc}`}
           alt="Product Image"
           className="w-full h-56 object-cover"
           width={1000}
           height={224}
         />
-        {productLabelPath ? (
+        {/* {productLabelPath ? (
           <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
             <Image
               src={productLabelPath}
@@ -60,7 +60,7 @@ const TopCard: React.FC<TopCardProps> = ({
           <div className="absolute top-0 left-0 bg-orange-500 text-white px-2 py-1 rounded-br-lg">
             TOP
           </div>
-        )}
+        )} */}
       </div>
       <div className="pt-4 rounded-b-xl overflow-hidden">
         <h2 className="text-sm font-normal mb-1 px-3 py-3">{title}</h2>

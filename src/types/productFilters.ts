@@ -3,7 +3,7 @@ export interface AlternativeTitle {
 }
 
 export interface FilterValue {
-  values: string[];
+  values: string;
 }
 
 export interface ProductFilterAttributes {

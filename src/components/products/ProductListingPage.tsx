@@ -1,92 +1,22 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { gql, useQuery } from "@apollo/client";
+import React, { useState, useEffect } from "react";
+import { useQuery } from "@apollo/client";
 import ProductTypeSelector from "./ProductTypeSelector";
-import ProductFilters from "./ProductFilters";
-import { ProductItem, ProductsResponse } from "@/types/product";
-import { FiltersQueryResult } from "@/types/productFilters";
-import TopCard from "../home/TopCard";
+
 import { useDebugLog } from "@/hooks/useDebugLog";
-import { useFetchAllData } from "../utils/fetchAllData";
-import { ProductTypesResponse } from "@/types/productTypes";
+
+import { GET_PRODUCT_TYPE_FILTERS, GET_PRODUCT_TYPES } from "./queries";
+import ProductFilterSection from "./ProductFilterSection";
+import ProductGrid from "./ProductGrid";
+import {
+  ProductTypeFiltersResponse,
+  ProductTypesResponse,
+} from "@/types/types";
 
 interface ProductListingClientProps {
   subcategory: string;
 }
-
-const GET_PRODUCT_TYPES = gql`
-  query GetProductTypes($subcategory: String!) {
-    productTypes(
-      filters: { subcategory: { slug: { eq: $subcategory } } }
-      pagination: { limit: -1 }
-    ) {
-      data {
-        id
-        attributes {
-          title
-          slug
-        }
-      }
-      meta {
-        pagination {
-          total
-        }
-      }
-    }
-  }
-`;
-
-const GET_PRODUCTS = gql`
-  query GetProducts($subcategory: String!, $productType: String!) {
-    products(
-      filters: {
-        subcategory: { slug: { eq: $subcategory } }
-        product_types: { slug: { eq: $productType } }
-      }
-    ) {
-      data {
-        id
-        attributes {
-          title
-          retail
-          params(pagination: { limit: -1 }) {
-            key
-            value
-          }
-        }
-      }
-    }
-  }
-`;
-
-const GET_PRODUCT_FILTERS = gql`
-  query GetProductFilters($productType: String!) {
-    productFilters(
-      filters: {
-        FilterValues: { product_type: { slug: { eq: $productType } } }
-      }
-      pagination: { limit: -1 }
-    ) {
-      data {
-        attributes {
-          title
-          alternative_titles {
-            title
-          }
-          FilterValues {
-            values
-          }
-        }
-      }
-      meta {
-        pagination {
-          total
-        }
-      }
-    }
-  }
-`;
 
 const ProductListingClient: React.FC<ProductListingClientProps> = ({
   subcategory,
@@ -98,6 +28,8 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     Record<string, string[]>
   >({});
 
+  const pageSize = 10;
+
   const { data: productTypesData } = useQuery<ProductTypesResponse>(
     GET_PRODUCT_TYPES,
     {
@@ -106,16 +38,10 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     }
   );
 
-  const { data: productsData, loading: productsLoading } =
-    useQuery<ProductsResponse>(GET_PRODUCTS, {
-      variables: { subcategory, productType: selectedProductType },
-      skip: !subcategory || !selectedProductType,
-    });
-
-  const { data: filtersData } = useQuery<FiltersQueryResult>(
-    GET_PRODUCT_FILTERS,
+  const { data: filtersData } = useQuery<ProductTypeFiltersResponse>(
+    GET_PRODUCT_TYPE_FILTERS,
     {
-      variables: { productType: selectedProductType },
+      variables: { id: selectedProductType },
       skip: !selectedProductType,
     }
   );
@@ -125,99 +51,53 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
       productTypesData?.productTypes.data &&
       productTypesData?.productTypes.data.length > 0
     ) {
-      setSelectedProductType(
-        productTypesData.productTypes.data[0].attributes.slug
-      );
+      setSelectedProductType(productTypesData.productTypes.data[0].id);
     }
   }, [productTypesData]);
 
-  const handleProductTypeChange = (type: string) => {
-    setSelectedProductType(type);
+  const handleProductTypeChange = (typeId: string) => {
+    setSelectedProductType(typeId);
     setAppliedFilters({});
   };
 
   const handleFilterChange = (filterName: string, values: string[]) => {
-    setAppliedFilters((prev) => ({ ...prev, [filterName]: values }));
+    setAppliedFilters((prev) => {
+      const newFilters = { ...prev, [filterName]: values };
+      // Remove filters with empty values
+      Object.keys(newFilters).forEach((key) => {
+        if (newFilters[key].length === 0) {
+          delete newFilters[key];
+        }
+      });
+      return newFilters;
+    });
   };
 
-  const filters = useMemo(() => {
-    return (
-      filtersData?.productFilters.data.map((filter) => ({
-        id: filter.id, // Using title as id for simplicity
-        title: filter.attributes.title,
-        alternativeTitles: filter.attributes.alternative_titles.map(
-          (alt) => alt.title
-        ),
-        values: filter.attributes.FilterValues[0]?.values || [],
-      })) || []
-    );
-  }, [filtersData]);
-
-  const filteredProducts = useMemo(() => {
-    if (!productsData?.products?.data) return [];
-
-    return productsData.products.data.filter((product: ProductItem) => {
-      return Object.entries(appliedFilters).every(
-        ([filterName, filterValues]) => {
-          if (filterValues.length === 0) return true;
-
-          const paramMatch = product.attributes.params.find((param) => {
-            const mathcingFilter = filters.find(
-              (f) =>
-                f.title === filterName ||
-                f.alternativeTitles.includes(filterName)
-            );
-            return (
-              param.key === mathcingFilter?.title ||
-              mathcingFilter?.alternativeTitles.includes(param.key)
-            );
-          });
-          if (!paramMatch) return false;
-
-          return filterValues.includes(paramMatch.value);
-        }
-      );
-    });
-  }, [productsData, appliedFilters, filters]);
+  const filters = filtersData?.productTypeFilters || {};
 
   // useDebugLog("productTypesData", productTypesData);
-  // useDebugLog("productsData", productsData);
   // useDebugLog("filtersData", filtersData);
   // useDebugLog("selectedProductType", selectedProductType);
   // useDebugLog("filters", filters);
 
   return (
-    <div className="product-listing-page">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ProductTypeSelector
         types={productTypesData?.productTypes?.data || []}
-        selectedType={selectedProductType}
+        selectedTypeId={selectedProductType}
         onTypeChange={handleProductTypeChange}
       />
-      <div className="product-content">
-        <ProductFilters
+      <div className="flex gap-8">
+        <ProductFilterSection
           filters={filters}
           appliedFilters={appliedFilters}
           onFilterChange={handleFilterChange}
         />
-        {productsLoading ? (
-          <div>Завантаження товарів...</div>
-        ) : filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredProducts.map((product) => (
-              <TopCard
-                key={product.id}
-                title={product.attributes.title}
-                retail={product.attributes.retail}
-                currency={product.attributes.currency}
-                // imageSrc={
-                //   product.attributes.
-                // }
-              />
-            ))}
-          </div>
-        ) : (
-          <div>Товари не знайдено.</div>
-        )}
+        <ProductGrid
+          productTypeId={selectedProductType}
+          appliedFilters={appliedFilters}
+          pageSize={pageSize}
+        />
       </div>
     </div>
   );
