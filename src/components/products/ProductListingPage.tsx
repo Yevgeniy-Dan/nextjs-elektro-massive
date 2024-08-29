@@ -51,6 +51,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
       productTypesData?.productTypes.data &&
       productTypesData?.productTypes.data.length > 0
     ) {
+      console.log("productTypesData", productTypesData);
       setSelectedProductType(productTypesData.productTypes.data[0].id);
     }
   }, [productTypesData]);
@@ -75,7 +76,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const filters = filtersData?.productTypeFilters || {};
 
-  // useDebugLog("productTypesData", productTypesData);
+  useDebugLog("productTypesData", productTypesData);
   // useDebugLog("filtersData", filtersData);
   // useDebugLog("selectedProductType", selectedProductType);
   // useDebugLog("filters", filters);

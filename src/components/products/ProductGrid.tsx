@@ -43,30 +43,48 @@ const ProductGrid = ({
     refetch();
   }, [productTypeId, appliedFilters, refetch]);
 
-  useEffect(() => {
-    console.log("isLoading: ", loading);
-  }, [loading]);
-
   const handlePageChange = (newPage: number) => {
+    // const fetchMoreVariables =
+    //   newPage === currentPage + 1 && data?.filteredProducts.nextCursor
+    //     ? { cursor: data.filteredProducts.nextCursor }
+    //     : { cursor: null, page: newPage };
+
+    const variables: {
+      cursor?: string | null;
+      page?: number;
+      pageSize: number;
+    } = {
+      pageSize,
+    };
+
     if (newPage === currentPage + 1 && data?.filteredProducts.nextCursor) {
-      fetchMore({
-        variables: {
-          cursor: data.filteredProducts.nextCursor,
-        },
-      }).then((p) => {
-        setCurrentPage(newPage);
-      });
+      variables.cursor = data.filteredProducts.nextCursor;
     } else {
-      fetchMore({
-        variables: {
-          cursor: null,
-          page: newPage,
-        },
-      }).then((p) => {
-        setCurrentPage(newPage);
-      });
+      variables.page = newPage;
+      variables.cursor = null;
     }
+
+    fetchMore({
+      variables,
+      updateQuery(prev, { fetchMoreResult }) {
+        if (!fetchMoreResult.filteredProducts) return prev;
+
+        const newProducts = fetchMoreResult.filteredProducts.products;
+
+        console.log({ products: [...newProducts] });
+        return {
+          filteredProducts: {
+            ...fetchMoreResult.filteredProducts,
+            products: [...newProducts],
+          },
+        };
+      },
+    }).then((p) => {
+      setCurrentPage(newPage);
+    });
   };
+
+  useDebugLog("filteredProducts: ", data?.filteredProducts);
 
   if (networkStatus === NetworkStatus.loading)
     return <div>Початкове завантаження...</div>;
