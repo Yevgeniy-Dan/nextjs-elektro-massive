@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import TopCard from "../home/TopCard";
 import Pagination from "../shared/Pagination";
 import { GET_FILTERED_PRODUCTS } from "./queries";
-import { FilteredProductsResponse } from "@/types/types";
+import { IFilteredProductsResponse } from "@/types/types";
 import { useDebugLog } from "@/hooks/useDebugLog";
 
 interface ProductGridProps {
@@ -26,7 +26,7 @@ const ProductGrid = ({
   }, [appliedFilters]);
 
   const { data, loading, fetchMore, networkStatus, refetch } =
-    useQuery<FilteredProductsResponse>(GET_FILTERED_PRODUCTS, {
+    useQuery<IFilteredProductsResponse>(GET_FILTERED_PRODUCTS, {
       variables: {
         productTypeId,
         filters: transformedFilters,
@@ -71,7 +71,6 @@ const ProductGrid = ({
 
         const newProducts = fetchMoreResult.filteredProducts.products;
 
-        console.log({ products: [...newProducts] });
         return {
           filteredProducts: {
             ...fetchMoreResult.filteredProducts,

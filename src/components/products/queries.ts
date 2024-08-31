@@ -57,6 +57,9 @@ export const GET_FILTERED_PRODUCTS = gql`
         retail
         image_link
         currency
+        additional_images {
+          link
+        }
       }
       nextCursor
       pageCount

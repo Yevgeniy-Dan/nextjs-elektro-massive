@@ -10,8 +10,8 @@ import { GET_PRODUCT_TYPE_FILTERS, GET_PRODUCT_TYPES } from "./queries";
 import ProductFilterSection from "./ProductFilterSection";
 import ProductGrid from "./ProductGrid";
 import {
-  ProductTypeFiltersResponse,
-  ProductTypesResponse,
+  IProductTypeFiltersResponse,
+  IProductTypesResponse,
 } from "@/types/types";
 
 interface ProductListingClientProps {
@@ -30,7 +30,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const pageSize = 10;
 
-  const { data: productTypesData } = useQuery<ProductTypesResponse>(
+  const { data: productTypesData } = useQuery<IProductTypesResponse>(
     GET_PRODUCT_TYPES,
     {
       variables: { subcategory },
@@ -38,7 +38,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     }
   );
 
-  const { data: filtersData } = useQuery<ProductTypeFiltersResponse>(
+  const { data: filtersData } = useQuery<IProductTypeFiltersResponse>(
     GET_PRODUCT_TYPE_FILTERS,
     {
       variables: { id: selectedProductType },
@@ -51,7 +51,6 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
       productTypesData?.productTypes.data &&
       productTypesData?.productTypes.data.length > 0
     ) {
-      console.log("productTypesData", productTypesData);
       setSelectedProductType(productTypesData.productTypes.data[0].id);
     }
   }, [productTypesData]);

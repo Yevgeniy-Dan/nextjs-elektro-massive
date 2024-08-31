@@ -1,12 +1,17 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { registerApolloClient } from "@apollo/experimental-nextjs-app-support";
 
-const httpLink = createHttpLink({
-  uri: "/api/graphql", // This points to our Next.js API route
+export const { getClient } = registerApolloClient(() => {
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link: new HttpLink({
+      uri: `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+      fetchOptions: { cache: "no-store" },
+    }),
+  });
 });
-
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-});
-
-export default client;

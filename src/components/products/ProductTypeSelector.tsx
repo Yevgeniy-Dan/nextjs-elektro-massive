@@ -1,9 +1,9 @@
-import { ProductType } from "@/types/types";
+import { IProductType } from "@/types/types";
 import Image from "next/image";
 import React from "react";
 
 interface ProductTypeSelectorProps {
-  types: ProductType[];
+  types: IProductType[];
   selectedTypeId: string | null;
   onTypeChange: (type: string) => void;
 }

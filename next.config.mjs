@@ -28,6 +28,11 @@ const nextConfig = {
         hostname: "admin.elektromassive.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "elektromassivebucket.s3.amazonaws.com",
+        pathname: "/**",
+      },
     ],
   },
 };

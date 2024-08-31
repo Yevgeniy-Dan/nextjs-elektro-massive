@@ -7,6 +7,11 @@ import { FaChevronDown } from "react-icons/fa6";
 import Link from "next/link";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Dropdown from "../home/Dropdown";
+import { useQuery } from "@apollo/client";
+import { GET_CATEGORY_MENU } from "../home/queries";
+import { CategoryMenuData } from "@/types/menu";
+import SubcategoryGrid from "../menu/SubcategoryGrid";
+import CategorySubmenu from "../menu/CategorySubmenu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +19,17 @@ const Header = () => {
 
   const menuRef = useOutsideClick(() => setIsMenuOpen(false));
 
+  const {
+    data: menuItems,
+    loading,
+    error,
+  } = useQuery<CategoryMenuData>(GET_CATEGORY_MENU);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error loading menu: {error.message}</div>;
+
   return (
     <div className="bg-gradient-elektro-massive-horizontal  rounded-r-3xl  pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-2 -ml-6 md:-ml-16">
       <header className="mt-2  font-medium  ">
@@ -140,13 +155,13 @@ const Header = () => {
             {isMenuOpen && (
               <div className="absolute mt-3 top-full left-0  w-screen  sm:w-[500%] md:w-[150%]  bg-gray-800 text-white rounded-r-3xl   sm:rounded-r-none sm:rounded-l-2xl  shadow-lg z-50 -ml-6 sm:-ml-0">
                 <div className="flex flex-col items-stretch relative">
-                  {menuItems.map((item, index) => (
-                    <div key={index} className="group">
+                  {menuItems?.categories.data.map((category, index) => (
+                    <div key={category.id} className="group">
                       <div
                         className={`flex items-center justify-start space-x-5 p-6 py-5  text-black font-semibold  border-b border-black sm:border-none hover:bg-white  invert hover:invert-0  ${
                           index === 0
                             ? "rounded-tl-2xl"
-                            : index === menuItems.length - 1
+                            : index === menuItems.categories.data.length - 1
                             ? "rounded-bl-2xl "
                             : ""
                         }`}
@@ -156,15 +171,15 @@ const Header = () => {
                       >
                         <div className="flex-shrink-0 w-9 h-9 ">
                           <Image
-                            src={`${item.imgPath}`}
-                            alt={item.name}
+                            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${category.attributes.icon.data.attributes.url}`}
+                            alt={category.attributes.name}
                             width={36}
                             height={36}
                             className="rounded-sm object-cover  "
                           />
                         </div>
                         <div className="flex items-center justify-between w-full">
-                          <p>{item.name}</p>
+                          <p>{category.attributes.name}</p>
                           <FaChevronDown
                             className={` ml-2 transition-transform sm:hidden ${
                               openSubmenu === index ? "rotate-180" : ""
@@ -172,61 +187,11 @@ const Header = () => {
                           />
                         </div>
                       </div>
-                      <div
-                        className={`sm:hidden ${
-                          openSubmenu === index ? "block" : "hidden"
-                        } bg-gray-800 text-white w-full`}
-                      >
-                        {/* Submenu for small screens */}
-                        <div className="grid grid-cols-2 gap-4">
-                          {item.submenu.map((subitem, subindex) => (
-                            <Link
-                              href={"#"}
-                              key={subindex}
-                              className="flex flex-row items-center space-x-3 p-6  hover:text-gray-700 hover:bg-white w-full"
-                            >
-                              <div className="flex-shrink-0 w-9 h-9">
-                                <Image
-                                  src={`https://via.placeholder.com/24x24`}
-                                  alt={subitem.name}
-                                  width={36}
-                                  height={36}
-                                  className="rounded-sm object-cover"
-                                />
-                              </div>
-                              <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
-                                {subitem.name}
-                              </span>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="hidden sm:group-hover:block absolute top-full left-0 sm:top-0 sm:left-full  bg-gray-800 text-white w-full sm:w-[120%] lg:w-[180%] rounded-r-2xl">
-                        {/* Submenu for large screens */}
-                        <div className="grid grid-cols-2 lg:grid-cols-3 ">
-                          {item.submenu.map((subitem, subindex) => (
-                            <Link
-                              href={"#"}
-                              key={subindex}
-                              className="flex flex-row items-center space-x-3 p-4  hover:text-gray-700 hover:bg-white w-full"
-                              onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            >
-                              <div className="flex-shrink-0 w-9 h-9">
-                                <Image
-                                  src={`https://via.placeholder.com/24x24`}
-                                  alt={subitem.imgPath}
-                                  width={36}
-                                  height={36}
-                                  className="rounded-sm object-cover"
-                                />
-                              </div>
-                              <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
-                                {subitem.name}
-                              </span>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
+                      <CategorySubmenu
+                        category={category}
+                        index={index}
+                        openSubmenu={openSubmenu}
+                      />
                     </div>
                   ))}
                   <div className="flex flex-col py-5 md:hidden">
