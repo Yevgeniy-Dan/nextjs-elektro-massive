@@ -7,6 +7,8 @@ import Image from "next/image";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import { getClient } from "../../../../lib/apollo-client";
 import ProductDetails from "@/components/product/ProductDetails";
+import Spinner from "@/components/shared/Spinner";
+import CenteredSpinner from "@/components/shared/CenteredSpinner";
 
 interface ProductPageProps {
   params: {
@@ -27,7 +29,7 @@ async function getProduct(
 }
 
 function ProductLoading() {
-  return <div className="text-center p-4">Loading product details...</div>;
+  return <CenteredSpinner />;
 }
 
 function ProductError({ error }: { error: Error }) {

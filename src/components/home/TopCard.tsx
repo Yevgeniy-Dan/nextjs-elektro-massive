@@ -1,8 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface TopCardProps {
   productLabelPath?: string;
+  id: string;
+  subcategory: string;
   title: string;
   retail: number;
   imageSrc: string;
@@ -11,14 +14,23 @@ interface TopCardProps {
 
 const TopCard: React.FC<TopCardProps> = ({
   productLabelPath,
+  id,
+  subcategory,
   title,
   retail,
   currency,
   imageSrc,
 }) => {
   return (
-    <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 w-52 h-auto my-2 mt-5">
-      <div className="relative rounded-t-xl overflow-hidden">
+    <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 flex flex-col h-full overflow-hidden">
+      <div className="relative pt-[100%]">
+        <Image
+          src={`${imageSrc}`}
+          alt="Product Image"
+          className="absolute top-0 left-0 w-full h-full"
+          layout="fill"
+          objectFit="cover"
+        />
         <div className="absolute top-2 right-2 flex">
           <svg
             className="w-5 h-5 text-white mr-2"
@@ -40,13 +52,7 @@ const TopCard: React.FC<TopCardProps> = ({
             height={32}
           />
         </div>
-        <Image
-          src={`${imageSrc}`}
-          alt="Product Image"
-          className="w-full h-56 object-cover"
-          width={1000}
-          height={224}
-        />
+
         {/* {productLabelPath ? (
           <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
             <Image
@@ -62,16 +68,20 @@ const TopCard: React.FC<TopCardProps> = ({
           </div>
         )} */}
       </div>
-      <div className="pt-4 rounded-b-xl overflow-hidden">
-        <h2 className="text-sm font-normal mb-1 px-3 py-3">{title}</h2>
-        <div className="flex bg-transparent text-black ">
-          <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
-            {retail} {currency}
-          </div>
-          <div className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-sm text-center w-2/3 -ml-6">
-            Купити
-          </div>
+      <div className="flex-grow  p-3">
+        <h2 className="text-sm font-normal line-clamp-2">{title}</h2>
+      </div>
+      <div className="flex items-center justify-between mt-auto">
+        <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
+          <span className="whitespace-nowrap">{retail}</span>
+          <span className="ml-1 whitespace-nowrap">{currency}</span>
         </div>
+        <Link
+          href={`${subcategory}/${id}`}
+          className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-sm text-center w-2/3 -ml-6"
+        >
+          Купити
+        </Link>
       </div>
     </div>
   );

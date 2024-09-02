@@ -19,13 +19,11 @@ const ProductFilterSection = ({
   }));
 
   return (
-    <div className="w-1/4">
-      <ProductFilters
-        filters={formattedFilters}
-        appliedFilters={appliedFilters}
-        onFilterChange={onFilterChange}
-      />
-    </div>
+    <ProductFilters
+      filters={formattedFilters}
+      appliedFilters={appliedFilters}
+      onFilterChange={onFilterChange}
+    />
   );
 };
 

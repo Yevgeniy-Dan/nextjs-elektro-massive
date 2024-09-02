@@ -1,4 +1,5 @@
 import ProductListingClient from "@/components/products/ProductListingPage";
+import Spinner from "@/components/shared/Spinner";
 import { Suspense } from "react";
 
 export default function ProductListingPage({
@@ -7,7 +8,7 @@ export default function ProductListingPage({
   params: { subcategory: string };
 }) {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <ProductListingClient subcategory={params.subcategory} />
     </Suspense>
   );

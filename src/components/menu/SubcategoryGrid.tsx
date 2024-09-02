@@ -19,26 +19,35 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({ category }) => {
 
   const gridCols = getGridCols(subcategories.length);
 
-  const renderSubcategory = (subcategory: Subcategory) => (
-    <Link
-      href={`/${subcategory.attributes.slug}`}
-      key={subcategory.id}
-      className="flex flex-row items-center space-x-3 p-6  hover:text-gray-700 hover:bg-white w-full"
-    >
-      <div className="flex-shrink-0 w-9 h-9">
-        <Image
-          src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${subcategory.attributes.icon.data.attributes.url}`}
-          alt={subcategory.attributes.title}
-          width={36}
-          height={36}
-          className="rounded-sm object-cover"
-        />
-      </div>
-      <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
-        {subcategory.attributes.title}
-      </span>
-    </Link>
-  );
+  const renderSubcategory = (subcategory: Subcategory) => {
+    const isImage = subcategory.attributes.icon.data;
+
+    return (
+      <Link
+        href={`/${subcategory.attributes.slug}`}
+        key={subcategory.id}
+        className="flex flex-row items-center space-x-3 p-6  hover:text-gray-700 hover:bg-white w-full"
+      >
+        <div className="flex-shrink-0 w-9 h-9">
+          <Image
+            src={`${
+              isImage
+                ? process.env.NEXT_PUBLIC_STRAPI_URL +
+                  subcategory.attributes.icon.data.attributes.url
+                : "https://via.placeholder.com/24x24"
+            }`}
+            alt={subcategory.attributes.title}
+            width={36}
+            height={36}
+            className="rounded-sm object-cover"
+          />
+        </div>
+        <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
+          {subcategory.attributes.title}
+        </span>
+      </Link>
+    );
+  };
 
   return (
     <div className={`grid ${gridCols} gap-4`}>

@@ -13,6 +13,11 @@ import {
   IProductTypeFiltersResponse,
   IProductTypesResponse,
 } from "@/types/types";
+import Spinner from "../shared/Spinner";
+
+function isFiltersEmpty(filters: Record<string, string[]>) {
+  return Object.keys(filters).length === 0;
+}
 
 interface ProductListingClientProps {
   subcategory: string;
@@ -75,25 +80,30 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const filters = filtersData?.productTypeFilters || {};
 
-  useDebugLog("productTypesData", productTypesData);
+  // useDebugLog("filters", filters);
   // useDebugLog("filtersData", filtersData);
   // useDebugLog("selectedProductType", selectedProductType);
   // useDebugLog("filters", filters);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:p-8 relative">
       <ProductTypeSelector
         types={productTypesData?.productTypes?.data || []}
         selectedTypeId={selectedProductType}
         onTypeChange={handleProductTypeChange}
       />
       <div className="flex gap-8">
-        <ProductFilterSection
-          filters={filters}
-          appliedFilters={appliedFilters}
-          onFilterChange={handleFilterChange}
-        />
+        <div className="w-1/4">
+          {!isFiltersEmpty(filters) && (
+            <ProductFilterSection
+              filters={filters}
+              appliedFilters={appliedFilters}
+              onFilterChange={handleFilterChange}
+            />
+          )}
+        </div>
         <ProductGrid
+          subcategory={subcategory}
           productTypeId={selectedProductType}
           appliedFilters={appliedFilters}
           pageSize={pageSize}

@@ -10,9 +10,15 @@ const companyLinks = [
   { href: "/support", title: "Підтримка" },
 ];
 
-const Footer = () => {
+interface FooterProps {
+  className?: string;
+}
+
+const Footer: React.FC<FooterProps> = ({ className = "" }) => {
   return (
-    <footer className="bg-gradient-elektro-massive-horizontal text-white py-8">
+    <footer
+      className={`bg-gradient-elektro-massive-horizontal text-white py-8 ${className}`}
+    >
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
           <div className="relative  mb-6 sm:mb-0 mx-auto sm:m-0">

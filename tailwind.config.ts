@@ -26,6 +26,9 @@ const config: Config = {
         "gradient-elektro-massive-vertical":
           "linear-gradient(to bottom, #663333, #5A3449, #343165)",
       },
+      colors: {
+        "elektro-red": "#990000",
+      },
     },
   },
   plugins: [],

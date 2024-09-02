@@ -28,18 +28,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
-        <main className=" min-h-screen">
-          <Providers>
-            <div className="w-full">
-              <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
-                <Header />
-                <div className="max-w-7xl mx-auto">{children}</div>
-              </div>
-              <Footer />
+      <body className={`${roboto.className} flex flex-col min-h-screen`}>
+        <Providers>
+          <div className="flex-grow">
+            <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
+              <Header />
+              <div className="max-w-7xl mx-auto">{children}</div>
             </div>
-          </Providers>
-        </main>
+          </div>
+          <Footer className="flex-shrink-0" />
+        </Providers>
       </body>
     </html>
   );

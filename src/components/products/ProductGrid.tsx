@@ -5,17 +5,21 @@ import Pagination from "../shared/Pagination";
 import { GET_FILTERED_PRODUCTS } from "./queries";
 import { IFilteredProductsResponse } from "@/types/types";
 import { useDebugLog } from "@/hooks/useDebugLog";
+import Spinner from "../shared/Spinner";
+import CenteredSpinner from "../shared/CenteredSpinner";
 
 interface ProductGridProps {
   productTypeId: string | null;
   appliedFilters: Record<string, string[]>;
   pageSize: number;
+  subcategory: string;
 }
 
 const ProductGrid = ({
   productTypeId,
   appliedFilters,
   pageSize,
+  subcategory,
 }: ProductGridProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -25,12 +29,12 @@ const ProductGrid = ({
     );
   }, [appliedFilters]);
 
-  const { data, loading, fetchMore, networkStatus, refetch } =
+  const { data, loading, error, fetchMore, networkStatus, refetch } =
     useQuery<IFilteredProductsResponse>(GET_FILTERED_PRODUCTS, {
       variables: {
         productTypeId,
         filters: transformedFilters,
-        cursor: null,
+        // cursor: null,
         page: currentPage,
         pageSize,
       },
@@ -43,80 +47,114 @@ const ProductGrid = ({
     refetch();
   }, [productTypeId, appliedFilters, refetch]);
 
+  // const handlePageChange = (newPage: number) => {
+  //   const variables: {
+  //     cursor?: string | null;
+  //     page?: number;
+  //     pageSize: number;
+  //   } = {
+  //     pageSize,
+  //   };
+
+  //   console.log("cusrot: ", data?.filteredProducts.nextCursor);
+  //   if (newPage === currentPage + 1 && data?.filteredProducts.nextCursor) {
+  //     variables.cursor = data.filteredProducts.nextCursor;
+  //   } else {
+  //     variables.page = newPage;
+  //     variables.cursor = null;
+  //   }
+  //   console.log("variables: ", variables);
+
+  //   fetchMore({
+  //     variables,
+  //     updateQuery(prev, { fetchMoreResult }) {
+  //       if (!fetchMoreResult.filteredProducts) return prev;
+
+  //       const newProducts = fetchMoreResult.filteredProducts.products;
+
+  //       return {
+  //         filteredProducts: {
+  //           ...fetchMoreResult.filteredProducts,
+  //           products: [...newProducts],
+  //         },
+  //       };
+  //     },
+  //   }).then((p) => {
+  //     setCurrentPage(newPage);
+  //   });
+  // };
+
   const handlePageChange = (newPage: number) => {
-    // const fetchMoreVariables =
-    //   newPage === currentPage + 1 && data?.filteredProducts.nextCursor
-    //     ? { cursor: data.filteredProducts.nextCursor }
-    //     : { cursor: null, page: newPage };
-
-    const variables: {
-      cursor?: string | null;
-      page?: number;
-      pageSize: number;
-    } = {
-      pageSize,
-    };
-
-    if (newPage === currentPage + 1 && data?.filteredProducts.nextCursor) {
-      variables.cursor = data.filteredProducts.nextCursor;
-    } else {
-      variables.page = newPage;
-      variables.cursor = null;
-    }
-
+    setCurrentPage(newPage);
     fetchMore({
-      variables,
-      updateQuery(prev, { fetchMoreResult }) {
+      variables: {
+        page: newPage,
+        pageSize,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult.filteredProducts) return prev;
-
-        const newProducts = fetchMoreResult.filteredProducts.products;
-
         return {
           filteredProducts: {
             ...fetchMoreResult.filteredProducts,
-            products: [...newProducts],
+            products: [...fetchMoreResult.filteredProducts.products],
           },
         };
       },
-    }).then((p) => {
-      setCurrentPage(newPage);
     });
   };
 
-  useDebugLog("filteredProducts: ", data?.filteredProducts);
+  const isInitialLoading = networkStatus === NetworkStatus.loading;
+  const isRefetching = networkStatus === NetworkStatus.refetch;
+  const isFetchingMore = networkStatus === NetworkStatus.fetchMore;
 
-  if (networkStatus === NetworkStatus.loading)
-    return <div>Початкове завантаження...</div>;
-  if (networkStatus === NetworkStatus.refetch)
-    return <div>Оновлення данних...</div>;
-  if (networkStatus === NetworkStatus.fetchMore)
-    return <div>Завантаження...</div>;
+  if (isInitialLoading || isRefetching || isFetchingMore) {
+    return <CenteredSpinner />;
+  }
 
-  if (loading) return <div>Завантаження...</div>;
+  if (error) {
+    return (
+      <div className="text-center text-base">
+        Помилка завантаження: {error.message}
+      </div>
+    );
+  }
 
-  if (!data?.filteredProducts || data.filteredProducts.products.length === 0) {
-    return <div>Немає товарів</div>;
+  if (!data || !data.filteredProducts) {
+    return (
+      <div className="absolute  ">
+        <div className="text-3xl text-gray-600">Немає товарів</div>
+      </div>
+    );
+  }
+
+  if (data && data.filteredProducts.products.length === 0) {
+    <div className="text-center text-base">Немає доступних товарів</div>;
   }
 
   return (
     <div className="w-3/4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data.filteredProducts.products.map((product) => (
-          <TopCard
-            key={product.id}
-            title={product.title}
-            retail={product.retail}
-            currency={product.currency}
-            imageSrc={product.image_link}
-          />
-        ))}
+        {data &&
+          data.filteredProducts.products.map((product) => (
+            <TopCard
+              key={product.id}
+              id={product.id}
+              subcategory={subcategory}
+              title={product.title}
+              retail={product.retail}
+              currency={product.currency}
+              imageSrc={product.image_link}
+            />
+          ))}
       </div>
 
-      <Pagination
-        currentPage={data.filteredProducts.currentPage}
-        totalPages={data.filteredProducts.pageCount}
-        onPageChange={handlePageChange}
-      />
+      {data && (
+        <Pagination
+          currentPage={data.filteredProducts.currentPage}
+          totalPages={data.filteredProducts.pageCount}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };
