@@ -2,18 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-interface TopCardProps {
-  productLabelPath?: string;
+export interface ITopCardProps {
   id: string;
   subcategoryId: string;
   title: string;
   retail: number;
   imageSrc: string;
   currency: string;
+  label?: "top" | "new" | "sale";
 }
 
-const TopCard: React.FC<TopCardProps> = ({
-  productLabelPath,
+const TopCard: React.FC<ITopCardProps> = ({
+  label,
   id,
   subcategoryId,
   title,
@@ -52,7 +52,20 @@ const TopCard: React.FC<TopCardProps> = ({
             height={32}
           />
         </div>
-
+        {label && label === "top" ? (
+          <div className="absolute top-0 left-0 bg-orange-500 text-white px-2 py-1 rounded-br-lg">
+            TOP
+          </div>
+        ) : (
+          <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
+            <Image
+              src={label === "new" ? "/new-product-label.png" : "/sale.png"}
+              alt={label === "new" ? "new product label" : "sale product label"}
+              fill
+              className="object-contain"
+            />
+          </div>
+        )}
         {/* {productLabelPath ? (
           <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
             <Image

@@ -73,3 +73,25 @@ export const GET_FILTERED_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_PRODUCTS = gql`
+  query GetProducts($pageSize: Int!) {
+    products(pagination: { pageSize: $pageSize }) {
+      data {
+        id
+        attributes {
+          part_number
+          title
+          retail
+          currency
+          image_link
+          subcategory {
+            data {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;

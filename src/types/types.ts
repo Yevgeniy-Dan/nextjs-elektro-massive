@@ -16,6 +16,12 @@ export interface IProductAttributes {
   description: string;
   additional_images: IAdditionalImage[];
   params: IProductParams;
+  //TODO: it is added when the popular, promotion and new was implemented
+  subcategory: {
+    data: {
+      id: string;
+    };
+  };
 }
 
 export interface IProductData {
@@ -29,6 +35,13 @@ interface IProduct {
 
 export interface IProductResponse {
   product: IProduct;
+}
+
+//TODO: it is added when the popular, promotion and new was implemented
+export interface IProductsResponse {
+  products: {
+    data: IProductData[];
+  };
 }
 
 export interface IProductType {

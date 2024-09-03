@@ -11,17 +11,9 @@ export default async function Home() {
   return (
     <div className="w-full">
       <Banner />
-      <TopCardCarousel title="Популярне" rows={1} />
-      <TopCardCarousel
-        title="Акції"
-        rows={1}
-        productLabelPath="/new-product-label.png"
-      />
-      <TopCardCarousel
-        title="Гарячі новинки"
-        rows={1}
-        productLabelPath="/sale.png"
-      />
+      <TopCardCarousel title="Популярне" label="top" />
+      <TopCardCarousel title="Акції" label="sale" />
+      <TopCardCarousel title="Гарячі новинки" label="new" />
       <CategoryGrid />
       <WhyUsSection />
       <AboutSection />
