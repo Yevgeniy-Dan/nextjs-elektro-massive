@@ -6,7 +6,7 @@ const UserActions = () => {
     <div className="flex flex-col xl:flex-row items-center text-white">
       <div className="hidden md:block">
         <Dropdown
-          className="my-4 xl:my-0 lg:mr-4 bg-gray-800 px-3 py-2"
+          className="mt-4 mb-2 xl:mt-0 lg:mr-4 bg-gray-800 px-3 py-2"
           title="Служба підтримки"
           items={[
             { name: "Account settings", href: "#" },

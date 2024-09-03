@@ -15,9 +15,9 @@ interface DropdownProps {
 const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
   return (
     <Menu as="div" className="relative inline-block text-left mx-4">
-      <div>
+      <div className="w-56">
         <MenuButton
-          className={`inline-flex w-full justify-around rounded-md px-3 py-2 text-sm font-semibold shadow-sm  ${className}`}
+          className={`inline-flex w-full justify-around rounded-md px-3 py-2 text-sm font-semibold shadow-sm  ${className} w-full`}
         >
           {title}
           <svg
@@ -39,7 +39,7 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
 
       <MenuItems
         transition
-        className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+        className="absolute right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
       >
         <div className="py-1">
           {items.map((menuItem, index) => (
