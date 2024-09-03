@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import TopCard, { ITopCardProps } from "./TopCard";
+import TopCard from "./TopCard";
 import useEmblaCarousel from "embla-carousel-react";
 
 import { GET_PRODUCTS } from "../products/queries";
@@ -59,8 +59,10 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
   });
 
   const PlaceHolderCard = () => (
-    <div className={`${cardWidth} ${cardHeight} p-1`}>
-      <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg"></div>
+    <div className="flex flex-col items-center px-2">
+      <div className={`${cardWidth} ${cardHeight} p-1`}>
+        <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg"></div>
+      </div>
     </div>
   );
 

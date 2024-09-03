@@ -36,3 +36,24 @@ export const GET_CATEGORY_MENU = gql`
     }
   }
 `;
+
+export const GET_CATEGORIES = gql`
+  query GetCategories {
+    categories {
+      data {
+        id
+        attributes {
+          name
+          image {
+            data {
+              attributes {
+                url
+                previewUrl
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

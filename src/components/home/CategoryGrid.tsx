@@ -1,14 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { useSnapCarousel } from "react-snap-carousel";
+import useEmblaCarousel from "embla-carousel-react";
 
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 import { Carousel, CarouselItem } from "../shared/Carousel";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Grid, Navigation } from "swiper/modules";
+import {
+  IGetCategoriesResponse,
+  IGetCategoriesVariables,
+} from "@/types/categories";
+import { useQuery } from "@apollo/client";
+import { GET_CATEGORIES } from "./queries";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const categories = [
   {
@@ -68,6 +76,57 @@ const CategoryGrid = () => {
     setCurrentIndex(activePageIndex);
   }, [activePageIndex]);
 
+  //TODO:
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    dragFree: true,
+    containScroll: "trimSnaps",
+    align: "start",
+  });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi, setSelectedIndex]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  const { data, loading, error } = useQuery<
+    IGetCategoriesResponse,
+    IGetCategoriesVariables
+  >(GET_CATEGORIES);
+
+  const PlaceHolderCard = () => (
+    <div className="flex flex-col items-center px-2">
+      <div className="relative flex flex-col items-center justify-center">
+        <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full md:rounded-lg overflow-hidden bg-gray-200 animate-pulse"></div>
+        <div className="static transform-none w-[50%] ">
+          <div className="md:hidden h-6 bg-gray-200 animate-pulse mt-2"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const placeholders = Array(6)
+    .fill(null)
+    .map((_, index) => <PlaceHolderCard key={`placehodler-${index}`} />);
+
   return (
     <div className=" text-white my-10">
       <div className="-ml-4 sm:-ml-8 md:-ml-12 lg:-ml-16 xl:ml-0 mb-10">
@@ -75,7 +134,52 @@ const CategoryGrid = () => {
           Електротовари
         </h2>
       </div>
-      <div className="relative py-4">
+      <div className="relative">
+        <div className="embla overflow-hidden" ref={emblaRef}>
+          <div className="embla__container flex">
+            {loading
+              ? placeholders
+              : data?.categories.data.map((category) => (
+                  <div
+                    className="flex flex-col items-center px-2"
+                    key={category.id}
+                  >
+                    <div className="relative flex flex-col items-center justify-center">
+                      <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full md:rounded-lg overflow-hidden">
+                        <Image
+                          src={
+                            process.env.NEXT_PUBLIC_STRAPI_URL +
+                            category.attributes.image.data.attributes.url
+                          }
+                          alt={`${category.attributes.name} Image`}
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      </div>
+                      <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 static transform-none w-[50%] md:w-[70%]">
+                        <p className="text-black text-center text-base md:text-lg md:text-white font-semibold mt-2 break-words">
+                          {category.attributes.name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+          </div>
+        </div>
+        <button
+          onClick={scrollPrev}
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-50 rounded-full p-1"
+        >
+          <ChevronLeft size={48} />
+        </button>
+        <button
+          onClick={scrollNext}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-50 rounded-full p-1"
+        >
+          <ChevronRight size={48} />
+        </button>
+      </div>
+      {/* <div className="relative py-4">
         <Swiper
           slidesPerView="auto"
           grid={{
@@ -162,32 +266,8 @@ const CategoryGrid = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-        {/* <Carousel
-          className="grid-rows-1 md:grid-rows-2"
-          items={categories}
-          renderItem={({ item, isSnapPoint }) => (
-            <CarouselItem isSnapPoint={isSnapPoint}>
-              <div className="flex flex-col items-center">
-                <div className="relative">
-                  <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full md:rounded-lg overflow-hidden">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      layout="fill"
-                      objectFit="cover"
-                    />
-                  </div>
-                  <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 static transform-none">
-                    <p className=" text-black text-center text-base md:text-lg md:text-white font-semibold mt-2">
-                      {item.name}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CarouselItem>
-          )}
-        /> */}
-      </div>
+        
+      </div> */}
     </div>
   );
 };
