@@ -73,7 +73,7 @@ const ProductDetails: React.FC<{ product: IProductAttributes }> = ({
         <h1 className="text-2xl font-bold mb-2 border-b-2 md:border-0">
           {title}
         </h1>
-        <div className="hidden md:block border-t-2 -ml-8 border-gray-300 mb-2"></div>
+        <div className="hidden md:block border-t-2 -ml-16 border-gray-300 mb-2"></div>
         <div className="lg:flex ">
           <div className="w-full lg:w-2/3 pr-4">
             <div className="flex items-center gap-2 mb-2">
@@ -90,10 +90,11 @@ const ProductDetails: React.FC<{ product: IProductAttributes }> = ({
         </div>
 
         <DeliveryPaymentSection />
+        <div className="hidden md:block border-b-2 border-gray-300 mb-2 md:clear-both -ml-16"></div>
       </div>
 
       <div className="md:pl-8 md:clear-right">
-        <div className="border-t pt-4">
+        <div className="pt-4">
           <h2 className="font-bold mb-2">Опис:</h2>
           <ReactMarkdown className="text-md">{description}</ReactMarkdown>
         </div>

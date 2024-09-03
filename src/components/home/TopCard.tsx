@@ -52,11 +52,13 @@ const TopCard: React.FC<ITopCardProps> = ({
             height={32}
           />
         </div>
-        {label && label === "top" ? (
+        {label === "top" && (
           <div className="absolute top-0 left-0 bg-orange-500 text-white px-2 py-1 rounded-br-lg">
             TOP
           </div>
-        ) : (
+        )}
+
+        {(label === "new" || label === "sale") && (
           <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
             <Image
               src={label === "new" ? "/new-product-label.png" : "/sale.png"}
@@ -66,20 +68,6 @@ const TopCard: React.FC<ITopCardProps> = ({
             />
           </div>
         )}
-        {/* {productLabelPath ? (
-          <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
-            <Image
-              src={productLabelPath}
-              alt={productLabelPath}
-              fill
-              className="object-contain"
-            />
-          </div>
-        ) : (
-          <div className="absolute top-0 left-0 bg-orange-500 text-white px-2 py-1 rounded-br-lg">
-            TOP
-          </div>
-        )} */}
       </div>
       <div className="flex-grow  p-3">
         <h2 className="text-sm font-normal line-clamp-2">{title}</h2>
