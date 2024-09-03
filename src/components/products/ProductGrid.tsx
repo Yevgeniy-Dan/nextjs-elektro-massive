@@ -12,14 +12,14 @@ interface ProductGridProps {
   productTypeId: string | null;
   appliedFilters: Record<string, string[]>;
   pageSize: number;
-  subcategory: string;
+  subcategoryId: string;
 }
 
 const ProductGrid = ({
   productTypeId,
   appliedFilters,
   pageSize,
-  subcategory,
+  subcategoryId,
 }: ProductGridProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -33,6 +33,7 @@ const ProductGrid = ({
     useQuery<IFilteredProductsResponse>(GET_FILTERED_PRODUCTS, {
       variables: {
         productTypeId,
+        subcategoryId,
         filters: transformedFilters,
         // cursor: null,
         page: currentPage,
@@ -108,7 +109,7 @@ const ProductGrid = ({
   const isFetchingMore = networkStatus === NetworkStatus.fetchMore;
 
   if (isInitialLoading || isRefetching || isFetchingMore) {
-    return <CenteredSpinner />;
+    return <CenteredSpinner minHeight="24rem" />;
   }
 
   if (error) {
@@ -121,7 +122,7 @@ const ProductGrid = ({
 
   if (!data || !data.filteredProducts) {
     return (
-      <div className="absolute  ">
+      <div className="absolute">
         <div className="text-3xl text-gray-600">Немає товарів</div>
       </div>
     );
@@ -139,7 +140,7 @@ const ProductGrid = ({
             <TopCard
               key={product.id}
               id={product.id}
-              subcategory={subcategory}
+              subcategoryId={subcategoryId}
               title={product.title}
               retail={product.retail}
               currency={product.currency}

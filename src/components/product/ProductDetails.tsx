@@ -2,18 +2,7 @@
 
 import { IProductAttributes } from "@/types/types";
 import Image from "next/image";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import {
-  Heart,
-  ChevronUp,
-  ChevronDown,
-  BarChart2,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { AnimatePresence, motion } from "framer-motion";
 import ImageCarousel from "./ImageCarousel";
 import ProductParams from "./ProductParams";
 import PurchaseSection from "./PurchaseSection";

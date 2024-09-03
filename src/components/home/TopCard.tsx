@@ -5,7 +5,7 @@ import React from "react";
 interface TopCardProps {
   productLabelPath?: string;
   id: string;
-  subcategory: string;
+  subcategoryId: string;
   title: string;
   retail: number;
   imageSrc: string;
@@ -15,7 +15,7 @@ interface TopCardProps {
 const TopCard: React.FC<TopCardProps> = ({
   productLabelPath,
   id,
-  subcategory,
+  subcategoryId,
   title,
   retail,
   currency,
@@ -77,7 +77,7 @@ const TopCard: React.FC<TopCardProps> = ({
           <span className="ml-1 whitespace-nowrap">{currency}</span>
         </div>
         <Link
-          href={`${subcategory}/${id}`}
+          href={`${subcategoryId}/${id}`}
           className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-sm text-center w-2/3 -ml-6"
         >
           Купити

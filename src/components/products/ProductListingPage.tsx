@@ -13,18 +13,17 @@ import {
   IProductTypeFiltersResponse,
   IProductTypesResponse,
 } from "@/types/types";
-import Spinner from "../shared/Spinner";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
 }
 
 interface ProductListingClientProps {
-  subcategory: string;
+  subcategoryId: string;
 }
 
 const ProductListingClient: React.FC<ProductListingClientProps> = ({
-  subcategory,
+  subcategoryId,
 }) => {
   const [selectedProductType, setSelectedProductType] = useState<string | null>(
     null
@@ -38,15 +37,15 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const { data: productTypesData } = useQuery<IProductTypesResponse>(
     GET_PRODUCT_TYPES,
     {
-      variables: { subcategory },
-      skip: !subcategory,
+      variables: { subcategoryId },
+      skip: !subcategoryId,
     }
   );
 
   const { data: filtersData } = useQuery<IProductTypeFiltersResponse>(
     GET_PRODUCT_TYPE_FILTERS,
     {
-      variables: { id: selectedProductType },
+      variables: { productTypeId: selectedProductType, subcategoryId },
       skip: !selectedProductType,
     }
   );
@@ -103,7 +102,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           )}
         </div>
         <ProductGrid
-          subcategory={subcategory}
+          subcategoryId={subcategoryId}
           productTypeId={selectedProductType}
           appliedFilters={appliedFilters}
           pageSize={pageSize}

@@ -3,8 +3,6 @@
 import { IProductAttributes, IProductResponse } from "@/types/types";
 import React, { Suspense } from "react";
 import { GET_PRODUCT } from "@/components/product/queries";
-import Image from "next/image";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import { getClient } from "../../../../lib/apollo-client";
 import ProductDetails from "@/components/product/ProductDetails";
 import Spinner from "@/components/shared/Spinner";
@@ -28,10 +26,6 @@ async function getProduct(
   return (data.product.data && data.product.data.attributes) || null;
 }
 
-function ProductLoading() {
-  return <CenteredSpinner />;
-}
-
 function ProductError({ error }: { error: Error }) {
   return (
     <div className="text-center text-red-500">
@@ -53,7 +47,7 @@ async function ProductContainer({ productId }: { productId: string }) {
 const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
   return (
     <div>
-      <Suspense fallback={<ProductLoading />}>
+      <Suspense fallback={<CenteredSpinner />}>
         <ProductContainer productId={params.product} />
       </Suspense>
     </div>

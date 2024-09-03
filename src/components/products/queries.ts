@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client";
 
 export const GET_PRODUCT_TYPES = gql`
-  query GetProductTypes($subcategory: String!) {
+  query GetProductTypes($subcategoryId: ID!) {
     productTypes(
-      filters: { subcategory: { slug: { eq: $subcategory } } }
+      filters: { subcategories: { id: { eq: $subcategoryId } } }
       pagination: { limit: -1 }
     ) {
       data {
@@ -30,8 +30,11 @@ export const GET_PRODUCT_TYPES = gql`
 `;
 
 export const GET_PRODUCT_TYPE_FILTERS = gql`
-  query GetProductTypeFilters($id: ID!) {
-    productTypeFilters(id: $id)
+  query GetProductTypeFilters($productTypeId: ID!, $subcategoryId: ID!) {
+    productTypeFilters(
+      productTypeId: $productTypeId
+      subcategoryId: $subcategoryId
+    )
   }
 `;
 
@@ -42,6 +45,7 @@ export const GET_FILTERED_PRODUCTS = gql`
     $cursor: String
     $page: Int
     $pageSize: Int
+    $subcategoryId: ID!
   ) {
     filteredProducts(
       productTypeId: $productTypeId
@@ -49,6 +53,7 @@ export const GET_FILTERED_PRODUCTS = gql`
       cursor: $cursor
       page: $page
       pageSize: $pageSize
+      subcategoryId: $subcategoryId
     ) {
       products {
         id
