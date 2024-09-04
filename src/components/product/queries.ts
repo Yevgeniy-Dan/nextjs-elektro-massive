@@ -12,11 +12,17 @@ export const GET_PRODUCT = gql`
           currency
           image_link
           description
+          discount
           additional_images {
             id
             link
           }
           params
+          subcategory {
+            data {
+              id
+            }
+          }
         }
       }
     }

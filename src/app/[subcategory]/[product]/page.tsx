@@ -26,14 +26,6 @@ async function getProduct(
   return (data.product.data && data.product.data.attributes) || null;
 }
 
-function ProductError({ error }: { error: Error }) {
-  return (
-    <div className="text-center text-red-500">
-      Error loading product: {error.message}
-    </div>
-  );
-}
-
 async function ProductContainer({ productId }: { productId: string }) {
   const product = await getProduct(productId);
 
@@ -41,7 +33,7 @@ async function ProductContainer({ productId }: { productId: string }) {
     return <div>Product not found.</div>;
   }
 
-  return <ProductDetails product={product} />;
+  return <ProductDetails product={product} id={productId} />;
 }
 
 const ProductPage: React.FC<ProductPageProps> = ({ params }) => {

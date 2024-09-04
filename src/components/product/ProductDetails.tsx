@@ -7,12 +7,19 @@ import ImageCarousel from "./ImageCarousel";
 import ProductParams from "./ProductParams";
 import PurchaseSection from "./PurchaseSection";
 import DeliveryPaymentSection from "./DeliveryPaymentSection";
+import { useCallback } from "react";
+
+import { useAppDispatch } from "@/store/hooks";
+import { addToCart, openModal } from "@/store/storeSlice";
 
 const initialParamsCount = 5;
 
-const ProductDetails: React.FC<{ product: IProductAttributes }> = ({
+const ProductDetails: React.FC<{ product: IProductAttributes; id: string }> = ({
   product,
+  id,
 }) => {
+  const dispatch = useAppDispatch();
+
   const {
     additional_images,
     currency,
@@ -21,18 +28,16 @@ const ProductDetails: React.FC<{ product: IProductAttributes }> = ({
     part_number,
     retail,
     title,
+    discount,
     description,
   } = product;
 
   const images = [{ id: "main", link: image_link }, ...additional_images];
 
-  // const scrollPrev = useCallback(() => {
-  //   if (emblaApi) emblaApi.scrollPrev();
-  // }, [emblaApi]);
-
-  // const scrollNext = useCallback(() => {
-  //   if (emblaApi) emblaApi.scrollNext();
-  // }, [emblaApi]);
+  const handleBuyClick = useCallback(() => {
+    dispatch(addToCart({ id, title, retail, image: image_link, discount }));
+    dispatch(openModal());
+  }, [id, title, retail, image_link, discount, dispatch]);
 
   return (
     <div className="mx-auto p-4">
@@ -86,7 +91,11 @@ const ProductDetails: React.FC<{ product: IProductAttributes }> = ({
             />
           </div>
 
-          <PurchaseSection retail={retail} currency={currency} />
+          <PurchaseSection
+            product={product}
+            id={id}
+            onBuyClick={handleBuyClick}
+          />
         </div>
 
         <DeliveryPaymentSection />

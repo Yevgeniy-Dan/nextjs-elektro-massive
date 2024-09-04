@@ -13,6 +13,8 @@ import "swiper/css/navigation";
 import { Providers } from "./providers";
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
+import CartModal from "@/components/CartModal";
+import ClientInitializer from "@/components/ClientInitializer";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -30,6 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${roboto.className} flex flex-col min-h-screen`}>
         <Providers>
+          <ClientInitializer />
           <div className="flex-grow">
             <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
               <Header />
@@ -37,6 +40,7 @@ export default function RootLayout({
             </div>
           </div>
           <Footer className="flex-shrink-0" />
+          <CartModal />
         </Providers>
       </body>
     </html>

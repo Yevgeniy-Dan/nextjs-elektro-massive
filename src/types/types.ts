@@ -22,6 +22,7 @@ export interface IProductAttributes {
       id: string;
     };
   };
+  discount: number;
 }
 
 export interface IProductData {
@@ -75,6 +76,7 @@ export interface IFilteredProduct {
   retail: number;
   currency: string;
   image_link: string;
+  discount: number;
   additional_images: IAdditionalImage[];
 }
 

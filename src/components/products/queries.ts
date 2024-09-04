@@ -65,6 +65,7 @@ export const GET_FILTERED_PRODUCTS = gql`
         additional_images {
           link
         }
+        discount
       }
       nextCursor
       pageCount
@@ -90,6 +91,7 @@ export const GET_PRODUCTS = gql`
               id
             }
           }
+          discount
         }
       }
     }

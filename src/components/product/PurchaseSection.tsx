@@ -1,15 +1,21 @@
-import React, { useState } from "react";
-import { Heart, BarChart2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Heart, BarChart2, ShoppingCart } from "lucide-react";
+
+import dynamic from "next/dynamic";
+import { IProductAttributes } from "@/types/types";
 
 interface PurchaseSectionProps {
-  retail: number;
-  currency: string;
+  product: IProductAttributes;
+  id: string;
+  onBuyClick: () => void;
 }
 
 const PurchaseSection: React.FC<PurchaseSectionProps> = ({
-  retail,
-  currency,
+  product,
+  id,
+  onBuyClick,
 }) => {
+  const { currency, retail, title, image_link, subcategory } = product;
   const [quantity, setQuantity] = useState(1);
 
   return (
@@ -34,7 +40,10 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
           </button>
         </div>
       </div>
-      <button className="w-full bg-gradient-elektro-massive-horizontal text-white py-2 rounded-xl mb-4">
+      <button
+        onClick={onBuyClick}
+        className="w-full bg-gradient-elektro-massive-horizontal text-white py-2 rounded-xl mb-4"
+      >
         Купити
       </button>
       <div className="flex flex-col items-start gap-4 justify-between mb-4">
