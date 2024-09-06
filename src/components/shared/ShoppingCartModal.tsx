@@ -6,6 +6,11 @@ import { ArrowLeft, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { useCartCalculations } from "@/hooks/useCartCalcutaions";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import { openSignInModal } from "@/store/signInModalSlice";
+import { useSession } from "next-auth/react";
+import { closeModal } from "@/store/storeSlice";
 
 interface ICartItem {
   id: string;
@@ -39,9 +44,22 @@ const ShoppingCartModal: React.FC<IShoppingCartModalProps> = ({
   onClearCart,
   onContinueShopping,
 }) => {
+  const { status } = useSession();
   const modalRef = useOutsideClick(onClose);
 
   const { discountTotal } = useCartCalculations();
+
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  function handleCheckout(): void {
+    if (status === "unauthenticated") {
+      dispatch(openSignInModal("/checkout"));
+    } else if (status === "authenticated") {
+      dispatch(closeModal());
+      router.push("/checkout");
+    }
+  }
 
   return (
     <AnimatePresence>
@@ -190,7 +208,10 @@ const ShoppingCartModal: React.FC<IShoppingCartModalProps> = ({
                       </span>
                     </div>
                   </div>
-                  <button className="bg-green-500 text-white py-3 px-6 rounded hover:bg-green-600 transition duration-300">
+                  <button
+                    onClick={handleCheckout}
+                    className="bg-green-500 text-white py-3 px-6 rounded hover:bg-green-600 transition duration-300"
+                  >
                     Оформити замовлення
                   </button>
                 </div>

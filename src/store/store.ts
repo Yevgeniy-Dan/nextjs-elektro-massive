@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import storeReducer from "./storeSlice";
+import signInModalReducer from "./signInModalSlice";
 
 export const store = configureStore({
   reducer: {
     store: storeReducer,
+    signInModal: signInModalReducer,
   },
 });
 

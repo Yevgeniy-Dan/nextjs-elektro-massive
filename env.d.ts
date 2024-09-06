@@ -4,5 +4,9 @@ namespace NodeJS {
     NEXT_PUBLIC_STRAPI_URL: string;
     STRAPI_API_TOKEN: string;
     NEXT_PUBLIC_SNIPCART_API_KEY: string;
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRET: string;
+    NEXTAUTH_SECRET: string;
+    NEXTAUTH_URL: string;
   }
 }

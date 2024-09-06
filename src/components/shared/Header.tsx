@@ -7,6 +7,7 @@ import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import UserActions from "./UserActions";
 import SearchBar from "./SearchBar";
+import { signOut } from "next-auth/react";
 
 const Header = () => {
   return (
@@ -24,6 +25,12 @@ const Header = () => {
         <CategoryMenu />
 
         <SearchBar />
+        <button
+          className="bg-ourBlue text-white py-[26px] px-[52px] rounded-3xl ml-auto"
+          onClick={() => signOut()}
+        >
+          Sign Out
+        </button>
       </nav>
     </div>
   );

@@ -1,13 +1,15 @@
+"use client";
+
 import AboutSection from "@/components/home/AboutSection";
 import Banner from "@/components/home/Banner";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import TopCardCarousel from "@/components/home/TopCardCarousel";
 import WhyUsSection from "@/components/home/WhyUsSection";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  // const products = await strapiApi.getProducts();
-  const products: any[] = [];
-
+export default function Home() {
   return (
     <div className="w-full">
       <Banner />
