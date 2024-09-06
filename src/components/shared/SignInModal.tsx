@@ -6,7 +6,7 @@ import { stat } from "fs";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
 const SignInModal = () => {
@@ -15,6 +15,7 @@ const SignInModal = () => {
   const isOpen = useAppSelector((state) => state.signInModal.isOpen);
   const redirectUrl = useAppSelector((state) => state.signInModal.redirectUrl);
   const { data: session, status } = useSession();
+  const [error, setError] = useState<string | null>(null);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -24,17 +25,22 @@ const SignInModal = () => {
       });
 
       if (result?.error) {
+        setError("Failed to sign in. Please try again.");
         console.error("Sign in in with Google: ", result.error);
       } else if (result?.url && redirectUrl) {
         router.push(redirectUrl);
+        dispatch(closeSignInModal());
       }
-      dispatch(closeSignInModal());
     } catch (error) {
+      setError("An error occurred while signing in. Please try again.");
       console.error("Sign in in with Google: ", error);
     }
   };
 
-  const handleClose = () => dispatch(closeSignInModal());
+  const handleClose = () => {
+    setError(null);
+    dispatch(closeSignInModal());
+  };
 
   if (!isOpen) return null;
 
@@ -57,6 +63,9 @@ const SignInModal = () => {
 
           <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+              {error && (
+                <div className="mb-4 text-red-800 text-center">{error}</div>
+              )}
               <button
                 onClick={handleGoogleSignIn}
                 className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
