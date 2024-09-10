@@ -15,7 +15,7 @@ export const GET_CATEGORY_MENU = gql`
               }
             }
           }
-          subcategories {
+          subcategories(pagination: { limit: -1 }) {
             data {
               id
               attributes {
