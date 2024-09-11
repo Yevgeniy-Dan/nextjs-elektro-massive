@@ -49,7 +49,6 @@ export const authOptions: NextAuthOptions = {
             token.provider = account.provider;
             token.strapiUserId = strapiLoginResponse.user.id;
             token.blocked = strapiLoginResponse.user.blocked;
-            console.log("token", token.strapiToken);
           } catch (error) {
             throw error;
           }

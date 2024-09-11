@@ -38,7 +38,7 @@ const syncCart = async (
 ): Promise<ISyncCartMutationResponse> => {
   const input = {
     products: cartItems.map((item: ICartItem) => ({
-      id: item.id,
+      productId: item.id,
       quantity: item.quantity,
     })),
   };
@@ -64,7 +64,6 @@ export const useSingInMergeCart = () => {
       toast.success("Cart synced successfully");
     },
     onError(error, variables, context) {
-      console.log(error);
       toast.error(error.message);
     },
   });
@@ -72,11 +71,10 @@ export const useSingInMergeCart = () => {
   useEffect(() => {
     if (status === "authenticated" && !hasSynced.current) {
       const cartItems = getCartItemsFromCookie();
-      if (cartItems.length > 0) {
-        mutation.mutate(cartItems);
-      } else {
-        queryClient.invalidateQueries({ queryKey: ["cart"] });
-      }
+
+      mutation.mutate(cartItems);
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+
       hasSynced.current = true;
     }
   }, [status, mutation, queryClient]);

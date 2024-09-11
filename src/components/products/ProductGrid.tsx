@@ -48,43 +48,6 @@ const ProductGrid = ({
     refetch();
   }, [productTypeId, appliedFilters, refetch]);
 
-  // const handlePageChange = (newPage: number) => {
-  //   const variables: {
-  //     cursor?: string | null;
-  //     page?: number;
-  //     pageSize: number;
-  //   } = {
-  //     pageSize,
-  //   };
-
-  //   console.log("cusrot: ", data?.filteredProducts.nextCursor);
-  //   if (newPage === currentPage + 1 && data?.filteredProducts.nextCursor) {
-  //     variables.cursor = data.filteredProducts.nextCursor;
-  //   } else {
-  //     variables.page = newPage;
-  //     variables.cursor = null;
-  //   }
-  //   console.log("variables: ", variables);
-
-  //   fetchMore({
-  //     variables,
-  //     updateQuery(prev, { fetchMoreResult }) {
-  //       if (!fetchMoreResult.filteredProducts) return prev;
-
-  //       const newProducts = fetchMoreResult.filteredProducts.products;
-
-  //       return {
-  //         filteredProducts: {
-  //           ...fetchMoreResult.filteredProducts,
-  //           products: [...newProducts],
-  //         },
-  //       };
-  //     },
-  //   }).then((p) => {
-  //     setCurrentPage(newPage);
-  //   });
-  // };
-
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
     fetchMore({

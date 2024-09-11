@@ -11,13 +11,21 @@ import { useSession } from "next-auth/react";
 import { clearAddedProduct, closeModal } from "@/store/storeSlice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { ICartItem, IGetUserCartResponse } from "@/types/cart";
+import {
+  IAddToCartResponse,
+  ICartItem,
+  IGetUserCartResponse,
+  IRemoveFromCartResponse,
+  IUpdateCartItemResponse,
+} from "@/types/cart";
 import { useRouter } from "next/navigation";
 import { CartItem } from "@/gql/graphql";
 import {
   addItemToCookie,
+  clearCartFromCookie,
   getCartItemsFromCookie,
-  setCartItemsToCookie,
+  removeCartItemFromCookie,
+  updateCartItemInCookie,
 } from "@/app/utils/cartHeplers";
 
 const GET_AUTH_USER_CART_QUERY = `
@@ -41,9 +49,9 @@ const GET_AUTH_USER_CART_QUERY = `
   }
 `;
 
-const UPDATE_CART_MUTATION = `
-  mutation SyncCart($input: SyncCartInput!) {
-    updateCart(input: $input) {
+const ADD_TO_CART_MUTATION = `
+  mutation AddToCart($input: AddToCartInput!) {
+    addToCart(input: $input) {
       cart {
         cart_items {
           id
@@ -59,7 +67,50 @@ const UPDATE_CART_MUTATION = `
         }
       }
     }
-  }`;
+  }
+`;
+
+const UPDATE_CART_ITEM_MUTATION = `
+  mutation UpdateCartItem($input: UpdateCartItemInput!) {
+    updateCartItem(input: $input) {
+      cart {
+        cart_items {
+          id
+          quantity
+          product {
+            id
+            title
+            retail
+            currency
+            discount
+            image_link
+          }
+        }
+      }
+    }
+  }
+`;
+
+const REMOVE_FROM_CART_MUTATION = `
+  mutation RemoveFromCart($input: RemoveFromCartInput!) {
+    removeFromCart(input: $input) {
+      cart {
+        cart_items {
+          id
+          quantity
+          product {
+            id
+            title
+            retail
+            currency
+            discount
+            image_link
+          }
+        }
+      }
+    }
+  }
+`;
 
 const fetchCart = async (): Promise<ICartItem[]> => {
   const { data } = await axios.post<IGetUserCartResponse>(
@@ -72,22 +123,48 @@ const fetchCart = async (): Promise<ICartItem[]> => {
   return data.userCart.cart.cart_items;
 };
 
-const updateCart = async (cartItems: ICartItem[]): Promise<CartItem[]> => {
-  const { data } = await axios.post(
+const addCartItem = async (newItem: ICartItem) => {
+  const { data } = await axios.post<IAddToCartResponse>(
     process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
     {
-      query: UPDATE_CART_MUTATION,
+      query: ADD_TO_CART_MUTATION,
       variables: {
         input: {
-          products: cartItems.map((item) => ({
-            id: item.product.id,
-            quantity: item.quantity,
-          })),
+          productId: newItem.product.id,
+          quantity: newItem.quantity,
         },
       },
     }
   );
-  return data;
+  return data.data.addToCart.cart.cart_items;
+};
+
+const updateCartItem = async ({
+  productId,
+  quantity,
+}: {
+  productId: string;
+  quantity: number;
+}) => {
+  const { data } = await axios.post<IUpdateCartItemResponse>(
+    process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
+    {
+      query: UPDATE_CART_ITEM_MUTATION,
+      variables: { input: { productId, quantity } },
+    }
+  );
+  return data.data.updateCartItem.cart.cart_items;
+};
+
+const removeCartItem = async (productId: string) => {
+  const { data } = await axios.post<IRemoveFromCartResponse>(
+    process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
+    {
+      query: REMOVE_FROM_CART_MUTATION,
+      variables: { input: { productId } },
+    }
+  );
+  return data.data.removeFromCart.cart.cart_items;
 };
 
 const ShoppingCartModal = () => {
@@ -120,35 +197,60 @@ const ShoppingCartModal = () => {
     );
   }, [cartItems]);
 
-  const updateCartMutation = useMutation({
-    mutationFn: updateCart,
-    onMutate: async (newCart) => {
-      await queryClient.cancelQueries({ queryKey: ["cart"] });
-
-      const previousCart = queryClient.getQueryData<ICartItem[]>(["cart"]);
-
-      queryClient.setQueryData<ICartItem[]>(["cart"], newCart);
-
-      return { previousCart };
+  const addToCartMutation = useMutation({
+    mutationFn: addCartItem,
+    onSuccess: (newCart) => {
+      queryClient.setQueryData(["cart"], newCart);
     },
-    onError: (err, newCart, context) => {
-      queryClient.setQueryData<ICartItem[]>(["cart"], context?.previousCart);
+  });
+
+  const updateCartItemMutation = useMutation({
+    mutationFn: updateCartItem,
+    onSuccess: (newCart) => {
+      queryClient.setQueryData(["cart"], newCart);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+  });
+
+  const removeFromCartMutation = useMutation({
+    mutationFn: removeCartItem,
+    onSuccess: (newCart) => {
+      queryClient.setQueryData(["cart"], newCart);
     },
   });
 
   useEffect(() => {
     if (addedProduct && cartItems) {
-      const newCart = [...cartItems, addedProduct];
-      dispatch(clearAddedProduct());
+      const existingItem = cartItems.find(
+        (item) => item.product.id === addedProduct.product.id
+      );
+
       if (status === "authenticated") {
-        updateCartMutation.mutate(newCart);
+        if (existingItem) {
+          updateCartItemMutation.mutate({
+            productId: existingItem.product.id,
+            quantity: Math.max(
+              1,
+              existingItem.quantity + addedProduct.quantity
+            ),
+          });
+        } else {
+          addToCartMutation.mutate(addedProduct);
+        }
       } else {
-        addItemToCookie(addedProduct);
+        if (existingItem) {
+          updateCartItemInCookie({
+            ...existingItem,
+            quantity: Math.max(
+              1,
+              existingItem.quantity + addedProduct.quantity
+            ),
+          });
+        } else {
+          addItemToCookie(addedProduct);
+        }
         queryClient.invalidateQueries({ queryKey: ["cart"] });
       }
+      dispatch(clearAddedProduct());
     }
   }, [
     addedProduct,
@@ -156,40 +258,53 @@ const ShoppingCartModal = () => {
     status,
     queryClient,
     dispatch,
-    updateCartMutation,
+    addToCartMutation,
+    updateCartItemMutation,
   ]);
 
-  const handleQunatityChange = (productId: string, newQuantity: number) => {
-    const updatedCart = cartItems.map((item) =>
-      item.id === productId
-        ? { ...item, quantity: Math.max(1, newQuantity) }
-        : item
-    );
+  const handleQunatityChange = (itemId: string, newQuantity: number) => {
+    const item = cartItems.find((item) => item.id === itemId);
+
+    if (!item) return;
 
     if (status === "authenticated") {
-      updateCartMutation.mutate(updatedCart);
+      updateCartItemMutation.mutate({
+        productId: item.product.id,
+        quantity: Math.max(1, newQuantity),
+      });
     } else {
-      setCartItemsToCookie(updatedCart);
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      const updatedItem = { ...item, quantity: Math.max(1, newQuantity) };
+      updateCartItemInCookie(updatedItem);
+      queryClient.setQueryData(
+        ["cart"],
+        cartItems.map((i) => (i.id === itemId ? updatedItem : i))
+      );
     }
   };
 
-  const handleRemoveItem = (productId: string) => {
-    const updatedCart = cartItems.filter((item) => item.id !== productId);
+  const handleRemoveItem = (itemId: string) => {
+    const item = cartItems.find((item) => item.id === itemId);
+    if (!item) return;
+
     if (status === "authenticated") {
-      updateCartMutation.mutate(updatedCart);
+      removeFromCartMutation.mutate(item.product.id);
     } else {
-      setCartItemsToCookie(updatedCart);
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      removeCartItemFromCookie(item.product.id);
+      queryClient.setQueryData(
+        ["cart"],
+        cartItems.filter((i) => i.id !== itemId)
+      );
     }
   };
 
   const handleClearCart = () => {
     if (status === "authenticated") {
-      updateCartMutation.mutate([]);
+      cartItems.forEach(
+        (item) => removeFromCartMutation.mutate(item.product.id) //TODO: create deleteCart on strapi
+      );
     } else {
-      setCartItemsToCookie([]);
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      clearCartFromCookie();
+      queryClient.setQueryData(["cart"], []);
     }
   };
 

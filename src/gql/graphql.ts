@@ -95,6 +95,7 @@ export type CartItem = {
   __typename?: 'CartItem';
   cart?: Maybe<CartEntityResponse>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** Cart item ID */
   id: Scalars['ID']['output'];
   product: Product;
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -140,7 +141,8 @@ export type CartItemInput = {
 };
 
 export type CartProductInput = {
-  id: Scalars['ID']['input'];
+  /** The ID of the product */
+  productId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
 };
 

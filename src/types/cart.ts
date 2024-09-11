@@ -1,26 +1,15 @@
-interface ICartProductInput {
-  id: string;
+export interface ICartProductInput {
+  productId: string;
   quantity: number;
 }
 
-export interface ISyncCartInput {
-  input: {
-    products: ICartProductInput[];
-  };
-}
-
-interface IUser {
-  username: string;
-}
-
 export interface ICartProduct {
-  id: string;
+  id: string; //Product ID
   title: string;
   retail: number;
   currency: string;
   discount: number;
   image_link: string;
-  // Add other product fields as needed
 }
 
 export interface ICartItem {
@@ -39,6 +28,18 @@ interface ICartResponse {
 
 export interface ISyncCartMutationResponse {
   data: { data: { syncCartBySingIn: ICartResponse } };
+}
+
+export interface IAddToCartResponse {
+  data: { addToCart: ICartResponse };
+}
+
+export interface IUpdateCartItemResponse {
+  data: { updateCartItem: ICartResponse };
+}
+
+export interface IRemoveFromCartResponse {
+  data: { removeFromCart: ICartResponse };
 }
 
 export interface IGetUserCartResponse {

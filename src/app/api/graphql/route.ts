@@ -5,9 +5,6 @@ import { authOptions } from "../../utils/authOptions";
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
 
-  // console.log("API Route: Session:", session ? "Present" : "Null");
-  // console.log("API Route: Session:", session);
-
   const body = await request.json();
 
   try {
