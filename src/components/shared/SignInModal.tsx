@@ -1,5 +1,6 @@
 "use client";
 
+// import { syncCart } from "@/app/actions";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { closeSignInModal } from "@/store/signInModalSlice";
 import { stat } from "fs";
@@ -19,18 +20,9 @@ const SignInModal = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signIn("google", {
-        redirect: false,
+      await signIn("google", {
         callbackUrl: redirectUrl || window.location.href,
       });
-
-      if (result?.error) {
-        setError("Failed to sign in. Please try again.");
-        console.error("Sign in in with Google: ", result.error);
-      } else if (result?.url && redirectUrl) {
-        router.push(redirectUrl);
-        dispatch(closeSignInModal());
-      }
     } catch (error) {
       setError("An error occurred while signing in. Please try again.");
       console.error("Sign in in with Google: ", error);
@@ -73,6 +65,7 @@ const SignInModal = () => {
                 <FcGoogle className="h-8 w-8 mr-2" />
                 Sign in with Google
               </button>
+              {error && <p>{error}</p>}
             </div>
             <button
               onClick={handleClose}

@@ -10,7 +10,7 @@ import DeliveryPaymentSection from "./DeliveryPaymentSection";
 import { useCallback } from "react";
 
 import { useAppDispatch } from "@/store/hooks";
-import { addToCart, openModal } from "@/store/storeSlice";
+import { openModal } from "@/store/storeSlice";
 
 const initialParamsCount = 5;
 
@@ -35,9 +35,21 @@ const ProductDetails: React.FC<{ product: IProductAttributes; id: string }> = ({
   const images = [{ id: "main", link: image_link }, ...additional_images];
 
   const handleBuyClick = useCallback(() => {
-    dispatch(addToCart({ id, title, retail, image: image_link, discount }));
-    dispatch(openModal());
-  }, [id, title, retail, image_link, discount, dispatch]);
+    const addedCartItem = {
+      id,
+      quantity: 1,
+      product: {
+        id,
+        currency,
+        discount,
+        image_link,
+        retail,
+        title,
+      },
+    };
+
+    dispatch(openModal(addedCartItem));
+  }, [id, dispatch]);
 
   return (
     <div className="mx-auto p-4">

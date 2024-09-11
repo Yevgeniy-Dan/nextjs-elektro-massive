@@ -5,7 +5,6 @@ import React, { Suspense } from "react";
 import { GET_PRODUCT } from "@/components/product/queries";
 import { getClient } from "../../../../lib/apollo-client";
 import ProductDetails from "@/components/product/ProductDetails";
-import Spinner from "@/components/shared/Spinner";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 
 interface ProductPageProps {

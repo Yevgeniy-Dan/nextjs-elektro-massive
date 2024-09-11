@@ -21,11 +21,11 @@ const UserActions = () => {
         />
       </div>
       <div className="flex items-center gap-1 md:gap-3 flex-row md:mb-3 xl:mb-0">
-        <div className="flex items-center">
-          <button
-            onClick={() => dispatch(openModal())}
-            className="mr-1 hover:text-gray-300"
-          >
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => dispatch(openModal())}
+        >
+          <button className="mr-1 hover:text-gray-300">
             <Image
               src="/bucket.png"
               alt="Bucket icon"

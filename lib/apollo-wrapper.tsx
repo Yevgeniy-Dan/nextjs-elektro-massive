@@ -11,13 +11,11 @@ import {
 // have a function to create a client for you
 function makeClient() {
   const httpLink = createHttpLink({
-    uri: "/api/graphql", // This points to our Next.js
+    uri: "/api/graphql",
     fetchOptions: { cache: "no-store" },
   });
 
-  // use the `ApolloClient` from "@apollo/experimental-nextjs-app-support"
   return new ApolloClient({
-    // use the `InMemoryCache` from "@apollo/experimental-nextjs-app-support"
     cache: new InMemoryCache(),
     link: httpLink,
   });

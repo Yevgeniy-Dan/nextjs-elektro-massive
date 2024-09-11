@@ -12,7 +12,6 @@ interface PurchaseSectionProps {
 
 const PurchaseSection: React.FC<PurchaseSectionProps> = ({
   product,
-  id,
   onBuyClick,
 }) => {
   const { currency, retail, title, image_link, subcategory } = product;

@@ -139,12 +139,9 @@ const ProductGrid = ({
           data.filteredProducts.products.map((product) => (
             <TopCard
               key={product.id}
-              id={product.id}
-              subcategoryId={subcategoryId}
-              title={product.title}
-              retail={product.retail}
-              currency={product.currency}
               imageSrc={product.image_link}
+              {...product}
+              subcategoryId={subcategoryId}
             />
           ))}
       </div>
