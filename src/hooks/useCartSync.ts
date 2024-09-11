@@ -61,7 +61,6 @@ export const useSingInMergeCart = () => {
       clearCartFromCookie();
       const { syncCartBySingIn } = data.data.data;
       queryClient.setQueryData(["cart"], syncCartBySingIn.cart.cart_items);
-      toast.success("Cart synced successfully");
     },
     onError(error, variables, context) {
       toast.error(error.message);
