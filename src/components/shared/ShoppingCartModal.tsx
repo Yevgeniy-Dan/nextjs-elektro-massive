@@ -2,33 +2,13 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import useOutsideClick from "@/hooks/useOutsideClick";
-import { ArrowLeft, Trash2, X } from "lucide-react";
-import Image from "next/image";
-import React, { useEffect, useMemo } from "react";
+
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { openSignInModal } from "@/store/signInModalSlice";
-import { useSession } from "next-auth/react";
-import { clearAddedProduct, closeModal } from "@/store/storeSlice";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import {
-  IAddToCartResponse,
-  ICartItem,
-  IGetUserCartResponse,
-  IRemoveFromCartResponse,
-  IUpdateCartItemResponse,
-} from "@/types/cart";
-import { useRouter } from "next/navigation";
-import { CartItem } from "@/gql/graphql";
-import {
-  addItemToCookie,
-  clearCartFromCookie,
-  getCartItemsFromCookie,
-  removeCartItemFromCookie,
-  updateCartItemInCookie,
-} from "@/app/utils/cartHeplers";
+
+import { clearAddedProduct } from "@/store/storeSlice";
+
 import CartHeader from "../cart/CartHeader";
-import QuantityAdjuster from "../cart/QuantityAdjuster";
 import CartItemList from "../cart/CartItemList";
 import CartFooter from "../cart/CartFooter";
 import { useCart } from "@/hooks/useCart";

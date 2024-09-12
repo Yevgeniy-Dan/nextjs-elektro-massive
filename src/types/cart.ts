@@ -4,7 +4,7 @@ export interface ICartProductInput {
 }
 
 export interface ICartProduct {
-  id: string; //Product ID
+  id: string;
   title: string;
   retail: number;
   currency: string;
