@@ -10,8 +10,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 const CheckoutPage = () => {
-  const { cartItems } = useCart();
-
   const [contactData, setContactData] = useState({
     phone: "",
     firstName: "",

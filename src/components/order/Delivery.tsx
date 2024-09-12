@@ -13,7 +13,12 @@ const Delivery = () => {
       </h2>
       <div className="space-y-2">
         <label className="flex items-center space-x-3 p-3 border border-gray-300 rounded-md">
-          <input type="radio" name="delivery" className="form-radio" />
+          <input
+            type="radio"
+            defaultChecked
+            name="delivery"
+            className="form-radio"
+          />
           <Image
             src="/novaposhta.jpg"
             width={24}

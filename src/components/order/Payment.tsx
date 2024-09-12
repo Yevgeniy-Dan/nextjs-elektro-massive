@@ -1,7 +1,30 @@
+import React, { useState } from "react";
 import { CreditCard } from "lucide-react";
-import React from "react";
+import Cards, { Focused } from "react-credit-cards-2";
+import "react-credit-cards-2/dist/es/styles-compiled.css";
+import valid from "card-validator";
+import creditCardType from "credit-card-type";
+import {
+  Visa,
+  Mastercard,
+  Amex,
+  Discover,
+  Diners,
+  Jcb,
+  Unionpay,
+} from "react-payment-logos/dist/flat";
+import { useCardForm } from "@/hooks/useCardForm";
+import { getCardTypeInfo } from "@/app/utils/cardUtils";
+import NameInput from "../payment/NameInput";
+import CVCInput from "../payment/CVCInput";
+import ExpiryInput from "../payment/ExpiryInput";
+import CardInput from "../payment/CardInput";
+import { CardTypeDisplay } from "../payment/CardTypeDisplay";
 
 const Payment = () => {
+  const { state, validation, handleInputChange, handleInputFocus } =
+    useCardForm();
+
   return (
     <section>
       <h2 className="text-lg font-semibold mb-2 flex items-center">
@@ -12,29 +35,53 @@ const Payment = () => {
       </h2>
       <div className="space-y-2">
         <label className="flex items-center space-x-3 p-3 border border-gray-300 rounded-md">
-          <input type="radio" name="payment" className="form-radio" />
+          <input
+            type="radio"
+            defaultChecked
+            name="payment"
+            className="form-radio"
+          />
           <CreditCard size={20} />
           <span>Оплата карткою</span>
         </label>
       </div>
       <div className="mt-4 space-y-4">
-        <input
-          type="text"
-          placeholder="Номер карти"
-          className="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-        />
-        <div className="flex space-x-4">
-          <input
-            type="text"
-            placeholder="ММ / РР"
-            className="w-1/2 border border-gray-300 rounded-md shadow-sm py-2 px-3"
+        {/* <Cards
+          number={state.number}
+          expiry={state.expiry}
+          cvc={state.cvc}
+          name={state.name}
+          focused={state.focus}
+        /> */}
+        <div className="relative">
+          <CardInput
+            value={state.number}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            isValid={validation.number}
           />
-          <input
-            type="text"
-            placeholder="CVV"
-            className="w-1/2 border border-gray-300 rounded-md shadow-sm py-2 px-3"
+          <CardTypeDisplay cardNumber={state.number} />
+        </div>
+        <div className="flex space-x-4">
+          <ExpiryInput
+            value={state.expiry}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            isValid={validation.expiry}
+          />
+          <CVCInput
+            value={state.cvc}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            isValid={validation.cvc}
           />
         </div>
+        <NameInput
+          value={state.name}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          isValid={validation.name}
+        />
       </div>
     </section>
   );
