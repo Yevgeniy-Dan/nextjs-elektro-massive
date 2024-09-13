@@ -4,7 +4,7 @@ import CartTotals from "./CartTotals";
 import { useCart } from "@/hooks/useCart";
 
 const CartFooter = () => {
-  const { handleCloseModal, handleConfirm } = useCart();
+  const { cartItems, handleCloseModal, handleConfirm } = useCart();
 
   return (
     <div className="p-4 border-t">
@@ -23,6 +23,7 @@ const CartFooter = () => {
           <CartTotals />
           <button
             onClick={() => handleConfirm()}
+            disabled={!cartItems.length}
             className="bg-green-500 text-white py-3 px-6 rounded hover:bg-green-600 transition duration-300"
           >
             Оформити замовлення

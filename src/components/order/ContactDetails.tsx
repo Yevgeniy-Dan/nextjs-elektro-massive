@@ -1,25 +1,20 @@
 import React from "react";
 import PhoneInput from "./PhoneInput";
+import { OrderFormData } from "@/hooks/useOrderForm";
+import { useExtendedFormContext } from "@/hooks/extendedFormContext";
 
-interface ContactDetailsProps {
-  contactData: {
-    phone: string;
-    firstName: string;
-    secondName: string;
-    lastName: string;
-  };
-  handleContactChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+const ContactDetails: React.FC = () => {
+  const {
+    register,
+    formState: { errors, touchedFields },
+    watch,
+    setValue,
+  } = useExtendedFormContext<OrderFormData>();
 
-const ContactDetails: React.FC<ContactDetailsProps> = ({
-  contactData,
-  handleContactChange,
-}) => {
-  const handlePhoneChange = (value: string) => {
-    handleContactChange({
-      target: { name: "phone", value },
-    } as React.ChangeEvent<HTMLInputElement>);
-  };
+  const phoneNumber = watch("contactData.phone");
+
+  const showError = (fieldName: keyof OrderFormData["contactData"]) =>
+    touchedFields.contactData?.[fieldName] && errors.contactData?.[fieldName];
 
   return (
     <section>
@@ -30,16 +25,12 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
         Контактні дані
       </h2>
       <div className="space-y-4">
-        <div>
-          <label
-            htmlFor="phone"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Телефон *
-          </label>
-
-          <PhoneInput value={contactData.phone} onChange={handlePhoneChange} />
-        </div>
+        <PhoneInput
+          register={register}
+          error={showError("phone") ? errors.contactData?.phone : undefined}
+          value={phoneNumber}
+          setValue={setValue}
+        />
         <div>
           <label
             htmlFor="firstName"
@@ -50,11 +41,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
           <input
             type="text"
             id="firstName"
-            name="firstName"
-            value={contactData.firstName}
-            onChange={handleContactChange}
+            {...register("contactData.firstName")}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
+          {showError("firstName") && (
+            <p className="mt-1 text-sm text-red-800">
+              {errors.contactData?.firstName?.message}
+            </p>
+          )}
         </div>
         <div>
           <label
@@ -64,13 +58,16 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
             По-батькові *
           </label>
           <input
-            type="secondName"
+            type="text"
             id="secondName"
-            name="secondName"
-            value={contactData.secondName}
-            onChange={handleContactChange}
+            {...register("contactData.secondName")}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
+          {showError("secondName") && (
+            <p className="mt-1 text-sm text-red-800">
+              {errors.contactData?.secondName?.message}
+            </p>
+          )}
         </div>
         <div>
           <label
@@ -80,13 +77,16 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
             Прізвище *
           </label>
           <input
-            type="lastName"
+            type="text"
             id="lastName"
-            name="lastName"
-            value={contactData.lastName}
-            onChange={handleContactChange}
+            {...register("contactData.lastName")}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
+          {showError("lastName") && (
+            <p className="mt-1 text-sm text-red-800">
+              {errors.contactData?.lastName?.message}
+            </p>
+          )}
         </div>
       </div>
     </section>

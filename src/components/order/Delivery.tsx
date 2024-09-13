@@ -2,7 +2,7 @@ import { Truck } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-const Delivery = () => {
+const Delivery: React.FC = () => {
   return (
     <section>
       <h2 className="text-lg font-semibold mb-2 flex items-center">

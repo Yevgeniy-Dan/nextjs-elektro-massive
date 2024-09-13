@@ -1,14 +1,75 @@
-import { useCart } from "@/hooks/useCart";
-import { ChevronRight } from "lucide-react";
-import Image from "next/image";
-import React from "react";
-import CartItemsCarousel from "./CartItemsCarousel";
+"use client";
 
-const Summary = () => {
-  const { cartItems, calculateTotal, calculateDiscountTotal } = useCart();
+import React, { useEffect } from "react";
+import { useCart } from "@/hooks/useCart";
+import CartItemsCarousel from "./CartItemsCarousel";
+import { buyAction } from "@/app/actions";
+import { OrderFormData } from "@/hooks/useOrderForm";
+import { useExtendedFormContext } from "@/hooks/extendedFormContext";
+import { useFormStatus } from "react-dom";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+
+const Summary: React.FC = () => {
+  const { cartItems, calculateTotal, calculateDiscountTotal, handleClearCart } =
+    useCart();
+  const router = useRouter();
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useExtendedFormContext<OrderFormData>();
+
+  const { formState } = useExtendedFormContext<OrderFormData>();
+  const { pending } = useFormStatus();
+
+  useEffect(() => {
+    console.log("Form errors:", formState.errors);
+  }, [formState.errors]);
+
+  const onSubmit = async (data: OrderFormData, e: any) => {
+    try {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (typeof value === "object") {
+          Object.entries(value).forEach(([subKey, subValue]) => {
+            formData.append(`${key}.${subKey}`, String(subValue));
+          });
+        } else {
+          formData.append(key, String(value));
+        }
+      });
+
+      // Add cart data and totals
+      formData.append("cartItems", JSON.stringify(cartItems));
+      formData.append(
+        "totalAmount",
+        String(calculateTotal - calculateDiscountTotal)
+      );
+
+      // Send the validated form data to the server
+      const result = await buyAction(formData);
+
+      // Handle the server response
+      if (result.success) {
+        toast.success(result.message);
+        await handleClearCart();
+        router.push("/");
+        console.log("Success:", result.message);
+      } else {
+        toast.error(result.message);
+        console.log("Server validation failed:", result.message);
+      }
+    } catch (error) {
+      console.log("Submission error:", error);
+    }
+  };
 
   return (
-    <div className="sticky top-4 w-full  bg-white p-4 rounded-md shadow-sm border border-gray-200">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="sticky top-4 w-full  bg-white p-4 rounded-md shadow-sm border border-gray-200"
+    >
       <div className="mb-4 w-full ">
         <CartItemsCarousel cartItems={cartItems} />
       </div>
@@ -40,15 +101,20 @@ const Summary = () => {
         </div>
       </div>
 
-      <button className="w-full mt-4 bg-green-500 text-white py-3 rounded-md font-semibold hover:bg-green-600 transition-colors">
-        Купити
+      <button
+        type="submit"
+        disabled={isSubmitting || pending}
+        className="w-full mt-4 bg-green-500 text-white py-3 rounded-md font-semibold hover:bg-green-600 transition-colors"
+      >
+        {isSubmitting || pending ? "Обробка" : "Купити"}
       </button>
+
       <p className="text-xs text-gray-500 mt-2">
         Підтверджуючи замовлення, я приймаю умови:
         <br />• положення про обробку і захист персональних даних
         <br />• угоди користувача
       </p>
-    </div>
+    </form>
   );
 };
 

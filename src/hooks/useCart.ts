@@ -239,11 +239,16 @@ export const useCart = () => {
     }
   };
 
-  const handleClearCart = () => {
+  const handleClearCart = async () => {
     if (status === "authenticated") {
-      cartItems.forEach(
-        (item) => removeFromCartMutation.mutate(item.product.id) //TODO: create deleteCart on strapi
-      );
+      try {
+        await Promise.all(
+          cartItems.map(
+            (item) => removeFromCartMutation.mutateAsync(item.product.id) //TODO: create deleteCart on strapi
+          )
+        );
+        queryClient.setQueryData(["cart"], []);
+      } catch (error) {}
     } else {
       clearCartFromCookie();
       queryClient.setQueryData(["cart"], []);
