@@ -27,19 +27,19 @@ const orderFormSchema = z.object({
   //   postalCode: z.string().min(1, "Поштовий індекс є обов'язковим"),
   //   country: z.string().min(1, "Країна є обов'язковою"),
   // }),
-  cardData: z.object({
-    number: z.string().refine((val) => valid.number(val).isValid, {
-      message: "Невірний номер карти",
-    }),
-    expiry: z.string().refine((val) => valid.expirationDate(val).isValid, {
-      message: "Невірна дата закінчення терміну",
-    }),
-    cvc: z.string().refine((val) => valid.cvv(val).isValid, {
-      message: "Невірний CVC",
-    }),
-    name: z.string().min(1, "Ім'я власника картки є обов'язковим"),
-    focus: z.string(),
-  }),
+  // cardData: z.object({
+  //   number: z.string().refine((val) => valid.number(val).isValid, {
+  //     message: "Невірний номер карти",
+  //   }),
+  //   expiry: z.string().refine((val) => valid.expirationDate(val).isValid, {
+  //     message: "Невірна дата закінчення терміну",
+  //   }),
+  //   cvc: z.string().refine((val) => valid.cvv(val).isValid, {
+  //     message: "Невірний CVC",
+  //   }),
+  //   name: z.string().min(1, "Ім'я власника картки є обов'язковим"),
+  //   focus: z.string(),
+  // }),
 });
 
 export type OrderFormData = z.infer<typeof orderFormSchema>;
@@ -52,7 +52,7 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
     defaultValues: {
       contactData: { phone: "", firstName: "", secondName: "", lastName: "" },
       // addressData: { street: "", city: "", postalCode: "", country: "" }, //TODO:
-      cardData: { number: "", expiry: "", cvc: "", name: "", focus: "" },
+      // cardData: { number: "", expiry: "", cvc: "", name: "", focus: "" },
     },
     mode: "onTouched",
   });
@@ -88,9 +88,9 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
   };
 
   const handleCardFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    setValue("cardData.focus", event.target.name.replace("cardData.", ""), {
-      shouldValidate: false,
-    });
+    // setValue("cardData.focus", event.target.name.replace("cardData.", ""), {
+    //   shouldValidate: false,
+    // });
   };
 
   return {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useCart } from "@/hooks/useCart";
 import CartItemsCarousel from "./CartItemsCarousel";
 import { buyAction } from "@/app/actions";
@@ -8,7 +8,7 @@ import { OrderFormData } from "@/hooks/useOrderForm";
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
 import { useFormStatus } from "react-dom";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Summary: React.FC = () => {
   const { cartItems, calculateTotal, calculateDiscountTotal, handleClearCart } =
@@ -23,9 +23,36 @@ const Summary: React.FC = () => {
   const { formState } = useExtendedFormContext<OrderFormData>();
   const { pending } = useFormStatus();
 
+  const searchParams = useSearchParams();
+  const toastShownRef = useRef(false);
+
   useEffect(() => {
     console.log("Form errors:", formState.errors);
   }, [formState.errors]);
+
+  useEffect(() => {
+    // if (toastShownRef.current) return;
+
+    const status = searchParams.get("status");
+    const message = searchParams.get("message");
+
+    if (status === "success") {
+      handleClearCart();
+      toast.success("Оплата успішна!");
+      // toastShownRef.current = true;
+    } else if (status === "error" && message) {
+      toast.error(decodeURIComponent(message));
+      // toastShownRef.current = true;
+    }
+
+    // Clean up URL parameters
+    if (status || message) {
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete("status");
+      newUrl.searchParams.delete("message");
+      router.replace(newUrl.toString(), { scroll: false });
+    }
+  }, [searchParams, handleClearCart, router]);
 
   const onSubmit = async (data: OrderFormData, e: any) => {
     try {
@@ -47,15 +74,10 @@ const Summary: React.FC = () => {
         String(calculateTotal - calculateDiscountTotal)
       );
 
-      // Send the validated form data to the server
       const result = await buyAction(formData);
 
-      // Handle the server response
-      if (result.success) {
-        toast.success(result.message);
-        await handleClearCart();
-        router.push("/");
-        console.log("Success:", result.message);
+      if (result.success && result.checkout_url) {
+        window.location.href = result.checkout_url;
       } else {
         toast.error(result.message);
         console.log("Server validation failed:", result.message);

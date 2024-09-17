@@ -21,7 +21,7 @@ const CheckoutPage = () => {
           <div className="lg:col-span-3 space-y-6">
             <ContactDetails />
             <Delivery />
-            <Payment />
+            {/* <Payment /> */}
           </div>
           <div className="lg:col-span-2">
             <Summary />

@@ -8,5 +8,7 @@ namespace NodeJS {
     GOOGLE_CLIENT_SECRET: string;
     NEXTAUTH_SECRET: string;
     NEXTAUTH_URL: string;
+    FONDY_MERCHANT_ID: string;
+    FONDY_SECRET_KEY: string;
   }
 }

@@ -2,6 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import Fondy, { CallbackData, CallbackResponse } from "cloudipsp-node-js-sdk";
+
+const fondy = new Fondy({
+  merchantId: Number(process.env.FONDY_MERCHANT_ID),
+  secretKey: process.env.FONDY_SECRET_KEY as string,
+});
 
 // Define the schema for contact data
 const contactSchema = z.object({
@@ -69,13 +75,33 @@ export async function buyAction(formData: FormData) {
   try {
     const validatedData = formSchema.parse(dataToValidate);
 
-    // Here you would typically save the order to a database,
-    // process payment, send confirmation emails, etc.
+    const paymentData = {
+      order_id: `ORDER-${Date.now()}`,
+      order_desc: `Замовлення для ${validatedData.contactData.firstName} ${validatedData.contactData.secondName} ${validatedData.contactData.lastName}`,
+      currency: "UAH",
+      amount: Math.round(validatedData.totalAmount * 100),
+      response_url: `${process.env.NEXT_PUBLIC_API_URL}/api/payment-callback`,
+      server_callback_url: `${process.env.NEXT_PUBLIC_API_URL}/api/payment-callback`,
+    };
+    //Example of paymenrresponse
+    //    checkout_url: 'https://pay.fondy.eu/merchants/5ad6b888f4becb0c33d543d54e57d86c/default/index.html?token=2e4c4b6d84051c2dd90f5938c65f04fef0c1af90',
+    // payment_id: '818304793',
+    // response_status: 'success'
 
-    // Revalidate the current page
-    revalidatePath("/");
+    const paymentResponse: {
+      checkout_url: string;
+      payment_id: string;
+      response_status: string;
+    } = await fondy.Checkout(paymentData);
 
-    return { success: true, message: "Замовлення успішно оброблено" };
+    if (paymentResponse.checkout_url) {
+      return {
+        success: true,
+        checkout_url: paymentResponse.checkout_url,
+      };
+    } else {
+      throw new Error("Payment failed");
+    }
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errorMessages = error.errors.map(
@@ -92,5 +118,45 @@ export async function buyAction(formData: FormData) {
     // Handle other types of errors
     console.error("Error processing order:", error);
     return { success: false, message: "Сталася неочікувана помилка" };
+  }
+}
+
+export async function handlePaymentCallback(data: any) {
+  try {
+    // Verify the payment status
+    const isValid = fondy.isValidResponse(data);
+
+    if (isValid) {
+      const status = data.order_status;
+
+      if (status === "approved") {
+        // Payment successful
+        // Update your database, send confirmation email, etc.
+        revalidatePath("/"); // Revalidate the home page or any other relevant pages
+        return { success: true, redirectUrl: "/thankyou" };
+      } else {
+        // Payment failed or was canceled
+        return {
+          success: false,
+          redirectUrl: "/checkout",
+          message: `Платіж ${status}. Спробуйте ще раз або зверніться до служби підтримки.`,
+        };
+      }
+    } else {
+      // Invalid callback data
+      console.error("Invalid payment callback data");
+      return {
+        success: false,
+        redirectUrl: "/checkout",
+        message: "Отримано недійсні платіжні дані. Спробуйте ще раз.",
+      };
+    }
+  } catch (error) {
+    console.error("Error in handlePaymentCallback:", error);
+    return {
+      success: false,
+      redirectUrl: "/checkout",
+      message: "Сталася неочікувана помилка. Спробуйте пізніше.",
+    };
   }
 }
