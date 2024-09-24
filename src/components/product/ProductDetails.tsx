@@ -45,11 +45,12 @@ const ProductDetails: React.FC<{ product: IProductAttributes; id: string }> = ({
         image_link,
         retail,
         title,
+        params,
       },
     };
 
     dispatch(openModal(addedCartItem));
-  }, [id, dispatch]);
+  }, [id, currency, discount, image_link, retail, title, params, dispatch]);
 
   return (
     <div className="mx-auto p-4">

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   addItemToCookie,
   clearCartFromCookie,
@@ -35,6 +37,7 @@ const GET_AUTH_USER_CART_QUERY = `
             currency
             discount
             image_link
+            params
           }
         }       
       }
@@ -56,6 +59,7 @@ const ADD_TO_CART_MUTATION = `
             currency
             discount
             image_link
+            params
           }
         }
       }
@@ -77,6 +81,7 @@ const UPDATE_CART_ITEM_MUTATION = `
             currency
             discount
             image_link
+            params
           }
         }
       }
@@ -98,6 +103,7 @@ const REMOVE_FROM_CART_MUTATION = `
             currency
             discount
             image_link
+            params
           }
         }
       }
@@ -113,7 +119,9 @@ const fetchCart = async (): Promise<ICartItem[]> => {
     }
   );
 
-  return data.userCart.cart.cart_items;
+  const cartItems = data.data.userCart.cart.cart_items;
+
+  return cartItems;
 };
 
 const addCartItem = async (newItem: ICartItem) => {
@@ -279,7 +287,7 @@ export const useCart = () => {
     return cartItems.reduce(
       (total, item) =>
         total +
-        ((item.product.retail * item.product.discount ?? 0) / 100) *
+        ((item.product.retail * (item.product.discount ?? 0)) / 100) *
           item.quantity,
       0
     );

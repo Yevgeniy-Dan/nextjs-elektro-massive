@@ -1,3 +1,5 @@
+import { IProductParams } from "./types";
+
 export interface ICartProductInput {
   productId: string;
   quantity: number;
@@ -8,8 +10,9 @@ export interface ICartProduct {
   title: string;
   retail: number;
   currency: string;
-  discount: number;
+  discount: number | null;
   image_link: string;
+  params?: IProductParams;
 }
 
 export interface ICartItem {
@@ -43,5 +46,7 @@ export interface IRemoveFromCartResponse {
 }
 
 export interface IGetUserCartResponse {
-  userCart: ICartResponse;
+  data: {
+    userCart: ICartResponse;
+  };
 }

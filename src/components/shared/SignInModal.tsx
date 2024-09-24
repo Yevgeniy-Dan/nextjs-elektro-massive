@@ -1,6 +1,5 @@
 "use client";
 
-// import { syncCart } from "@/app/actions";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { closeSignInModal } from "@/store/signInModalSlice";
 import { stat } from "fs";

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import valid from "card-validator";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   formatCardholderName,
   formatCardNumber,
@@ -10,6 +10,17 @@ import {
   formatExpiry,
 } from "@/app/utils/cardFormatters";
 import { ExtendedUseFormReturn } from "./extendedFormContext";
+import { getNovaPoshtaCities } from "@/app/actions";
+import {
+  getNovaPoshtaWarehouses,
+  getProductsParams,
+  ICity,
+  IWarehouse,
+} from "@/app/actions/nova-poshta";
+import { useCart } from "./useCart";
+
+const WEIGHT_THRESHOLD = 30;
+const CARGO_WAREHOUSE_REF = "9a68df70-0267-42a8-bb5c-37f427e36ee4";
 
 const orderFormSchema = z.object({
   contactData: z.object({
@@ -21,12 +32,13 @@ const orderFormSchema = z.object({
     secondName: z.string().min(1, "По-батькові є обов'язковим"),
     lastName: z.string().min(1, "Прізвище є обов'язковим"),
   }),
-  // addressData: z.object({
-  //   street: z.string().min(1, "Вулиця є обов'язковою"),
-  //   city: z.string().min(1, "Місто є обов'язковим"),
-  //   postalCode: z.string().min(1, "Поштовий індекс є обов'язковим"),
-  //   country: z.string().min(1, "Країна є обов'язковою"),
-  // }),
+  addressData: z.object({
+    warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
+    cityRef: z.string().min(1, "Місто є обов'язковим"),
+    cityDescription: z.string().min(1, "Назва міста є обов'язковою"),
+    // postalCode: z.string().min(1, "Поштовий індекс є обов'язковим"),
+    // country: z.string().min(1, "Країна є обов'язковою"),
+  }),
   // cardData: z.object({
   //   number: z.string().refine((val) => valid.number(val).isValid, {
   //     message: "Невірний номер карти",
@@ -46,18 +58,28 @@ export type OrderFormData = z.infer<typeof orderFormSchema>;
 
 export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
   const [cardType, setCardType] = useState("");
+  const [cities, setCities] = useState<ICity[]>([]);
+  const [warehouses, setWarehouses] = useState<IWarehouse[]>([]);
+  const [isOverweightOrder, setIsOverweightOrder] = useState(false);
+  const { cartItems } = useCart();
 
   const methods = useForm<OrderFormData>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
       contactData: { phone: "", firstName: "", secondName: "", lastName: "" },
-      // addressData: { street: "", city: "", postalCode: "", country: "" }, //TODO:
+      addressData: { warehouseRef: "", cityRef: "" },
       // cardData: { number: "", expiry: "", cvc: "", name: "", focus: "" },
     },
     mode: "onTouched",
   });
 
   const { setValue, trigger } = methods;
+
+  const calculateTotalWeight = useCallback(async () => {
+    const { totalWeight } = await getProductsParams(cartItems);
+    setIsOverweightOrder(totalWeight > WEIGHT_THRESHOLD);
+    return totalWeight;
+  }, [cartItems]);
 
   const handleCardInput = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -93,10 +115,60 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
     // });
   };
 
+  const handleCityInput = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.target;
+    setValue("addressData.cityDescription", value, { shouldValidate: false });
+    setValue("addressData.cityRef", "", { shouldValidate: false });
+
+    if (value.length >= 2) {
+      try {
+        const cityData = await getNovaPoshtaCities(value);
+        setCities(cityData);
+      } catch (err) {
+        console.error("Error fetching cities:", err);
+      }
+    } else {
+      setCities([]);
+    }
+
+    await trigger("addressData.cityDescription");
+  };
+
+  const handleCitySelect = async (city: ICity) => {
+    setValue("addressData.cityRef", city.Ref, { shouldValidate: true });
+    setValue("addressData.cityDescription", city.Description, {
+      shouldValidate: true,
+    });
+    setCities([]);
+
+    try {
+      const warehouseData = await getNovaPoshtaWarehouses(city.Ref);
+      const totalWeight = await calculateTotalWeight();
+
+      if (totalWeight > WEIGHT_THRESHOLD) {
+        const filteredWarehouses = warehouseData.filter(
+          (warehouse) => warehouse.TypeOfWarehouse === CARGO_WAREHOUSE_REF
+        );
+        setWarehouses(filteredWarehouses);
+      } else {
+        setWarehouses(warehouseData);
+      }
+    } catch (err) {
+      console.error("Error fetching warehouses:", err);
+      setWarehouses([]);
+    }
+  };
+
   return {
     ...methods,
     handleCardInput,
     handleCardFocus,
+    handleCitySelect,
+    handleCityInput,
+    warehouses,
+    cities,
     cardType,
   };
 };

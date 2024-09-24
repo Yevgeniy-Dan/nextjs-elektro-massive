@@ -13,9 +13,6 @@ const ContactDetails: React.FC = () => {
 
   const phoneNumber = watch("contactData.phone");
 
-  const showError = (fieldName: keyof OrderFormData["contactData"]) =>
-    touchedFields.contactData?.[fieldName] && errors.contactData?.[fieldName];
-
   return (
     <section>
       <h2 className="text-lg font-semibold mb-2 flex items-center">
@@ -27,7 +24,8 @@ const ContactDetails: React.FC = () => {
       <div className="space-y-4">
         <PhoneInput
           register={register}
-          error={showError("phone") ? errors.contactData?.phone : undefined}
+          // error={showError("phone") ? errors.contactData?.phone : undefined}
+          error={errors.contactData?.phone}
           value={phoneNumber}
           setValue={setValue}
         />
@@ -44,9 +42,9 @@ const ContactDetails: React.FC = () => {
             {...register("contactData.firstName")}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
-          {showError("firstName") && (
+          {errors.contactData?.firstName && (
             <p className="mt-1 text-sm text-red-800">
-              {errors.contactData?.firstName?.message}
+              {errors.contactData.firstName.message}
             </p>
           )}
         </div>
@@ -63,9 +61,9 @@ const ContactDetails: React.FC = () => {
             {...register("contactData.secondName")}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
-          {showError("secondName") && (
+          {errors.contactData?.secondName && (
             <p className="mt-1 text-sm text-red-800">
-              {errors.contactData?.secondName?.message}
+              {errors.contactData.secondName.message}
             </p>
           )}
         </div>
@@ -82,9 +80,9 @@ const ContactDetails: React.FC = () => {
             {...register("contactData.lastName")}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
-          {showError("lastName") && (
+          {errors.contactData?.lastName && (
             <p className="mt-1 text-sm text-red-800">
-              {errors.contactData?.lastName?.message}
+              {errors.contactData.lastName.message}
             </p>
           )}
         </div>

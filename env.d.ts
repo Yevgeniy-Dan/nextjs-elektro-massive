@@ -8,7 +8,11 @@ namespace NodeJS {
     GOOGLE_CLIENT_SECRET: string;
     NEXTAUTH_SECRET: string;
     NEXTAUTH_URL: string;
-    FONDY_MERCHANT_ID: string;
-    FONDY_SECRET_KEY: string;
+    NOVA_POSHTA_API_KEY: string;
+    LIQPAY_PUBLIC_KEY: string;
+    LIQPAY_PRIVATE_KEY: string;
+    NOVA_POSHTA_SENDER_NAME: string;
+    NOVA_POSHTA_SENDER_PHONE: string;
+    NOVA_POSHTA_SENDER_REF: string;
   }
 }

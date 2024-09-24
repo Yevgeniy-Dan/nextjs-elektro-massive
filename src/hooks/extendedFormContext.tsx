@@ -1,5 +1,6 @@
 import { UseFormReturn, FieldValues } from "react-hook-form";
 import React, { createContext, useContext, PropsWithChildren } from "react";
+import { ICity, IWarehouse } from "@/app/actions/nova-poshta";
 
 export type ExtendedUseFormReturn<
   TFieldValues extends FieldValues = FieldValues,
@@ -8,6 +9,13 @@ export type ExtendedUseFormReturn<
   handleCardInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCardFocus: (event: React.FocusEvent<HTMLInputElement>) => void;
   cardType: string;
+
+  handleCityInput: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => Promise<void>;
+  handleCitySelect: (city: ICity) => Promise<void>;
+  cities: ICity[];
+  warehouses: IWarehouse[];
 };
 
 const FormContext = createContext<ExtendedUseFormReturn<any, any> | null>(null);
