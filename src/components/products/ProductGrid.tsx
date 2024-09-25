@@ -104,12 +104,12 @@ const ProductGrid = ({
         {data &&
           data.filteredProducts.products.map((product) => (
             <TopCard
-              id={product.id}
-              key={product.id}
-              imageSrc={product.image_link || ""}
-              currency={product.currency || "грн"}
-              title={product.title || ""}
-              retail={product.retail.toString() || "0"}
+              id={product?.id}
+              key={product?.id}
+              imageSrc={product?.image_link ?? ""}
+              currency={product?.currency ?? "грн"}
+              title={product?.title ?? ""}
+              retail={product?.retail.toString() || "0"}
               subcategoryId={subcategoryId}
             />
           ))}
