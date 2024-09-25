@@ -23,7 +23,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
       <div className="flex-shrink-0 mr-4">
         <Image
-          src={item.product.image_link}
+          src={item?.product?.image_link}
           alt={item.product.title}
           width={100}
           height={100}

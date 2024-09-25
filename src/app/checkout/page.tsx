@@ -4,7 +4,7 @@ import React from "react";
 
 import ContactDetails from "@/components/order/ContactDetails";
 import Delivery from "@/components/order/Delivery";
-import Payment from "@/components/order/Payment";
+// import Payment from "@/components/order/Payment";
 import Summary from "@/components/order/Summary";
 import { ExtendedFormProvider } from "@/hooks/extendedFormContext";
 import { OrderFormData, useOrderForm } from "@/hooks/useOrderForm";

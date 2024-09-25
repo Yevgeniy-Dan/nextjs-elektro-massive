@@ -2,7 +2,6 @@ import Image from "next/image";
 import Dropdown from "../home/Dropdown";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
-import { useCartCalculations } from "@/hooks/useCartCalcutaions";
 import { useCart } from "@/hooks/useCart";
 
 const UserActions = () => {

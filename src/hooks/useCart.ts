@@ -278,7 +278,7 @@ export const useCart = () => {
 
   const calculateTotal = useMemo(() => {
     return cartItems.reduce(
-      (total, item) => total + item.product.retail * item.quantity,
+      (total, item) => total + (item?.product?.retail ?? 0) * item.quantity,
       0
     );
   }, [cartItems]);
@@ -287,7 +287,8 @@ export const useCart = () => {
     return cartItems.reduce(
       (total, item) =>
         total +
-        ((item.product.retail * (item.product.discount ?? 0)) / 100) *
+        (((item?.product?.retail ?? 0) * (item?.product?.discount ?? 0)) /
+          100) *
           item.quantity,
       0
     );

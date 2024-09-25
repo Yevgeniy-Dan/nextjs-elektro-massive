@@ -55,7 +55,7 @@ const CartItemsCarousel: React.FC<CartItemsCarouselProps> = ({ cartItems }) => {
             >
               <div className="flex items-center">
                 <Image
-                  src={item.product.image_link}
+                  src={item?.product?.image_link}
                   alt={item.product.title}
                   width={60}
                   height={60}
