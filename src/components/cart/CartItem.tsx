@@ -47,7 +47,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           />
 
           <div>
-            {item.product.discount > 0 ? (
+            {item.product.discount && item.product.discount > 0 ? (
               <>
                 <p className="line-through decoration-red-800 mr-2 my-0">
                   {(item.product.retail * item.quantity).toFixed(2)} грн
@@ -72,5 +72,4 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
     </div>
   );
 };
-
 export default CartItem;
