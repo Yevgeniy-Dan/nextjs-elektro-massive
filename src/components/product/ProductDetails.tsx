@@ -1,6 +1,5 @@
 "use client";
 
-import { IProductAttributes } from "@/types/types";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import ImageCarousel from "./ImageCarousel";
@@ -11,10 +10,12 @@ import { useCallback } from "react";
 
 import { useAppDispatch } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
+import { ProductAttributes } from "@/types/types";
+import { ComponentImagesImages } from "@/gql/graphql";
 
 const initialParamsCount = 5;
 
-const ProductDetails: React.FC<{ product: IProductAttributes; id: string }> = ({
+const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
   product,
   id,
 }) => {
@@ -32,7 +33,15 @@ const ProductDetails: React.FC<{ product: IProductAttributes; id: string }> = ({
     description,
   } = product;
 
-  const images = [{ id: "main", link: image_link }, ...additional_images];
+  const images: { id: string; link: string }[] = [
+    { id: "main", link: image_link ?? "" },
+    ...(additional_images
+      ?.filter((img): img is ComponentImagesImages => img !== null)
+      .map((img) => ({
+        id: img.id,
+        link: img.link ?? "",
+      })) ?? []),
+  ];
 
   const handleBuyClick = useCallback(() => {
     const addedCartItem = {
@@ -42,15 +51,26 @@ const ProductDetails: React.FC<{ product: IProductAttributes; id: string }> = ({
         id,
         currency,
         discount,
-        image_link,
+        image_link: image_link ?? "",
         retail,
         title,
         params,
+        part_number,
       },
     };
 
     dispatch(openModal(addedCartItem));
-  }, [id, currency, discount, image_link, retail, title, params, dispatch]);
+  }, [
+    id,
+    currency,
+    discount,
+    image_link,
+    retail,
+    title,
+    params,
+    part_number,
+    dispatch,
+  ]);
 
   return (
     <div className="mx-auto p-4">
@@ -124,5 +144,4 @@ const ProductDetails: React.FC<{ product: IProductAttributes; id: string }> = ({
     </div>
   );
 };
-
 export default ProductDetails;

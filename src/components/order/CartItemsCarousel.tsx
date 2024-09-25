@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ICartItem } from "@/types/cart";
+import { CartItem } from "@/gql/graphql";
 
 interface CartItemsCarouselProps {
-  cartItems: ICartItem[];
+  cartItems: CartItem[];
 }
 
 const CartItemsCarousel: React.FC<CartItemsCarouselProps> = ({ cartItems }) => {
@@ -55,7 +55,7 @@ const CartItemsCarousel: React.FC<CartItemsCarouselProps> = ({ cartItems }) => {
             >
               <div className="flex items-center">
                 <Image
-                  src={item?.product?.image_link}
+                  src={item.product.image_link || ""}
                   alt={item.product.title}
                   width={60}
                   height={60}
@@ -63,7 +63,7 @@ const CartItemsCarousel: React.FC<CartItemsCarouselProps> = ({ cartItems }) => {
                 />
                 <div className="flex-grow min-w-0 flex flex-col justify-center">
                   <p className="text-sm font-medium truncate m-0">
-                    {item.product.title} sadfsdfsfsdfasdadasdasdasd
+                    {item.product.title}
                   </p>
 
                   <p className="text-xs text-gray-500 m-0">

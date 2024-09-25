@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ComponentImagesImages } from "@/gql/graphql";
 
 interface ImageCarouselProps {
-  images: { id: string; link: string }[];
+  images: ComponentImagesImages[];
   title: string;
 }
 
@@ -63,7 +64,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
     <div className="border-2 rounded-xl">
       <div className="relative w-full aspect-square mb-4 flex items-center justify-center">
         <Image
-          src={images[selectedIndex].link}
+          src={images[selectedIndex].link ?? ""}
           alt={title}
           layout="intrinsic"
           width={500}
@@ -83,7 +84,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
                 onClick={() => scrollTo(index)}
               >
                 <Image
-                  src={image.link}
+                  src={image.link ?? ""}
                   alt={`Thumbnail ${image.id}`}
                   layout="intrinsic"
                   width={100}

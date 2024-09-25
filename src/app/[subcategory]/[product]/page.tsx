@@ -1,11 +1,12 @@
 "use server";
 
-import { IProductAttributes, IProductResponse } from "@/types/types";
+import { ProductAttributes } from "@/types/types";
 import React, { Suspense } from "react";
 import { GET_PRODUCT } from "@/components/product/queries";
 import { getClient } from "../../../../lib/apollo-client";
 import ProductDetails from "@/components/product/ProductDetails";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
+import { GetProductQuery } from "@/gql/graphql";
 
 interface ProductPageProps {
   params: {
@@ -16,13 +17,13 @@ interface ProductPageProps {
 
 async function getProduct(
   productId: string
-): Promise<IProductAttributes | null> {
-  const { data } = await getClient().query<IProductResponse>({
+): Promise<ProductAttributes | null> {
+  const { data } = await getClient().query<GetProductQuery>({
     query: GET_PRODUCT,
     variables: { productId },
   });
 
-  return (data.product.data && data.product.data.attributes) || null;
+  return data?.product?.data?.attributes || null;
 }
 
 async function ProductContainer({ productId }: { productId: string }) {

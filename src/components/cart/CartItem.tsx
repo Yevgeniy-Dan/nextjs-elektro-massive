@@ -1,15 +1,15 @@
 import React from "react";
 import QuantityAdjuster from "./QuantityAdjuster";
-import { ICartItem } from "@/types/cart";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
+import { CartItem } from "@/gql/graphql";
 
 interface CartItemProps {
-  item: ICartItem;
+  item: CartItem;
 }
 
-const CartItem: React.FC<CartItemProps> = ({ item }) => {
+const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
   const { handleRemoveItem, handleQuantityChange } = useCart();
 
   return (
@@ -23,7 +23,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
       <div className="flex-shrink-0 mr-4">
         <Image
-          src={item?.product?.image_link}
+          src={item.product.image_link || ""}
           alt={item.product.title}
           width={100}
           height={100}
@@ -72,4 +72,4 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
     </div>
   );
 };
-export default CartItem;
+export default CartItemComponent;

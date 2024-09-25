@@ -1,52 +1,23 @@
-import { IProductParams } from "./types";
-
-export interface ICartProductInput {
-  productId: string;
-  quantity: number;
-}
-
-export interface ICartProduct {
-  id: string;
-  title: string;
-  retail: number;
-  currency: string;
-  discount: number | null;
-  image_link: string;
-  params?: IProductParams;
-}
-
-export interface ICartItem {
-  id: string;
-  product: ICartProduct;
-  quantity: number;
-}
-
-interface ICart {
-  cart_items: ICartItem[];
-}
-
-interface ICartResponse {
-  cart: ICart;
-}
+import { CartResponse } from "@/gql/graphql";
 
 export interface ISyncCartMutationResponse {
-  data: { data: { syncCartBySingIn: ICartResponse } };
+  data: { data: { syncCartBySingIn: CartResponse } };
 }
 
 export interface IAddToCartResponse {
-  data: { addToCart: ICartResponse };
+  data: { addToCart: CartResponse };
 }
 
 export interface IUpdateCartItemResponse {
-  data: { updateCartItem: ICartResponse };
+  data: { updateCartItem: CartResponse };
 }
 
 export interface IRemoveFromCartResponse {
-  data: { removeFromCart: ICartResponse };
+  data: { removeFromCart: CartResponse };
 }
 
 export interface IGetUserCartResponse {
   data: {
-    userCart: ICartResponse;
+    userCart: CartResponse;
   };
 }

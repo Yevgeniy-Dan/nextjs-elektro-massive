@@ -1,12 +1,12 @@
-import { ICartItem } from "@/types/cart";
+import { CartItem } from "@/gql/graphql";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const CART_COOKIE_NAME = "user_cart";
 
 interface StoreState {
   isModalOpen: boolean;
-  addedProduct: ICartItem | null;
-  cartItems: ICartItem[];
+  addedProduct: CartItem | null;
+  cartItems: CartItem[];
 }
 
 const initialState: StoreState = {
@@ -19,7 +19,7 @@ export const storeSlice = createSlice({
   name: "store",
   initialState,
   reducers: {
-    openModal: (state, action: PayloadAction<ICartItem | undefined>) => {
+    openModal: (state, action: PayloadAction<CartItem | undefined>) => {
       state.isModalOpen = true;
       state.addedProduct = action.payload ?? null;
     },

@@ -4,15 +4,15 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import ProductTypeSelector from "./ProductTypeSelector";
 
-import { useDebugLog } from "@/hooks/useDebugLog";
-
 import { GET_PRODUCT_TYPE_FILTERS, GET_PRODUCT_TYPES } from "./queries";
 import ProductFilterSection from "./ProductFilterSection";
 import ProductGrid from "./ProductGrid";
 import {
-  IProductTypeFiltersResponse,
-  IProductTypesResponse,
-} from "@/types/types";
+  GetProductTypeFiltersQuery,
+  GetProductTypeFiltersQueryVariables,
+  GetProductTypesQuery,
+  GetProductTypesQueryVariables,
+} from "@/gql/graphql";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
@@ -34,28 +34,28 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const pageSize = 10;
 
-  const { data: productTypesData } = useQuery<IProductTypesResponse>(
-    GET_PRODUCT_TYPES,
-    {
-      variables: { subcategoryId },
-      skip: !subcategoryId,
-    }
-  );
+  const { data: productTypesData } = useQuery<
+    GetProductTypesQuery,
+    GetProductTypesQueryVariables
+  >(GET_PRODUCT_TYPES, {
+    variables: { subcategoryId },
+    skip: !subcategoryId,
+  });
 
-  const { data: filtersData } = useQuery<IProductTypeFiltersResponse>(
-    GET_PRODUCT_TYPE_FILTERS,
-    {
-      variables: { productTypeId: selectedProductType, subcategoryId },
-      skip: !selectedProductType,
-    }
-  );
+  const { data: filtersData } = useQuery<
+    GetProductTypeFiltersQuery,
+    GetProductTypeFiltersQueryVariables
+  >(GET_PRODUCT_TYPE_FILTERS, {
+    variables: { productTypeId: selectedProductType || "", subcategoryId },
+    skip: !selectedProductType,
+  });
 
   useEffect(() => {
     if (
-      productTypesData?.productTypes.data &&
+      productTypesData?.productTypes?.data &&
       productTypesData?.productTypes.data.length > 0
     ) {
-      setSelectedProductType(productTypesData.productTypes.data[0].id);
+      setSelectedProductType(productTypesData?.productTypes?.data[0].id ?? "");
     }
   }, [productTypesData]);
 

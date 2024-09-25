@@ -20,6 +20,7 @@ export const cartItemSchema = z.object({
   quantity: z.number().int().positive(),
   product: z.object({
     id: z.string(),
+    part_number: z.string(),
     title: z.string(),
     retail: z.number().positive(),
     currency: z.string(),

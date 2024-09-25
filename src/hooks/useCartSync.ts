@@ -4,8 +4,8 @@ import {
   getCartItemsFromCookie,
   clearCartFromCookie,
 } from "@/app/utils/cartHeplers";
-import { useAppDispatch } from "@/store/hooks";
-import { ICartItem, ISyncCartMutationResponse } from "@/types/cart";
+import { CartItem } from "@/gql/graphql";
+import { ISyncCartMutationResponse } from "@/types/cart";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -26,6 +26,8 @@ export const SYNC_CART_MUTATION = `
             currency
             discount
             image_link
+            part_number
+            params
           }
         }
       }
@@ -34,10 +36,10 @@ export const SYNC_CART_MUTATION = `
 `;
 
 const syncCart = async (
-  cartItems: ICartItem[]
+  cartItems: CartItem[]
 ): Promise<ISyncCartMutationResponse> => {
   const input = {
-    products: cartItems.map((item: ICartItem) => ({
+    products: cartItems.map((item: CartItem) => ({
       productId: item.id,
       quantity: item.quantity,
     })),

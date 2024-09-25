@@ -7,12 +7,12 @@ import {
   removeCartItemFromCookie,
   updateCartItemInCookie,
 } from "@/app/utils/cartHeplers";
+import { CartItem } from "@/gql/graphql";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { openSignInModal } from "@/store/signInModalSlice";
 import { clearAddedProduct, closeModal } from "@/store/storeSlice";
 import {
   IAddToCartResponse,
-  ICartItem,
   IGetUserCartResponse,
   IRemoveFromCartResponse,
   IUpdateCartItemResponse,
@@ -21,7 +21,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 const GET_AUTH_USER_CART_QUERY = `
   query GetUserCart {
@@ -38,6 +38,7 @@ const GET_AUTH_USER_CART_QUERY = `
             discount
             image_link
             params
+            part_number
           }
         }       
       }
@@ -60,6 +61,7 @@ const ADD_TO_CART_MUTATION = `
             discount
             image_link
             params
+            part_number
           }
         }
       }
@@ -82,6 +84,7 @@ const UPDATE_CART_ITEM_MUTATION = `
             discount
             image_link
             params
+            part_number
           }
         }
       }
@@ -104,6 +107,7 @@ const REMOVE_FROM_CART_MUTATION = `
             discount
             image_link
             params
+            part_number
           }
         }
       }
@@ -111,7 +115,7 @@ const REMOVE_FROM_CART_MUTATION = `
   }
 `;
 
-const fetchCart = async (): Promise<ICartItem[]> => {
+const fetchCart = async (): Promise<CartItem[]> => {
   const { data } = await axios.post<IGetUserCartResponse>(
     process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
     {
@@ -124,7 +128,7 @@ const fetchCart = async (): Promise<ICartItem[]> => {
   return cartItems;
 };
 
-const addCartItem = async (newItem: ICartItem) => {
+const addCartItem = async (newItem: CartItem) => {
   const { data } = await axios.post<IAddToCartResponse>(
     process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
     {
@@ -137,6 +141,7 @@ const addCartItem = async (newItem: ICartItem) => {
       },
     }
   );
+
   return data.data.addToCart.cart.cart_items;
 };
 
@@ -202,7 +207,7 @@ export const useCart = () => {
     },
   });
 
-  const handleAddToCart = (item: ICartItem) => {
+  const handleAddToCart = (item: CartItem) => {
     if (status === "authenticated") {
       addToCartMutation.mutate(item);
     } else {

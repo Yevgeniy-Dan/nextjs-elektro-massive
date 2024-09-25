@@ -1,7 +1,7 @@
-import { ICartItem } from "@/types/cart";
 import axios from "axios";
 import { format } from "date-fns";
 import { calculateProductDimensions } from "../utils/novaPoshtaHeplers";
+import { CartItem } from "@/gql/graphql";
 
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const API_KEY = process.env.NOVA_POSHTA_API_KEY;
@@ -44,7 +44,7 @@ interface IShipmentData {
   phone: string;
   warehouseRef: string;
   cityRef: string;
-  cartItems: ICartItem[];
+  cartItems: CartItem[];
 }
 
 export async function getNovaPoshtaCities(search?: string) {
@@ -282,7 +282,7 @@ async function getSenderCounterpartyContactPersons(): Promise<ISenderContactPers
   }
 }
 
-export async function getProductsParams(cartItems: ICartItem[]) {
+export async function getProductsParams(cartItems: CartItem[]) {
   let totalWeight = 0;
   let totalVolume = 0;
   let declaredValue = 0;

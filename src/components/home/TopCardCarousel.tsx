@@ -5,9 +5,9 @@ import TopCard from "./TopCard";
 import useEmblaCarousel from "embla-carousel-react";
 
 import { GET_PRODUCTS } from "../products/queries";
-import { IProductsResponse } from "@/types/types";
 import { useQuery } from "@apollo/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { GetProductsQuery } from "@/gql/graphql";
 
 interface TopCardCarousel {
   cardWidth?: string;
@@ -52,7 +52,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
     };
   }, [emblaApi, onSelect]);
 
-  const { data, loading, error } = useQuery<IProductsResponse>(GET_PRODUCTS, {
+  const { data, loading, error } = useQuery<GetProductsQuery>(GET_PRODUCTS, {
     variables: {
       pageSize: 20,
     },
@@ -78,17 +78,22 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
           <div className="embla__container flex">
             {loading
               ? placeholders
-              : data?.products.data.map((card, index) => (
+              : data?.products?.data.map((card, index) => (
                   <div
                     key={card.id}
                     className={`embla__slide flex-shrink-0 ${cardWidth} ${cardHeight} p-1`}
                   >
                     <TopCard
-                      id={card.id}
-                      imageSrc={card.attributes.image_link}
-                      subcategoryId={card.attributes.subcategory.data.id}
+                      id={card.id ?? ""}
+                      imageSrc={card.attributes?.image_link ?? ""}
+                      subcategoryId={
+                        card.attributes?.subcategory?.data?.id ?? ""
+                      }
                       {...card.attributes}
                       label={label}
+                      currency={card.attributes?.currency ?? ""}
+                      retail={card.attributes?.retail.toString() ?? ""}
+                      title={card.attributes?.title ?? ""}
                     />
                   </div>
                 ))}

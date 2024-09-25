@@ -1,9 +1,9 @@
-import { ICartItem } from "@/types/cart";
 import React from "react";
-import CartItem from "./CartItem";
+import CartItemComponent from "./CartItem";
+import { CartItem } from "@/gql/graphql";
 
 interface CartItemListProps {
-  items: ICartItem[];
+  items: CartItem[];
   isLoading: boolean;
 }
 
@@ -16,7 +16,7 @@ const CartItemList: React.FC<CartItemListProps> = ({ items, isLoading }) => {
         ) : items.length === 0 ? (
           <div className="p-4 text-center text-xl">Кошик порожній</div>
         ) : (
-          items.map((item) => <CartItem key={item.id} item={item} />)
+          items.map((item) => <CartItemComponent key={item.id} item={item} />)
         )}
       </div>
     </div>

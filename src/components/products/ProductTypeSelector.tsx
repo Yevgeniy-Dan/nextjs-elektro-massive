@@ -1,9 +1,9 @@
-import { IProductType } from "@/types/types";
+import { ProductType } from "@/types/types";
 import Image from "next/image";
 import React from "react";
 
 interface ProductTypeSelectorProps {
-  types: IProductType[];
+  types: ProductType[];
   selectedTypeId: string | null;
   onTypeChange: (type: string) => void;
 }
@@ -25,10 +25,10 @@ const ProductTypeSelector: React.FC<ProductTypeSelectorProps> = ({
                 ? "opacity-100"
                 : "opacity-70 hover:opacity-100"
             }`}
-            onClick={() => onTypeChange(type.id)}
+            onClick={() => onTypeChange(type.id ?? "")}
           >
             <div className="w-32 h-32 mb-2 relative">
-              {type.attributes.icon?.data?.attributes && (
+              {type?.attributes?.icon?.data?.attributes && (
                 <Image
                   src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${type.attributes.icon.data.attributes.url}`}
                   alt={type.attributes.title}
@@ -37,7 +37,9 @@ const ProductTypeSelector: React.FC<ProductTypeSelectorProps> = ({
                 />
               )}
             </div>
-            <span className="text-md text-center">{type.attributes.title}</span>
+            <span className="text-md text-center">
+              {type?.attributes?.title}
+            </span>
           </button>
         </React.Fragment>
       ))}

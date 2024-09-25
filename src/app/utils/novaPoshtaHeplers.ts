@@ -1,6 +1,6 @@
-import { ICartProduct } from "@/types/cart";
+import { Product } from "@/gql/graphql";
 
-export function calculateProductDimensions(product: ICartProduct): {
+export function calculateProductDimensions(product: Product): {
   volume: number;
   weight: number;
   width: number;
@@ -25,7 +25,7 @@ export function calculateProductDimensions(product: ICartProduct): {
 
     const dimensions = dimensionsStr
       .split("x")
-      .map((dim) => parseFloat(dim.trim()));
+      .map((dim: string) => parseFloat(dim.trim()));
     if (dimensions.length >= 2) {
       width = dimensions[0] / 10; //Convert mm to cm
       length = dimensions[1] / 10;

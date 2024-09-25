@@ -1,20 +1,20 @@
 "use client";
 
+import { CartItem } from "@/gql/graphql";
 import { CART_COOKIE_NAME } from "@/store/storeSlice";
-import { ICartItem } from "@/types/cart";
 import Cookie from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
 
-export const getCartItemsFromCookie: () => ICartItem[] = () => {
+export const getCartItemsFromCookie: () => CartItem[] = () => {
   const cartItemsCookie = Cookie.get(CART_COOKIE_NAME);
   return cartItemsCookie ? JSON.parse(cartItemsCookie) : [];
 };
 
-export const saveCartToCookie = (cartItems: ICartItem[]) => {
+export const saveCartToCookie = (cartItems: CartItem[]) => {
   Cookie.set(CART_COOKIE_NAME, JSON.stringify(cartItems), { expires: 7 });
 };
 
-export const addItemToCookie = (cartItem: ICartItem): void => {
+export const addItemToCookie = (cartItem: CartItem): void => {
   const currentCart = getCartItemsFromCookie();
 
   const existingItemIndex = currentCart.findIndex(
@@ -30,7 +30,7 @@ export const addItemToCookie = (cartItem: ICartItem): void => {
   saveCartToCookie(currentCart);
 };
 
-export const updateCartItemInCookie = (updatedItem: ICartItem): void => {
+export const updateCartItemInCookie = (updatedItem: CartItem): void => {
   const currentCart = getCartItemsFromCookie();
   const updatedCart = currentCart.map((item) =>
     item.product.id === updatedItem.product.id ? updatedItem : item

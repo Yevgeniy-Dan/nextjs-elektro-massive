@@ -1,34 +1,11 @@
-interface Icon {
-  data: {
-    attributes: {
-      url: string;
-    };
-  };
-}
+import { CategoryMenuQuery } from "@/gql/graphql";
 
-export interface Subcategory {
-  id: string;
-  attributes: {
-    title: string;
-    slug: string;
-    icon: Icon;
-  };
-}
+export type Category = NonNullable<
+  NonNullable<CategoryMenuQuery["categories"]>["data"][number]
+>;
 
-export interface Category {
-  id: string;
-  attributes: {
-    name: string;
-    slug: string;
-    icon: Icon;
-    subcategories: {
-      data: Array<Subcategory>;
-    };
-  };
-}
+export type CategoryAttributes = NonNullable<Category["attributes"]>;
 
-export interface CategoryMenuData {
-  categories: {
-    data: Array<Category>;
-  };
-}
+export type Subcategory = NonNullable<
+  NonNullable<CategoryAttributes["subcategories"]>["data"][number]
+>;

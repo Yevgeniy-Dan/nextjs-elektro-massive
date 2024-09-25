@@ -3,10 +3,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import TopCard from "../home/TopCard";
 import Pagination from "../shared/Pagination";
 import { GET_FILTERED_PRODUCTS } from "./queries";
-import { IFilteredProductsResponse } from "@/types/types";
-import { useDebugLog } from "@/hooks/useDebugLog";
-import Spinner from "../shared/Spinner";
 import CenteredSpinner from "../shared/CenteredSpinner";
+import {
+  GetFilteredProductsQuery,
+  GetFilteredProductsQueryVariables,
+} from "@/gql/graphql";
 
 interface ProductGridProps {
   productTypeId: string | null;
@@ -29,19 +30,21 @@ const ProductGrid = ({
     );
   }, [appliedFilters]);
 
-  const { data, loading, error, fetchMore, networkStatus, refetch } =
-    useQuery<IFilteredProductsResponse>(GET_FILTERED_PRODUCTS, {
-      variables: {
-        productTypeId,
-        subcategoryId,
-        filters: transformedFilters,
-        // cursor: null,
-        page: currentPage,
-        pageSize,
-      },
-      skip: !productTypeId,
-      notifyOnNetworkStatusChange: true,
-    });
+  const { data, loading, error, fetchMore, networkStatus, refetch } = useQuery<
+    GetFilteredProductsQuery,
+    GetFilteredProductsQueryVariables
+  >(GET_FILTERED_PRODUCTS, {
+    variables: {
+      productTypeId: productTypeId || "",
+      subcategoryId,
+      filters: transformedFilters,
+      // cursor: null,
+      page: currentPage,
+      pageSize,
+    },
+    skip: !productTypeId,
+    notifyOnNetworkStatusChange: true,
+  });
 
   useEffect(() => {
     setCurrentPage(1);
@@ -101,9 +104,12 @@ const ProductGrid = ({
         {data &&
           data.filteredProducts.products.map((product) => (
             <TopCard
+              id={product.id}
               key={product.id}
-              imageSrc={product.image_link}
-              {...product}
+              imageSrc={product.image_link || ""}
+              currency={product.currency || "грн"}
+              title={product.title || ""}
+              retail={product.retail.toString() || "0"}
               subcategoryId={subcategoryId}
             />
           ))}

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Heart, BarChart2, ShoppingCart } from "lucide-react";
-
-import dynamic from "next/dynamic";
-import { IProductAttributes } from "@/types/types";
+import { ProductAttributes } from "@/types/types";
 
 interface PurchaseSectionProps {
-  product: IProductAttributes;
+  product: ProductAttributes;
   id: string;
   onBuyClick: () => void;
 }

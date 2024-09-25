@@ -6,7 +6,7 @@ export interface ITopCardProps {
   id: string;
   subcategoryId: string;
   title: string;
-  retail: number;
+  retail: string;
   imageSrc: string;
   currency: string;
   label?: "top" | "new" | "sale";

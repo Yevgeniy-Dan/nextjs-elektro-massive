@@ -8,7 +8,7 @@ interface SubcategoryGridProps {
 }
 
 const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({ category }) => {
-  const subcategories = category.attributes.subcategories.data;
+  const subcategories = category?.attributes?.subcategories?.data ?? [];
 
   const getGridCols = (count: number): string => {
     if (count === 1) return "grid-cols-1";
@@ -20,7 +20,7 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({ category }) => {
   const gridCols = getGridCols(subcategories.length);
 
   const renderSubcategory = (subcategory: Subcategory) => {
-    const isImage = subcategory.attributes.icon.data;
+    const isImage = subcategory.attributes?.icon?.data;
 
     return (
       <Link
@@ -32,18 +32,17 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({ category }) => {
           <Image
             src={`${
               isImage
-                ? process.env.NEXT_PUBLIC_STRAPI_URL +
-                  subcategory.attributes.icon.data.attributes.url
+                ? process.env.NEXT_PUBLIC_STRAPI_URL + isImage.attributes?.url
                 : "https://via.placeholder.com/24x24"
             }`}
-            alt={subcategory.attributes.title}
+            alt={subcategory.attributes?.title ?? ""}
             width={36}
             height={36}
             className="rounded-sm object-cover"
           />
         </div>
         <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
-          {subcategory.attributes.title}
+          {subcategory.attributes?.title}
         </span>
       </Link>
     );

@@ -4,10 +4,10 @@ import { FaChevronDown } from "react-icons/fa6";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
 import { GET_CATEGORY_MENU } from "../home/queries";
-import { CategoryMenuData } from "@/types/menu";
 import CategorySubmenu from "./CategorySubmenu";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Spinner from "../shared/Spinner";
+import { CategoryMenuQuery } from "@/gql/graphql";
 
 const CategoryMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +17,7 @@ const CategoryMenu = () => {
     data: menuItems,
     loading,
     error,
-  } = useQuery<CategoryMenuData>(GET_CATEGORY_MENU);
+  } = useQuery<CategoryMenuQuery>(GET_CATEGORY_MENU);
 
   const menuRef = useOutsideClick(() => {
     if (isMenuOpen) setIsMenuOpen(false);
@@ -61,13 +61,14 @@ const CategoryMenu = () => {
                   <p className="text-white">Упс.. Щось не так с сервером</p>
                 </div>
               ) : (
-                menuItems?.categories.data.map((category, index) => (
-                  <div key={category.id} className="group">
+                menuItems?.categories?.data.map((category, index) => (
+                  <div key={category.id ?? index} className="group">
                     <div
                       className={`flex items-center justify-start space-x-5 p-6 py-5 text-black font-semibold border-b border-black sm:border-none hover:bg-white invert hover:invert-0 ${
                         index === 0
                           ? "rounded-tl-2xl"
-                          : index === menuItems.categories.data.length - 1
+                          : index ===
+                            (menuItems?.categories?.data.length ?? 0) - 1
                           ? "rounded-bl-2xl"
                           : ""
                       }`}
@@ -78,19 +79,19 @@ const CategoryMenu = () => {
                       <div className="flex-shrink-0 w-9 h-9">
                         <Image
                           src={`${
-                            category.attributes.icon.data
+                            category.attributes?.icon?.data
                               ? process.env.NEXT_PUBLIC_STRAPI_URL +
-                                category.attributes.icon.data.attributes.url
+                                category.attributes.icon.data.attributes?.url
                               : "https://via.placeholder.com/24x24"
                           }`}
-                          alt={category.attributes.name}
+                          alt={category.attributes?.name ?? ""}
                           width={36}
                           height={36}
-                          className="rounded-sm object-cover  "
+                          className="rounded-sm object-cover"
                         />
                       </div>
                       <div className="flex items-center justify-between w-full">
-                        <p>{category.attributes.name}</p>
+                        <p>{category.attributes?.name}</p>
                         <FaChevronDown
                           className={`ml-2 transition-transform sm:hidden ${
                             openSubmenu === index ? "rotate-180" : ""

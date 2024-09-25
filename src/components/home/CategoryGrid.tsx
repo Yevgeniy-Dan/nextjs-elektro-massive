@@ -6,71 +6,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSnapCarousel } from "react-snap-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
-import { Carousel, CarouselItem } from "../shared/Carousel";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Grid, Navigation } from "swiper/modules";
-import {
-  IGetCategoriesResponse,
-  IGetCategoriesVariables,
-} from "@/types/categories";
 import { useQuery } from "@apollo/client";
 import { GET_CATEGORIES } from "./queries";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const categories = [
-  {
-    name: "Світлодіодне освітлення",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Елекрофурнітура",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Кабельна продукція",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Розетки та вимикачі",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Автоматика",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Лампи",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Інструменти",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Щити та шафи",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Щити та шафи",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661962222708-3260c908a41d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TEVEJTIwbGFtcHN8ZW58MHx8MHx8fDA%3D",
-  },
-];
+import { GetCategoriesQuery } from "@/gql/graphql";
 
 const CategoryGrid = () => {
-  const { scrollRef, next, prev, activePageIndex } = useSnapCarousel();
+  const { activePageIndex } = useSnapCarousel();
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const [allowSlideNext, setAllowSlideNext] = useState(true);
 
   useEffect(() => {
     setCurrentIndex(activePageIndex);
@@ -107,10 +50,7 @@ const CategoryGrid = () => {
     };
   }, [emblaApi, onSelect]);
 
-  const { data, loading, error } = useQuery<
-    IGetCategoriesResponse,
-    IGetCategoriesVariables
-  >(GET_CATEGORIES);
+  const { data, loading, error } = useQuery<GetCategoriesQuery>(GET_CATEGORIES);
 
   const PlaceHolderCard = () => (
     <div className="flex flex-col items-center px-2">
@@ -139,26 +79,30 @@ const CategoryGrid = () => {
           <div className="embla__container flex">
             {loading
               ? placeholders
-              : data?.categories.data.map((category) => (
+              : data?.categories?.data?.map((category) => (
                   <div
                     className="flex flex-col items-center px-2"
                     key={category.id}
                   >
                     <div className="relative flex flex-col items-center justify-center">
                       <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full md:rounded-lg overflow-hidden">
-                        <Image
-                          src={
-                            process.env.NEXT_PUBLIC_STRAPI_URL +
-                            category.attributes.image.data.attributes.url
-                          }
-                          alt={`${category.attributes.name} Image`}
-                          layout="fill"
-                          objectFit="cover"
-                        />
+                        {category.attributes?.image?.data?.attributes?.url && (
+                          <Image
+                            src={
+                              process.env.NEXT_PUBLIC_STRAPI_URL +
+                              category.attributes.image.data.attributes.url
+                            }
+                            alt={`${
+                              category.attributes?.name || "Category"
+                            } Image`}
+                            layout="fill"
+                            objectFit="cover"
+                          />
+                        )}
                       </div>
                       <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 static transform-none w-[50%] md:w-[70%]">
                         <p className="text-black text-center text-base md:text-lg md:text-white font-semibold mt-2 break-words">
-                          {category.attributes.name}
+                          {category.attributes?.name || "Unnamed Category"}
                         </p>
                       </div>
                     </div>
@@ -271,5 +215,4 @@ const CategoryGrid = () => {
     </div>
   );
 };
-
 export default CategoryGrid;
