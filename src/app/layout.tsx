@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 
 import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -10,11 +12,14 @@ import "swiper/css/grid";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import { Providers } from "./providers";
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
-import CartModal from "@/components/CartModal";
-import ClientInitializer from "@/components/ClientInitializer";
+import { Providers } from "./providers";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./utils/authOptions";
+import { ToastContainer } from "react-toastify";
+import SignInModal from "@/components/shared/SignInModal";
+import ShoppingCartModal from "@/components/shared/ShoppingCartModal";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -25,16 +30,17 @@ export const metadata: Metadata = {
     "ELEKTRO-MASSIVE - широкий асортимент електротоварів, сантехніки та будматеріалів. Замовляйте онлайн з доставкою по Україні. Вигідні ціни та висока якість.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en">
       <body className={`${roboto.className} flex flex-col min-h-screen`}>
-        <Providers>
-          <ClientInitializer />
+        <Providers session={session}>
           <div className="flex-grow">
             <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
               <Header />
@@ -42,7 +48,9 @@ export default function RootLayout({
             </div>
           </div>
           <Footer className="flex-shrink-0" />
-          <CartModal />
+          <ShoppingCartModal />
+          <SignInModal />
+          <ToastContainer />
         </Providers>
       </body>
     </html>

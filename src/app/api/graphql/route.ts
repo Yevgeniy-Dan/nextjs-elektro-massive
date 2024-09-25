@@ -1,24 +1,27 @@
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../../utils/authOptions";
 
-export async function POST(request) {
+export async function POST(request: Request) {
+  const session = await getServerSession(authOptions);
+
   const body = await request.json();
 
-  if (!process.env.NEXT_PUBLIC_STRAPI_URL || !process.env.STRAPI_API_TOKEN) {
-    console.error(
-      "Strapi URL or api token is not set in environment variables"
-    );
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-
   try {
+    let authToken;
+    if (session?.strapiToken) {
+      authToken = `Bearer ${session.strapiToken}`;
+    } else {
+      authToken =
+        request.headers.get("Authorization") ||
+        `Bearer ${process.env.STRAPI_API_TOKEN}`;
+    }
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/graphql`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        Authorization: authToken,
       },
       body: JSON.stringify(body),
     });

@@ -3,7 +3,7 @@ interface IAdditionalImage {
   link: string;
 }
 
-interface IProductParams {
+export interface IProductParams {
   [key: string]: string;
 }
 
@@ -77,6 +77,7 @@ export interface IFilteredProduct {
   currency: string;
   image_link: string;
   discount: number;
+  params: IProductParams;
   additional_images: IAdditionalImage[];
 }
 

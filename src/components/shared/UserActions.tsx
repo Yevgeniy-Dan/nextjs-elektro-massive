@@ -3,10 +3,11 @@ import Dropdown from "../home/Dropdown";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
 import { useCartCalculations } from "@/hooks/useCartCalcutaions";
+import { useCart } from "@/hooks/useCart";
 
 const UserActions = () => {
   const dispatch = useAppDispatch();
-  const { total, discountTotal } = useCartCalculations();
+  const { calculateTotal, calculateDiscountTotal } = useCart();
 
   return (
     <div className="flex flex-col xl:flex-row items-center text-white">
@@ -21,11 +22,11 @@ const UserActions = () => {
         />
       </div>
       <div className="flex items-center gap-1 md:gap-3 flex-row md:mb-3 xl:mb-0">
-        <div className="flex items-center">
-          <button
-            onClick={() => dispatch(openModal())}
-            className="mr-1 hover:text-gray-300"
-          >
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => dispatch(openModal())}
+        >
+          <button className="mr-1 hover:text-gray-300">
             <Image
               src="/bucket.png"
               alt="Bucket icon"
@@ -35,7 +36,7 @@ const UserActions = () => {
             />
           </button>
           <span className="text-xs sm:text-sm md:text-base text-white">
-            {(total - discountTotal).toFixed(2)} грн
+            {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
           </span>
         </div>
         <div className="flex items-center justify-center space-x-4">

@@ -1,0 +1,72 @@
+/* eslint-disable */
+import * as types from './graphql';
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+
+/**
+ * Map of all GraphQL operations in the project.
+ *
+ * This map has several performance disadvantages:
+ * 1. It is not tree-shakeable, so it will include all operations in the project.
+ * 2. It is not minifiable, so the string of a GraphQL query will be multiple times inside the bundle.
+ * 3. It does not support dead code elimination, so it will add unused operations.
+ *
+ * Therefore it is highly recommended to use the babel or swc plugin for production.
+ */
+const documents = {
+    "\n  query CategoryMenu {\n    categories {\n      data {\n        id\n        attributes {\n          name\n          slug\n          icon {\n            data {\n              attributes {\n                url\n              }\n            }\n          }\n          subcategories {\n            data {\n              id\n              attributes {\n                title\n                slug\n                icon {\n                  data {\n                    attributes {\n                      url\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n": types.CategoryMenuDocument,
+    "\n  query GetCategories {\n    categories {\n      data {\n        id\n        attributes {\n          name\n          image {\n            data {\n              attributes {\n                url\n                previewUrl\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n": types.GetCategoriesDocument,
+    "\n  query GetProduct($productId: ID!) {\n    product(id: $productId) {\n      data {\n        id\n        attributes {\n          part_number\n          title\n          retail\n          currency\n          image_link\n          description\n          discount\n          additional_images {\n            id\n            link\n          }\n          params\n          subcategory {\n            data {\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n": types.GetProductDocument,
+    "\n  query GetProductTypes($subcategoryId: ID!) {\n    productTypes(\n      filters: { subcategories: { id: { eq: $subcategoryId } } }\n      pagination: { limit: -1 }\n    ) {\n      data {\n        id\n        attributes {\n          title\n          slug\n          icon {\n            data {\n              attributes {\n                url\n              }\n            }\n          }\n        }\n      }\n      meta {\n        pagination {\n          total\n        }\n      }\n    }\n  }\n": types.GetProductTypesDocument,
+    "\n  query GetProductTypeFilters($productTypeId: ID!, $subcategoryId: ID!) {\n    productTypeFilters(\n      productTypeId: $productTypeId\n      subcategoryId: $subcategoryId\n    )\n  }\n": types.GetProductTypeFiltersDocument,
+    "\n  query GetFilteredProducts(\n    $productTypeId: ID!\n    $filters: [FilterInput!]\n    $cursor: String\n    $page: Int\n    $pageSize: Int\n    $subcategoryId: ID!\n  ) {\n    filteredProducts(\n      productTypeId: $productTypeId\n      filters: $filters\n      cursor: $cursor\n      page: $page\n      pageSize: $pageSize\n      subcategoryId: $subcategoryId\n    ) {\n      products {\n        id\n        title\n        part_number\n        retail\n        image_link\n        currency\n        additional_images {\n          link\n        }\n        discount\n      }\n      nextCursor\n      pageCount\n      totalCount\n      currentPage\n    }\n  }\n": types.GetFilteredProductsDocument,
+    "\n  query GetProducts($pageSize: Int!) {\n    products(pagination: { pageSize: $pageSize }) {\n      data {\n        id\n        attributes {\n          part_number\n          title\n          retail\n          currency\n          image_link\n          subcategory {\n            data {\n              id\n            }\n          }\n          discount\n        }\n      }\n    }\n  }\n": types.GetProductsDocument,
+};
+
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ *
+ *
+ * @example
+ * ```ts
+ * const query = graphql(`query GetUser($id: ID!) { user(id: $id) { name } }`);
+ * ```
+ *
+ * The query argument is unknown!
+ * Please regenerate the types.
+ */
+export function graphql(source: string): unknown;
+
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query CategoryMenu {\n    categories {\n      data {\n        id\n        attributes {\n          name\n          slug\n          icon {\n            data {\n              attributes {\n                url\n              }\n            }\n          }\n          subcategories {\n            data {\n              id\n              attributes {\n                title\n                slug\n                icon {\n                  data {\n                    attributes {\n                      url\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query CategoryMenu {\n    categories {\n      data {\n        id\n        attributes {\n          name\n          slug\n          icon {\n            data {\n              attributes {\n                url\n              }\n            }\n          }\n          subcategories {\n            data {\n              id\n              attributes {\n                title\n                slug\n                icon {\n                  data {\n                    attributes {\n                      url\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetCategories {\n    categories {\n      data {\n        id\n        attributes {\n          name\n          image {\n            data {\n              attributes {\n                url\n                previewUrl\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetCategories {\n    categories {\n      data {\n        id\n        attributes {\n          name\n          image {\n            data {\n              attributes {\n                url\n                previewUrl\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetProduct($productId: ID!) {\n    product(id: $productId) {\n      data {\n        id\n        attributes {\n          part_number\n          title\n          retail\n          currency\n          image_link\n          description\n          discount\n          additional_images {\n            id\n            link\n          }\n          params\n          subcategory {\n            data {\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetProduct($productId: ID!) {\n    product(id: $productId) {\n      data {\n        id\n        attributes {\n          part_number\n          title\n          retail\n          currency\n          image_link\n          description\n          discount\n          additional_images {\n            id\n            link\n          }\n          params\n          subcategory {\n            data {\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetProductTypes($subcategoryId: ID!) {\n    productTypes(\n      filters: { subcategories: { id: { eq: $subcategoryId } } }\n      pagination: { limit: -1 }\n    ) {\n      data {\n        id\n        attributes {\n          title\n          slug\n          icon {\n            data {\n              attributes {\n                url\n              }\n            }\n          }\n        }\n      }\n      meta {\n        pagination {\n          total\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetProductTypes($subcategoryId: ID!) {\n    productTypes(\n      filters: { subcategories: { id: { eq: $subcategoryId } } }\n      pagination: { limit: -1 }\n    ) {\n      data {\n        id\n        attributes {\n          title\n          slug\n          icon {\n            data {\n              attributes {\n                url\n              }\n            }\n          }\n        }\n      }\n      meta {\n        pagination {\n          total\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetProductTypeFilters($productTypeId: ID!, $subcategoryId: ID!) {\n    productTypeFilters(\n      productTypeId: $productTypeId\n      subcategoryId: $subcategoryId\n    )\n  }\n"): (typeof documents)["\n  query GetProductTypeFilters($productTypeId: ID!, $subcategoryId: ID!) {\n    productTypeFilters(\n      productTypeId: $productTypeId\n      subcategoryId: $subcategoryId\n    )\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetFilteredProducts(\n    $productTypeId: ID!\n    $filters: [FilterInput!]\n    $cursor: String\n    $page: Int\n    $pageSize: Int\n    $subcategoryId: ID!\n  ) {\n    filteredProducts(\n      productTypeId: $productTypeId\n      filters: $filters\n      cursor: $cursor\n      page: $page\n      pageSize: $pageSize\n      subcategoryId: $subcategoryId\n    ) {\n      products {\n        id\n        title\n        part_number\n        retail\n        image_link\n        currency\n        additional_images {\n          link\n        }\n        discount\n      }\n      nextCursor\n      pageCount\n      totalCount\n      currentPage\n    }\n  }\n"): (typeof documents)["\n  query GetFilteredProducts(\n    $productTypeId: ID!\n    $filters: [FilterInput!]\n    $cursor: String\n    $page: Int\n    $pageSize: Int\n    $subcategoryId: ID!\n  ) {\n    filteredProducts(\n      productTypeId: $productTypeId\n      filters: $filters\n      cursor: $cursor\n      page: $page\n      pageSize: $pageSize\n      subcategoryId: $subcategoryId\n    ) {\n      products {\n        id\n        title\n        part_number\n        retail\n        image_link\n        currency\n        additional_images {\n          link\n        }\n        discount\n      }\n      nextCursor\n      pageCount\n      totalCount\n      currentPage\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetProducts($pageSize: Int!) {\n    products(pagination: { pageSize: $pageSize }) {\n      data {\n        id\n        attributes {\n          part_number\n          title\n          retail\n          currency\n          image_link\n          subcategory {\n            data {\n              id\n            }\n          }\n          discount\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetProducts($pageSize: Int!) {\n    products(pagination: { pageSize: $pageSize }) {\n      data {\n        id\n        attributes {\n          part_number\n          title\n          retail\n          currency\n          image_link\n          subcategory {\n            data {\n              id\n            }\n          }\n          discount\n        }\n      }\n    }\n  }\n"];
+
+export function graphql(source: string) {
+  return (documents as any)[source] ?? {};
+}
+
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;

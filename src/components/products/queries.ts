@@ -61,6 +61,7 @@ export const GET_FILTERED_PRODUCTS = gql`
         part_number
         retail
         image_link
+        params
         currency
         additional_images {
           link
