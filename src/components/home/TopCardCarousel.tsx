@@ -96,7 +96,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
                       }
                       {...card.attributes}
                       label={label}
-                      currency={card.attributes?.currency ?? ""}
+                      currency="грн"
                       retail={card.attributes?.retail.toString() ?? ""}
                       title={card.attributes?.title ?? ""}
                     />

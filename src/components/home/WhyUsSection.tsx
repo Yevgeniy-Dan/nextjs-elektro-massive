@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 const features = [
-  { icon: "/collaboration.png", text: "Вигодні умови співпраці" },
+  { icon: "/collaboration.png", text: "Вигідні умови співпраці" },
   { icon: "/blueprint.png", text: "Розрахунок проекту освітлення" },
   { icon: "/idea.png", text: "Оригінальні рішення" },
   { icon: "/quality.png", text: "Гарантія якості" },

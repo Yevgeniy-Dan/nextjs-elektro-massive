@@ -164,9 +164,7 @@ const Summary: React.FC = () => {
         <div className="space-y-2 text-sm">
           <div className="flex justify-between items-center">
             <span>{cartItems.length} товар(а) на суму</span>
-            <span className="font-semibold">
-              {calculateTotal} {cartItems[0]?.product.currency}
-            </span>
+            <span className="font-semibold">{calculateTotal} грн</span>
           </div>
           <div className="flex justify-between items-center">
             <span>Вартість доставки</span>
@@ -175,14 +173,15 @@ const Summary: React.FC = () => {
           <div className="flex justify-between items-center">
             <span>Знижка</span>
             <span className="font-semibold text-green-600">
-              {calculateDiscountTotal} {cartItems[0]?.product.currency}
+              {calculateDiscountTotal} грн
             </span>
           </div>
           <div className="flex justify-between items-center pt-2 border-t border-gray-200">
             <span className="font-semibold">До сплати</span>
             <span className="font-semibold text-xl">
               {calculateTotal - calculateDiscountTotal}{" "}
-              {cartItems[0]?.product.currency}
+              {/* {cartItems[0]?.product.currency} */}
+              грн
             </span>
           </div>
         </div>

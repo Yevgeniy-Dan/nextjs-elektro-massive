@@ -3,14 +3,12 @@ import ProductFilters from "./ProductFilters";
 
 interface ProductFilterSectionProps {
   filters: Record<string, string[]>;
-  appliedFilters: Record<string, string[]>;
-  onFilterChange: (filterName: string, values: string[]) => void;
+  subcategoryId: string;
 }
 
 const ProductFilterSection = ({
-  appliedFilters,
+  subcategoryId,
   filters,
-  onFilterChange,
 }: ProductFilterSectionProps) => {
   const formattedFilters = Object.entries(filters).map(([key, values]) => ({
     id: key,
@@ -19,11 +17,7 @@ const ProductFilterSection = ({
   }));
 
   return (
-    <ProductFilters
-      filters={formattedFilters}
-      appliedFilters={appliedFilters}
-      onFilterChange={onFilterChange}
-    />
+    <ProductFilters filters={formattedFilters} subcategoryId={subcategoryId} />
   );
 };
 

@@ -18,6 +18,7 @@ export const GET_PRODUCT_TYPES = gql`
               }
             }
           }
+          description
         }
       }
       meta {

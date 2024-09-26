@@ -10,6 +10,7 @@ import {
 } from "@/gql/graphql";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
+  setAppliedFilters,
   setCurrentPage,
   setLastFilters,
   setLastProductType,
@@ -18,19 +19,15 @@ import {
 
 interface ProductGridProps {
   productTypeId: string;
-  appliedFilters: Record<string, string[]>;
   pageSize: number;
   subcategoryId: string;
 }
 
 const ProductGrid = ({
   productTypeId,
-  appliedFilters,
   pageSize,
   subcategoryId,
 }: ProductGridProps) => {
-  // const [currentPage, setCurrentPage] = useState(1);
-
   const dispatch = useAppDispatch();
   const currentPage = useAppSelector(
     (state) => state.productGrid.currentPages[subcategoryId] || 1
@@ -44,6 +41,14 @@ const ProductGrid = ({
   const lastSubcategoryId = useAppSelector(
     (state) => state.productGrid.lastSubcategoryId
   );
+
+  const appliedFilters = useAppSelector(
+    (state) => state.productGrid.appliedFilters[subcategoryId] || {}
+  );
+
+  useEffect(() => {
+    dispatch(setAppliedFilters({ subcategoryId, filters: appliedFilters }));
+  }, [dispatch, subcategoryId, appliedFilters]);
 
   const transformedFilters = useMemo(() => {
     return Object.entries(appliedFilters).flatMap(([key, values]) =>
@@ -152,7 +157,7 @@ const ProductGrid = ({
               id={product?.id}
               key={product?.id}
               imageSrc={product?.image_link ?? ""}
-              currency={product?.currency ?? "грн"}
+              currency={"грн"}
               title={product?.title ?? ""}
               retail={product?.retail.toString() || "0"}
               subcategoryId={subcategoryId}

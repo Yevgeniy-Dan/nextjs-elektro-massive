@@ -18,9 +18,7 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
   return (
     <div className="w-full lg:w-1/3 flex flex-col mt-3">
       <div className="flex flex-col items-center gap-4 justify-between mb-4">
-        <span className="text-3xl font-bold">
-          {retail} {currency}
-        </span>
+        <span className="text-3xl font-bold">{retail} грн</span>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}

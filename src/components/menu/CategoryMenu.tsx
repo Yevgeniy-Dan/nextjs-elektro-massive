@@ -29,12 +29,22 @@ const CategoryMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleMouseEnter = () => {
+    setIsMenuOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
-    <div className="relative md:w-1/5 md:min-w-[200px]" ref={menuRef}>
-      <button
-        className="w-auto md:w-full px-3 hover:text-gray-300 flex items-center justify-between text-white border border-white py-2 rounded-l-2xl bg-gray-800"
-        onClick={toggleMenu}
-      >
+    <div
+      className="relative md:w-1/5 md:min-w-[200px]"
+      ref={menuRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <button className="w-auto md:w-full px-3 hover:text-gray-300 flex items-center justify-between text-white border border-white py-2 rounded-l-2xl bg-gray-800">
         <div className="flex justify-center w-full">
           <span className="text-white font-black px-4 sm:px-5 whitespace-nowrap hidden md:inline">
             Каталог товарів
@@ -46,7 +56,7 @@ const CategoryMenu = () => {
 
       <div>
         {isMenuOpen && (
-          <div className="absolute mt-3 top-full left-0 w-screen sm:w-[500%] md:w-[150%] bg-gray-800 text-white rounded-r-3xl sm:rounded-r-none sm:rounded-l-2xl shadow-lg z-50 -ml-6 sm:-ml-0">
+          <div className="absolute top-full left-0 w-screen sm:w-[500%] md:w-[150%] bg-gray-800 text-white rounded-r-3xl sm:rounded-r-none sm:rounded-l-2xl shadow-lg z-50 -ml-6 sm:-ml-0">
             <div className="flex flex-col items-stretch relative">
               {loading ? (
                 <div className="flex justify-center items-center p-8">
@@ -61,12 +71,11 @@ const CategoryMenu = () => {
                   <div key={category.id ?? index} className="group">
                     <div
                       className={`flex items-center justify-start space-x-5 p-6 py-5 text-black font-semibold border-b border-black sm:border-none hover:bg-white invert hover:invert-0 ${
-                        index === 0
-                          ? "rounded-tl-2xl"
-                          : index ===
-                            (menuItems?.categories?.data.length ?? 0) - 1
-                          ? "rounded-bl-2xl"
-                          : ""
+                        index === 0 && "rounded-tl-2xl"
+                      } ${
+                        index ===
+                          (menuItems?.categories?.data.length ?? 0) - 1 &&
+                        "rounded-bl-2xl"
                       }`}
                       onClick={() =>
                         setOpenSubmenu(openSubmenu === index ? null : index)

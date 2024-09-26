@@ -6,17 +6,19 @@ const CartTotals = () => {
 
   return (
     <>
-      <p className="flex justify-between">
-        <span>Знижка:</span>{" "}
-        <span className="font-bold text-md">
-          {calculateDiscountTotal.toFixed(2)} грн
-        </span>
-      </p>
+      {calculateDiscountTotal !== 0 && (
+        <p className="flex justify-between">
+          <span>Знижка:</span>{" "}
+          <span className="font-bold text-md">
+            {calculateDiscountTotal.toFixed(2)} грн
+          </span>
+        </p>
+      )}
       <div className="flex justify-between items-start text-lg mt-1 mb-4">
-        <p>Разом:</p>
+        <p className="my-0">Разом:</p>
         <div className="flex flex-col text-right">
           <span className="text-gray-400 text-sm line-through">
-            {calculateTotal.toFixed(2)} грн
+            {calculateDiscountTotal !== 0 && calculateTotal.toFixed(2) + "грн"}
           </span>
           <span className="font-bold">
             {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн

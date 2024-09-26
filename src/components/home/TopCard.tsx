@@ -71,7 +71,7 @@ const TopCard: React.FC<ITopCardProps> = ({
       <div className="flex items-center justify-between mt-auto">
         <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
           <span className="whitespace-nowrap">{retail}</span>
-          <span className="ml-1 whitespace-nowrap">{currency}</span>
+          <span className="ml-1 whitespace-nowrap">грн</span>
         </div>
         <Link
           href={`${subcategoryId}/${id}`}

@@ -23,7 +23,7 @@ const ProductTypeSelector: React.FC<ProductTypeSelectorProps> = ({
             className={`flex flex-col items-center min-w-[80px] ${
               selectedTypeId === type.id
                 ? "opacity-100"
-                : "opacity-70 hover:opacity-100"
+                : "opacity-50 hover:opacity-100"
             }`}
             onClick={() => onTypeChange(type.id ?? "")}
           >

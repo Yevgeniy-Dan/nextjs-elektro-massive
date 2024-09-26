@@ -5,6 +5,7 @@ interface ProductGridState {
   lastProductTypes: Record<string, string>;
   lastFilters: Record<string, Record<string, string[]>>;
   lastSubcategoryId: string | null;
+  appliedFilters: Record<string, Record<string, string[]>>;
 }
 
 const initialState: ProductGridState = {
@@ -12,6 +13,7 @@ const initialState: ProductGridState = {
   lastProductTypes: {},
   lastFilters: {},
   lastSubcategoryId: null,
+  appliedFilters: {},
 };
 
 const productGridSlice = createSlice({
@@ -43,6 +45,42 @@ const productGridSlice = createSlice({
     setLastSubcategoryId: (state, action: PayloadAction<string>) => {
       state.lastSubcategoryId = action.payload;
     },
+    setAppliedFilters: (
+      state,
+      action: PayloadAction<{
+        subcategoryId: string;
+        filters: Record<string, string[]>;
+      }>
+    ) => {
+      state.appliedFilters[action.payload.subcategoryId] =
+        action.payload.filters;
+    },
+    updateAppliedFilter: (
+      state,
+      action: PayloadAction<{
+        subcategoryId: string;
+        filterName: string;
+        values: string[];
+      }>
+    ) => {
+      if (!state.appliedFilters[action.payload.subcategoryId]) {
+        state.appliedFilters[action.payload.subcategoryId] = {};
+      }
+
+      state.appliedFilters[action.payload.subcategoryId][
+        action.payload.filterName
+      ] = action.payload.values;
+      // Remove filters with empty values
+      Object.keys(state.appliedFilters[action.payload.subcategoryId]).forEach(
+        (key) => {
+          if (
+            state.appliedFilters[action.payload.subcategoryId][key].length === 0
+          ) {
+            delete state.appliedFilters[action.payload.subcategoryId][key];
+          }
+        }
+      );
+    },
   },
 });
 
@@ -51,5 +89,7 @@ export const {
   setLastProductType,
   setLastFilters,
   setLastSubcategoryId,
+  setAppliedFilters,
+  updateAppliedFilter,
 } = productGridSlice.actions;
 export default productGridSlice.reducer;
