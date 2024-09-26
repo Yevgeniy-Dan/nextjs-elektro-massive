@@ -7,11 +7,10 @@ import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import UserActions from "./UserActions";
 import SearchBar from "./SearchBar";
-import { signOut } from "next-auth/react";
 
 const Header = () => {
   return (
-    <div className="bg-gradient-elektro-massive-horizontal  rounded-r-3xl  pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-2 -ml-6 md:-ml-16">
+    <div className="bg-gradient-elektro-massive-horizontal  rounded-r-3xl  pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-2 -ml-6 md:-ml-16  text-base">
       <header className="mt-2 font-medium">
         <div className="flex flex-row md:flex-col lg:flex-row justify-between items-center w-full">
           <div className="flex items-center w-1/2 sm:2/3 md:w-auto">
@@ -25,12 +24,6 @@ const Header = () => {
         <CategoryMenu />
 
         <SearchBar />
-        <button
-          className="bg-ourBlue text-white py-[26px] px-[52px] rounded-3xl ml-auto"
-          onClick={() => signOut()}
-        >
-          Sign Out
-        </button>
       </nav>
     </div>
   );

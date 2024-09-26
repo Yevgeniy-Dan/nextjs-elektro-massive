@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const NavLinks = () => {
   return (
-    <div className="hidden md:flex flex-wrap justify-center items-center text-white text-sm gap-2 sm:gap-4 mb-4 lg:mb-0">
+    <div className="hidden md:flex flex-wrap justify-center items-center text-white gap-2 sm:gap-4 mb-4 lg:mb-0">
       <Link href={"/services"} className="border border-white px-2 py-2">
         Послуги
       </Link>

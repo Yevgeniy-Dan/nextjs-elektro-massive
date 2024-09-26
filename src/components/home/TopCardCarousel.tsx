@@ -75,13 +75,18 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
       <h2 className="text-2xl font-bold mb-4">{title}</h2>
       <div className="relative">
         <div className="embla overflow-hidden" ref={emblaRef}>
-          <div className="embla__container flex">
+          <div className="embla__container flex mx-4">
             {loading
               ? placeholders
               : data?.products?.data.map((card, index) => (
                   <div
                     key={card.id}
-                    className={`embla__slide flex-shrink-0 ${cardWidth} ${cardHeight} p-1`}
+                    className={`embla__slide flex-shrink-0 ${cardWidth} ${cardHeight} my-4 p-2 ${
+                      data?.products?.data &&
+                      index === data.products.data.length - 1
+                        ? "pl-4"
+                        : ""
+                    }`}
                   >
                     <TopCard
                       id={card.id ?? ""}

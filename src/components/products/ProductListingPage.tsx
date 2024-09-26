@@ -101,12 +101,14 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
             />
           )}
         </div>
-        <ProductGrid
-          subcategoryId={subcategoryId}
-          productTypeId={selectedProductType}
-          appliedFilters={appliedFilters}
-          pageSize={pageSize}
-        />
+        {selectedProductType && (
+          <ProductGrid
+            subcategoryId={subcategoryId}
+            productTypeId={selectedProductType}
+            appliedFilters={appliedFilters}
+            pageSize={pageSize}
+          />
+        )}
       </div>
     </div>
   );

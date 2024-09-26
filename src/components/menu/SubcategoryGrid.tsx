@@ -5,9 +5,13 @@ import React from "react";
 
 interface SubcategoryGridProps {
   category: Category;
+  toggleMenu: (e: React.MouseEvent) => void;
 }
 
-const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({ category }) => {
+const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
+  category,
+  toggleMenu,
+}) => {
   const subcategories = category?.attributes?.subcategories?.data ?? [];
 
   const getGridCols = (count: number): string => {
@@ -25,23 +29,24 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({ category }) => {
     return (
       <Link
         href={`/${subcategory.id}`}
+        onClick={(e) => toggleMenu(e)}
         key={subcategory.id}
-        className="flex flex-row items-center space-x-3 p-6  hover:text-gray-700 hover:bg-white w-full"
+        className="flex flex-row items-center space-x-4 p-6 hover:text-gray-700 hover:bg-white w-full"
       >
-        <div className="flex-shrink-0 w-9 h-9">
+        <div className="flex-shrink-0 w-12 h-12">
           <Image
             src={`${
               isImage
                 ? process.env.NEXT_PUBLIC_STRAPI_URL + isImage.attributes?.url
-                : "https://via.placeholder.com/24x24"
+                : "https://via.placeholder.com/48x48"
             }`}
             alt={subcategory.attributes?.title ?? ""}
-            width={36}
-            height={36}
+            width={48}
+            height={48}
             className="rounded-sm object-cover"
           />
         </div>
-        <span className="flex-grow line-clamp-3 overflow-ellipsis break-words">
+        <span className="flex-grow text-lg font-medium line-clamp-3 overflow-ellipsis break-words">
           {subcategory.attributes?.title}
         </span>
       </Link>

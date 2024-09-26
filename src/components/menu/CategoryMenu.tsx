@@ -8,6 +8,7 @@ import CategorySubmenu from "./CategorySubmenu";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Spinner from "../shared/Spinner";
 import { CategoryMenuQuery } from "@/gql/graphql";
+import { Menu } from "lucide-react";
 
 const CategoryMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,13 +40,8 @@ const CategoryMenu = () => {
             Каталог товарів
           </span>
         </div>
-        <Image
-          src="/menu-hamburger.png"
-          alt="Menu icon"
-          className="h-6 w-6 invert"
-          width={32}
-          height={32}
-        />
+
+        <Menu height={24} width={24} />
       </button>
 
       <div>
@@ -103,6 +99,7 @@ const CategoryMenu = () => {
                       category={category}
                       index={index}
                       openSubmenu={openSubmenu}
+                      toggleMenu={toggleMenu}
                     />
                   </div>
                 ))

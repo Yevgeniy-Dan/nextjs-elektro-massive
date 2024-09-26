@@ -77,27 +77,29 @@ const AboutSection = () => {
           стильного простору.
         </p>
       </div>
-      <div className="hidden lg:block relative w-full lg:w-2/4 h-64 sm:h-80 md:h-96 lg:h-[300px] xl:h-[400px] mx-auto mb-20 md:mb-28 lg:mb-0">
-        <Image
-          src="/filament-bulbs.jpg"
-          alt="Image 1"
-          fill
-          className="rounded-lg object-contain"
-        />
-        <div className="absolute w-1/2 h-3/4 bottom-[-50%] left-[5%] z-10">
+      <div className="hidden lg:block relative w-full lg:w-2/4 h-64 sm:h-80 md:h-96 lg:h-[300px] xl:h-[350px] mx-auto mb-20 md:mb-28 lg:mb-0 lg:mt-10">
+        <div className="rounded-lg overflow-hidden absolute inset-0">
+          <Image
+            src="/filament-bulbs.jpg"
+            alt="Image 1"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="absolute w-1/3 h-3/4 bottom-[-50%] left-[10%] z-10 rounded-lg overflow-hidden">
           <Image
             src="/build-tools.png"
             alt="Image 2"
             fill
-            className="rounded-lg object-contain"
+            className="object-cover"
           />
         </div>
-        <div className="absolute w-1/2 h-1/2 left-[65%] top-[115%] transform -translate-x-1/2 -translate-y-1/2 z-20">
+        <div className="absolute w-1/2 h-1/2 left-[65%] top-[115%] transform -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg overflow-hidden">
           <Image
             src="/faucet.png"
             alt="Image 3"
             fill
-            className="rounded-lg object-contain"
+            className="object-cover"
           />
         </div>
       </div>

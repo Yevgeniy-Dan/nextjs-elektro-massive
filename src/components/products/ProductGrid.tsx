@@ -1,5 +1,5 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import TopCard from "../home/TopCard";
 import Pagination from "../shared/Pagination";
 import { GET_FILTERED_PRODUCTS } from "./queries";
@@ -8,9 +8,16 @@ import {
   GetFilteredProductsQuery,
   GetFilteredProductsQueryVariables,
 } from "@/gql/graphql";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  setCurrentPage,
+  setLastFilters,
+  setLastProductType,
+  setLastSubcategoryId,
+} from "@/store/productGridSlice";
 
 interface ProductGridProps {
-  productTypeId: string | null;
+  productTypeId: string;
   appliedFilters: Record<string, string[]>;
   pageSize: number;
   subcategoryId: string;
@@ -22,7 +29,21 @@ const ProductGrid = ({
   pageSize,
   subcategoryId,
 }: ProductGridProps) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
+
+  const dispatch = useAppDispatch();
+  const currentPage = useAppSelector(
+    (state) => state.productGrid.currentPages[subcategoryId] || 1
+  );
+  const lastProductType = useAppSelector(
+    (state) => state.productGrid.lastProductTypes[subcategoryId]
+  );
+  const lastFilters = useAppSelector(
+    (state) => state.productGrid.lastFilters[subcategoryId]
+  );
+  const lastSubcategoryId = useAppSelector(
+    (state) => state.productGrid.lastSubcategoryId
+  );
 
   const transformedFilters = useMemo(() => {
     return Object.entries(appliedFilters).flatMap(([key, values]) =>
@@ -35,7 +56,7 @@ const ProductGrid = ({
     GetFilteredProductsQueryVariables
   >(GET_FILTERED_PRODUCTS, {
     variables: {
-      productTypeId: productTypeId || "",
+      productTypeId: productTypeId,
       subcategoryId,
       filters: transformedFilters,
       // cursor: null,
@@ -47,12 +68,36 @@ const ProductGrid = ({
   });
 
   useEffect(() => {
-    setCurrentPage(1);
+    const shouldResetPage =
+      productTypeId !== lastProductType ||
+      JSON.stringify(appliedFilters) !== JSON.stringify(lastFilters) ||
+      subcategoryId !== lastSubcategoryId;
+
+    if (shouldResetPage) {
+      dispatch(setCurrentPage({ subcategoryId, page: 1 }));
+    }
+
+    dispatch(
+      setLastProductType({ subcategoryId, productTypeId: productTypeId || "" })
+    );
+    dispatch(setLastFilters({ subcategoryId, filters: appliedFilters }));
+    dispatch(setLastSubcategoryId(subcategoryId));
+
     refetch();
-  }, [productTypeId, appliedFilters, refetch]);
+  }, [
+    dispatch,
+    productTypeId,
+    appliedFilters,
+    subcategoryId,
+    lastProductType,
+    lastFilters,
+    lastSubcategoryId,
+    refetch,
+  ]);
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+    dispatch(setCurrentPage({ subcategoryId, page: newPage }));
+
     fetchMore({
       variables: {
         page: newPage,
@@ -117,7 +162,7 @@ const ProductGrid = ({
 
       {data && (
         <Pagination
-          currentPage={data.filteredProducts.currentPage}
+          currentPage={currentPage}
           totalPages={data.filteredProducts.pageCount}
           onPageChange={handlePageChange}
         />
