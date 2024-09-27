@@ -160,10 +160,7 @@ const ProductGrid = ({
             <TopCard
               id={product?.id}
               key={product?.id}
-              imageSrc={product?.image_link ?? ""}
-              currency={"грн"}
-              title={product?.title ?? ""}
-              retail={product?.retail.toString() || "0"}
+              product={product}
               productSlug={product.slug ?? ""}
               subcategoryId={subcategoryId}
               subcategorySlug={subcategorySlug}

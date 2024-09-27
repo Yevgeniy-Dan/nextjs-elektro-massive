@@ -1,7 +1,23 @@
+import { GetFilteredProductsQuery, GetProductsQuery } from "@/gql/graphql";
+import { useAppDispatch } from "@/store/hooks";
+import { openModal } from "@/store/storeSlice";
+import { ProductAttributes } from "@/types/types";
 import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useCallback } from "react";
+
+type TopCardProduct = {
+  id: string;
+  title: string;
+  part_number: string;
+  retail: number;
+  currency: string;
+  image_link?: string | null;
+  slug: string;
+  discount?: number | null;
+  params?: any | null;
+};
 
 export interface ITopCardProps {
   id: string;
@@ -9,27 +25,70 @@ export interface ITopCardProps {
   subcategorySlug: string;
   productTypeSlug: string;
   productSlug: string;
-  title: string;
-  retail: string;
-  imageSrc: string;
-  currency: string;
+  product: TopCardProduct;
   label?: "top" | "new" | "sale";
 }
 
 const TopCard: React.FC<ITopCardProps> = ({
+  id,
   subcategorySlug,
   productTypeSlug,
   productSlug,
   label,
-  title,
-  retail,
-  imageSrc,
+  product,
 }) => {
+  const dispatch = useAppDispatch();
+
+  const {
+    currency,
+    discount,
+    image_link,
+    retail,
+    title,
+    params,
+    part_number,
+    slug,
+  } = product;
+
+  const handleBuyClick = useCallback(() => {
+    const addedCartItem = {
+      id,
+      quantity: 1,
+      product: {
+        id,
+        currency,
+        discount,
+        image_link: image_link ?? "",
+        retail,
+        title,
+        params,
+        part_number,
+        slug,
+      },
+    };
+
+    dispatch(openModal(addedCartItem));
+  }, [
+    id,
+    currency,
+    discount,
+    image_link,
+    retail,
+    title,
+    params,
+    part_number,
+    slug,
+    dispatch,
+  ]);
+
   return (
     <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 flex flex-col h-full overflow-hidden group">
-      <div className="relative pt-[100%]">
+      <Link
+        href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+        className="relative pt-[100%] block"
+      >
         <Image
-          src={`${imageSrc}`}
+          src={`${product.image_link}`}
           alt="Product Image"
           className="absolute top-0 left-0 w-full h-full"
           layout="fill"
@@ -67,23 +126,28 @@ const TopCard: React.FC<ITopCardProps> = ({
             />
           </div>
         )}
-      </div>
+      </Link>
       <div className="flex-grow  p-3">
-        <h2 className="text-sm font-normal line-clamp-2 group-hover:line-clamp-none">
-          {title}
-        </h2>
+        <Link
+          href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+          className="block"
+        >
+          <h2 className="text-sm font-normal line-clamp-2 group-hover:line-clamp-none">
+            {title}
+          </h2>
+        </Link>
       </div>
       <div className="flex items-center justify-between mt-auto">
         <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
           <span className="whitespace-nowrap">{retail}</span>
           <span className="ml-1 whitespace-nowrap">грн</span>
         </div>
-        <Link
-          href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+        <button
+          onClick={handleBuyClick}
           className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-sm text-center w-2/3 -ml-6"
         >
           Купити
-        </Link>
+        </button>
       </div>
     </div>
   );

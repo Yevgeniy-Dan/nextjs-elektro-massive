@@ -90,15 +90,22 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
                   >
                     <TopCard
                       id={card.id ?? ""}
-                      imageSrc={card.attributes?.image_link ?? ""}
                       subcategoryId={
                         card.attributes?.subcategory?.data?.id ?? ""
                       }
                       {...card.attributes}
                       label={label}
-                      currency="грн"
-                      retail={card.attributes?.retail.toString() ?? ""}
-                      title={card.attributes?.title ?? ""}
+                      product={{
+                        id: card.id ?? "",
+                        currency: card.attributes?.currency ?? "",
+                        discount: card.attributes?.discount ?? 0,
+                        image_link: card.attributes?.image_link ?? "",
+                        retail: card.attributes?.retail ?? 0,
+                        title: card.attributes?.title ?? "",
+                        params: card.attributes?.params ?? [],
+                        part_number: card.attributes?.part_number ?? "",
+                        slug: card.attributes?.slug ?? "",
+                      }}
                       productSlug={card.attributes?.slug ?? ""}
                       subcategorySlug={
                         card.attributes?.subcategory?.data?.attributes?.slug ??

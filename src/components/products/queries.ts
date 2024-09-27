@@ -117,6 +117,10 @@ export const GET_PRODUCTS = gql`
           currency
           image_link
           slug
+          params
+          additional_images {
+            link
+          }
           subcategory {
             data {
               id
