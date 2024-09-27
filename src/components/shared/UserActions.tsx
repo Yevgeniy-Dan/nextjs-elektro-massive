@@ -23,14 +23,16 @@ const UserActions: React.FC = () => {
           className="flex items-center"
           onClick={() => dispatch(openModal())}
         >
-          <Image
-            src="/bucket.png"
-            alt="Bucket"
-            width={32}
-            height={32}
-            className="invert mr-1"
-          />
-          <span>
+          <div className="w-10 h-10 relative mr-2">
+            <Image
+              src="/bucket.png"
+              alt="Bucket"
+              layout="fill"
+              objectFit="contain"
+              className="invert"
+            />
+          </div>
+          <span className="text-base">
             {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
           </span>
         </button>
@@ -38,8 +40,8 @@ const UserActions: React.FC = () => {
           <Image
             src="/call.png"
             alt="Phone"
-            width={24}
-            height={24}
+            width={32}
+            height={32}
             className="invert"
           />
         </a>
@@ -47,8 +49,8 @@ const UserActions: React.FC = () => {
           <Image
             src="/bell.png"
             alt="Notifications"
-            width={24}
-            height={24}
+            width={32}
+            height={32}
             className="invert"
           />
           <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
@@ -59,8 +61,8 @@ const UserActions: React.FC = () => {
           <Image
             src="/avatar.png"
             alt="Avatar"
-            width={24}
-            height={24}
+            width={32}
+            height={32}
             className="invert"
           />
         </a>

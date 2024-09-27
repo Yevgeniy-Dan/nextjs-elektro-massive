@@ -5,9 +5,6 @@ import Banner from "@/components/home/Banner";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import TopCardCarousel from "@/components/home/TopCardCarousel";
 import WhyUsSection from "@/components/home/WhyUsSection";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   return (

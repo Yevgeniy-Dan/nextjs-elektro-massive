@@ -31,6 +31,7 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
     title,
     discount,
     description,
+    slug,
   } = product;
 
   const images: { id: string; link: string }[] = [
@@ -56,6 +57,7 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
         title,
         params,
         part_number,
+        slug,
       },
     };
 
@@ -69,6 +71,7 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
     title,
     params,
     part_number,
+    slug,
     dispatch,
   ]);
 
@@ -124,11 +127,7 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
             />
           </div>
 
-          <PurchaseSection
-            product={product}
-            id={id}
-            onBuyClick={handleBuyClick}
-          />
+          <PurchaseSection product={product} onBuyClick={handleBuyClick} />
         </div>
 
         <DeliveryPaymentSection />

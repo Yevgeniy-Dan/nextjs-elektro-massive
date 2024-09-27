@@ -1,11 +1,11 @@
-import { ProductType } from "@/types/types";
+import { ProductTypeBySlug } from "@/types/types";
 import Image from "next/image";
 import React from "react";
 
 interface ProductTypeSelectorProps {
-  types: ProductType[];
+  types: ProductTypeBySlug[];
   selectedTypeId: string | null;
-  onTypeChange: (type: string) => void;
+  onTypeChange: (typeSlug: string) => void;
 }
 
 const ProductTypeSelector: React.FC<ProductTypeSelectorProps> = ({
@@ -25,7 +25,7 @@ const ProductTypeSelector: React.FC<ProductTypeSelectorProps> = ({
                 ? "opacity-100"
                 : "opacity-50 hover:opacity-100"
             }`}
-            onClick={() => onTypeChange(type.id ?? "")}
+            onClick={() => onTypeChange(type?.attributes?.slug ?? "")}
           >
             <div className="w-32 h-32 mb-2 relative">
               {type?.attributes?.icon?.data?.attributes && (

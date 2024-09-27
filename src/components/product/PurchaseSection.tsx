@@ -4,7 +4,6 @@ import { ProductAttributes } from "@/types/types";
 
 interface PurchaseSectionProps {
   product: ProductAttributes;
-  id: string;
   onBuyClick: () => void;
 }
 

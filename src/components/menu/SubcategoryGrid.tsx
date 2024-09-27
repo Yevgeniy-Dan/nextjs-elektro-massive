@@ -28,12 +28,12 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
 
     return (
       <Link
-        href={`/${subcategory.id}`}
+        href={`/${subcategory.attributes?.slug}`}
         onClick={(e) => toggleMenu(e)}
         key={subcategory.id}
         className="flex flex-row items-center space-x-4 p-6 hover:text-gray-700 hover:bg-white w-full"
       >
-        <div className="flex-shrink-0 w-12 h-12">
+        <div className="flex-shrink-0 w-20 h-20">
           <Image
             src={`${
               isImage
@@ -41,8 +41,8 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
                 : "https://via.placeholder.com/48x48"
             }`}
             alt={subcategory.attributes?.title ?? ""}
-            width={48}
-            height={48}
+            width={80}
+            height={80}
             className="rounded-sm object-cover"
           />
         </div>

@@ -99,6 +99,15 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
                       currency="грн"
                       retail={card.attributes?.retail.toString() ?? ""}
                       title={card.attributes?.title ?? ""}
+                      productSlug={card.attributes?.slug ?? ""}
+                      subcategorySlug={
+                        card.attributes?.subcategory?.data?.attributes?.slug ??
+                        ""
+                      }
+                      productTypeSlug={
+                        card.attributes?.product_types?.data[0].attributes
+                          ?.slug ?? ""
+                      }
                     />
                   </div>
                 ))}

@@ -6,6 +6,9 @@ import React from "react";
 export interface ITopCardProps {
   id: string;
   subcategoryId: string;
+  subcategorySlug: string;
+  productTypeSlug: string;
+  productSlug: string;
   title: string;
   retail: string;
   imageSrc: string;
@@ -14,16 +17,16 @@ export interface ITopCardProps {
 }
 
 const TopCard: React.FC<ITopCardProps> = ({
+  subcategorySlug,
+  productTypeSlug,
+  productSlug,
   label,
-  id,
-  subcategoryId,
   title,
   retail,
-  currency,
   imageSrc,
 }) => {
   return (
-    <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 flex flex-col h-full overflow-hidden">
+    <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 flex flex-col h-full overflow-hidden group">
       <div className="relative pt-[100%]">
         <Image
           src={`${imageSrc}`}
@@ -32,7 +35,7 @@ const TopCard: React.FC<ITopCardProps> = ({
           layout="fill"
           objectFit="cover"
         />
-        <div className="absolute top-2 right-2 flex gap-x-1">
+        <div className="absolute top-2 right-2 flex gap-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Heart
             size={22}
             fill="red"
@@ -66,7 +69,9 @@ const TopCard: React.FC<ITopCardProps> = ({
         )}
       </div>
       <div className="flex-grow  p-3">
-        <h2 className="text-sm font-normal line-clamp-2">{title}</h2>
+        <h2 className="text-sm font-normal line-clamp-2 group-hover:line-clamp-none">
+          {title}
+        </h2>
       </div>
       <div className="flex items-center justify-between mt-auto">
         <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
@@ -74,7 +79,7 @@ const TopCard: React.FC<ITopCardProps> = ({
           <span className="ml-1 whitespace-nowrap">грн</span>
         </div>
         <Link
-          href={`${subcategoryId}/${id}`}
+          href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
           className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-sm text-center w-2/3 -ml-6"
         >
           Купити

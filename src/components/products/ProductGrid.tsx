@@ -21,12 +21,16 @@ interface ProductGridProps {
   productTypeId: string;
   pageSize: number;
   subcategoryId: string;
+  subcategorySlug: string;
+  productTypeSlug: string;
 }
 
 const ProductGrid = ({
   productTypeId,
   pageSize,
   subcategoryId,
+  subcategorySlug,
+  productTypeSlug,
 }: ProductGridProps) => {
   const dispatch = useAppDispatch();
   const currentPage = useAppSelector(
@@ -160,7 +164,10 @@ const ProductGrid = ({
               currency={"грн"}
               title={product?.title ?? ""}
               retail={product?.retail.toString() || "0"}
+              productSlug={product.slug ?? ""}
               subcategoryId={subcategoryId}
+              subcategorySlug={subcategorySlug}
+              productTypeSlug={productTypeSlug}
             />
           ))}
       </div>

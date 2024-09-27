@@ -24,18 +24,18 @@ function isFiltersEmpty(filters: Record<string, string[]>) {
 
 interface ProductListingClientProps {
   subcategoryId: string;
+  productTypeId: string;
+  subcategorySlug: string;
+  productTypeSlug: string;
 }
 
 const ProductListingClient: React.FC<ProductListingClientProps> = ({
   subcategoryId,
+  productTypeId,
+  subcategorySlug,
+  productTypeSlug,
 }) => {
   const dispatch = useAppDispatch();
-  const [selectedProductType, setSelectedProductType] = useState<string | null>(
-    null
-  );
-  const [selectedTypeDescription, setSelectedTypeDescription] =
-    useState<string>("");
-
   const pageSize = 10;
 
   const { data: productTypesData } = useQuery<
@@ -43,38 +43,26 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     GetProductTypesQueryVariables
   >(GET_PRODUCT_TYPES, {
     variables: { subcategoryId },
-    skip: !subcategoryId,
   });
 
   const { data: filtersData } = useQuery<
     GetProductTypeFiltersQuery,
     GetProductTypeFiltersQueryVariables
   >(GET_PRODUCT_TYPE_FILTERS, {
-    variables: { productTypeId: selectedProductType || "", subcategoryId },
-    skip: !selectedProductType,
+    variables: { productTypeId, subcategoryId },
   });
 
-  useEffect(() => {
-    if (
-      productTypesData?.productTypes?.data &&
-      productTypesData?.productTypes.data.length > 0
-    ) {
-      const firstProductType = productTypesData?.productTypes.data[0];
-      setSelectedProductType(firstProductType.id ?? "");
-      setSelectedTypeDescription(
-        firstProductType.attributes?.description ?? ""
-      );
-    }
-  }, [productTypesData]);
-
-  const handleProductTypeChange = (typeId: string) => {
-    setSelectedProductType(typeId);
-    const selectedType = productTypesData?.productTypes?.data.find(
-      (type) => type.id === typeId
-    );
-    setSelectedTypeDescription(selectedType?.attributes?.description ?? "");
+  React.useEffect(() => {
     dispatch(setAppliedFilters({ subcategoryId, filters: {} }));
+  }, [dispatch, subcategoryId, productTypeId]);
+
+  const handleProductTypeChange = (newProductTypeSlug: string) => {
+    window.location.href = `/${subcategorySlug}/${newProductTypeSlug}`;
   };
+
+  const selectedProductType = productTypesData?.productTypes?.data.find(
+    (type) => type.id === productTypeId
+  );
 
   const filters = filtersData?.productTypeFilters || {};
 
@@ -82,7 +70,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:p-8 relative">
       <ProductTypeSelector
         types={productTypesData?.productTypes?.data || []}
-        selectedTypeId={selectedProductType}
+        selectedTypeId={productTypeId}
         onTypeChange={handleProductTypeChange}
       />
       <div className="flex gap-8">
@@ -94,16 +82,16 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
             />
           )}
         </div>
-        {selectedProductType && (
-          <ProductGrid
-            subcategoryId={subcategoryId}
-            productTypeId={selectedProductType}
-            pageSize={pageSize}
-          />
-        )}
+        <ProductGrid
+          subcategoryId={subcategoryId}
+          productTypeId={productTypeId}
+          productTypeSlug={productTypeSlug}
+          subcategorySlug={subcategorySlug}
+          pageSize={pageSize}
+        />
       </div>
       <ReactMarkdown className="text-md">
-        {selectedTypeDescription}
+        {selectedProductType?.attributes?.description}
       </ReactMarkdown>
     </div>
   );

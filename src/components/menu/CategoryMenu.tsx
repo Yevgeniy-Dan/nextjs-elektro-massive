@@ -8,7 +8,6 @@ import CategorySubmenu from "./CategorySubmenu";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Spinner from "../shared/Spinner";
 import { CategoryMenuQuery } from "@/gql/graphql";
-import { Menu } from "lucide-react";
 
 const CategoryMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,7 +50,13 @@ const CategoryMenu = () => {
           </span>
         </div>
 
-        <Menu height={24} width={24} />
+        <Image
+          src="/menu-hamburger.png"
+          alt="Menu icon"
+          className="h-6 w-6 invert"
+          width={32}
+          height={32}
+        />
       </button>
 
       <div>

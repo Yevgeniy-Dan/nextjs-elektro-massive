@@ -30,6 +30,33 @@ export const GET_PRODUCT_TYPES = gql`
   }
 `;
 
+export const GET_PRODUCT_TYPE_BY_SLUG = gql`
+  query GetProductTypeBySlug($slug: String!) {
+    productTypes(filters: { slug: { eq: $slug } }, pagination: { limit: -1 }) {
+      data {
+        id
+        attributes {
+          title
+          slug
+          icon {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+          description
+        }
+      }
+      meta {
+        pagination {
+          total
+        }
+      }
+    }
+  }
+`;
+
 export const GET_PRODUCT_TYPE_FILTERS = gql`
   query GetProductTypeFilters($productTypeId: ID!, $subcategoryId: ID!) {
     productTypeFilters(
@@ -68,6 +95,7 @@ export const GET_FILTERED_PRODUCTS = gql`
           link
         }
         discount
+        slug
       }
       nextCursor
       pageCount
@@ -88,9 +116,20 @@ export const GET_PRODUCTS = gql`
           retail
           currency
           image_link
+          slug
           subcategory {
             data {
               id
+              attributes {
+                slug
+              }
+            }
+          }
+          product_types {
+            data {
+              attributes {
+                slug
+              }
             }
           }
           discount
