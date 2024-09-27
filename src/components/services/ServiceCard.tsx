@@ -4,58 +4,58 @@ import React from "react";
 interface IServiceCard {
   title: string;
   description: string;
+  imageUrl: string;
 }
 
-const ServiceCard: React.FC<IServiceCard> = ({ title, description }) => {
+const ServiceCard: React.FC<IServiceCard> = ({
+  title,
+  description,
+  imageUrl,
+}) => {
   return (
-    <div className="w-full sm:w-1/2 md:w-1/3 px-4 mb-8">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="flex flex-col flex-grow">
-          <Image
-            src="https://via.placeholder.com/500x300"
-            alt={`${title}`}
-            className="w-full"
-            width={500}
-            height={300}
-          />
-          <div className="py-5 px-6">
-            <h2 className="text-xl font-bold mb-2 line-clamp-2 flex-grow h-16">
-              {title}
-            </h2>
-            <p className="text-gray-700 mb-4 line-clamp-5 flex-grow">
-              {description}
-            </p>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-700">
-                Локація: Вся Одеська область.
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center justify-between py-3 bg-gradient-elektro-massive-horizontal px-6">
-            <div>
-              <p className="text-white mr-2">+380 (97) 63 23 159</p>
-            </div>
-            <div className="flex flex-row">
-              <a href="#" className="text-blue-500 mr-2">
-                <Image
-                  className="w-6 h-6"
-                  src="/viber.png"
-                  alt="Viber icon"
-                  width={32}
-                  height={32}
-                />
-              </a>
-              <a href="#" className="text-blue-500">
-                <Image
-                  className="w-6 h-6"
-                  src="/telegram.png"
-                  alt="Telegram icon"
-                  width={32}
-                  height={32}
-                />
-              </a>
-            </div>
-          </div>
+    <div className="flex flex-col h-full bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="relative w-full h-48">
+        <Image
+          src={imageUrl || "/images/placeholder.jpg"}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover"
+          priority={false}
+        />
+      </div>
+      <div className="p-6 flex flex-col flex-grow">
+        <h2 className="text-xl font-bold mb-2">{title}</h2>
+        <p className="text-gray-700 mb-4 flex-grow">{description}</p>
+        <div className="mt-auto">
+          <span className="text-gray-700 block">
+            Локація: Вся Одеська область.
+          </span>
+        </div>
+      </div>
+      <div className="flex items-center justify-between py-3 bg-gradient-elektro-massive-horizontal px-6">
+        <div>
+          <p className="text-white mr-2">+380 (97) 63 23 159</p>
+        </div>
+        <div className="flex flex-row">
+          <a href="#" className="text-blue-500 mr-2">
+            <Image
+              className="w-6 h-6"
+              src="/viber.png"
+              alt="Viber icon"
+              width={24}
+              height={24}
+            />
+          </a>
+          <a href="#" className="text-blue-500">
+            <Image
+              className="w-6 h-6"
+              src="/telegram.png"
+              alt="Telegram icon"
+              width={24}
+              height={24}
+            />
+          </a>
         </div>
       </div>
     </div>
