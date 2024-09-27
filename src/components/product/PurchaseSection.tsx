@@ -4,7 +4,7 @@ import { ProductAttributes } from "@/types/types";
 
 interface PurchaseSectionProps {
   product: ProductAttributes;
-  onBuyClick: () => void;
+  onBuyClick: (qty: number) => void;
 }
 
 const PurchaseSection: React.FC<PurchaseSectionProps> = ({
@@ -35,7 +35,7 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
         </div>
       </div>
       <button
-        onClick={onBuyClick}
+        onClick={() => onBuyClick(quantity)}
         className="w-full bg-gradient-elektro-massive-horizontal text-white py-2 rounded-xl mb-4"
       >
         Купити

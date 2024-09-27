@@ -44,36 +44,40 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
       })) ?? []),
   ];
 
-  const handleBuyClick = useCallback(() => {
-    const addedCartItem = {
-      id,
-      quantity: 1,
-      product: {
+  const handleBuyClick = useCallback(
+    (qty: number) => {
+      console.log("Buy clicked with quantity:", qty);
+      const addedCartItem = {
         id,
-        currency,
-        discount,
-        image_link: image_link ?? "",
-        retail,
-        title,
-        params,
-        part_number,
-        slug,
-      },
-    };
+        quantity: qty || 1,
+        product: {
+          id,
+          currency,
+          discount,
+          image_link: image_link ?? "",
+          retail,
+          title,
+          params,
+          part_number,
+          slug,
+        },
+      };
 
-    dispatch(openModal(addedCartItem));
-  }, [
-    id,
-    currency,
-    discount,
-    image_link,
-    retail,
-    title,
-    params,
-    part_number,
-    slug,
-    dispatch,
-  ]);
+      dispatch(openModal(addedCartItem));
+    },
+    [
+      id,
+      currency,
+      discount,
+      image_link,
+      retail,
+      title,
+      params,
+      part_number,
+      slug,
+      dispatch,
+    ]
+  );
 
   return (
     <div className="mx-auto p-4">
@@ -127,7 +131,10 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
             />
           </div>
 
-          <PurchaseSection product={product} onBuyClick={handleBuyClick} />
+          <PurchaseSection
+            product={product}
+            onBuyClick={(qty) => handleBuyClick(qty)}
+          />
         </div>
 
         <DeliveryPaymentSection />

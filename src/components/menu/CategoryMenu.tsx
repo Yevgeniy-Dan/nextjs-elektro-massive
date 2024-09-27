@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaChevronDown } from "react-icons/fa6";
 import Link from "next/link";
@@ -18,6 +18,8 @@ const CategoryMenu = () => {
     loading,
     error,
   } = useQuery<CategoryMenuQuery>(GET_CATEGORY_MENU);
+  const [delayedMenuOpen, setDelayedMenuOpen] = useState(false);
+  let hideTimeout: NodeJS.Timeout;
 
   const menuRef = useOutsideClick(() => {
     if (isMenuOpen) setIsMenuOpen(false);
@@ -29,12 +31,23 @@ const CategoryMenu = () => {
   };
 
   const handleMouseEnter = () => {
+    if (hideTimeout) clearTimeout(hideTimeout);
     setIsMenuOpen(true);
+    setDelayedMenuOpen(true);
   };
 
   const handleMouseLeave = () => {
-    setIsMenuOpen(false);
+    hideTimeout = setTimeout(() => {
+      setIsMenuOpen(false);
+      setDelayedMenuOpen(false);
+    }, 300);
   };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(hideTimeout); // Clear timeout on unmount
+    };
+  }, []);
 
   return (
     <div

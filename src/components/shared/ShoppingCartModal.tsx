@@ -36,7 +36,10 @@ const ShoppingCartModal = () => {
       if (!existingItem) {
         handleAddToCart(addedProduct);
       } else {
-        handleQuantityChange(existingItem.id, existingItem.quantity + 1);
+        handleQuantityChange(
+          existingItem.id,
+          existingItem.quantity + addedProduct.quantity
+        );
       }
 
       dispatch(clearAddedProduct());
