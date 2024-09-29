@@ -3,8 +3,19 @@ import React from "react";
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
 import { OrderFormData } from "@/hooks/useOrderForm";
 import Image from "next/image";
+import { Edit, Home, MapPin } from "lucide-react";
 
-const Delivery: React.FC = () => {
+interface DeliveryProps {
+  isActive: boolean;
+  onExpand: () => void;
+  onContinue: () => void;
+}
+
+const Delivery: React.FC<DeliveryProps> = ({
+  isActive,
+  onContinue,
+  onExpand,
+}) => {
   const {
     register,
     formState: { errors },
@@ -16,6 +27,50 @@ const Delivery: React.FC = () => {
   } = useExtendedFormContext<OrderFormData>();
 
   const cityDescription = watch("addressData.cityDescription");
+  const warehouseRef = watch("addressData.warehouseRef");
+  const selectedWarehouse = warehouses.find((w) => w.Ref === warehouseRef);
+
+  if (!isActive) {
+    return (
+      <section className="relative border border-gray-200 p-4 rounded-md shadow-sm hover:shadow-md transition-shadow duration-300">
+        <button
+          onClick={onExpand}
+          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+          aria-label="Edit delivery details"
+        >
+          <Edit size={18} />
+        </button>
+        <h2 className="text-lg font-semibold mb-2 flex items-center">
+          <span className="w-6 h-6 rounded-full bg-gradient-elektro-massive-horizontal text-white flex items-center justify-center mr-2">
+            2
+          </span>
+          Доставка
+        </h2>
+        <div className="mt-2 text-sm text-gray-600 flex">
+          <Image
+            src="/novaposhta.jpg"
+            width={24}
+            height={24}
+            alt="Nova Poshta"
+            className="w-5 h-5 mr-2"
+          />
+          <div>
+            <p className="flex items-center mt-0">
+              <MapPin size={16} className="mr-2" />
+              {cityDescription || "Місто не вибрано"}
+            </p>
+            <p className="flex items-center mt-1">
+              <Home size={16} className="mr-2" />
+
+              {selectedWarehouse
+                ? selectedWarehouse.Description
+                : "Відділення не вибрано"}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section>
@@ -111,6 +166,12 @@ const Delivery: React.FC = () => {
           </p>
         )}
       </div>
+      <button
+        onClick={onContinue}
+        className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300"
+      >
+        Продовжити
+      </button>
     </section>
   );
 };

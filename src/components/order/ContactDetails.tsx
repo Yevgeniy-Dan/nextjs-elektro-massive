@@ -2,8 +2,19 @@ import React from "react";
 import PhoneInput from "./PhoneInput";
 import { OrderFormData } from "@/hooks/useOrderForm";
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
+import { Edit, Phone, User } from "lucide-react";
 
-const ContactDetails: React.FC = () => {
+interface ContactDetailsProps {
+  isActive: boolean;
+  onExpand: () => void;
+  onContinue: () => void;
+}
+
+const ContactDetails: React.FC<ContactDetailsProps> = ({
+  isActive,
+  onExpand,
+  onContinue,
+}) => {
   const {
     register,
     formState: { errors, touchedFields },
@@ -12,6 +23,41 @@ const ContactDetails: React.FC = () => {
   } = useExtendedFormContext<OrderFormData>();
 
   const phoneNumber = watch("contactData.phone");
+  const firstName = watch("contactData.firstName");
+  const lastName = watch("contactData.lastName");
+
+  if (!isActive) {
+    return (
+      <section className="relative border border-gray-200 p-4 rounded-md shadow-sm hover:shadow-md transition-shadow duration-300">
+        <button
+          onClick={onExpand}
+          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+          aria-label="Edit delivery details"
+        >
+          <Edit size={18} />
+        </button>
+        <h2 className="text-lg font-semibold mb-2 flex items-center">
+          <span className="w-6 h-6 rounded-full bg-gradient-elektro-massive-horizontal text-white flex items-center justify-center mr-2">
+            1
+          </span>
+          Контактні дані
+        </h2>
+        <div className="mt-2 text-sm text-gray-600">
+          <p className="flex items-center">
+            <User size={16} className="mr-2" />
+
+            {firstName && lastName
+              ? `${firstName} ${lastName}`
+              : "Ім'я та прізвище не вказані"}
+          </p>
+          <p className="flex items-center mt-1">
+            <Phone size={16} className="mr-2" />
+            {phoneNumber || "Номер телефону не вказано"}
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section>
@@ -87,6 +133,12 @@ const ContactDetails: React.FC = () => {
           )}
         </div>
       </div>
+      <button
+        onClick={onContinue}
+        className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300"
+      >
+        Продовжити
+      </button>
     </section>
   );
 };

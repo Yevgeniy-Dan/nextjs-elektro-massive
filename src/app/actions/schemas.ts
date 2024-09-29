@@ -34,6 +34,7 @@ export const cartItemSchema = z.object({
 export const formSchema = z.object({
   contactData: contactSchema,
   addressData: addressSchema,
+  paymentMethod: z.enum(["card", "cash"]),
   cartItems: z.array(cartItemSchema),
   totalAmount: z.string().transform((val) => Number(val)),
 });

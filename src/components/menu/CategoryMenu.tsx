@@ -56,7 +56,7 @@ const CategoryMenu = () => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <button className="w-auto md:w-full px-3 hover:text-gray-300 flex items-center justify-between text-white border border-white py-2 rounded-l-2xl bg-gray-800">
+      <button className="w-auto md:w-full px-3 flex items-center justify-between text-white border border-white py-2 rounded-l-2xl bg-gray-800 hover:bg-gray-700 hover:border-gray-300 transition-all duration-300">
         <div className="flex justify-center w-full">
           <span className="text-white font-black px-4 sm:px-5 whitespace-nowrap hidden md:inline">
             Каталог товарів
@@ -66,7 +66,7 @@ const CategoryMenu = () => {
         <Image
           src="/menu-hamburger.png"
           alt="Menu icon"
-          className="h-6 w-6 invert"
+          className="h-6 w-6 invert hover:invert-[80%]"
           width={32}
           height={32}
         />

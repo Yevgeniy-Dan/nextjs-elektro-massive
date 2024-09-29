@@ -27,12 +27,13 @@ export async function buyAction(formData: FormData) {
       warehouseRef: rawFormData["addressData.warehouseRef"],
       cityRef: rawFormData["addressData.cityRef"],
     },
+    paymentMethod: rawFormData.paymentMethod,
     cartItems: parsedCartItems,
     totalAmount: rawFormData.totalAmount,
   };
 
   try {
-    const { addressData, contactData, cartItems, totalAmount } =
+    const { addressData, contactData, cartItems, totalAmount, paymentMethod } =
       formSchema.parse(dataToValidate);
 
     const shipmentNumber = await createNovaPoshtaShipment({
@@ -43,40 +44,50 @@ export async function buyAction(formData: FormData) {
 
     const orderId = shipmentNumber;
 
-    const liqpayData = {
-      public_key: LIQPAY_PUBLIC_KEY,
-      version: "3",
-      action: "pay",
-      amount: totalAmount,
-      currency: "UAH",
-      description: `Order for ${contactData.firstName} ${contactData.lastName}`,
-      order_id: orderId,
-      result_url: `${process.env.NEXT_PUBLIC_API_URL}/checkout?liqpay_return=true&order_id=${orderId}`,
-    };
-
-    // Create base64 encoded data string
-    const dataString = CryptoJS.enc.Base64.stringify(
-      CryptoJS.enc.Utf8.parse(JSON.stringify(liqpayData))
-    );
-
-    // Create signature
-    const signString = LIQPAY_PRIVATE_KEY + dataString + LIQPAY_PRIVATE_KEY;
-    const signature = CryptoJS.enc.Base64.stringify(CryptoJS.SHA1(signString));
-
     // await saveOrderToDatabase({
     //   orderId,
     //   addressData,
     //   contactData,
     //   cartItems,
     //   totalAmount,
-    //   status: "pending",
+    //   status: paymentMethod === "card" ? "pending" : "awaiting_payment",
+    //   paymentMethod,
     // });
 
-    const redirectUrl = `https://www.liqpay.ua/api/3/checkout?data=${encodeURIComponent(
-      dataString
-    )}&signature=${encodeURIComponent(signature)}`;
+    if (paymentMethod === "card") {
+      const liqpayData = {
+        public_key: LIQPAY_PUBLIC_KEY,
+        version: "3",
+        action: "pay",
+        amount: totalAmount,
+        currency: "UAH",
+        description: `Order for ${contactData.firstName} ${contactData.lastName}`,
+        order_id: orderId,
+        result_url: `${process.env.NEXT_PUBLIC_API_URL}/checkout?liqpay_return=true&order_id=${orderId}`,
+      };
 
-    return { success: true, redirectUrl };
+      // Create base64 encoded data string
+      const dataString = CryptoJS.enc.Base64.stringify(
+        CryptoJS.enc.Utf8.parse(JSON.stringify(liqpayData))
+      );
+
+      // Create signature
+      const signString = LIQPAY_PRIVATE_KEY + dataString + LIQPAY_PRIVATE_KEY;
+      const signature = CryptoJS.enc.Base64.stringify(
+        CryptoJS.SHA1(signString)
+      );
+
+      const redirectUrl = `https://www.liqpay.ua/api/3/checkout?data=${encodeURIComponent(
+        dataString
+      )}&signature=${encodeURIComponent(signature)}`;
+
+      return { success: true, redirectUrl };
+    } else {
+      return {
+        success: true,
+        redirectUrl: `${process.env.NEXT_PUBLIC_API_URL}/thankyou?order_id=${orderId}`,
+      };
+    }
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errorMessages = error.errors.map(

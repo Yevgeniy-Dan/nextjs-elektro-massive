@@ -14,7 +14,11 @@ import { useCheckPaymentStatus } from "@/hooks/useCheckPaymentStatus";
 
 const DEBOUNCE_DELAY = 3000; // 3 seconds
 
-const Summary: React.FC = () => {
+interface SummaryProps {
+  onErrors: () => void;
+}
+
+const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
   const { cartItems, calculateTotal, calculateDiscountTotal, handleClearCart } =
     useCart();
   const router = useRouter();
@@ -142,6 +146,8 @@ const Summary: React.FC = () => {
     const isValid = await trigger();
     if (isValid) {
       handleSubmit(onSubmit)();
+    } else {
+      onErrors();
     }
   };
 

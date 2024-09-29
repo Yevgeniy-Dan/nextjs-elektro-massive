@@ -118,3 +118,49 @@
 // };
 
 // export default Payment;
+
+import { useExtendedFormContext } from "@/hooks/extendedFormContext";
+import { OrderFormData } from "@/hooks/useOrderForm";
+import { CreditCard, Truck } from "lucide-react";
+import React from "react";
+
+const Payment: React.FC = () => {
+  const { register, watch } = useExtendedFormContext<OrderFormData>();
+  const paymentMethod = watch("paymentMethod");
+
+  return (
+    <section>
+      <h2 className="text-lg font-semibold mb-2 flex items-center">
+        <span className="w-6 h-6 rounded-full bg-gradient-elektro-massive-horizontal text-white flex items-center justify-center mr-2">
+          3
+        </span>
+        Оплата
+      </h2>
+      <div className="space-y-2">
+        <label className="flex items-center space-x-3  rounded-md">
+          <input
+            type="radio"
+            value="card"
+            {...register("paymentMethod")}
+            className="form-radio"
+          />
+          <CreditCard className="w-5 h-5 text-gray-600" />
+          <span>Оплата карткою</span>
+        </label>
+
+        <label className="flex items-center space-x-3  rounded-md">
+          <input
+            type="radio"
+            value="cash"
+            {...register("paymentMethod")}
+            className="form-radio"
+          />
+          <Truck className="w-5 h-5 text-gray-600" />
+          <span>Оплата при отриманні</span>
+        </label>
+      </div>
+    </section>
+  );
+};
+
+export default Payment;

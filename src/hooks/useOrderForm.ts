@@ -36,9 +36,12 @@ const orderFormSchema = z.object({
     warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
     cityRef: z.string().min(1, "Місто є обов'язковим"),
     cityDescription: z.string().min(1, "Назва міста є обов'язковою"),
-    // postalCode: z.string().min(1, "Поштовий індекс є обов'язковим"),
-    // country: z.string().min(1, "Країна є обов'язковою"),
   }),
+  paymentMethod: z
+    .enum(["card", "cash"], {
+      errorMap: () => ({ message: "Виберіть метод оплати" }),
+    })
+    .default("card"),
   // cardData: z.object({
   //   number: z.string().refine((val) => valid.number(val).isValid, {
   //     message: "Невірний номер карти",
