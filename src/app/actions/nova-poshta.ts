@@ -45,6 +45,7 @@ interface IShipmentData {
   warehouseRef: string;
   cityRef: string;
   cartItems: CartItem[];
+  paymentMethod: "card" | "cash";
 }
 
 export async function getNovaPoshtaCities(search?: string) {
@@ -144,7 +145,7 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
   //TODO: split the pacel by 30kg
   const methodProperties = {
     PayerType: "Sender",
-    PaymentMethod: "Cash",
+    PaymentMethod: "Cash", //TODO: CHANGE IT
     DateTime: format(new Date(), "dd.MM.yyyy"), //TODO: NOT SURE. Дата відправки, завтра
     CargoType: "Parcel",
     VolumeGeneral: totalVolume.toFixed(4),

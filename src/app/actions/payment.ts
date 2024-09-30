@@ -4,6 +4,17 @@ import { formSchema } from "./schemas";
 import { createNovaPoshtaShipment } from "./nova-poshta";
 import { z } from "zod";
 import CryptoJS from "crypto-js";
+import { CREATE_ORDER_MUTATION } from "@/components/order/mutations";
+import {
+  CreateOrderMutation,
+  CreateOrderMutationVariables,
+  OrderInput,
+} from "@/gql/graphql";
+import axios from "axios";
+import { getClient } from "../../../lib/apollo-client";
+import { OrderFormData } from "@/hooks/useOrderForm";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../utils/authOptions";
 
 const LIQPAY_PUBLIC_KEY = process.env.LIQPAY_PUBLIC_KEY;
 const LIQPAY_PRIVATE_KEY = process.env.LIQPAY_PRIVATE_KEY;
@@ -26,6 +37,7 @@ export async function buyAction(formData: FormData) {
     addressData: {
       warehouseRef: rawFormData["addressData.warehouseRef"],
       cityRef: rawFormData["addressData.cityRef"],
+      cityDescription: rawFormData["addressData.cityDescription"],
     },
     paymentMethod: rawFormData.paymentMethod,
     cartItems: parsedCartItems,
@@ -44,15 +56,18 @@ export async function buyAction(formData: FormData) {
 
     const orderId = shipmentNumber;
 
-    // await saveOrderToDatabase({
-    //   orderId,
-    //   addressData,
-    //   contactData,
-    //   cartItems,
-    //   totalAmount,
-    //   status: paymentMethod === "card" ? "pending" : "awaiting_payment",
-    //   paymentMethod,
-    // });
+    await saveOrderToDatabase({
+      orderNumber: orderId,
+      addressData,
+      contactData,
+      cartItems: cartItems.map((item) => ({
+        product: item.product.id,
+        quantity: item.quantity,
+        retail: item.product.retail,
+      })),
+      totalAmount,
+      paymentMethod,
+    });
 
     if (paymentMethod === "card") {
       const liqpayData = {
@@ -102,7 +117,47 @@ export async function buyAction(formData: FormData) {
     }
 
     // Handle other types of errors
-    console.error("Error processing order:", error);
+    // console.error("Error processing order:", error);
     return { success: false, message: "Сталася неочікувана помилка" };
   }
 }
+type SaveOrderInput = OrderFormData & {
+  orderNumber: string;
+  totalAmount: number;
+  cartItems: {
+    product: string;
+    quantity: number;
+    retail: number;
+  }[];
+};
+
+const saveOrderToDatabase = async (order: SaveOrderInput) => {
+  const session = await getServerSession(authOptions);
+
+  const input: OrderInput = {
+    orderNumber: order.orderNumber,
+    orderDate: new Date().toISOString(),
+    firstName: order.contactData.firstName,
+    lastName: order.contactData.lastName,
+    secondName: order.contactData.secondName,
+    phoneNumber: order.contactData.phone,
+    totalAmount: order.totalAmount,
+    paymentMethod: order.paymentMethod,
+    shippingAddress: `${order.addressData.cityRef}, ${order.addressData.warehouseRef}`,
+    users_permissions_user: session?.user.strapiUserId?.toString(),
+    orderItems: order.cartItems,
+    publishedAt: new Date().toISOString(),
+  };
+
+  const { data } = await getClient().mutate<
+    CreateOrderMutation,
+    CreateOrderMutationVariables
+  >({
+    mutation: CREATE_ORDER_MUTATION,
+    variables: {
+      input,
+    },
+  });
+
+  return data?.createOrder?.data?.attributes?.orderNumber;
+};

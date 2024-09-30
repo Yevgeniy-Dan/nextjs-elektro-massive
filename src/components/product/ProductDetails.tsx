@@ -46,7 +46,6 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
 
   const handleBuyClick = useCallback(
     (qty: number) => {
-      console.log("Buy clicked with quantity:", qty);
       const addedCartItem = {
         id,
         quantity: qty || 1,
