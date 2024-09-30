@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { OrderAttributes } from "@/types/types";
 import {
   Enum_Order_Deliverymethod,
@@ -9,10 +9,17 @@ import {
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useCart } from "@/hooks/useCart";
 
 const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
   order,
 }) => {
+  const { handleClearCart } = useCart();
+
+  useEffect(() => {
+    handleClearCart();
+  }, [handleClearCart]);
+
   if (!order) {
     return <div>Деталі замовлення недоступні.</div>;
   }
@@ -22,7 +29,11 @@ const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
       <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full overflow-hidden">
         <div className="bg-secondary-gradient-elektro-massive-horizontal p-6 px-10 text-white relative">
           <h1 className="text-2xl font-bold mb-10">
-            Ви успішно оплатили ваше замовлення!
+            Ви успішно{" "}
+            {order.paymentMethod === Enum_Order_Paymentmethod.Card
+              ? "оплатили"
+              : "замовили"}{" "}
+            ваше замовлення!
           </h1>
           <p className="text-lg">Дякуємо, що вибрали наш магазин!</p>
           <div className="absolute top-4 right-4">

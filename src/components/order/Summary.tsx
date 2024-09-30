@@ -81,7 +81,6 @@ const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
   useEffect(() => {
     if (paymentStatusData) {
       if (paymentStatusData.status === "success") {
-        handleClearCart();
         router.push(`/thankyou?orderNumber=${returnedOrderId}`);
       } else {
         showErrorToast(
@@ -99,9 +98,9 @@ const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
     }
   }, [
     cleanUpUrl,
-    handleClearCart,
     paymentStatusData,
     paymentStatusError,
+    returnedOrderId,
     router,
     showErrorToast,
   ]);

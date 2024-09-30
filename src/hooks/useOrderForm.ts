@@ -153,6 +153,8 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
     const { value } = event.target;
     setValue("addressData.cityDescription", value, { shouldValidate: false });
     setValue("addressData.cityRef", "", { shouldValidate: false });
+    setValue("addressData.warehouseDescription", "", { shouldValidate: false });
+    setValue("addressData.warehouseRef", "", { shouldValidate: false });
 
     if (value.length >= 2) {
       try {

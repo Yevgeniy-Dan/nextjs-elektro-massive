@@ -81,7 +81,7 @@ const CategoryGrid = () => {
               ? placeholders
               : data?.categories?.data?.map((category) => (
                   <div
-                    className="flex flex-col items-center px-2"
+                    className="flex flex-col items-center px-2 cursor-pointer"
                     key={category.id}
                   >
                     <div className="relative flex flex-col items-center justify-center">

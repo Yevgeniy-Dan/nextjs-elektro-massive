@@ -151,12 +151,15 @@ const Delivery: React.FC<DeliveryProps> = ({
             <input
               type="text"
               id="city"
-              {...register("addressData.cityRef")}
-              value={cityDescription}
-              onChange={handleCityInput}
+              value={cityDescription || ""}
+              onChange={(e) => {
+                handleCityInput(e);
+                setValue("addressData.cityRef", "", { shouldValidate: false });
+              }}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Введіть назву міста"
             />
+            <input type="hidden" {...register("addressData.cityRef")} />
             {errors.addressData?.cityRef && (
               <p className="mt-1 text-sm text-red-800">
                 {errors.addressData.cityRef.message}
