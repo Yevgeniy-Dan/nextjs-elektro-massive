@@ -1,6 +1,7 @@
 import React from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Mail, Phone } from "lucide-react";
+import Image from "next/image";
 
 interface MenuItems {
   href: string;
@@ -24,22 +25,64 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
           <ChevronDown className="w-5 h-5 ml-2" />
         </MenuButton>
       </div>
-      <MenuItems className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-        <div className="py-1">
-          {items.map((item, index) => (
-            <MenuItem key={index}>
-              {({ active }) => (
-                <a
-                  href={item.href}
-                  className={`block px-4 py-2 ${
-                    active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-                  }`}
-                >
-                  {item.name}
-                </a>
-              )}
-            </MenuItem>
-          ))}
+      <MenuItems className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white text-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div className="px-4 pb-3 font-medium">
+          <p className="text-sm font-normal text-center mb-4">
+            з 8:00 до 20:00 (пн-нд)
+          </p>
+          <div className="space-y-3">
+            <a href="#" className="flex items-center">
+              <Image
+                src="/viber-black-white-icon.png"
+                alt="Viber"
+                className="mr-4"
+                width={24}
+                height={24}
+              />
+              <span>Viber</span>
+            </a>
+            <a href="#" className="flex items-center">
+              <Image
+                src="/telegram-black-white-icon.png"
+                alt="Telegram"
+                className="mr-4"
+                width={24}
+                height={24}
+              />
+              <span>Telegram</span>
+            </a>
+            <a href="#" className="flex items-center">
+              <Image
+                src="/wing-black-white-icon.png"
+                alt="Mail"
+                className="mr-4"
+                width={24}
+                height={24}
+              />
+              <span>E-mail</span>
+            </a>
+            <hr className="my-3 border-gray-200" />
+            <div className="flex items-center">
+              <Image
+                src="/phone.png"
+                alt="Phone Icon"
+                className="mr-1"
+                width={24}
+                height={24}
+              />
+              <span className="font-normal">380 (98) 039 28 53 (Вероніка)</span>
+            </div>
+            <div className="flex items-center">
+              <Image
+                src="/phone.png"
+                alt="Phone Icon"
+                className="mr-1"
+                width={24}
+                height={24}
+              />
+              <span className="font-normal">380 (97) 632 31 59 (Євген)</span>
+            </div>
+          </div>
         </div>
       </MenuItems>
     </Menu>

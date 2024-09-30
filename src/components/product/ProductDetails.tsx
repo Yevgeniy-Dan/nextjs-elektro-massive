@@ -81,9 +81,13 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
   return (
     <div className="mx-auto p-4">
       <div className="md:float-left md:w-1/2 md:pr-8">
+        <h1 className="text-2xl font-bold mb-2 border-b-2 md:border-0 md:hidden">
+          {title}
+        </h1>
+
         <ImageCarousel images={images} title={title} />
 
-        <div className="flex items-center justify-center gap-4 my-3 border-b">
+        <div className="flex items-center gap-4 my-3 border-b">
           <p>Поділитися:</p>
           <div className="flex gap-3">
             <Image
@@ -114,7 +118,7 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
       </div>
 
       <div className="md:float-right md:w-1/2 md:pl-8">
-        <h1 className="text-2xl font-bold mb-2 border-b-2 md:border-0">
+        <h1 className="text-2xl font-bold mb-2 border-b-2 md:border-0 hidden md:block">
           {title}
         </h1>
         <div className="hidden md:block border-t-2 -ml-16 border-gray-300 mb-2"></div>
@@ -124,10 +128,12 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
               <span className="text-green-500">В наявності</span>
               <div className="w-4 h-4 bg-green-500 rounded-full"></div>
             </div>
-            <ProductParams
-              params={params}
-              initialParamsCount={initialParamsCount}
-            />
+            <div className="hidden md:block">
+              <ProductParams
+                params={params}
+                initialParamsCount={initialParamsCount}
+              />
+            </div>
           </div>
 
           <PurchaseSection
@@ -138,6 +144,13 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
 
         <DeliveryPaymentSection />
         <div className="hidden md:block border-b-2 border-gray-300 mb-2 md:clear-both -ml-16"></div>
+      </div>
+
+      <div className="w-full md:hidden mt-4">
+        <ProductParams
+          params={params}
+          initialParamsCount={initialParamsCount}
+        />
       </div>
 
       <div className="md:pl-8 md:clear-right">
