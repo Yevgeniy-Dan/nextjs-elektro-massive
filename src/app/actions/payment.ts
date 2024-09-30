@@ -1,15 +1,14 @@
 "use server";
 
 import { formSchema } from "./schemas";
-import { createNovaPoshtaShipment } from "./nova-poshta";
+import { createNovaPoshtaShipment, getSenderAddress } from "./nova-poshta";
 import { z } from "zod";
 import CryptoJS from "crypto-js";
 import { CREATE_ORDER_MUTATION } from "@/components/order/mutations";
 import {
   CreateOrderMutation,
   CreateOrderMutationVariables,
-  Enum_Order_Paymentmethod,
-  InputMaybe,
+  Enum_Order_Deliverymethod,
   OrderInput,
 } from "@/gql/graphql";
 import axios from "axios";
@@ -42,18 +41,26 @@ export async function buyAction(formData: FormData) {
       cityRef: rawFormData["addressData.cityRef"],
       cityDescription: rawFormData["addressData.cityDescription"],
     },
+    deliveryMethod: rawFormData.deliveryMethod,
     paymentMethod: rawFormData.paymentMethod,
     cartItems: parsedCartItems,
     totalAmount: rawFormData.totalAmount,
   };
 
   try {
-    const { addressData, contactData, cartItems, totalAmount, paymentMethod } =
-      formSchema.parse(dataToValidate);
+    const {
+      addressData,
+      contactData,
+      cartItems,
+      totalAmount,
+      paymentMethod,
+      deliveryMethod,
+    } = formSchema.parse(dataToValidate);
 
     const shipmentNumber = await createNovaPoshtaShipment({
       ...contactData,
       ...addressData,
+      deliveryMethod: deliveryMethod,
       cartItems: cartItems,
     });
 
@@ -70,6 +77,7 @@ export async function buyAction(formData: FormData) {
       })),
       totalAmount,
       paymentMethod,
+      deliveryMethod,
     });
 
     if (paymentMethod === "card") {
@@ -120,7 +128,7 @@ export async function buyAction(formData: FormData) {
     }
 
     // Handle other types of errors
-    // console.error("Error processing order:", error);
+    console.error("Error processing order:", error);
     return { success: false, message: "Сталася неочікувана помилка" };
   }
 }
@@ -136,6 +144,9 @@ type SaveOrderInput = OrderFormData & {
 
 const saveOrderToDatabase = async (order: SaveOrderInput) => {
   const session = await getServerSession(authOptions);
+  const senderAddress = await getSenderAddress();
+
+  console.log("senderAddress: ", senderAddress);
 
   const input: OrderInput = {
     orderNumber: order.orderNumber,
@@ -146,7 +157,11 @@ const saveOrderToDatabase = async (order: SaveOrderInput) => {
     phoneNumber: order.contactData.phone,
     totalAmount: order.totalAmount,
     paymentMethod: order.paymentMethod,
-    shippingAddress: `${order.addressData.cityDescription}, ${order.addressData.warehouseDescription}`,
+    deliveryMethod: order.deliveryMethod,
+    shippingAddress:
+      order.deliveryMethod === Enum_Order_Deliverymethod.NovaPoshta
+        ? `${order.addressData.cityDescription}, ${order.addressData.warehouseDescription}`
+        : `${senderAddress.CityDescription}, ${senderAddress.Description}`,
     users_permissions_user: session?.user.strapiUserId?.toString(),
     orderItems: order.cartItems,
     publishedAt: new Date().toISOString(),

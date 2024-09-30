@@ -18,46 +18,71 @@ import {
   IWarehouse,
 } from "@/app/actions/nova-poshta";
 import { useCart } from "./useCart";
-import { Enum_Order_Paymentmethod } from "@/gql/graphql";
+import {
+  Enum_Order_Deliverymethod,
+  Enum_Order_Paymentmethod,
+} from "@/gql/graphql";
 
 const WEIGHT_THRESHOLD = 30;
 const CARGO_WAREHOUSE_REF = "9a68df70-0267-42a8-bb5c-37f427e36ee4";
 
-const orderFormSchema = z.object({
-  contactData: z.object({
-    phone: z
-      .string()
-      .regex(/^\d{2}-\d{3}-\d{4}$/, "Невірний формат номера телефону")
-      .transform((val) => `+380${val.replace(/-/g, "")}`),
-    firstName: z.string().min(1, "Ім'я є обов'язковим"),
-    secondName: z.string().min(1, "По-батькові є обов'язковим"),
-    lastName: z.string().min(1, "Прізвище є обов'язковим"),
-  }),
-  addressData: z.object({
-    warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
-    warehouseDescription: z.string().min(1, "Назва відділення є обов'язковою"),
-    cityRef: z.string().min(1, "Місто є обов'язковим"),
-    cityDescription: z.string().min(1, "Назва міста є обов'язковою"),
-  }),
-  paymentMethod: z
-    .nativeEnum(Enum_Order_Paymentmethod, {
-      errorMap: () => ({ message: "Виберіть метод оплати" }),
-    })
-    .default(Enum_Order_Paymentmethod.Card),
-  // cardData: z.object({
-  //   number: z.string().refine((val) => valid.number(val).isValid, {
-  //     message: "Невірний номер карти",
-  //   }),
-  //   expiry: z.string().refine((val) => valid.expirationDate(val).isValid, {
-  //     message: "Невірна дата закінчення терміну",
-  //   }),
-  //   cvc: z.string().refine((val) => valid.cvv(val).isValid, {
-  //     message: "Невірний CVC",
-  //   }),
-  //   name: z.string().min(1, "Ім'я власника картки є обов'язковим"),
-  //   focus: z.string(),
-  // }),
-});
+const orderFormSchema = z
+  .object({
+    contactData: z.object({
+      phone: z
+        .string()
+        .regex(/^\d{2}-\d{3}-\d{4}$/, "Невірний формат номера телефону")
+        .transform((val) => `+380${val.replace(/-/g, "")}`),
+      firstName: z.string().min(1, "Ім'я є обов'язковим"),
+      secondName: z.string().min(1, "По-батькові є обов'язковим"),
+      lastName: z.string().min(1, "Прізвище є обов'язковим"),
+    }),
+    addressData: z.object({
+      // warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
+      // warehouseDescription: z
+      //   .string()
+      //   .min(1, "Назва відділення є обов'язковою"),
+      // cityRef: z.string().min(1, "Місто є обов'язковим"),
+      // cityDescription: z.string().min(1, "Назва міста є обов'язковою"),
+      warehouseRef: z.string().optional(),
+      warehouseDescription: z.string().optional(),
+      cityRef: z.string().optional(),
+      cityDescription: z.string().optional(),
+    }),
+    deliveryMethod: z
+      .nativeEnum(Enum_Order_Deliverymethod)
+      .default(Enum_Order_Deliverymethod.NovaPoshta),
+    paymentMethod: z
+      .nativeEnum(Enum_Order_Paymentmethod, {
+        errorMap: () => ({ message: "Виберіть метод оплати" }),
+      })
+      .default(Enum_Order_Paymentmethod.Card),
+    // cardData: z.object({
+    //   number: z.string().refine((val) => valid.number(val).isValid, {
+    //     message: "Невірний номер карти",
+    //   }),
+    //   expiry: z.string().refine((val) => valid.expirationDate(val).isValid, {
+    //     message: "Невірна дата закінчення терміну",
+    //   }),
+    //   cvc: z.string().refine((val) => valid.cvv(val).isValid, {
+    //     message: "Невірний CVC",
+    //   }),
+    //   name: z.string().min(1, "Ім'я власника картки є обов'язковим"),
+    //   focus: z.string(),
+    // }),
+  })
+  .refine(
+    (data) => {
+      if (data.deliveryMethod === Enum_Order_Deliverymethod.NovaPoshta) {
+        return data.addressData.warehouseRef && data.addressData.cityRef;
+      }
+      return true;
+    },
+    {
+      message: "Виберіть місто та відділення для доставки Новою Поштою",
+      path: ["addressData"],
+    }
+  );
 
 export type OrderFormData = z.infer<typeof orderFormSchema>;
 
@@ -74,6 +99,8 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
       contactData: { phone: "", firstName: "", secondName: "", lastName: "" },
       addressData: { warehouseRef: "", cityRef: "" },
       // cardData: { number: "", expiry: "", cvc: "", name: "", focus: "" },
+      deliveryMethod: Enum_Order_Deliverymethod.NovaPoshta,
+      paymentMethod: Enum_Order_Paymentmethod.Card,
     },
     mode: "onTouched",
   });

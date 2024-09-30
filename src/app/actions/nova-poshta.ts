@@ -1,7 +1,11 @@
 import axios from "axios";
 import { format } from "date-fns";
 import { calculateProductDimensions } from "../utils/novaPoshtaHeplers";
-import { CartItem, Enum_Order_Paymentmethod } from "@/gql/graphql";
+import {
+  CartItem,
+  Enum_Order_Deliverymethod,
+  Enum_Order_Paymentmethod,
+} from "@/gql/graphql";
 
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const API_KEY = process.env.NOVA_POSHTA_API_KEY;
@@ -45,6 +49,7 @@ interface IShipmentData {
   warehouseRef: string;
   cityRef: string;
   cartItems: CartItem[];
+  deliveryMethod: Enum_Order_Deliverymethod;
 }
 
 export async function getNovaPoshtaCities(search?: string) {
@@ -130,6 +135,12 @@ export async function getNovaPoshtaWarehouses(
 }
 
 export async function createNovaPoshtaShipment(data: IShipmentData) {
+  if (data.deliveryMethod === Enum_Order_Deliverymethod.SelfPickup) {
+    // For self-pickup, we don't need to create a Nova Poshta shipment
+    // Instead, we'll return a custom identifier for the self-pickup order
+    return `SELF-PICKUP-${Date.now()}`;
+  }
+
   const senderAddress = await getSenderAddress();
   const { recipientRef, contactPersonRecipientRef } = await createRecipient(
     data
@@ -239,7 +250,7 @@ async function createRecipient(data: IShipmentData): Promise<{
   }
 }
 
-async function getSenderAddress() {
+export async function getSenderAddress() {
   const response = await axios.post(NOVA_POSHTA_API_URL, {
     apiKey: API_KEY,
     modelName: "CounterpartyGeneral",
@@ -251,7 +262,7 @@ async function getSenderAddress() {
   });
 
   if (response.data.success && response.data.data.length > 0) {
-    return response.data.data[0].Ref;
+    return response.data.data[0];
   } else {
     throw new Error("Failed to get sender address");
   }

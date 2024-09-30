@@ -15,6 +15,7 @@ export const getAllOrdersByNumber = graphql(`
           shippingAddress
           totalAmount
           paymentMethod
+          deliveryMethod
         }
       }
     }

@@ -82,7 +82,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
     if (paymentStatusData) {
       if (paymentStatusData.status === "success") {
         handleClearCart();
-        router.push("/thankyou");
+        router.push(`/thankyou?orderNumber=${returnedOrderId}`);
       } else {
         showErrorToast(
           `Оплата не вдалася: ${

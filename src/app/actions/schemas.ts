@@ -1,4 +1,7 @@
-import { Enum_Order_Paymentmethod } from "@/gql/graphql";
+import {
+  Enum_Order_Deliverymethod,
+  Enum_Order_Paymentmethod,
+} from "@/gql/graphql";
 import { z } from "zod";
 
 // Define the schema for contact data
@@ -11,10 +14,14 @@ export const contactSchema = z.object({
 
 // Define the schema for address data in Ukrainian
 export const addressSchema = z.object({
-  warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
-  warehouseDescription: z.string().min(1, "Назва відділення є обов'язковою"),
-  cityRef: z.string().min(1, "Місто є обов'язковим"),
-  cityDescription: z.string().min(1, "Назва міста є обов'язковою"),
+  // warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
+  // warehouseDescription: z.string().min(1, "Назва відділення є обов'язковою"),
+  // cityRef: z.string().min(1, "Місто є обов'язковим"),
+  // cityDescription: z.string().min(1, "Назва міста є обов'язковою"),
+  warehouseRef: z.string().optional(),
+  warehouseDescription: z.string().optional(),
+  cityRef: z.string().optional(),
+  cityDescription: z.string().optional(),
 });
 
 // Define the schema for a single cart item
@@ -34,14 +41,31 @@ export const cartItemSchema = z.object({
 });
 
 // Define the schema for the entire form data
-export const formSchema = z.object({
-  contactData: contactSchema,
-  addressData: addressSchema,
-  paymentMethod: z
-    .nativeEnum(Enum_Order_Paymentmethod, {
-      errorMap: () => ({ message: "Виберіть метод оплати" }),
-    })
-    .default(Enum_Order_Paymentmethod.Card),
-  cartItems: z.array(cartItemSchema),
-  totalAmount: z.string().transform((val) => Number(val)),
-});
+export const formSchema = z
+  .object({
+    contactData: contactSchema,
+    addressData: addressSchema,
+    paymentMethod: z
+      .nativeEnum(Enum_Order_Paymentmethod, {
+        errorMap: () => ({ message: "Виберіть метод оплати" }),
+      })
+      .default(Enum_Order_Paymentmethod.Card),
+    deliveryMethod: z
+      .nativeEnum(Enum_Order_Deliverymethod)
+      .default(Enum_Order_Deliverymethod.NovaPoshta),
+    cartItems: z.array(cartItemSchema),
+    totalAmount: z.string().transform((val) => Number(val)),
+  })
+  .refine(
+    (data) => {
+      if (data.deliveryMethod === Enum_Order_Deliverymethod.NovaPoshta) {
+        return data.addressData.warehouseRef && data.addressData.cityRef;
+      }
+
+      return true;
+    },
+    {
+      message: "Виберіть місто та відділення для доставки Новою Поштою",
+      path: ["addressData"],
+    }
+  );

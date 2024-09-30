@@ -25,8 +25,6 @@ const httpLink = new HttpLink({
 const authLink = setContext(async (_, { headers }) => {
   const session = await getServerSession(authOptions);
 
-  console.log("HEEEEEEYEYEYEYEY: ", session);
-
   return {
     headers: {
       ...headers,
