@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@apollo/client";
 import ProductTypeSelector from "./ProductTypeSelector";
 
@@ -17,6 +18,8 @@ import {
 import ReactMarkdown from "react-markdown";
 import { useAppDispatch } from "@/store/hooks";
 import { setAppliedFilters } from "@/store/productGridSlice";
+import { Filter, X } from "lucide-react";
+import useOutsideClick from "@/hooks/useOutsideClick";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
@@ -37,6 +40,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const pageSize = 10;
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const { data: productTypesData } = useQuery<
     GetProductTypesQuery,
@@ -60,6 +64,12 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     window.location.href = `/${subcategorySlug}/${newProductTypeSlug}`;
   };
 
+  const handleOutsideClick = useCallback(() => {
+    setIsFilterOpen(false);
+  }, []);
+
+  const filterPanelRef = useOutsideClick(handleOutsideClick);
+
   const selectedProductType = productTypesData?.productTypes?.data.find(
     (type) => type.id === productTypeId
   );
@@ -73,8 +83,44 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
         selectedTypeId={productTypeId}
         onTypeChange={handleProductTypeChange}
       />
-      <div className="flex gap-8">
-        <div className="w-1/4">
+      <div className="md:hidden mb-4">
+        <button
+          onClick={() => setIsFilterOpen(true)}
+          className="flex items-center justify-center  p-2 bg-gray-200 rounded-md"
+        >
+          <Filter />
+        </button>
+      </div>
+      <div className="flex justify-center gap-8">
+        <AnimatePresence>
+          {isFilterOpen && (
+            <motion.div
+              ref={filterPanelRef}
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed inset-y-0 left-0 z-50 w-[50%] md:hidden md:w-1/4 bg-white shadow-lg overflow-y-auto"
+            >
+              <div className="p-4 relative">
+                <button
+                  onClick={() => setIsFilterOpen(false)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                  aria-label="Close filters"
+                >
+                  <X size={24} />
+                </button>
+                {!isFiltersEmpty(filters) && (
+                  <ProductFilterSection
+                    filters={filters}
+                    subcategoryId={subcategoryId}
+                  />
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <div className="hidden md:block w-1/4">
           {!isFiltersEmpty(filters) && (
             <ProductFilterSection
               filters={filters}

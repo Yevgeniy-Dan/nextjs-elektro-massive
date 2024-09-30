@@ -68,7 +68,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
           <div key={filter.id} className="mb-4">
             <h3 className="text-lg font-semibold mb-2">{filter.title}</h3>
             <div
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-2 ${
+              className={`grid grid-cols-1  lg:grid-cols-2 gap-2 ${
                 !hasMoreValues || isExpanded ? "h-auto" : "max-h-[144px]"
               } overflow-hidden`}
             >
