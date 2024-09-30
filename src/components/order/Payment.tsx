@@ -119,14 +119,14 @@
 
 // export default Payment;
 
+import { Enum_Order_Paymentmethod } from "@/gql/graphql";
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
 import { OrderFormData } from "@/hooks/useOrderForm";
 import { CreditCard, Truck } from "lucide-react";
 import React from "react";
 
 const Payment: React.FC = () => {
-  const { register, watch } = useExtendedFormContext<OrderFormData>();
-  const paymentMethod = watch("paymentMethod");
+  const { register } = useExtendedFormContext<OrderFormData>();
 
   return (
     <section>
@@ -140,7 +140,7 @@ const Payment: React.FC = () => {
         <label className="flex items-center space-x-3  rounded-md">
           <input
             type="radio"
-            value="card"
+            value={Enum_Order_Paymentmethod.Card}
             {...register("paymentMethod")}
             className="form-radio"
           />
@@ -151,7 +151,7 @@ const Payment: React.FC = () => {
         <label className="flex items-center space-x-3  rounded-md">
           <input
             type="radio"
-            value="cash"
+            value={Enum_Order_Paymentmethod.Cash}
             {...register("paymentMethod")}
             className="form-radio"
           />

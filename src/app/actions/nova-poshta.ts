@@ -1,7 +1,7 @@
 import axios from "axios";
 import { format } from "date-fns";
 import { calculateProductDimensions } from "../utils/novaPoshtaHeplers";
-import { CartItem } from "@/gql/graphql";
+import { CartItem, Enum_Order_Paymentmethod } from "@/gql/graphql";
 
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const API_KEY = process.env.NOVA_POSHTA_API_KEY;
@@ -45,7 +45,6 @@ interface IShipmentData {
   warehouseRef: string;
   cityRef: string;
   cartItems: CartItem[];
-  paymentMethod: "card" | "cash";
 }
 
 export async function getNovaPoshtaCities(search?: string) {

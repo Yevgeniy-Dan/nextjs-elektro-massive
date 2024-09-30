@@ -8,6 +8,8 @@ import { CREATE_ORDER_MUTATION } from "@/components/order/mutations";
 import {
   CreateOrderMutation,
   CreateOrderMutationVariables,
+  Enum_Order_Paymentmethod,
+  InputMaybe,
   OrderInput,
 } from "@/gql/graphql";
 import axios from "axios";
@@ -36,6 +38,7 @@ export async function buyAction(formData: FormData) {
     },
     addressData: {
       warehouseRef: rawFormData["addressData.warehouseRef"],
+      warehouseDescription: rawFormData["addressData.warehouseDescription"],
       cityRef: rawFormData["addressData.cityRef"],
       cityDescription: rawFormData["addressData.cityDescription"],
     },
@@ -54,10 +57,10 @@ export async function buyAction(formData: FormData) {
       cartItems: cartItems,
     });
 
-    const orderId = shipmentNumber;
+    const orderNumber = shipmentNumber;
 
     await saveOrderToDatabase({
-      orderNumber: orderId,
+      orderNumber,
       addressData,
       contactData,
       cartItems: cartItems.map((item) => ({
@@ -77,8 +80,8 @@ export async function buyAction(formData: FormData) {
         amount: totalAmount,
         currency: "UAH",
         description: `Order for ${contactData.firstName} ${contactData.lastName}`,
-        order_id: orderId,
-        result_url: `${process.env.NEXT_PUBLIC_API_URL}/checkout?liqpay_return=true&order_id=${orderId}`,
+        order_id: orderNumber,
+        result_url: `${process.env.NEXT_PUBLIC_API_URL}/checkout?liqpay_return=true&order_id=${orderNumber}`,
       };
 
       // Create base64 encoded data string
@@ -100,7 +103,7 @@ export async function buyAction(formData: FormData) {
     } else {
       return {
         success: true,
-        redirectUrl: `${process.env.NEXT_PUBLIC_API_URL}/thankyou?order_id=${orderId}`,
+        redirectUrl: `${process.env.NEXT_PUBLIC_API_URL}/thankyou?orderNumber=${orderNumber}`,
       };
     }
   } catch (error) {
@@ -143,7 +146,7 @@ const saveOrderToDatabase = async (order: SaveOrderInput) => {
     phoneNumber: order.contactData.phone,
     totalAmount: order.totalAmount,
     paymentMethod: order.paymentMethod,
-    shippingAddress: `${order.addressData.cityRef}, ${order.addressData.warehouseRef}`,
+    shippingAddress: `${order.addressData.cityDescription}, ${order.addressData.warehouseDescription}`,
     users_permissions_user: session?.user.strapiUserId?.toString(),
     orderItems: order.cartItems,
     publishedAt: new Date().toISOString(),

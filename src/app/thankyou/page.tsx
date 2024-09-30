@@ -1,18 +1,40 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+
+import { getAllOrdersByNumber } from "@/components/order/queries";
+import request from "graphql-request";
+import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import OrderConfirmation from "@/components/order/OrderConfirmation";
+import Spinner from "@/components/shared/Spinner";
+import CenteredSpinner from "@/components/shared/CenteredSpinner";
 
 const ThankYouPage: React.FC = () => {
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Thank You for Your Order!</h1>
-      <p className="mb-4">Your payment has been successfully processed.</p>
-      <Link href="/" className="text-blue-500 hover:underline">
-        Return to Home
-      </Link>
-    </div>
-  );
+  const searchParams = useSearchParams();
+  const orderNumber = searchParams.get("orderNumber");
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["order", orderNumber],
+    queryFn: async () =>
+      request(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+        getAllOrdersByNumber,
+        { orderNumber: orderNumber ?? "" }
+      ),
+  });
+
+  if (isLoading) {
+    return <CenteredSpinner />;
+  }
+
+  if (isError) {
+    return <div>{JSON.stringify(error)}</div>;
+  }
+
+  const order = data?.orders?.data[0].attributes || null;
+
+  return <OrderConfirmation order={order} />;
 };
 
 export default ThankYouPage;

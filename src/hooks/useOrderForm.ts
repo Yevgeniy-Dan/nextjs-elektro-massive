@@ -18,6 +18,7 @@ import {
   IWarehouse,
 } from "@/app/actions/nova-poshta";
 import { useCart } from "./useCart";
+import { Enum_Order_Paymentmethod } from "@/gql/graphql";
 
 const WEIGHT_THRESHOLD = 30;
 const CARGO_WAREHOUSE_REF = "9a68df70-0267-42a8-bb5c-37f427e36ee4";
@@ -34,14 +35,15 @@ const orderFormSchema = z.object({
   }),
   addressData: z.object({
     warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
+    warehouseDescription: z.string().min(1, "Назва відділення є обов'язковою"),
     cityRef: z.string().min(1, "Місто є обов'язковим"),
     cityDescription: z.string().min(1, "Назва міста є обов'язковою"),
   }),
   paymentMethod: z
-    .enum(["card", "cash"], {
+    .nativeEnum(Enum_Order_Paymentmethod, {
       errorMap: () => ({ message: "Виберіть метод оплати" }),
     })
-    .default("card"),
+    .default(Enum_Order_Paymentmethod.Card),
   // cardData: z.object({
   //   number: z.string().refine((val) => valid.number(val).isValid, {
   //     message: "Невірний номер карти",
@@ -164,12 +166,22 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
     }
   };
 
+  const handleWarehouseSelect = (warehouse: IWarehouse) => {
+    setValue("addressData.warehouseRef", warehouse.Ref, {
+      shouldValidate: true,
+    });
+    setValue("addressData.warehouseDescription", warehouse.Description, {
+      shouldValidate: true,
+    });
+  };
+
   return {
     ...methods,
     handleCardInput,
     handleCardFocus,
     handleCitySelect,
     handleCityInput,
+    handleWarehouseSelect,
     warehouses,
     cities,
     cardType,

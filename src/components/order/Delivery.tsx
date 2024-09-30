@@ -21,6 +21,7 @@ const Delivery: React.FC<DeliveryProps> = ({
     formState: { errors },
     handleCityInput,
     handleCitySelect,
+    handleWarehouseSelect,
     cities,
     warehouses,
     watch,
@@ -151,6 +152,14 @@ const Delivery: React.FC<DeliveryProps> = ({
         <select
           id="warehouse"
           {...register("addressData.warehouseRef")}
+          onChange={(e) => {
+            const selectedWarehouse = warehouses.find(
+              (w) => w.Ref === e.target.value
+            );
+            if (selectedWarehouse) {
+              handleWarehouseSelect(selectedWarehouse);
+            }
+          }}
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         >
           <option value="">Виберіть відділення</option>

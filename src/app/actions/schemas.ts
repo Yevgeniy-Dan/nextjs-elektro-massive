@@ -1,3 +1,4 @@
+import { Enum_Order_Paymentmethod } from "@/gql/graphql";
 import { z } from "zod";
 
 // Define the schema for contact data
@@ -11,7 +12,9 @@ export const contactSchema = z.object({
 // Define the schema for address data in Ukrainian
 export const addressSchema = z.object({
   warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
+  warehouseDescription: z.string().min(1, "Назва відділення є обов'язковою"),
   cityRef: z.string().min(1, "Місто є обов'язковим"),
+  cityDescription: z.string().min(1, "Назва міста є обов'язковою"),
 });
 
 // Define the schema for a single cart item
@@ -34,7 +37,11 @@ export const cartItemSchema = z.object({
 export const formSchema = z.object({
   contactData: contactSchema,
   addressData: addressSchema,
-  paymentMethod: z.enum(["card", "cash"]),
+  paymentMethod: z
+    .nativeEnum(Enum_Order_Paymentmethod, {
+      errorMap: () => ({ message: "Виберіть метод оплати" }),
+    })
+    .default(Enum_Order_Paymentmethod.Card),
   cartItems: z.array(cartItemSchema),
   totalAmount: z.string().transform((val) => Number(val)),
 });

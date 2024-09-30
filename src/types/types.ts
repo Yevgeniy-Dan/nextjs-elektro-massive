@@ -1,4 +1,5 @@
 import {
+  GetOrderByOrderNumberQuery,
   GetProductBySlugQuery,
   GetProductQuery,
   GetProductTypeBySlugQuery,
@@ -20,4 +21,10 @@ export type ProductData = NonNullable<
 
 export type SubcategoryData = NonNullable<
   NonNullable<GetSubcategoryBySlugQuery["subcategories"]>["data"][number]
+>;
+
+export type OrderAttributes = NonNullable<
+  NonNullable<
+    GetOrderByOrderNumberQuery["orders"]
+  >["data"][number]["attributes"]
 >;

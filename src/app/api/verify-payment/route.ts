@@ -34,14 +34,12 @@ export async function POST(request: NextRequest) {
 
     if (decodedData.status === "success") {
       // Update order status in your database
-      await updateOrderStatus(decodedData.order_id, "paid");
       return NextResponse.json(
         { status: "success", message: "Payment successful" },
         { status: 200 }
       );
     } else {
       // Update order status in your database
-      await updateOrderStatus(decodedData.order_id, "failed");
       return NextResponse.json(
         { status: "failed", message: "Payment failed" },
         { status: 200 }
@@ -54,13 +52,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-async function updateOrderStatus(orderId: string, status: "paid" | "failed") {
-  // Implement this function to update the order status in your database
-  // For example:
-  // await prisma.order.update({
-  //   where: { id: orderId },
-  //   data: { status: status }
-  // });
 }

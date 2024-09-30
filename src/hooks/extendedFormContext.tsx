@@ -14,6 +14,7 @@ export type ExtendedUseFormReturn<
     event: React.ChangeEvent<HTMLInputElement>
   ) => Promise<void>;
   handleCitySelect: (city: ICity) => Promise<void>;
+  handleWarehouseSelect: (warehouse: IWarehouse) => void;
   cities: ICity[];
   warehouses: IWarehouse[];
 };
