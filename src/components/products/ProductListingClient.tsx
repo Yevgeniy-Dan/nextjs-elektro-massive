@@ -91,7 +91,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           <Filter />
         </button>
       </div>
-      <div className="flex justify-center gap-8">
+      <div className="flex gap-8">
         <AnimatePresence>
           {isFilterOpen && (
             <motion.div
