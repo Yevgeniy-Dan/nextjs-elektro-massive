@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const companyLinks = [
@@ -54,8 +55,8 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
           </div>
           <div className="flex flex-col-reverse sm:flex-col">
             <div className="flex flex-wrap justify-center sm:justify-start items-center lg:grid lg:grid-cols-2  xl:flex lg:flex-nowrap   my-4">
-              <a
-                href="#"
+              <Link
+                href="https://t.me/YourTelegramUsername"
                 className="text-white hover:text-gray-300 hover:opacity-75 transition-opacity mr-4"
               >
                 <Image
@@ -65,9 +66,9 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
                   width={48}
                   height={48}
                 />
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="viber://chat?number=+YourViberNumber"
                 className="text-white hover:text-gray-300  hover:opacity-75 transition-opacity mr-4"
               >
                 <Image
@@ -77,10 +78,10 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
                   width={48}
                   height={48}
                 />
-              </a>
+              </Link>
 
-              <a
-                href="#"
+              <Link
+                href="https://www.tiktok.com/@YourTikTokUsername"
                 className="text-white hover:text-gray-300  hover:opacity-75 transition-opacity mr-4"
               >
                 <Image
@@ -90,9 +91,9 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
                   width={48}
                   height={48}
                 />
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="https://www.instagram.com/YourInstagramUsername"
                 className="text-white hover:text-gray-300  hover:opacity-75 transition-opacity mr-4"
               >
                 <Image
@@ -102,7 +103,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
                   width={48}
                   height={48}
                 />
-              </a>
+              </Link>
             </div>
             <div className="space-y-1">
               <h3 className="font-bold mb-2 mt-4">Зв&#39;язатися з нами:</h3>

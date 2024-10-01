@@ -2,6 +2,7 @@ import React from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDown, Mail, Phone } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface MenuItems {
   href: string;
@@ -31,7 +32,10 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
             з 8:00 до 20:00 (пн-нд)
           </p>
           <div className="space-y-3">
-            <a href="#" className="flex items-center">
+            <Link
+              href={`viber://chat?number=${process.env.SUPPORT_VIBER_PHONE_NUMBER}`}
+              className="flex items-center"
+            >
               <Image
                 src="/viber-black-white-icon.png"
                 alt="Viber"
@@ -40,8 +44,11 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
                 height={24}
               />
               <span>Viber</span>
-            </a>
-            <a href="#" className="flex items-center">
+            </Link>
+            <Link
+              href={`https://t.me/${process.env.SUPPORT_TELEGRAM_USERNAME}`}
+              className="flex items-center"
+            >
               <Image
                 src="/telegram-black-white-icon.png"
                 alt="Telegram"
@@ -50,8 +57,11 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
                 height={24}
               />
               <span>Telegram</span>
-            </a>
-            <a href="#" className="flex items-center">
+            </Link>
+            <Link
+              href={`mailto:${process.env.SUPPORT_EMAIL}`}
+              className="flex items-center"
+            >
               <Image
                 src="/wing-black-white-icon.png"
                 alt="Mail"
@@ -60,9 +70,9 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
                 height={24}
               />
               <span>E-mail</span>
-            </a>
+            </Link>
             <hr className="my-3 border-gray-200" />
-            <div className="flex items-center">
+            <Link href="tel:+380980392853" className="flex items-center">
               <Image
                 src="/phone.png"
                 alt="Phone Icon"
@@ -71,8 +81,8 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
                 height={24}
               />
               <span className="font-normal">380 (98) 039 28 53 (Вероніка)</span>
-            </div>
-            <div className="flex items-center">
+            </Link>
+            <Link href="tel:+380976323159" className="flex items-center">
               <Image
                 src="/phone.png"
                 alt="Phone Icon"
@@ -81,7 +91,7 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
                 height={24}
               />
               <span className="font-normal">380 (97) 632 31 59 (Євген)</span>
-            </div>
+            </Link>
           </div>
         </div>
       </MenuItems>

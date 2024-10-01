@@ -129,7 +129,7 @@ const ProductGrid = ({
   const isFetchingMore = networkStatus === NetworkStatus.fetchMore;
 
   if (isInitialLoading || isRefetching || isFetchingMore) {
-    return <CenteredSpinner minHeight="24rem" />;
+    return <CenteredSpinner />;
   }
 
   if (error) {

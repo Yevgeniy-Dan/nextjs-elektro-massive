@@ -13,20 +13,13 @@ import { GetCategoriesQuery } from "@/gql/graphql";
 
 const CategoryGrid = () => {
   const { activePageIndex } = useSnapCarousel();
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    setCurrentIndex(activePageIndex);
-  }, [activePageIndex]);
-
-  //TODO:
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     dragFree: true,
     containScroll: "trimSnaps",
     align: "start",
   });
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -38,8 +31,7 @@ const CategoryGrid = () => {
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi, setSelectedIndex]);
+  }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -50,7 +42,7 @@ const CategoryGrid = () => {
     };
   }, [emblaApi, onSelect]);
 
-  const { data, loading, error } = useQuery<GetCategoriesQuery>(GET_CATEGORIES);
+  const { data, loading } = useQuery<GetCategoriesQuery>(GET_CATEGORIES);
 
   const PlaceHolderCard = () => (
     <div className="flex flex-col items-center px-2">
@@ -101,7 +93,7 @@ const CategoryGrid = () => {
                         )}
                       </div>
                       <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 static transform-none w-[50%] md:w-[70%]">
-                        <p className="text-black text-center text-base md:text-lg md:text-white font-semibold mt-2 break-words">
+                        <p className="text-black text-center text-base md:text-lg font-semibold mt-2 break-words">
                           {category.attributes?.name || "Unnamed Category"}
                         </p>
                       </div>
@@ -123,95 +115,6 @@ const CategoryGrid = () => {
           <ChevronRight size={48} />
         </button>
       </div>
-      {/* <div className="relative py-4">
-        <Swiper
-          slidesPerView="auto"
-          grid={{
-            rows: 1,
-            fill: "row",
-          }}
-          spaceBetween={4}
-          navigation={true}
-          pagination={{
-            clickable: true,
-          }}
-          modules={[Grid, Navigation]}
-          className="swiper-category-grid "
-          style={{
-            paddingBottom: "1rem",
-          }}
-          centeredSlides={true}
-          centeredSlidesBounds={true}
-          allowSlideNext={allowSlideNext}
-          // onSlideChange={(swiper) => {
-          //   const slideWidth = 256; // 64 * 4 (учитывая rem)
-          //   const visibleWidth = swiper.width;
-          //   const totalWidth = swiper.slides.length * slideWidth;
-          //   const currentPosition = swiper.translate * -1;
-
-          //   if (currentPosition + visibleWidth >= totalWidth) {
-          //     swiper.setTranslate(-(totalWidth - visibleWidth));
-          //     swiper.allowSlideNext = false;
-          //   } else {
-          //     swiper.allowSlideNext = true;
-          //   }
-          // }}
-          breakpoints={{
-            // when window width is >= 640px
-            0: {
-              slidesPerView: 1,
-            },
-            640: {
-              slidesPerView: 1,
-            },
-            // when window width is >= 768px
-            768: {
-              slidesPerView: 2,
-            },
-            // when window width is >= 1024px
-            1024: {
-              slidesPerView: 3,
-            },
-            1236: {
-              slidesPerView: 4,
-            },
-            1536: {
-              slidesPerView: 5,
-            },
-            // when window width is >= 2048px
-            2048: {
-              slidesPerView: 6,
-            },
-            2536: {
-              slidesPerView: 7,
-            },
-          }}
-        >
-          {categories.map((item, index) => (
-            // className="!w-56 md:!w-72"
-            <SwiperSlide key={index} className="!w-56 md:!w-72">
-              <div className="flex flex-col items-center">
-                <div className="relative flex flex-col items-center justify-center">
-                  <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full md:rounded-lg overflow-hidden">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      layout="fill"
-                      objectFit="cover"
-                    />
-                  </div>
-                  <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 static transform-none w-[50%] md:w-[70%]">
-                    <p className=" text-black text-center text-base md:text-lg md:text-white font-semibold mt-2 break-words">
-                      {item.name}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        
-      </div> */}
     </div>
   );
 };

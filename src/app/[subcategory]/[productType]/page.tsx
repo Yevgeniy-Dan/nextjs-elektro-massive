@@ -9,7 +9,6 @@ import {
 } from "@/gql/graphql";
 import { GET_SUBCATEGORY_BY_SLUG } from "@/components/product/queries";
 import { GET_PRODUCT_TYPE_BY_SLUG } from "@/components/products/queries";
-import { get } from "http";
 import ProductListingClient from "@/components/products/ProductListingClient";
 
 interface ProductTypePageProps {

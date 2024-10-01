@@ -38,7 +38,7 @@ const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
           <p className="text-lg">Дякуємо, що вибрали наш магазин!</p>
           <div className="absolute top-4 right-4">
             <Image
-              src={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/thumbnail_heart_1d13453d72.png`}
+              src={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/heart_f559c57931.png`}
               alt="Heart"
               width={120}
               height={120}
