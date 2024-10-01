@@ -20,6 +20,7 @@ import { authOptions } from "./utils/authOptions";
 import { ToastContainer } from "react-toastify";
 import SignInModal from "@/components/shared/SignInModal";
 import ShoppingCartModal from "@/components/shared/ShoppingCartModal";
+import { Analytics } from "@vercel/analytics/react";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -44,7 +45,10 @@ export default async function RootLayout({
           <div className="flex-grow">
             <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
               <Header />
-              <div className="max-w-7xl mx-auto">{children}</div>
+              <div className="max-w-7xl mx-auto">
+                {children}
+                <Analytics />
+              </div>
             </div>
           </div>
           <Footer className="flex-shrink-0" />
