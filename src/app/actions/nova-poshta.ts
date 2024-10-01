@@ -46,8 +46,8 @@ interface IShipmentData {
   secondName: string;
   lastName: string;
   phone: string;
-  warehouseRef: string;
-  cityRef: string;
+  warehouseRef?: string;
+  cityRef?: string;
   cartItems: CartItem[];
   deliveryMethod: Enum_Order_Deliverymethod;
 }

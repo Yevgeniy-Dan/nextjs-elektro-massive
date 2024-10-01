@@ -36,6 +36,7 @@ export const cartItemSchema = z.object({
     currency: z.string(),
     discount: z.number().nullable(),
     image_link: z.string().url(),
+    slug: z.string(),
     params: z.record(z.string()).optional(),
   }),
 });
