@@ -1,10 +1,17 @@
+"use client";
+
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Image from "next/image";
 import React from "react";
 
 const PaymentDelivery = () => {
+  const customLabels = {
+    "payment-and-delivery": "Оплата і доставка",
+  };
+
   return (
     <div className="py-5">
-      <p className="text-sm font-bold">Головна / Оплата і доставка</p>
+      <Breadcrumbs customLabels={customLabels} />
       <div className="flex items-start">
         <div className="w-full md:max-w-5xl bg-gray-200 text-gray-950 font-thin rounded-2xl relative">
           <h2 className="text-lg sm:text-2xl    overflow-hidden  border border-b-8 border-b-[#990000] p-4  font-semibold rounded-t-2xl">

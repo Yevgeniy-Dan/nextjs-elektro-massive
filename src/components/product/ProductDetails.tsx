@@ -6,20 +6,46 @@ import ImageCarousel from "./ImageCarousel";
 import ProductParams from "./ProductParams";
 import PurchaseSection from "./PurchaseSection";
 import DeliveryPaymentSection from "./DeliveryPaymentSection";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useAppDispatch } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
 import { ProductAttributes } from "@/types/types";
 import { ComponentImagesImages } from "@/gql/graphql";
+import { usePathname, useSearchParams } from "next/navigation";
+import Breadcrumbs from "../shared/Breadcrumbs";
 
 const initialParamsCount = 5;
 
-const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
+type ShareUrlFunction = (url: string) => string;
+
+const ProductDetails: React.FC<{
+  product: ProductAttributes;
+  id: string;
+  productTypeTitle: string;
+  subcategoryTitle: string;
+  productTypeSlug: string;
+  subcategorySlug: string;
+}> = ({
   product,
   id,
+  productTypeSlug,
+  subcategorySlug,
+  productTypeTitle,
+  subcategoryTitle,
 }) => {
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [currentUrl, setCurrentUrl] = useState("");
+
+  useEffect(() => {
+    setCurrentUrl(
+      `${window.location.origin}${pathname}${
+        searchParams.toString() ? `?${searchParams.toString()}` : ""
+      }`
+    );
+  }, [pathname, searchParams]);
 
   const {
     additional_images,
@@ -33,6 +59,12 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
     description,
     slug,
   } = product;
+
+  const customLabels = {
+    [slug]: title,
+    [subcategorySlug]: subcategoryTitle,
+    [productTypeSlug]: productTypeTitle,
+  };
 
   const images: { id: string; link: string }[] = [
     { id: "main", link: image_link ?? "" },
@@ -78,8 +110,34 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
     ]
   );
 
+  const socialIcons = [
+    {
+      src: "/telegram.png",
+      alt: "Telegram icon",
+      getShareUrl: (url: string) =>
+        `https://t.me/share/url?url=${encodeURIComponent(url)}`,
+    },
+    {
+      src: "/viber.png",
+      alt: "Viber icon",
+      getShareUrl: (url: string) =>
+        `viber://forward?text=${encodeURIComponent(url)}`,
+    },
+    // {
+    //   src: "/instagram.png",
+    //   alt: "Instagram icon",
+    //   getShareUrl: (url: string) =>
+    //     `https://www.instagram.com/sharer.php?u=${encodeURIComponent(url)}`,
+    // },
+  ];
+
+  const handleShare = (getShareUrl: ShareUrlFunction) => {
+    window.open(getShareUrl(currentUrl), "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div className="mx-auto p-4">
+      <Breadcrumbs customLabels={customLabels} />
       <div className="md:float-left md:w-1/2 md:pr-8">
         <h1 className="text-2xl font-bold mb-2 border-b-2 md:border-0 md:hidden">
           {title}
@@ -90,29 +148,21 @@ const ProductDetails: React.FC<{ product: ProductAttributes; id: string }> = ({
         <div className="flex items-center gap-4 my-3 border-b">
           <p>Поділитися:</p>
           <div className="flex gap-3">
-            <Image
-              className="w-8 h-8"
-              src="/telegram.png"
-              alt="Telegram icon"
-              width={36}
-              height={36}
-            />
-
-            <Image
-              className="w-8 h-8"
-              src="/viber.png"
-              alt="Viber icon"
-              width={36}
-              height={36}
-            />
-
-            <Image
-              className="w-8 h-8"
-              src="/instagram.png"
-              alt="Instagram icon"
-              width={36}
-              height={36}
-            />
+            {socialIcons.map((icon, index) => (
+              <button
+                key={index}
+                onClick={() => handleShare(icon.getShareUrl)}
+                className="focus:outline-none"
+              >
+                <Image
+                  className="w-8 h-8"
+                  src={icon.src}
+                  alt={icon.alt}
+                  width={36}
+                  height={36}
+                />
+              </button>
+            ))}
           </div>
         </div>
       </div>

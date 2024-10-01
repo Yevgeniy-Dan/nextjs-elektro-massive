@@ -20,6 +20,7 @@ import { useAppDispatch } from "@/store/hooks";
 import { setAppliedFilters } from "@/store/productGridSlice";
 import { Filter, X } from "lucide-react";
 import useOutsideClick from "@/hooks/useOutsideClick";
+import Breadcrumbs from "../shared/Breadcrumbs";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
@@ -27,20 +28,29 @@ function isFiltersEmpty(filters: Record<string, string[]>) {
 
 interface ProductListingClientProps {
   subcategoryId: string;
+  subcategoryTitle: string;
   productTypeId: string;
   subcategorySlug: string;
   productTypeSlug: string;
+  productTypeTitle: string;
 }
 
 const ProductListingClient: React.FC<ProductListingClientProps> = ({
   subcategoryId,
+  subcategoryTitle,
   productTypeId,
   subcategorySlug,
   productTypeSlug,
+  productTypeTitle,
 }) => {
   const dispatch = useAppDispatch();
   const pageSize = 10;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const customLabels = {
+    [subcategorySlug]: subcategoryTitle,
+    [productTypeSlug]: productTypeTitle,
+  };
 
   const { data: productTypesData } = useQuery<
     GetProductTypesQuery,
@@ -78,6 +88,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:p-8 relative">
+      <Breadcrumbs customLabels={customLabels} />
       <ProductTypeSelector
         types={productTypesData?.productTypes?.data || []}
         selectedTypeId={productTypeId}

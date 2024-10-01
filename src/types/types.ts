@@ -8,7 +8,9 @@ import {
 } from "@/gql/graphql";
 
 export type ProductAttributes = NonNullable<
-  NonNullable<NonNullable<GetProductQuery["product"]>["data"]>["attributes"]
+  NonNullable<
+    NonNullable<GetProductBySlugQuery["products"]>["data"]
+  >[0]["attributes"]
 >;
 
 export type ProductTypeBySlug = NonNullable<

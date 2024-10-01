@@ -10,6 +10,7 @@ import {
 import { GET_SUBCATEGORY_BY_SLUG } from "@/components/product/queries";
 import { GET_PRODUCT_TYPE_BY_SLUG } from "@/components/products/queries";
 import ProductListingClient from "@/components/products/ProductListingClient";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 
 interface ProductTypePageProps {
   params: {
@@ -56,6 +57,8 @@ async function ProductTypePageContainer({ params }: ProductTypePageProps) {
 
   return (
     <ProductListingClient
+      subcategoryTitle={subcategory.attributes?.title || ""}
+      productTypeTitle={productType.attributes?.title || ""}
       subcategoryId={subcategory.id}
       productTypeId={productType.id}
       subcategorySlug={params.subcategory}

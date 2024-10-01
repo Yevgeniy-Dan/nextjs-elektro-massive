@@ -1,10 +1,17 @@
+"use client";
+
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Image from "next/image";
 import React from "react";
 
 const AboutPage = () => {
+  const customLabels = {
+    about: "Про нас",
+  };
+
   return (
     <div className="py-5">
-      <p className="text-sm font-bold">Головна/Про нас</p>
+      <Breadcrumbs customLabels={customLabels} />
       <div>
         <h2 className="text-lg md:text-xl lg:text-2xl uppercase py-5">
           Про нас

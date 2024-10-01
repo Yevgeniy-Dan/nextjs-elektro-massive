@@ -13,10 +13,7 @@ const UserActions: React.FC = () => {
       <Dropdown
         className="hidden md:flex bg-gray-800 text-white"
         title="Служба підтримки"
-        items={[
-          { name: "Налаштування", href: "#" },
-          { name: "Підтримка", href: "#" },
-        ]}
+        items={[]}
       />
       <div className="flex items-center gap-3">
         <button
@@ -36,7 +33,7 @@ const UserActions: React.FC = () => {
             {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
           </span>
         </button>
-        <a href="#" className="hover:text-gray-300">
+        {/* <a href="#" className="hover:text-gray-300">
           <Image
             src="/call.png"
             alt="Phone"
@@ -56,7 +53,7 @@ const UserActions: React.FC = () => {
           <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
             1
           </span>
-        </a>
+        </a> */}
         <a href="#" className="hover:text-gray-300">
           <Image
             src="/avatar.png"

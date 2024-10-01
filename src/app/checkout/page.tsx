@@ -8,6 +8,7 @@ import Payment from "@/components/order/Payment";
 import Summary from "@/components/order/Summary";
 import { ExtendedFormProvider } from "@/hooks/extendedFormContext";
 import { OrderFormData, useOrderForm } from "@/hooks/useOrderForm";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 
 const CheckoutPage = () => {
   const methods = useOrderForm();
@@ -18,9 +19,14 @@ const CheckoutPage = () => {
     setActiveSection((prev) => prev + 1);
   };
 
+  const customLabels = {
+    checkout: "Оформлення замовлення",
+  };
+
   return (
     <ExtendedFormProvider<OrderFormData> methods={methods}>
       <div className="max-w-6xl mx-auto p-4 font-sans">
+        <Breadcrumbs customLabels={customLabels} />
         <h1 className="text-2xl font-bold mb-6">Оформлення замовлення</h1>
 
         {showError && (

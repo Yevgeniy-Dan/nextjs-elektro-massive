@@ -46,7 +46,7 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
               <span>Viber</span>
             </Link>
             <Link
-              href={`https://t.me/${process.env.SUPPORT_TELEGRAM_USERNAME}`}
+              href={`https://t.me/Elektro_Massive`}
               className="flex items-center"
             >
               <Image
@@ -59,7 +59,7 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
               <span>Telegram</span>
             </Link>
             <Link
-              href={`mailto:${process.env.SUPPORT_EMAIL}`}
+              href={`mailto:elektromassive@gmail.com`}
               className="flex items-center"
             >
               <Image

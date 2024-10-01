@@ -32,8 +32,8 @@ export const GET_PRODUCT = gql`
 `;
 
 export const GET_PRODUCT_BY_SLUG = gql`
-  query GetProductBySlug($slug: String!) {
-    products(filters: { slug: { eq: $slug } }) {
+  query GetProductBySlug($productSlug: String!, $productTypeSlug: String!) {
+    products(filters: { slug: { eq: $productSlug } }) {
       data {
         id
         attributes {
@@ -53,6 +53,18 @@ export const GET_PRODUCT_BY_SLUG = gql`
           subcategory {
             data {
               id
+              attributes {
+                slug
+                title
+              }
+            }
+          }
+          product_types(filters: { slug: { eq: $productTypeSlug } }) {
+            data {
+              attributes {
+                slug
+                title
+              }
             }
           }
         }
@@ -66,6 +78,10 @@ export const GET_SUBCATEGORY_BY_SLUG = gql`
     subcategories(filters: { slug: { eq: $slug } }) {
       data {
         id
+        attributes {
+          title
+          slug
+        }
       }
     }
   }

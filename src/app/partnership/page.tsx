@@ -1,10 +1,17 @@
+"use client";
+
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Image from "next/image";
 import React from "react";
 
 const PartnershipPage = () => {
+  const customLabels = {
+    partnership: "Співпраця",
+  };
+
   return (
     <div className="py-5">
-      <p className="text-sm font-bold">Головна / Співпраця</p>
+      <Breadcrumbs customLabels={customLabels} />
       <div className="bg-gradient-elektro-massive-vertical text-white  py-10 px-6   my-4 space-y-4 rounded-none  -mx-4 sm:-ml-10 md:-ml-16 lg:ml-0 ">
         <p className="text-lg md:text-xl lg:text-2xl">Співпраця</p>
 

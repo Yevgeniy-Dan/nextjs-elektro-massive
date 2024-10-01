@@ -14,39 +14,68 @@ import {
 interface ProductPageProps {
   params: {
     subcategory: string;
+    productType: string;
     product: string;
   };
 }
 
-async function getProductBySlug(slug: string): Promise<ProductData | null> {
+async function getProductBySlug(
+  productSlug: string,
+  productTypeSlug: string
+): Promise<ProductData | null> {
   const { data } = await getClient().query<
     GetProductBySlugQuery,
     GetProductBySlugQueryVariables
   >({
     query: GET_PRODUCT_BY_SLUG,
     variables: {
-      slug,
+      productSlug,
+      productTypeSlug,
     },
   });
 
   return data?.products?.data[0] || null;
 }
 
-async function ProductContainer({ slug }: { slug: string }) {
-  const product = await getProductBySlug(slug);
+async function ProductContainer({
+  productSlug,
+  productTypeSlug,
+}: {
+  productSlug: string;
+  productTypeSlug: string;
+}) {
+  const product = await getProductBySlug(productSlug, productTypeSlug);
 
   if (!product || !product.attributes || !product.id) {
     return <div>Product not found.</div>;
   }
 
-  return <ProductDetails product={product.attributes} id={product.id} />;
+  return (
+    <ProductDetails
+      product={product.attributes}
+      id={product.id}
+      productTypeSlug={productTypeSlug}
+      subcategorySlug={
+        product.attributes.subcategory?.data?.attributes?.slug || ""
+      }
+      productTypeTitle={
+        product?.attributes?.product_types?.data[0]?.attributes?.title || ""
+      }
+      subcategoryTitle={
+        product?.attributes?.subcategory?.data?.attributes?.title || ""
+      }
+    />
+  );
 }
 
 const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
   return (
     <div>
       <Suspense fallback={<CenteredSpinner />}>
-        <ProductContainer slug={params.product} />
+        <ProductContainer
+          productSlug={params.product}
+          productTypeSlug={params.productType}
+        />
       </Suspense>
     </div>
   );
