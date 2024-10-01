@@ -58,9 +58,12 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
     },
   });
 
+  const responsiveCardHeight = "h-64 sm:h-72 md:h-80 lg:h-96";
+  const responsiveCardWidth = "w-40 sm:w-48 md:w-56 lg:w-64";
+
   const PlaceHolderCard = () => (
     <div className="flex flex-col items-center px-2">
-      <div className={`${cardWidth} ${cardHeight} p-1`}>
+      <div className={`${responsiveCardWidth} ${responsiveCardHeight} p-1`}>
         <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg"></div>
       </div>
     </div>
@@ -81,7 +84,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
               : data?.products?.data.map((card, index) => (
                   <div
                     key={card.id}
-                    className={`embla__slide flex-shrink-0 ${cardWidth} ${cardHeight} my-4 p-2 ${
+                    className={`embla__slide flex-shrink-0 ${responsiveCardWidth} ${responsiveCardHeight} my-4 p-2 ${
                       data?.products?.data &&
                       index === data.products.data.length - 1
                         ? "pl-4"

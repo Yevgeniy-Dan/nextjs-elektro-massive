@@ -153,8 +153,8 @@ const ProductGrid = ({
   }
 
   return (
-    <div className="w-3/4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="w-full md:w-3/4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4  gap-4">
         {data &&
           data.filteredProducts.products.map((product) => (
             <TopCard

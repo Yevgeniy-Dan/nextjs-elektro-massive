@@ -20,17 +20,9 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
       className={`bg-gradient-elektro-massive-horizontal text-white py-8 ${className}`}
     >
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
           <div className="relative  mb-6 sm:mb-0 mx-auto sm:m-0">
-            <div className="relative w-32 h-12 md:w-64 md:h-24 -mb-12 md:-mb-24">
-              <Image
-                src="/logo-label.png"
-                alt="ElektroMassive Label"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <div className="relative w-32 h-32 md:w-64 md:h-64 z-10">
+            <div className="relative w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 z-10">
               <Image
                 src="/logo.png"
                 alt="Elektro Massive Logo"
@@ -60,8 +52,8 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
               Повернення товару
             </a>
           </div>
-          <div className="flex flex-col ">
-            <div className="flex flex-wrap justify-center sm:justify-start items-center lg:grid lg:grid-cols-2  xl:flex lg:flex-nowrap  mb-4">
+          <div className="flex flex-col-reverse sm:flex-col">
+            <div className="flex flex-wrap justify-center sm:justify-start items-center lg:grid lg:grid-cols-2  xl:flex lg:flex-nowrap   my-4">
               <a
                 href="#"
                 className="text-white hover:text-gray-300 hover:opacity-75 transition-opacity mr-4"

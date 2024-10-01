@@ -132,19 +132,19 @@ const TopCard: React.FC<ITopCardProps> = ({
           href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
           className="block"
         >
-          <h2 className="text-sm font-normal line-clamp-2 group-hover:line-clamp-none">
+          <h2 className="text-xs sm:text-sm font-normal line-clamp-2 group-hover:line-clamp-none">
             {title}
           </h2>
         </Link>
       </div>
       <div className="flex items-center justify-between mt-auto">
-        <div className="flex-grow py-2 px-4 font-medium text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
+        <div className="flex-grow py-2 px-4 font-medium text-xs sm:text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
           <span className="whitespace-nowrap">{retail}</span>
           <span className="ml-1 whitespace-nowrap">грн</span>
         </div>
         <button
           onClick={handleBuyClick}
-          className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-sm text-center w-2/3 -ml-6"
+          className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-xs sm:text-sm text-center w-2/3 -ml-6 pl-8"
         >
           Купити
         </button>

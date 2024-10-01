@@ -17,43 +17,43 @@ const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <nav className="flex justify-center mt-4">
-      <ul className="flex space-x-2">
-        {currentPage > 1 && (
-          <li>
-            <button
-              onClick={() => onPageChange(currentPage - 1)}
-              className="px-3 py-1 border rounded hover:bg-gray-100"
-            >
-              &laquo;
-            </button>
-          </li>
-        )}
+    <nav className="flex justify-center items-center space-x-2 my-4">
+      {currentPage > 1 && (
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          className="px-3 py-1 border rounded hover:bg-gray-100"
+        >
+          «
+        </button>
+      )}
+      <div className="hidden sm:flex space-x-2">
         {pageNumbers.map((number) => (
-          <li key={number}>
-            <button
-              onClick={() => onPageChange(number)}
-              className={`px-3 py-1 border rounded ${
-                currentPage === number
-                  ? "bg-blue-500 text-white"
-                  : "hover:bg-gray-100"
-              }`}
-            >
-              {number}
-            </button>
-          </li>
+          <button
+            key={number}
+            onClick={() => onPageChange(number)}
+            className={`px-3 py-1 border rounded ${
+              currentPage === number
+                ? "bg-blue-500 text-white"
+                : "hover:bg-gray-100"
+            }`}
+          >
+            {number}
+          </button>
         ))}
-        {currentPage < totalPages && (
-          <li>
-            <button
-              onClick={() => onPageChange(currentPage + 1)}
-              className="px-3 py-1 border rounded hover:bg-gray-100"
-            >
-              &raquo;
-            </button>
-          </li>
-        )}
-      </ul>
+      </div>
+      <div className="sm:hidden">
+        <span className="px-3 py-1 border rounded bg-gray-100">
+          {currentPage} / {totalPages}
+        </span>
+      </div>
+      {currentPage < totalPages && (
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          className="px-3 py-1 border rounded hover:bg-gray-100"
+        >
+          »
+        </button>
+      )}
     </nav>
   );
 };
