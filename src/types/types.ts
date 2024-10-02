@@ -5,6 +5,7 @@ import {
   GetProductQuery,
   GetProductTypeBySlugQuery,
   GetProductTypesQuery,
+  GetShopReviewsQuery,
   GetSubcategoryBySlugQuery,
 } from "@/gql/graphql";
 
@@ -42,3 +43,7 @@ export type HomePageProductEntity =
   | NonNullable<
       NonNullable<GetHomePageProductsQuery["saleProducts"]>["data"][number]
     >;
+
+export type ShopReview = NonNullable<
+  NonNullable<GetShopReviewsQuery["shopReviews"]>["data"][number]
+>;
