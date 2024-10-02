@@ -167,3 +167,27 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_BANNERS = gql`
+  query GetBanners {
+    banners(sort: "order:asc", filters: { isActive: { eq: true } }) {
+      data {
+        id
+        attributes {
+          title
+          altText
+          order
+          image {
+            data {
+              attributes {
+                url
+                width
+                height
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
