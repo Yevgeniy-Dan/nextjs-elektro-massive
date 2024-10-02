@@ -4,6 +4,10 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ComponentImagesImages } from "@/gql/graphql";
 
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import "yet-another-react-lightbox/styles.css";
+
 interface ImageCarouselProps {
   images: ComponentImagesImages[];
   title: string;
@@ -17,6 +21,12 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
     align: "center",
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openLightbox = (index: number) => {
+    setIsOpen(true);
+  };
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) {
@@ -62,7 +72,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
 
   return (
     <div className="border-2 rounded-xl">
-      <div className="relative w-full aspect-square mb-4 flex items-center justify-center">
+      <div
+        className="relative w-full aspect-square mb-4 flex items-center justify-center cursor-pointer"
+        onClick={() => setIsOpen(true)}
+      >
         <Image
           src={images[selectedIndex].link ?? ""}
           alt={title}
@@ -108,6 +121,16 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
           <ChevronRight size={24} />
         </button>
       </div>
+
+      <Lightbox
+        open={isOpen}
+        close={() => setIsOpen(false)}
+        index={selectedIndex}
+        slides={images.map((image) => ({
+          src: image.link ?? "",
+        }))}
+        plugins={[Zoom]}
+      />
     </div>
   );
 };
