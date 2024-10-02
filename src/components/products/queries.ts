@@ -142,3 +142,23 @@ export const GET_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_BRANDS = gql`
+  query GetBrands {
+    brands {
+      data {
+        id
+        attributes {
+          title
+          logo {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

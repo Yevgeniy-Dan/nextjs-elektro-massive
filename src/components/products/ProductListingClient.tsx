@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@apollo/client";
 import ProductTypeSelector from "./ProductTypeSelector";
 
-import { GET_PRODUCT_TYPE_FILTERS, GET_PRODUCT_TYPES } from "./queries";
+import {
+  GET_BRANDS,
+  GET_PRODUCT_TYPE_FILTERS,
+  GET_PRODUCT_TYPES,
+} from "./queries";
 import ProductFilterSection from "./ProductFilterSection";
 import ProductGrid from "./ProductGrid";
 import {
+  GetBrandsQuery,
   GetProductTypeFiltersQuery,
   GetProductTypeFiltersQueryVariables,
   GetProductTypesQuery,
@@ -16,11 +21,12 @@ import {
 } from "@/gql/graphql";
 
 import ReactMarkdown from "react-markdown";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setAppliedFilters } from "@/store/productGridSlice";
 import { Filter, X } from "lucide-react";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Breadcrumbs from "../shared/Breadcrumbs";
+import BrandFilter from "../shared/BrandFilter";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
@@ -52,6 +58,12 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     [productTypeSlug || ""]: productTypeTitle || "",
   };
 
+  const appliedFilters = useAppSelector(
+    (state) => state.productGrid.appliedFilters[subcategoryId] || {}
+  );
+
+  const { data: brandsData } = useQuery<GetBrandsQuery>(GET_BRANDS);
+
   const { data: productTypesData } = useQuery<
     GetProductTypesQuery,
     GetProductTypesQueryVariables
@@ -78,13 +90,39 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     setIsFilterOpen(false);
   }, []);
 
+  const handleBrandsSelect = (brandName: string) => {
+    const newFilters = { ...appliedFilters };
+    console.log("newFilters", newFilters);
+    if (newFilters["Бренд"]?.includes(brandName)) {
+      newFilters["Бренд"] = newFilters["Бренд"].filter(
+        (brand) => brand !== brandName
+      );
+    } else {
+      newFilters["Бренд"] = [brandName];
+    }
+    dispatch(setAppliedFilters({ subcategoryId, filters: newFilters }));
+  };
+
   const filterPanelRef = useOutsideClick(handleOutsideClick);
 
   const selectedProductType = productTypesData?.productTypes?.data.find(
     (type) => type.id === productTypeId
   );
 
-  const filters = filtersData?.productTypeFilters || {};
+  const filters = useMemo(
+    () => filtersData?.productTypeFilters || {},
+    [filtersData]
+  );
+
+  const brandsFilters = useMemo(() => {
+    if (!brandsData || !filters) return [];
+
+    const allFitlerValues = new Set(Object.values(filters).flat());
+
+    return brandsData.brands?.data.filter((brand) =>
+      allFitlerValues.has(brand.attributes?.title.trim())
+    );
+  }, [brandsData, filters]);
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:p-8 relative">
@@ -102,6 +140,13 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           <Filter />
         </button>
       </div>
+      {brandsData?.brands?.data && (
+        <BrandFilter
+          brands={brandsFilters || []}
+          selectedBrand={appliedFilters["Бренд"]?.[0] || null}
+          onBrandSelect={handleBrandsSelect}
+        />
+      )}
       <div className="flex gap-8">
         <AnimatePresence>
           {isFilterOpen && (
