@@ -10,7 +10,6 @@ import {
 import { GET_SUBCATEGORY_BY_SLUG } from "@/components/product/queries";
 import { GET_PRODUCT_TYPE_BY_SLUG } from "@/components/products/queries";
 import ProductListingClient from "@/components/products/ProductListingClient";
-import Breadcrumbs from "@/components/shared/Breadcrumbs";
 
 interface ProductTypePageProps {
   params: {

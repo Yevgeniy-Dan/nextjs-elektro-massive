@@ -58,7 +58,7 @@ export const GET_PRODUCT_TYPE_BY_SLUG = gql`
 `;
 
 export const GET_PRODUCT_TYPE_FILTERS = gql`
-  query GetProductTypeFilters($productTypeId: ID!, $subcategoryId: ID!) {
+  query GetProductTypeFilters($productTypeId: ID, $subcategoryId: ID!) {
     productTypeFilters(
       productTypeId: $productTypeId
       subcategoryId: $subcategoryId
@@ -68,7 +68,7 @@ export const GET_PRODUCT_TYPE_FILTERS = gql`
 
 export const GET_FILTERED_PRODUCTS = gql`
   query GetFilteredProducts(
-    $productTypeId: ID!
+    $productTypeId: ID
     $filters: [FilterInput!]
     $cursor: String
     $page: Int

@@ -29,10 +29,10 @@ function isFiltersEmpty(filters: Record<string, string[]>) {
 interface ProductListingClientProps {
   subcategoryId: string;
   subcategoryTitle: string;
-  productTypeId: string;
+  productTypeId?: string;
   subcategorySlug: string;
-  productTypeSlug: string;
-  productTypeTitle: string;
+  productTypeSlug?: string;
+  productTypeTitle?: string;
 }
 
 const ProductListingClient: React.FC<ProductListingClientProps> = ({
@@ -47,9 +47,9 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const pageSize = 40;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const customLabels = {
+  const customLabels: Record<string, string> = {
     [subcategorySlug]: subcategoryTitle,
-    [productTypeSlug]: productTypeTitle,
+    [productTypeSlug || ""]: productTypeTitle || "",
   };
 
   const { data: productTypesData } = useQuery<
@@ -91,7 +91,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
       <Breadcrumbs customLabels={customLabels} />
       <ProductTypeSelector
         types={productTypesData?.productTypes?.data || []}
-        selectedTypeId={productTypeId}
+        selectedTypeId={productTypeId || ""}
         onTypeChange={handleProductTypeChange}
       />
       <div className="md:hidden mb-4">
@@ -147,11 +147,12 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           pageSize={pageSize}
         />
       </div>
-      <ReactMarkdown className="text-md">
-        {selectedProductType?.attributes?.description}
-      </ReactMarkdown>
+      {productTypeId && (
+        <ReactMarkdown className="text-md">
+          {selectedProductType?.attributes?.description}
+        </ReactMarkdown>
+      )}
     </div>
   );
 };
-
 export default ProductListingClient;

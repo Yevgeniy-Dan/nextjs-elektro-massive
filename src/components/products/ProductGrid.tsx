@@ -18,11 +18,11 @@ import {
 } from "@/store/productGridSlice";
 
 interface ProductGridProps {
-  productTypeId: string;
+  productTypeId?: string;
+  productTypeSlug?: string;
   pageSize: number;
   subcategoryId: string;
   subcategorySlug: string;
-  productTypeSlug: string;
 }
 
 const ProductGrid = ({
@@ -50,10 +50,6 @@ const ProductGrid = ({
     (state) => state.productGrid.appliedFilters[subcategoryId] || {}
   );
 
-  useEffect(() => {
-    dispatch(setAppliedFilters({ subcategoryId, filters: appliedFilters }));
-  }, [dispatch, subcategoryId, appliedFilters]);
-
   const transformedFilters = useMemo(() => {
     return Object.entries(appliedFilters).flatMap(([key, values]) =>
       values.map((value) => ({ key, value }))
@@ -65,16 +61,19 @@ const ProductGrid = ({
     GetFilteredProductsQueryVariables
   >(GET_FILTERED_PRODUCTS, {
     variables: {
-      productTypeId: productTypeId,
+      productTypeId: productTypeId || undefined,
       subcategoryId,
       filters: transformedFilters,
       // cursor: null,
       page: currentPage,
       pageSize,
     },
-    skip: !productTypeId,
     notifyOnNetworkStatusChange: true,
   });
+
+  useEffect(() => {
+    dispatch(setAppliedFilters({ subcategoryId, filters: appliedFilters }));
+  }, [dispatch, subcategoryId, appliedFilters]);
 
   useEffect(() => {
     const shouldResetPage =
@@ -164,7 +163,7 @@ const ProductGrid = ({
               productSlug={product.slug ?? ""}
               subcategoryId={subcategoryId}
               subcategorySlug={subcategorySlug}
-              productTypeSlug={productTypeSlug}
+              productTypeSlug={productTypeSlug ?? ""}
             />
           ))}
       </div>
