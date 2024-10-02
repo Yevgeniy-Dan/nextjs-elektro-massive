@@ -44,7 +44,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   productTypeTitle,
 }) => {
   const dispatch = useAppDispatch();
-  const pageSize = 10;
+  const pageSize = 40;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const customLabels = {

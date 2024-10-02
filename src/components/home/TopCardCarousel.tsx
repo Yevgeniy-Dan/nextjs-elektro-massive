@@ -7,20 +7,21 @@ import useEmblaCarousel from "embla-carousel-react";
 import { GET_PRODUCTS } from "../products/queries";
 import { useQuery } from "@apollo/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { GetProductsQuery } from "@/gql/graphql";
+import { GetHomePageProductsQuery, GetProductsQuery } from "@/gql/graphql";
+import { HomePageProductEntity } from "@/types/types";
 
 interface TopCardCarousel {
-  cardWidth?: string;
-  cardHeight?: string;
+  isLoading: boolean;
+  products: HomePageProductEntity[];
   title: string;
   label: "top" | "new" | "sale";
 }
 
 const TopCardCarousel: React.FC<TopCardCarousel> = ({
+  isLoading,
   title,
-  cardHeight = "h-96",
-  cardWidth = "w-64",
   label,
+  products,
 }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
@@ -79,9 +80,9 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
       <div className="relative">
         <div className="embla overflow-hidden" ref={emblaRef}>
           <div className="embla__container flex mx-4">
-            {loading
+            {isLoading
               ? placeholders
-              : data?.products?.data.map((card, index) => (
+              : products.map((card, index) => (
                   <div
                     key={card.id}
                     className={`embla__slide flex-shrink-0 ${responsiveCardWidth} ${responsiveCardHeight} my-4 p-2 ${

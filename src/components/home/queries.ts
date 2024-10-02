@@ -57,3 +57,113 @@ export const GET_CATEGORIES = gql`
     }
   }
 `;
+
+export const GET_HOME_PAGE_PRODUCTS = gql`
+  query GetHomePageProducts($limit: Int!) {
+    topProducts: products(
+      filters: { salesCount: { gt: 0 } }
+      sort: "salesCount:desc"
+      pagination: { limit: $limit }
+    ) {
+      data {
+        id
+        attributes {
+          title
+          part_number
+          retail
+          currency
+          image_link
+          slug
+          params
+          discount
+          salesCount
+          subcategory {
+            data {
+              id
+              attributes {
+                slug
+              }
+            }
+          }
+          product_types {
+            data {
+              attributes {
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+    newProducts: products(
+      sort: "createdAt:desc"
+      pagination: { limit: $limit }
+    ) {
+      data {
+        id
+        attributes {
+          title
+          part_number
+          retail
+          currency
+          image_link
+          slug
+          params
+          discount
+          salesCount
+          createdAt
+          subcategory {
+            data {
+              id
+              attributes {
+                slug
+              }
+            }
+          }
+          product_types {
+            data {
+              attributes {
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+    saleProducts: products(
+      filters: { discount: { gt: 0 } }
+      sort: "discount:desc"
+      pagination: { limit: $limit }
+    ) {
+      data {
+        id
+        attributes {
+          title
+          part_number
+          retail
+          currency
+          image_link
+          slug
+          params
+          discount
+          salesCount
+          subcategory {
+            data {
+              id
+              attributes {
+                slug
+              }
+            }
+          }
+          product_types {
+            data {
+              attributes {
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

@@ -1,4 +1,5 @@
 import {
+  GetHomePageProductsQuery,
   GetOrderByOrderNumberQuery,
   GetProductBySlugQuery,
   GetProductQuery,
@@ -30,3 +31,14 @@ export type OrderAttributes = NonNullable<
     GetOrderByOrderNumberQuery["orders"]
   >["data"][number]["attributes"]
 >;
+
+export type HomePageProductEntity =
+  | NonNullable<
+      NonNullable<GetHomePageProductsQuery["topProducts"]>["data"][number]
+    >
+  | NonNullable<
+      NonNullable<GetHomePageProductsQuery["newProducts"]>["data"][number]
+    >
+  | NonNullable<
+      NonNullable<GetHomePageProductsQuery["saleProducts"]>["data"][number]
+    >;
