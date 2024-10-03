@@ -191,19 +191,3 @@ export const GET_BANNERS = gql`
     }
   }
 `;
-
-export const GET_SHOP_REVIEWS = gql`
-  query GetShopReviews {
-    shopReviews(sort: "reviewDate:desc", pagination: { limit: 10 }) {
-      data {
-        id
-        attributes {
-          customerName
-          comment
-          overallRating
-          reviewDate
-        }
-      }
-    }
-  }
-`;

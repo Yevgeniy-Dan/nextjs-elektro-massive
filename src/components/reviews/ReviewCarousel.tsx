@@ -2,13 +2,14 @@ import { useQuery } from "@apollo/client";
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 
-import { GET_SHOP_REVIEWS } from "./queries";
 import { ChevronLeft, ChevronRight, PenTool } from "lucide-react";
 import {
   GetShopReviewsQuery,
   GetShopReviewsQueryVariables,
 } from "@/gql/graphql";
 import ReviewCard from "./ReviewCard";
+import { GET_SHOP_REVIEWS } from "./queries";
+import Link from "next/link";
 
 const ReviewCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -77,20 +78,26 @@ const ReviewCarousel = () => {
                 <p className="text-lg font-semibold mb-4">
                   Залиште свій відгук першим
                 </p>
-                <button className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center">
+                <Link
+                  href="/reviews"
+                  className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center"
+                >
                   <PenTool className="mr-2" size={18} />
                   Залишити відгук
-                </button>
+                </Link>
               </div>
             </div>
           )}
         </div>
         {reviews.length > 0 && (
           <div className="embla__slide flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-2">
-            <button className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center">
+            <Link
+              href="/reviews"
+              className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center"
+            >
               <PenTool className="mr-2" size={18} />
               Залишити відгук
-            </button>
+            </Link>
           </div>
         )}
       </div>

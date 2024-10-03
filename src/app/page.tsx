@@ -4,9 +4,8 @@ import AboutSection from "@/components/home/AboutSection";
 import Banner from "@/components/home/Banner";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import HomePageProductsSection from "@/components/home/HomePageProductsSection";
-import ReviewCarousel from "@/components/home/ReviewCarousel";
-import TopCardCarousel from "@/components/home/TopCardCarousel";
 import WhyUsSection from "@/components/home/WhyUsSection";
+import ReviewCarousel from "@/components/reviews/ReviewCarousel";
 
 export default function Home() {
   return (

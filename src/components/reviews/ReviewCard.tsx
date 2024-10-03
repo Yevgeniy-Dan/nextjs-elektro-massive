@@ -1,5 +1,7 @@
+"use client";
+
 import { ShopReview } from "@/types/types";
-import { Star, User } from "lucide-react";
+import { CircleUserRound, Star, User } from "lucide-react";
 import React from "react";
 
 interface ReviewCardProps {
@@ -12,7 +14,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   return (
     <div className="bg-gray-100 p-4 rounded-lg shadow-md h-64 overflow-y-auto">
       <div className="flex items-center mb-2">
-        <User className="w-10 h-10 rounded-full mr-3" />
+        <CircleUserRound className="w-10 h-10 rounded-full stroke-[1] mr-3" />
         <div>
           <h3 className="font-semibold">{review.attributes?.customerName}</h3>
           <div className="flex mt-1 relative">
@@ -36,7 +38,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           </div>
         </div>
       </div>
-      <p className="text-sm">{review?.attributes?.comment}</p>
+      <p className="text-base">{review?.attributes?.comment}</p>
     </div>
   );
 };
