@@ -163,7 +163,11 @@ const ProductGrid = ({
               productSlug={product.slug ?? ""}
               subcategoryId={subcategoryId}
               subcategorySlug={subcategorySlug}
-              productTypeSlug={productTypeSlug ?? ""}
+              productTypeSlug={
+                productTypeSlug ||
+                product.product_types?.data[0].attributes?.slug ||
+                ""
+              }
             />
           ))}
       </div>

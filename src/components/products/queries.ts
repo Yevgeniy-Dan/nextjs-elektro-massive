@@ -96,6 +96,21 @@ export const GET_FILTERED_PRODUCTS = gql`
         }
         discount
         slug
+        product_types {
+          data {
+            attributes {
+              slug
+            }
+          }
+        }
+        subcategory {
+          data {
+            id
+            attributes {
+              slug
+            }
+          }
+        }
       }
       nextCursor
       pageCount
