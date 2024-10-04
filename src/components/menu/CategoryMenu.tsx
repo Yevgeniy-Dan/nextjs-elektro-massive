@@ -11,8 +11,8 @@ import { CategoryMenuQuery } from "@/gql/graphql";
 
 const CategoryMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [showDelayedMenu, setShowDelayedMenu] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
 
   const {
     data: menuItems,
@@ -40,18 +40,21 @@ const CategoryMenu = () => {
     setTimeout(() => {
       if (!showDelayedMenu) {
         setIsMenuOpen(false);
-        setActiveCategory(null);
+        setOpenSubmenu(null);
       }
     }, 300);
   };
 
   const handleCategoryHover = (index: number) => {
-    setActiveCategory(index);
+    setOpenSubmenu(index);
   };
 
+  const handleCategoryClick = (index: number) => {
+    setOpenSubmenu(openSubmenu === index ? null : index);
+  };
   useEffect(() => {
     if (!isMenuOpen) {
-      setActiveCategory(null);
+      setOpenSubmenu(null);
     }
   }, [isMenuOpen]);
 
@@ -63,22 +66,23 @@ const CategoryMenu = () => {
       onMouseLeave={handleMouseLeave}
     >
       <button
-        className="w-auto md:w-full px-3 flex items-center justify-between text-white border border-white py-2 rounded-l-2xl bg-gray-800 hover:bg-gray-700 hover:border-gray-300 transition-all duration-300"
+        className="w-full px-3 py-2 flex items-center justify-between text-white border border-white rounded-l-2xl bg-gray-800 hover:bg-gray-700 hover:border-gray-300 transition-all duration-300"
         onClick={toggleMenu}
       >
-        <div className="flex justify-center w-full">
-          <span className="text-white font-black px-4 sm:px-5 whitespace-nowrap hidden md:inline">
+        <div className="hidden md:flex justify-center w-full">
+          <span className="text-white text-base font-black whitespace-nowrap hidden md:inline">
             Каталог товарів
           </span>
         </div>
-
-        <Image
-          src="/menu-hamburger.png"
-          alt="Menu icon"
-          className="h-6 w-6 invert hover:invert-[80%]"
-          width={32}
-          height={32}
-        />
+        <div className="md:block">
+          <Image
+            src="/menu-hamburger.png"
+            alt="Menu icon"
+            className="h-6 w-6 invert hover:invert-[80%]"
+            width={24}
+            height={24}
+          />
+        </div>
       </button>
 
       {isMenuOpen && (
@@ -107,6 +111,7 @@ const CategoryMenu = () => {
                         ? "rounded-bl-2xl"
                         : ""
                     }`}
+                    onClick={() => handleCategoryClick(index)}
                   >
                     <div className="flex-shrink-0 w-9 h-9">
                       <Image
@@ -126,15 +131,15 @@ const CategoryMenu = () => {
                       <p>{category.attributes?.name}</p>
                       <FaChevronDown
                         className={`ml-2 transition-transform sm:hidden ${
-                          activeCategory === index ? "rotate-180" : ""
+                          openSubmenu === index ? "rotate-180" : ""
                         }`}
                       />
                     </div>
                   </div>
                   <CategorySubmenu
                     category={category}
-                    index={index}
-                    openSubmenu={activeCategory}
+                    isOpen={openSubmenu === index}
+                    toggleCategory={() => handleCategoryClick(index)}
                     toggleMenu={toggleMenu}
                   />
                 </div>

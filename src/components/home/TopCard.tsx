@@ -5,7 +5,7 @@ import { ProductAttributes } from "@/types/types";
 import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 type TopCardProduct = {
   id: string;
@@ -50,6 +50,26 @@ const TopCard: React.FC<ITopCardProps> = ({
     slug,
   } = product;
 
+  const [isHovered, setIsHovered] = useState(false);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const [titleHeight, setTitleHeight] = useState(0);
+  const [isTitleOverflowing, setIsTitleOverflowing] = useState(false);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (titleRef.current) {
+        const isOverflowing =
+          titleRef.current.scrollHeight > titleRef.current.clientHeight;
+        setIsTitleOverflowing(isOverflowing);
+        setTitleHeight(titleRef.current.scrollHeight);
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener("resize", checkOverflow);
+    return () => window.removeEventListener("resize", checkOverflow);
+  }, [title]);
+
   const handleBuyClick = useCallback(() => {
     const addedCartItem = {
       id,
@@ -82,7 +102,11 @@ const TopCard: React.FC<ITopCardProps> = ({
   ]);
 
   return (
-    <div className="rounded-xl shadow-light hover:shadow-hover_card transition-shadow duration-300 flex flex-col h-full overflow-hidden group">
+    <div
+      className="rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col h-full overflow-hidden relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <Link
         href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
         className="relative pt-[100%] block"
@@ -127,27 +151,37 @@ const TopCard: React.FC<ITopCardProps> = ({
           </div>
         )}
       </Link>
-      <div className="flex-grow  p-3">
-        <Link
-          href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
-          className="block"
-        >
-          <h2 className="text-xs sm:text-sm font-normal line-clamp-2 group-hover:line-clamp-none">
+      <div
+        className={`flex-grow p-3 transition-all duration-300 ease-in-out
+    ${isHovered && isTitleOverflowing ? "absolute left-0 right-0  bg-white bg-opacity-90" : ""}`}
+        style={{
+          bottom: isHovered && isTitleOverflowing ? `${35}px` : "35px",
+          maxHeight: isHovered && isTitleOverflowing ? "none" : "56px", // 56px is the approximate height for two lines
+        }}
+      >
+        <Link href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}>
+          <h2
+            ref={titleRef}
+            className={`text-sm font-normal transition-all duration-300 ease-in-out
+        ${isHovered && isTitleOverflowing ? "" : "line-clamp-2"}`}
+          >
             {title}
           </h2>
         </Link>
       </div>
-      <div className="flex items-center justify-between mt-auto">
-        <div className="flex-grow py-2 px-4 font-medium text-xs sm:text-sm bg-white z-10 overflow-hidden rounded-r-2xl">
-          <span className="whitespace-nowrap">{retail}</span>
-          <span className="ml-1 whitespace-nowrap">грн</span>
+      <div className="mt-auto">
+        <div className="flex items-center justify-between">
+          <div className="flex-grow py-2 px-4 font-medium text-xs sm:text-sm bg-white z-20 overflow-hidden rounded-r-2xl">
+            <span className="whitespace-nowrap">{retail}</span>
+            <span className="ml-1 whitespace-nowrap">грн</span>
+          </div>
+          <button
+            onClick={handleBuyClick}
+            className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-xs sm:text-sm text-center w-2/3 -ml-6 pl-8 z-10"
+          >
+            Купити
+          </button>
         </div>
-        <button
-          onClick={handleBuyClick}
-          className="bg-gradient-elektro-massive-horizontal py-2 px-4 text-white text-xs sm:text-sm text-center w-2/3 -ml-6 pl-8"
-        >
-          Купити
-        </button>
       </div>
     </div>
   );

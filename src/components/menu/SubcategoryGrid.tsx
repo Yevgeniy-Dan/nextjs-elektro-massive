@@ -5,12 +5,12 @@ import React from "react";
 
 interface SubcategoryGridProps {
   category: Category;
-  toggleMenu: (e: React.MouseEvent) => void;
+  toggleCategory: (e: React.MouseEvent) => void;
 }
 
 const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
   category,
-  toggleMenu,
+  toggleCategory,
 }) => {
   const subcategories = category?.attributes?.subcategories?.data ?? [];
 
@@ -18,7 +18,7 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
     if (count === 1) return "grid-cols-1";
     if (count === 2) return "grid-cols-2";
     if (count === 3) return "grid-cols-3";
-    return "grid-cols-2 md:grid-cols-3";
+    return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
   };
 
   const gridCols = getGridCols(subcategories.length);
@@ -29,7 +29,7 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
     return (
       <Link
         href={`/${subcategory.attributes?.slug}`}
-        onClick={(e) => toggleMenu(e)}
+        onClick={toggleCategory}
         key={subcategory.id}
         className="flex flex-row items-center space-x-4 p-6 hover:text-gray-700 hover:bg-white w-full"
       >

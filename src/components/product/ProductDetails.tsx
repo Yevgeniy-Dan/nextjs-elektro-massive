@@ -14,6 +14,7 @@ import { ProductAttributes } from "@/types/types";
 import { ComponentImagesImages } from "@/gql/graphql";
 import { usePathname, useSearchParams } from "next/navigation";
 import Breadcrumbs from "../shared/Breadcrumbs";
+import { ResolvingMetadata } from "next";
 
 const initialParamsCount = 5;
 
@@ -123,12 +124,6 @@ const ProductDetails: React.FC<{
       getShareUrl: (url: string) =>
         `viber://forward?text=${encodeURIComponent(url)}`,
     },
-    // {
-    //   src: "/instagram.png",
-    //   alt: "Instagram icon",
-    //   getShareUrl: (url: string) =>
-    //     `https://www.instagram.com/sharer.php?u=${encodeURIComponent(url)}`,
-    // },
   ];
 
   const handleShare = (getShareUrl: ShareUrlFunction) => {

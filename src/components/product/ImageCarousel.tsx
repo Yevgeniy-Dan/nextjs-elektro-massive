@@ -21,29 +21,14 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
     align: "center",
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
-
   const [isOpen, setIsOpen] = useState(false);
 
-  const openLightbox = (index: number) => {
-    setIsOpen(true);
-  };
-
   const scrollPrev = useCallback(() => {
-    if (emblaApi) {
-      const prevIndex = emblaApi.selectedScrollSnap() - 1;
-      const lastIndex = emblaApi.scrollSnapList().length - 1;
-      const targetIndex = prevIndex < 0 ? lastIndex : prevIndex;
-      emblaApi.scrollTo(targetIndex);
-    }
+    if (emblaApi) emblaApi.scrollPrev();
   }, [emblaApi]);
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) {
-      const nextIndex = emblaApi.selectedScrollSnap() + 1;
-      const lastIndex = emblaApi.scrollSnapList().length - 1;
-      const targetIndex = nextIndex > lastIndex ? 0 : nextIndex;
-      emblaApi.scrollTo(targetIndex);
-    }
+    if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
   const onSelect = useCallback(() => {
@@ -76,14 +61,17 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
         className="relative w-full aspect-square mb-4 flex items-center justify-center cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
-        <Image
-          src={images[selectedIndex].link ?? ""}
-          alt={title}
-          layout="intrinsic"
-          width={500}
-          height={500}
-          objectFit="contain"
-        />
+        {images.map((image, index) => (
+          <Image
+            key={image.id}
+            src={image.link ?? ""}
+            alt={title}
+            layout="fill"
+            objectFit="contain"
+            priority={index === selectedIndex}
+            className={index === selectedIndex ? "opacity-100" : "opacity-0"}
+          />
+        ))}
       </div>
       <div className="relative px-8">
         <div className="embla" ref={emblaRef}>
@@ -99,9 +87,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
                 <Image
                   src={image.link ?? ""}
                   alt={`Thumbnail ${image.id}`}
-                  layout="intrinsic"
                   width={100}
                   height={100}
+                  layout="intrinsic"
                   objectFit="contain"
                 />
               </div>

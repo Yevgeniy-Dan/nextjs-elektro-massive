@@ -10,6 +10,7 @@ import {
   GetProductBySlugQuery,
   GetProductBySlugQueryVariables,
 } from "@/gql/graphql";
+import { Metadata } from "next";
 
 interface ProductPageProps {
   params: {
@@ -35,6 +36,31 @@ async function getProductBySlug(
   });
 
   return data?.products?.data[0] || null;
+}
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const product = await getProductBySlug(params.product, params.subcategory);
+
+  if (!product || !product.attributes) {
+    return {
+      title: "Product Not Found",
+      description: "The requested product could not be found.",
+    };
+  }
+
+  const { title, description, image_link } = product.attributes;
+
+  return {
+    title: title || "Product",
+    description: description || "No description available",
+    openGraph: {
+      title: title || "Product",
+      description: description || "No description available",
+      images: image_link ? [image_link] : [],
+    },
+  };
 }
 
 async function ProductContainer({
