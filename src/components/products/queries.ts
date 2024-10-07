@@ -98,6 +98,7 @@ export const GET_FILTERED_PRODUCTS = gql`
         slug
         product_types {
           data {
+            id
             attributes {
               slug
             }
@@ -171,6 +172,91 @@ export const GET_BRANDS = gql`
                 url
               }
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FAVORITE_PRODUCTS = gql`
+  query GetUserFavoriteProducts {
+    userFavorites {
+      favoriteProducts {
+        product {
+          data {
+            id
+            attributes {
+              title
+              part_number
+              retail
+              currency
+              image_link
+              slug
+              discount
+              params
+              subcategory {
+                data {
+                  id
+                  attributes {
+                    slug
+                  }
+                }
+              }
+            }
+          }
+        }
+        product_type {
+          data {
+            id
+            attributes {
+              title
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ADD_TO_FAVORITES = gql`
+  mutation AddToFavorites($input: AddToFavoritesInput!) {
+    addToFavorites(input: $input) {
+      favoriteProducts {
+        product {
+          data {
+            id
+            attributes {
+              title
+            }
+          }
+        }
+        product_type {
+          data {
+            id
+            attributes {
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const REMOVE_FROM_FAVORITES = gql`
+  mutation RemoveFromFavorites($input: RemoveFromFavoritesInput!) {
+    removeFromFavorites(input: $input) {
+      favoriteProducts {
+        product {
+          data {
+            id
+          }
+        }
+        product_type {
+          data {
+            id
           }
         }
       }

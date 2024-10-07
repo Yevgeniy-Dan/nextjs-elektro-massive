@@ -119,6 +119,9 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
                         card.attributes?.product_types?.data[0].attributes
                           ?.slug ?? ""
                       }
+                      productTypeId={
+                        card.attributes?.product_types?.data[0]?.id ?? ""
+                      }
                     />
                   </div>
                 ))}

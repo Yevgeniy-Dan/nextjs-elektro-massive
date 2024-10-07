@@ -1,4 +1,5 @@
 import { GetFilteredProductsQuery, GetProductsQuery } from "@/gql/graphql";
+import { useFavorites } from "@/hooks/useFavorites";
 import { useAppDispatch } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
 import { ProductAttributes } from "@/types/types";
@@ -24,6 +25,7 @@ export interface ITopCardProps {
   subcategoryId: string;
   subcategorySlug: string;
   productTypeSlug: string;
+  productTypeId: string;
   productSlug: string;
   product: TopCardProduct;
   label?: "top" | "new" | "sale";
@@ -32,11 +34,28 @@ export interface ITopCardProps {
 const TopCard: React.FC<ITopCardProps> = ({
   id,
   subcategorySlug,
+  productTypeId,
   productTypeSlug,
   productSlug,
   label,
   product,
 }) => {
+  const { favorites, handleAddToFavorites, handleRemoveFromFavorites } =
+    useFavorites();
+  const isFavorite = favorites.some(
+    (fav) => fav.product?.data?.id === product.id
+  );
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      console.log("Removing from favorites", product.id);
+      handleRemoveFromFavorites(product.id);
+    } else {
+      console.log("Adding to favorites", product.id, productTypeId);
+      handleAddToFavorites(product.id, productTypeId);
+    }
+  };
+
   const dispatch = useAppDispatch();
 
   const {
@@ -52,7 +71,6 @@ const TopCard: React.FC<ITopCardProps> = ({
 
   const [isHovered, setIsHovered] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const [titleHeight, setTitleHeight] = useState(0);
   const [isTitleOverflowing, setIsTitleOverflowing] = useState(false);
 
   useEffect(() => {
@@ -61,7 +79,6 @@ const TopCard: React.FC<ITopCardProps> = ({
         const isOverflowing =
           titleRef.current.scrollHeight > titleRef.current.clientHeight;
         setIsTitleOverflowing(isOverflowing);
-        setTitleHeight(titleRef.current.scrollHeight);
       }
     };
 
@@ -103,7 +120,7 @@ const TopCard: React.FC<ITopCardProps> = ({
 
   return (
     <div
-      className="rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col h-full overflow-hidden relative"
+      className="rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col h-full overflow-hidden relative group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -121,10 +138,14 @@ const TopCard: React.FC<ITopCardProps> = ({
         <div className="absolute top-2 right-2 flex gap-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Heart
             size={22}
-            fill="red"
-            stroke="red"
+            fill={isFavorite ? "red" : "none"}
+            stroke={isFavorite ? "red" : "currentColor"}
             strokeWidth={1.5}
             className="cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              toggleFavorite();
+            }}
           />
           <Image
             src="/bucket.png"

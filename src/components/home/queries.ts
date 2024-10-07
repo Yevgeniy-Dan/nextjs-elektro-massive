@@ -87,6 +87,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           }
           product_types {
             data {
+              id
               attributes {
                 slug
               }
@@ -122,6 +123,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           }
           product_types {
             data {
+              id
               attributes {
                 slug
               }
@@ -157,6 +159,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           }
           product_types {
             data {
+              id
               attributes {
                 slug
               }

@@ -3,6 +3,8 @@ import Dropdown from "../home/Dropdown";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
 import { useCart } from "@/hooks/useCart";
+import Link from "next/link";
+import { Heart } from "lucide-react";
 
 const UserActions: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +35,9 @@ const UserActions: React.FC = () => {
             {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
           </span>
         </button>
+        <Link href="/favorites">
+          <Heart size={32} />
+        </Link>
         {/* <a href="#" className="hover:text-gray-300">
           <Image
             src="/call.png"

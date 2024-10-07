@@ -7,6 +7,7 @@ import {
   GetProductTypesQuery,
   GetShopReviewsQuery,
   GetSubcategoryBySlugQuery,
+  GetUserFavoriteProductsQuery,
 } from "@/gql/graphql";
 
 export type ProductAttributes = NonNullable<
@@ -47,3 +48,7 @@ export type HomePageProductEntity =
 export type ShopReview = NonNullable<
   NonNullable<GetShopReviewsQuery["shopReviews"]>["data"][number]
 >;
+
+// export type FavoriteProductsData = NonNullable<
+//   NonNullable<GetUserFavoriteProductsQuery["favoriteProducts"]>
+// >["data"];
