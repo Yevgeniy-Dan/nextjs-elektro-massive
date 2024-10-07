@@ -61,6 +61,7 @@ export const GET_PRODUCT_BY_SLUG = gql`
           }
           product_types(filters: { slug: { eq: $productTypeSlug } }) {
             data {
+              id
               attributes {
                 slug
                 title

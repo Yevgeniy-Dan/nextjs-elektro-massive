@@ -1,18 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Heart, BarChart2, ShoppingCart } from "lucide-react";
 import { ProductAttributes } from "@/types/types";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface PurchaseSectionProps {
+  id: string;
   product: ProductAttributes;
   onBuyClick: (qty: number) => void;
+  productTypeId: string;
 }
 
 const PurchaseSection: React.FC<PurchaseSectionProps> = ({
+  id,
   product,
   onBuyClick,
+  productTypeId,
 }) => {
-  const { currency, retail, title, image_link, subcategory } = product;
+  const { retail } = product;
   const [quantity, setQuantity] = useState(1);
+
+  const { favorites, handleAddToFavorites, handleRemoveFromFavorites } =
+    useFavorites();
+  const isFavorite = favorites.some((fav) => fav.product?.data?.id === id);
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      handleRemoveFromFavorites(id);
+    } else {
+      console.log("Adding to favorites:", id, productTypeId);
+      handleAddToFavorites(id, productTypeId);
+    }
+  };
 
   return (
     <div className="w-full lg:w-1/3 flex flex-col mt-3">
@@ -41,8 +59,20 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
         Купити
       </button>
       <div className="flex flex-col items-start gap-4 justify-between mb-4">
-        <button className="flex items-center gap-2 text-gray-600">
-          <Heart size={30} /> Додати в обране
+        <button
+          className="flex items-center gap-2 text-gray-600"
+          onClick={(e) => {
+            e.preventDefault();
+            toggleFavorite();
+          }}
+        >
+          <Heart
+            size={30}
+            fill={isFavorite ? "red" : "none"}
+            stroke={isFavorite ? "red" : "currentColor"}
+            strokeWidth={1.5}
+          />{" "}
+          Додати в обране
         </button>
         <button className="flex items-center gap-2 text-gray-600">
           <BarChart2 size={30} />

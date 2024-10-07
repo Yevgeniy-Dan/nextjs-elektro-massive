@@ -80,6 +80,11 @@ async function ProductContainer({
     <ProductDetails
       product={product.attributes}
       id={product.id}
+      productTypeId={
+        product.attributes.product_types?.data.find(
+          (type) => type.attributes?.slug === productTypeSlug
+        )?.id || ""
+      }
       productTypeSlug={productTypeSlug}
       subcategorySlug={
         product.attributes.subcategory?.data?.attributes?.slug || ""

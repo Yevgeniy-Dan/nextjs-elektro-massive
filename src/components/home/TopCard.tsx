@@ -48,10 +48,8 @@ const TopCard: React.FC<ITopCardProps> = ({
 
   const toggleFavorite = () => {
     if (isFavorite) {
-      console.log("Removing from favorites", product.id);
       handleRemoveFromFavorites(product.id);
     } else {
-      console.log("Adding to favorites", product.id, productTypeId);
       handleAddToFavorites(product.id, productTypeId);
     }
   };
@@ -147,13 +145,20 @@ const TopCard: React.FC<ITopCardProps> = ({
               toggleFavorite();
             }}
           />
-          <Image
-            src="/bucket.png"
-            alt="Bucket icon"
-            className="h-6 w-6 cursor-pointer"
-            width={32}
-            height={32}
-          />
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleBuyClick();
+            }}
+          >
+            <Image
+              src="/bucket.png"
+              alt="Bucket icon"
+              className="h-6 w-6 cursor-pointer"
+              width={32}
+              height={32}
+            />
+          </button>
         </div>
         {label === "top" && (
           <div className="absolute top-0 left-0 bg-orange-500 text-white px-2 py-1 rounded-br-lg">

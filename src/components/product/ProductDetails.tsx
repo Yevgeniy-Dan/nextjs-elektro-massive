@@ -15,6 +15,7 @@ import { ComponentImagesImages } from "@/gql/graphql";
 import { usePathname, useSearchParams } from "next/navigation";
 import Breadcrumbs from "../shared/Breadcrumbs";
 import { ResolvingMetadata } from "next";
+import { useFavorites } from "@/hooks/useFavorites";
 
 const initialParamsCount = 5;
 
@@ -23,6 +24,7 @@ type ShareUrlFunction = (url: string) => string;
 const ProductDetails: React.FC<{
   product: ProductAttributes;
   id: string;
+  productTypeId: string;
   productTypeTitle: string;
   subcategoryTitle: string;
   productTypeSlug: string;
@@ -30,6 +32,7 @@ const ProductDetails: React.FC<{
 }> = ({
   product,
   id,
+  productTypeId,
   productTypeSlug,
   subcategorySlug,
   productTypeTitle,
@@ -184,6 +187,8 @@ const ProductDetails: React.FC<{
           <PurchaseSection
             product={product}
             onBuyClick={(qty) => handleBuyClick(qty)}
+            productTypeId={productTypeId}
+            id={id}
           />
         </div>
 
