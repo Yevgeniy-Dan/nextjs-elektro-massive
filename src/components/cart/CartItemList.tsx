@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CartItemComponent from "./CartItem";
 import { CartItem } from "@/gql/graphql";
+import CenteredSpinner from "../shared/CenteredSpinner";
 
 interface CartItemListProps {
   items: CartItem[];
@@ -12,7 +13,9 @@ const CartItemList: React.FC<CartItemListProps> = ({ items, isLoading }) => {
     <div className="overflow-y-auto flex-grow">
       <div className="p-4">
         {isLoading ? (
-          <div>Loading cart...</div>
+          <div>
+            <CenteredSpinner />
+          </div>
         ) : items.length === 0 ? (
           <div className="p-4 text-center text-xl">Кошик порожній</div>
         ) : (

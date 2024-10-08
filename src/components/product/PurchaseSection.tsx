@@ -27,7 +27,6 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
     if (isFavorite) {
       handleRemoveFromFavorites(id);
     } else {
-      console.log("Adding to favorites:", id, productTypeId);
       handleAddToFavorites(id, productTypeId);
     }
   };

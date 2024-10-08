@@ -19,8 +19,7 @@ interface SummaryProps {
 }
 
 const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
-  const { cartItems, calculateTotal, calculateDiscountTotal, handleClearCart } =
-    useCart();
+  const { cartItems, calculateTotal, calculateDiscountTotal } = useCart();
   const router = useRouter();
 
   const {
@@ -157,10 +156,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
           <Spinner size={64} />
         </div>
       )}
-      <form
-        // onSubmit={handleSubmit(onSubmit)}
-        className="sticky top-4 w-full  bg-white p-4 rounded-md shadow-sm border border-gray-200"
-      >
+      <form className="sticky top-4 w-full  bg-white p-4 rounded-md shadow-sm border border-gray-200">
         <div className="mb-4 w-full ">
           <CartItemsCarousel cartItems={cartItems} />
         </div>
@@ -169,7 +165,9 @@ const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
         <div className="space-y-2 text-sm">
           <div className="flex justify-between items-center">
             <span>{cartItems.length} товар(а) на суму</span>
-            <span className="font-semibold">{calculateTotal} грн</span>
+            <span className="font-semibold">
+              {calculateTotal.toFixed(2)} грн
+            </span>
           </div>
           <div className="flex justify-between items-center">
             <span>Вартість доставки</span>
@@ -178,21 +176,19 @@ const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
           <div className="flex justify-between items-center">
             <span>Знижка</span>
             <span className="font-semibold text-green-600">
-              {calculateDiscountTotal} грн
+              {calculateDiscountTotal.toFixed(2)} грн
             </span>
           </div>
           <div className="flex justify-between items-center pt-2 border-t border-gray-200">
             <span className="font-semibold">До сплати</span>
             <span className="font-semibold text-xl">
-              {calculateTotal - calculateDiscountTotal}{" "}
-              {/* {cartItems[0]?.product.currency} */}
+              {(calculateTotal - calculateDiscountTotal).toFixed(2)}
               грн
             </span>
           </div>
         </div>
 
         <button
-          // type="submit"
           onClick={handleBuyClick}
           disabled={
             isSubmitting ||

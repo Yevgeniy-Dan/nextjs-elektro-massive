@@ -92,7 +92,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const handleBrandsSelect = (brandName: string) => {
     const newFilters = { ...appliedFilters };
-    console.log("newFilters", newFilters);
+
     if (newFilters["Бренд"]?.includes(brandName)) {
       newFilters["Бренд"] = newFilters["Бренд"].filter(
         (brand) => brand !== brandName

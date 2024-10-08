@@ -14,8 +14,7 @@ import { ProductAttributes } from "@/types/types";
 import { ComponentImagesImages } from "@/gql/graphql";
 import { usePathname, useSearchParams } from "next/navigation";
 import Breadcrumbs from "../shared/Breadcrumbs";
-import { ResolvingMetadata } from "next";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useCart } from "@/hooks/useCart";
 
 const initialParamsCount = 5;
 
@@ -42,6 +41,8 @@ const ProductDetails: React.FC<{
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [currentUrl, setCurrentUrl] = useState("");
+
+  const { handleUpdateItem } = useCart();
 
   useEffect(() => {
     setCurrentUrl(
@@ -84,7 +85,7 @@ const ProductDetails: React.FC<{
     (qty: number) => {
       const addedCartItem = {
         id,
-        quantity: qty || 1,
+        quantity: Math.max(qty, 1),
         product: {
           id,
           currency,
@@ -98,7 +99,9 @@ const ProductDetails: React.FC<{
         },
       };
 
-      dispatch(openModal(addedCartItem));
+      handleUpdateItem(addedCartItem, Math.max(qty, 1));
+
+      dispatch(openModal());
     },
     [
       id,
@@ -110,6 +113,7 @@ const ProductDetails: React.FC<{
       params,
       part_number,
       slug,
+      handleUpdateItem,
       dispatch,
     ]
   );

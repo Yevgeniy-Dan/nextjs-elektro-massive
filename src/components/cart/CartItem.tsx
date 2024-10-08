@@ -10,12 +10,12 @@ interface CartItemProps {
 }
 
 const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
-  const { handleRemoveItem, handleQuantityChange } = useCart();
+  const { handleRemoveItem, handleUpdateItem } = useCart();
 
   return (
     <div key={item.id} className="flex items-center mb-4 border-b pb-2">
       <button
-        onClick={() => handleRemoveItem(item.id)}
+        onClick={() => handleRemoveItem(item.product.id)}
         className="text-red-800 hover:text-red-700 mr-2 flex-shrink-0"
       >
         <Trash2 size={20} />
@@ -41,9 +41,7 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
 
           <QuantityAdjuster
             quantity={item.quantity}
-            onQuantityChange={(newQuantity) =>
-              handleQuantityChange(item.id, newQuantity)
-            }
+            onQuantityChange={(qtyChange) => handleUpdateItem(item, qtyChange)}
           />
 
           <div>

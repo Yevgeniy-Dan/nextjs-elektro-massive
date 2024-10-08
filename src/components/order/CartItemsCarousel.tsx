@@ -70,7 +70,7 @@ const CartItemsCarousel: React.FC<CartItemsCarouselProps> = ({ cartItems }) => {
                     {item.quantity} шт
                   </p>
                   <p className="text-sm font-semibold m-0">
-                    {item.product.retail * item.quantity} грн
+                    {(item.product.retail * item.quantity).toFixed(2)} грн
                   </p>
                 </div>
               </div>

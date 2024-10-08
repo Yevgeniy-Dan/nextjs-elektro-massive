@@ -3,10 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import useOutsideClick from "@/hooks/useOutsideClick";
 
-import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-
-import { clearAddedProduct } from "@/store/storeSlice";
+import React from "react";
 
 import CartHeader from "../cart/CartHeader";
 import CartItemList from "../cart/CartItemList";
@@ -18,39 +15,9 @@ const ShoppingCartModal = () => {
     isModalOpen,
     isLoading,
     cartItems,
-    handleAddToCart,
-    handleQuantityChange,
     handleClearCart,
     handleCloseModal,
   } = useCart();
-
-  const { addedProduct } = useAppSelector((state) => state.store);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (addedProduct && cartItems) {
-      const existingItem = cartItems.find(
-        (item) => item.product.id === addedProduct.product.id
-      );
-
-      if (!existingItem) {
-        handleAddToCart(addedProduct);
-      } else {
-        handleQuantityChange(
-          existingItem.id,
-          existingItem.quantity + addedProduct.quantity
-        );
-      }
-
-      dispatch(clearAddedProduct());
-    }
-  }, [
-    addedProduct,
-    cartItems,
-    dispatch,
-    handleAddToCart,
-    handleQuantityChange,
-  ]);
 
   const modalRef = useOutsideClick(handleCloseModal);
 

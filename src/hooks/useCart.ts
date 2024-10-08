@@ -1,271 +1,160 @@
 "use client";
 
 import {
-  addItemToCookie,
-  clearCartFromCookie,
-  getCartItemsFromCookie,
-  removeCartItemFromCookie,
-  updateCartItemInCookie,
+  // addItemToLocalStorage,
+  clearCartFromLocalStorage,
+  getCartItemsFromLocaleStorage,
+  removeCartItemFromLocalStorage,
+  updateCartItemInLocalStorage,
 } from "@/app/utils/cartHeplers";
-import { CartItem } from "@/gql/graphql";
+import {
+  CLEAR_CART_MUTATION,
+  GET_AUTH_USER_CART_QUERY,
+  REMOVE_FROM_CART_MUTATION,
+  UPDATE_CART_ITEM_MUTATION,
+} from "@/components/cart/queries";
+import {
+  CartInput,
+  CartItem,
+  GetUserCartQuery,
+  MutationAddToCartArgs,
+  MutationRemoveFromCartArgs,
+  MutationUpdateCartArgs,
+  RemoveFromCartInput,
+  UpdateCartItemInput,
+  UpdateCartItemMutation,
+  UpdateCartItemMutationVariables,
+} from "@/gql/graphql";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { openSignInModal } from "@/store/signInModalSlice";
-import { clearAddedProduct, closeModal } from "@/store/storeSlice";
-import {
-  IAddToCartResponse,
-  IGetUserCartResponse,
-  IRemoveFromCartResponse,
-  IUpdateCartItemResponse,
-} from "@/types/cart";
+import { closeModal } from "@/store/storeSlice";
+import { IGetUserCartResponse } from "@/types/cart";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import request from "graphql-request";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
-
-const GET_AUTH_USER_CART_QUERY = `
-  query GetUserCart {
-    userCart {
-      cart {
-        cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            params
-            part_number
-          }
-        }       
-      }
-    }
-  }
-`;
-
-const ADD_TO_CART_MUTATION = `
-  mutation AddToCart($input: AddToCartInput!) {
-    addToCart(input: $input) {
-      cart {
-        cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            params
-            part_number
-          }
-        }
-      }
-    }
-  }
-`;
-
-const UPDATE_CART_ITEM_MUTATION = `
-  mutation UpdateCartItem($input: UpdateCartItemInput!) {
-    updateCartItem(input: $input) {
-      cart {
-        cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            params
-            part_number
-          }
-        }
-      }
-    }
-  }
-`;
-
-const REMOVE_FROM_CART_MUTATION = `
-  mutation RemoveFromCart($input: RemoveFromCartInput!) {
-    removeFromCart(input: $input) {
-      cart {
-        cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            params
-            part_number
-          }
-        }
-      }
-    }
-  }
-`;
-
-const fetchCart = async (): Promise<CartItem[]> => {
-  const { data } = await axios.post<IGetUserCartResponse>(
-    process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
-    {
-      query: GET_AUTH_USER_CART_QUERY,
-    }
-  );
-
-  const cartItems = data.data.userCart.cart.cart_items;
-
-  return cartItems;
-};
-
-const addCartItem = async (newItem: CartItem) => {
-  const { data } = await axios.post<IAddToCartResponse>(
-    process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
-    {
-      query: ADD_TO_CART_MUTATION,
-      variables: {
-        input: {
-          productId: newItem.product.id,
-          quantity: newItem.quantity,
-        },
-      },
-    }
-  );
-
-  return data.data.addToCart.cart.cart_items;
-};
-
-const updateCartItem = async ({
-  productId,
-  quantity,
-}: {
-  productId: string;
-  quantity: number;
-}) => {
-  const { data } = await axios.post<IUpdateCartItemResponse>(
-    process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
-    {
-      query: UPDATE_CART_ITEM_MUTATION,
-      variables: { input: { productId, quantity } },
-    }
-  );
-  return data.data.updateCartItem.cart.cart_items;
-};
-
-const removeCartItem = async (productId: string) => {
-  const { data } = await axios.post<IRemoveFromCartResponse>(
-    process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
-    {
-      query: REMOVE_FROM_CART_MUTATION,
-      variables: { input: { productId } },
-    }
-  );
-  return data.data.removeFromCart.cart.cart_items;
-};
+import { useEffect, useMemo } from "react";
+import { queryClient } from "../../lib/queryClient";
+import axios from "axios";
 
 export const useCart = () => {
-  const { isModalOpen, addedProduct } = useAppSelector((state) => state.store);
+  const { isModalOpen } = useAppSelector((state) => state.store);
   const dispatch = useAppDispatch();
-  const queryClient = useQueryClient();
   const { status } = useSession();
   const router = useRouter();
 
   const { data: cartItems = [], isLoading } = useQuery({
     queryKey: ["cart"],
-    queryFn: status === "authenticated" ? fetchCart : getCartItemsFromCookie,
-    refetchOnMount: true,
+    queryFn: async () => {
+      if (status === "authenticated") {
+        const response = await request<GetUserCartQuery>(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+          GET_AUTH_USER_CART_QUERY
+        );
+
+        return response.userCart?.cart.cart_items;
+      } else {
+        return getCartItemsFromLocaleStorage();
+      }
+    },
+    refetchOnMount: "always",
   });
 
-  const addToCartMutation = useMutation({
-    mutationFn: addCartItem,
-    onSuccess: (newCart) => {
-      queryClient.setQueryData(["cart"], newCart);
+  const updateCartItemMutation = useMutation<
+    CartItem[],
+    Error,
+    { product: CartItem; qtyChange: number }
+  >({
+    mutationFn: async (variables) => {
+      if (status === "authenticated") {
+        const response = await request<
+          UpdateCartItemMutation,
+          UpdateCartItemMutationVariables
+        >(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+          UPDATE_CART_ITEM_MUTATION,
+          {
+            input: {
+              productId: variables.product.product.id,
+              qtyChange: variables.qtyChange,
+            },
+          }
+        );
+
+        return response.updateCartItem?.cart.cart_items || [];
+      } else {
+        return updateCartItemInLocalStorage(
+          variables.product,
+          variables.qtyChange
+        );
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
-  const updateCartItemMutation = useMutation({
-    mutationFn: updateCartItem,
-    onSuccess: (newCart) => {
-      queryClient.setQueryData(["cart"], newCart);
+  const removeFromCartMutation = useMutation<
+    MutationRemoveFromCartArgs,
+    Error,
+    RemoveFromCartInput
+  >({
+    mutationFn: async (variables) => {
+      if (status === "authenticated") {
+        return request(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+          REMOVE_FROM_CART_MUTATION,
+          {
+            input: { productId: variables.productId },
+          }
+        );
+      } else {
+        removeCartItemFromLocalStorage(variables.productId);
+
+        return {
+          input: {
+            productId: variables.productId,
+          },
+        };
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
-  const removeFromCartMutation = useMutation({
-    mutationFn: removeCartItem,
-    onSuccess: (newCart) => {
-      queryClient.setQueryData(["cart"], newCart);
+  const clearCartMutation = useMutation({
+    mutationFn: async () => {
+      if (status === "authenticated") {
+        return request(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+          CLEAR_CART_MUTATION
+        );
+      } else {
+        clearCartFromLocalStorage();
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
-  const handleAddToCart = (item: CartItem) => {
-    if (status === "authenticated") {
-      addToCartMutation.mutate(item);
-    } else {
-      const addedItem = { ...item, quantity: 1 };
-      addItemToCookie(addedItem);
-      queryClient.setQueryData(["cart"], cartItems.concat(addedItem));
-    }
+  const handleUpdateItem = (product: CartItem, increaseQtyBy: number) => {
+    updateCartItemMutation.mutate({
+      product: product,
+      qtyChange: increaseQtyBy,
+    });
   };
 
-  const handleQuantityChange = (itemId: string, newQuantity: number) => {
-    const item = cartItems.find((item) => item.id === itemId);
-
-    if (!item) return;
-
-    if (status === "authenticated") {
-      updateCartItemMutation.mutate({
-        productId: item.product.id,
-        quantity: Math.max(1, newQuantity),
-      });
-    } else {
-      const updatedItem = { ...item, quantity: Math.max(1, newQuantity) };
-      updateCartItemInCookie(updatedItem);
-      queryClient.setQueryData(
-        ["cart"],
-        cartItems.map((i) => (i.id === itemId ? updatedItem : i))
-      );
-    }
-  };
-
-  const handleRemoveItem = (itemId: string) => {
-    const item = cartItems.find((item) => item.id === itemId);
-    if (!item) return;
-
-    if (status === "authenticated") {
-      removeFromCartMutation.mutate(item.product.id);
-    } else {
-      removeCartItemFromCookie(item.product.id);
-      queryClient.setQueryData(
-        ["cart"],
-        cartItems.filter((i) => i.id !== itemId)
-      );
-    }
+  const handleRemoveItem = (productId: string) => {
+    removeFromCartMutation.mutate({
+      productId,
+    });
   };
 
   const handleClearCart = async () => {
-    if (status === "authenticated") {
-      try {
-        await Promise.all(
-          cartItems.map(
-            (item) => removeFromCartMutation.mutateAsync(item.product.id) //TODO: create deleteCart on strapi
-          )
-        );
-        queryClient.setQueryData(["cart"], []);
-      } catch (error) {}
-    } else {
-      clearCartFromCookie();
-      queryClient.setQueryData(["cart"], []);
-    }
+    clearCartMutation.mutate();
   };
 
   const handleConfirm = () => {
@@ -282,14 +171,14 @@ export const useCart = () => {
   };
 
   const calculateTotal = useMemo(() => {
-    return cartItems.reduce(
+    return cartItems?.reduce(
       (total, item) => total + (item?.product?.retail ?? 0) * item.quantity,
       0
     );
   }, [cartItems]);
 
   const calculateDiscountTotal = useMemo(() => {
-    return cartItems.reduce(
+    return cartItems?.reduce(
       (total, item) =>
         total +
         (((item?.product?.retail ?? 0) * (item?.product?.discount ?? 0)) /
@@ -303,8 +192,7 @@ export const useCart = () => {
     isModalOpen,
     cartItems,
     isLoading,
-    handleQuantityChange,
-    handleAddToCart,
+    handleUpdateItem,
     handleRemoveItem,
     handleClearCart,
     handleConfirm,

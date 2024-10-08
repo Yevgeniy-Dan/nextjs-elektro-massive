@@ -6,7 +6,8 @@ import { store } from "@/store/store";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import InitialQueryHandler from "@/components/InitialQueryHandler";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "../../lib/queryClient";
 
 export function Providers({
   children,
@@ -15,8 +16,6 @@ export function Providers({
   children: React.ReactNode;
   session: Session | null;
 }) {
-  const queryClient = new QueryClient();
-
   return (
     <SessionProvider session={session}>
       <ApolloWrapper>

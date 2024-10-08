@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  getCartItemsFromCookie,
-  clearCartFromCookie,
+  getCartItemsFromLocaleStorage,
+  clearCartFromLocalStorage,
 } from "@/app/utils/cartHeplers";
 import { CartItem } from "@/gql/graphql";
 import { ISyncCartMutationResponse } from "@/types/cart";
@@ -11,6 +11,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
+import { queryClient } from "../../lib/queryClient";
 
 export const SYNC_CART_MUTATION = `
   mutation SyncCart($input: SyncCartInput!) {
@@ -52,17 +53,16 @@ const syncCart = async (
 };
 
 export const useSingInMergeCart = () => {
-  const queryClient = useQueryClient();
-
   const { status } = useSession();
   const hasSynced = useRef(false);
 
   const mutation = useMutation({
     mutationFn: syncCart,
     onSuccess(data, variables, context) {
-      clearCartFromCookie();
+      clearCartFromLocalStorage();
       const { syncCartBySingIn } = data.data.data;
       queryClient.setQueryData(["cart"], syncCartBySingIn.cart.cart_items);
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError(error, variables, context) {
       toast.error(error.message);
@@ -71,14 +71,13 @@ export const useSingInMergeCart = () => {
 
   useEffect(() => {
     if (status === "authenticated" && !hasSynced.current) {
-      const cartItems = getCartItemsFromCookie();
+      const cartItems = getCartItemsFromLocaleStorage();
 
       mutation.mutate(cartItems);
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-
+      // queryClient.invalidateQueries({ queryKey: ["cart"] });
       hasSynced.current = true;
     }
-  }, [status, mutation, queryClient]);
+  }, [status, mutation]);
 
   return mutation;
 };

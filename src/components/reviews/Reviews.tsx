@@ -40,7 +40,6 @@ const Reviews = () => {
         }
       ),
     onSuccess: () => {
-      console.log("Review created successfully!");
       queryClient.invalidateQueries({ queryKey: ["shopReviews"] });
     },
     onError: (error) => {

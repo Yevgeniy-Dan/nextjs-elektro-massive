@@ -1,14 +1,15 @@
 import { GetFilteredProductsQuery, GetProductsQuery } from "@/gql/graphql";
+import { useCart } from "@/hooks/useCart";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useAppDispatch } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
-import { ProductAttributes } from "@/types/types";
 import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-type TopCardProduct = {
+//TODO: change to CartItem type
+export type TopCardProduct = {
   id: string;
   title: string;
   part_number: string;
@@ -71,6 +72,8 @@ const TopCard: React.FC<ITopCardProps> = ({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [isTitleOverflowing, setIsTitleOverflowing] = useState(false);
 
+  const { handleUpdateItem } = useCart();
+
   useEffect(() => {
     const checkOverflow = () => {
       if (titleRef.current) {
@@ -86,30 +89,33 @@ const TopCard: React.FC<ITopCardProps> = ({
   }, [title]);
 
   const handleBuyClick = useCallback(() => {
-    const addedCartItem = {
-      id,
-      quantity: 1,
-      product: {
-        id,
-        currency,
-        discount,
-        image_link: image_link ?? "",
-        retail,
-        title,
-        params,
-        part_number,
-        slug,
+    handleUpdateItem(
+      {
+        id: id,
+        quantity: 1,
+        product: {
+          id: id,
+          title: title,
+          retail: retail,
+          currency: currency,
+          discount: discount,
+          image_link: image_link,
+          params: params,
+          part_number: part_number,
+          slug: slug,
+        },
       },
-    };
-
-    dispatch(openModal(addedCartItem));
+      1
+    );
+    dispatch(openModal());
   }, [
+    handleUpdateItem,
     id,
+    title,
+    retail,
     currency,
     discount,
     image_link,
-    retail,
-    title,
     params,
     part_number,
     slug,
