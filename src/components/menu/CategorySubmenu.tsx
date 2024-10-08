@@ -7,7 +7,7 @@ interface CategoryProps {
   category: Category;
   isOpen: boolean;
   toggleMenu: (e: React.MouseEvent) => void;
-  toggleCategory: () => void;
+  toggleCategory: (e: React.MouseEvent) => void;
 }
 
 const CategorySubmenu: React.FC<CategoryProps> = ({

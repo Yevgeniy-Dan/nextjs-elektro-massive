@@ -139,7 +139,10 @@ const CategoryMenu = () => {
                   <CategorySubmenu
                     category={category}
                     isOpen={openSubmenu === index}
-                    toggleCategory={() => handleCategoryClick(index)}
+                    toggleCategory={(e) => {
+                      handleCategoryClick(index);
+                      toggleMenu(e);
+                    }}
                     toggleMenu={toggleMenu}
                   />
                 </div>
