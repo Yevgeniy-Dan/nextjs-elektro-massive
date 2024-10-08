@@ -28,17 +28,15 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { openSignInModal } from "@/store/signInModalSlice";
 import { closeModal } from "@/store/storeSlice";
-import { IGetUserCartResponse } from "@/types/cart";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
-import { queryClient } from "../../lib/queryClient";
-import axios from "axios";
+import { useMemo } from "react";
 
 export const useCart = () => {
+  const queryClient = useQueryClient();
   const { isModalOpen } = useAppSelector((state) => state.store);
   const dispatch = useAppDispatch();
   const { status } = useSession();

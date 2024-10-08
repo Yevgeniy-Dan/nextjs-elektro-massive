@@ -11,7 +11,6 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import { queryClient } from "../../lib/queryClient";
 
 export const SYNC_CART_MUTATION = `
   mutation SyncCart($input: SyncCartInput!) {
@@ -53,6 +52,7 @@ const syncCart = async (
 };
 
 export const useSingInMergeCart = () => {
+  const queryClient = useQueryClient();
   const { status } = useSession();
   const hasSynced = useRef(false);
 
@@ -74,7 +74,6 @@ export const useSingInMergeCart = () => {
       const cartItems = getCartItemsFromLocaleStorage();
 
       mutation.mutate(cartItems);
-      // queryClient.invalidateQueries({ queryKey: ["cart"] });
       hasSynced.current = true;
     }
   }, [status, mutation]);
