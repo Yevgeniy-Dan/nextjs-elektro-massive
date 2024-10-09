@@ -1,7 +1,6 @@
 import { Category } from "@/types/menu";
 import React, { useEffect, useState, useRef } from "react";
 import SubcategoryGrid from "./SubcategoryGrid";
-import useOutsideClick from "@/hooks/useOutsideClick";
 
 interface CategoryProps {
   category: Category;

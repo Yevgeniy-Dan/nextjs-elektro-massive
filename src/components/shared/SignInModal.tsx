@@ -1,21 +1,63 @@
 "use client";
 
+import useOutsideClick from "@/hooks/useOutsideClick";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { closeSignInModal } from "@/store/signInModalSlice";
-import { stat } from "fs";
-import { signIn, useSession } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { z } from "zod";
+
+const phoneSchema = z.object({
+  phone: z
+    .string()
+    .regex(/^\d{2}-\d{3}-\d{4}$/, "Невірний формат номера телефону")
+    .transform((val) => `+380${val.replace(/-/g, "")}`),
+});
 
 const SignInModal = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const isOpen = useAppSelector((state) => state.signInModal.isOpen);
   const redirectUrl = useAppSelector((state) => state.signInModal.redirectUrl);
-  const { data: session, status } = useSession();
-  const [error, setError] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [googleSignInError, setGoogleSignInError] = useState<string | null>(
+    null
+  );
+  const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
+
+  const formatPhoneNumber = (value: string) => {
+    const digits = value.replace(/\D/g, "");
+    let formatted = "";
+    for (let i = 0; i < digits.length && i < 9; i++) {
+      if (i === 2 || i === 5) {
+        formatted += "-";
+      }
+      formatted += digits[i];
+    }
+    return formatted;
+  };
+
+  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(event.target.value);
+    setPhoneNumberError(null);
+    setPhoneNumber(formatted);
+  };
+
+  const validatePhone = () => {
+    try {
+      phoneSchema.parse({ phone: phoneNumber });
+      setPhoneNumberError(null);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setPhoneNumberError(err.errors[0].message);
+      } else {
+        setPhoneNumberError("Сталася помилка. Спробуйте пізніше.");
+      }
+    }
+  };
 
   const handleGoogleSignIn = async () => {
     try {
@@ -23,59 +65,120 @@ const SignInModal = () => {
         callbackUrl: redirectUrl || window.location.href,
       });
     } catch (error) {
-      setError("An error occurred while signing in. Please try again.");
+      setGoogleSignInError(
+        "An error occurred while signing in. Please try again."
+      );
       console.error("Sign in in with Google: ", error);
     }
   };
 
   const handleClose = () => {
-    setError(null);
+    setGoogleSignInError(null);
+    setPhoneNumber("");
     dispatch(closeSignInModal());
   };
+
+  const modalRef = useOutsideClick(handleClose);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-      <div className="bg-white w-full h-full overflow-auto flex flex-col">
-        <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-          <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <Image
-              className="mx-auto h-12 w-auto"
-              src="/path-to-your-logo.png"
-              alt="Your Company Logo"
-              width={48}
-              height={48}
-            />
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Sign in to your account
-            </h2>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      >
+        <div
+          ref={modalRef}
+          className="bg-gray-100 w-full max-w-md mx-auto overflow-auto rounded-3xl"
+        >
+          {/* HEADER */}
+          <div className="p-4 border-b">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-bold">Вхід</h2>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => handleClose()}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <span className="text-2xl">
+                    <X size={24} />
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
-
-          <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-              {error && (
-                <div className="mb-4 text-red-800 text-center">{error}</div>
-              )}
-              <button
-                onClick={handleGoogleSignIn}
-                className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          <div className="py-4 px-4 flex justify-center">
+            <Image
+              src="/logo.png"
+              alt="Your Company Logo"
+              width={120}
+              height={120}
+            />
+          </div>
+          {/* PHONE NUMBER INPUT */}
+          <div className="p-4">
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700"
               >
-                <FcGoogle className="h-8 w-8 mr-2" />
-                Sign in with Google
-              </button>
-              {error && <p>{error}</p>}
+                Телефон
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Image
+                    src="/ukrainian-flag.png"
+                    alt="Ukrainian flag"
+                    width={20}
+                    height={15}
+                  />
+                  <span className="ml-2 font-semibold">+380</span>
+                </div>
+                <input
+                  type="tel"
+                  onChange={handlePhoneChange}
+                  value={phoneNumber}
+                  className="block w-full pl-24 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-800 focus:border-red-800"
+                  placeholder="XX-XXX-XXXX"
+                />
+              </div>
+              {phoneNumberError && (
+                <p className="mt-1 text-sm text-red-800">{phoneNumberError}</p>
+              )}
             </div>
             <button
-              onClick={handleClose}
-              className="text-gray-500 hover:text-gray-700 my-4"
+              onClick={validatePhone}
+              className="mt-4 w-full bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-md hover:opacity-90"
             >
-              Назад
+              Продовжити
             </button>
+            <div className="flex items-center justify-center">
+              <div className="border-t border-gray-300 flex-grow mr-3"></div>
+              <p className="text-gray-500">або</p>
+              <div className="border-t border-gray-300 flex-grow ml-3"></div>
+            </div>
+
+            <div className="pt-4 pb-8">
+              <button
+                onClick={handleGoogleSignIn}
+                className="w-full flex justify-center items-center py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-100 focus:bg-gray-100"
+              >
+                <FcGoogle className="h-8 w-8 mr-2" />
+                Google
+              </button>
+              {googleSignInError && (
+                <p className="text-red-800 text-center mt-2">
+                  {googleSignInError}
+                </p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

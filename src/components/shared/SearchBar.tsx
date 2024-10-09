@@ -1,27 +1,40 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "use-debounce";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [desbouncedSearchTerm] = useDebounce(searchTerm, 300);
+  const searchParams = useSearchParams();
+
   const router = useRouter();
-  useEffect(() => {
-    if (desbouncedSearchTerm.trim()) {
-      router.push(
-        `/search?q=${encodeURIComponent(desbouncedSearchTerm.trim())}`
-      );
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      if (value) {
+        params.set(name, value);
+      } else {
+        params.delete(name);
+      }
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchTerm = e.target.value;
+    setSearchTerm(e.target.value);
+
+    const newQueryString = createQueryString("q", newSearchTerm.trim());
+    if (newSearchTerm.trim().length > 0) {
+      router.push(`/search?${newQueryString}`, { scroll: false });
     } else {
       router.push("/");
     }
-  }, [desbouncedSearchTerm, router]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
   };
 
   return (

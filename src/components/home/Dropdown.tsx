@@ -1,6 +1,6 @@
 import React from "react";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ChevronDown, Mail, Phone } from "lucide-react";
+import { Menu, MenuButton, MenuItems } from "@headlessui/react";
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 

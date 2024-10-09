@@ -25,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
           <div className="relative  mb-6 sm:mb-0 mx-auto sm:m-0">
             <div className="relative w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 z-10">
               <Image
-                src="/logo.png"
+                src="/logo-footer.png"
                 alt="Elektro Massive Logo"
                 fill
                 className="mb-4"

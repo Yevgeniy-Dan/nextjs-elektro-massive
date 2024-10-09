@@ -5,6 +5,7 @@ import { openModal } from "@/store/storeSlice";
 import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import UserDropdown from "./UserDropdown";
 
 const UserActions: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -59,15 +60,7 @@ const UserActions: React.FC = () => {
             1
           </span>
         </a> */}
-        <a href="#" className="hover:text-gray-300">
-          <Image
-            src="/avatar.png"
-            alt="Avatar"
-            width={32}
-            height={32}
-            className="invert"
-          />
-        </a>
+        <UserDropdown />
       </div>
     </div>
   );
