@@ -17,7 +17,7 @@ const AboutSection = () => {
           декору, що змінює атмосферу.
         </p>
 
-        <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10 md:-mx-12 h-48 sm:h-56 md:h-64 ">
+        <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10 md:-mx-12 h-80 sm:h-64">
           <p className="flex items-center bg-gray-200 text-gray-950 font-semibold  text-base sm:text-lg text-justify max-w-prose mx-auto w-3/5 px-4 sm:px-8 overflow-hidden ">
             Освітлення – це не лише функціональність, але й важливий елемент
             декору, що змінює атмосферу.

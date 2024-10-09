@@ -59,8 +59,8 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
     },
   });
 
-  const responsiveCardHeight = "h-64 sm:h-72 md:h-80 lg:h-96";
-  const responsiveCardWidth = "w-40 sm:w-48 md:w-56 lg:w-64";
+  const responsiveCardHeight = "h-80 lg:h-96";
+  const responsiveCardWidth = "w-56 lg:w-64";
 
   const PlaceHolderCard = () => (
     <div className="flex flex-col items-center px-2">

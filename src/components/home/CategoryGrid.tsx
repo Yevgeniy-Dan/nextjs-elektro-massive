@@ -92,8 +92,8 @@ const CategoryGrid = () => {
                           />
                         )}
                       </div>
-                      <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 static transform-none w-[50%] md:w-[70%]">
-                        <p className="text-black text-center text-base md:text-lg font-semibold mt-2 break-words">
+                      <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 static transform-none w-full md:w-[70%] text-center">
+                        <p className="text-black md:text-white md:[text-shadow:1px_1px_0px_#000,-1px_1px_0px_#000,1px_-1px_0px_#000,-1px_-1px_0px_#000] text-base md:text-lg font-semibold mt-2  break-words">
                           {category.attributes?.name || "Unnamed Category"}
                         </p>
                       </div>
