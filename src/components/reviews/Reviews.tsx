@@ -11,7 +11,7 @@ import ReviewForm from "./ReviewForm";
 import ReviewCard from "./ReviewCard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
-import { AlertCircle } from "lucide-react";
+import ErrorMessage from "../shared/ErrorMessage";
 
 const Reviews = () => {
   const queryClient = useQueryClient();
@@ -62,18 +62,6 @@ const Reviews = () => {
   const placeholders = Array(6)
     .fill(null)
     .map((_, index) => <PlaceHolderCard key={`placehodler-${index}`} />);
-
-  const ErrorMessage = ({ message }: { message: string }) => (
-    <div
-      className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6"
-      role="alert"
-    >
-      <div className="flex items-center">
-        <AlertCircle className="mr-2" />
-        <p>{message}</p>
-      </div>
-    </div>
-  );
 
   return (
     <div className="container mx-auto px-4 py-8">
