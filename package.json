@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "generate-sitemap": "node run-sitemap.mjs",
     "codegen": "graphql-codegen",
     "lint": "next lint"
   },
