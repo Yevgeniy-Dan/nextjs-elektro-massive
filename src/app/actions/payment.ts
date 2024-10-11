@@ -162,7 +162,7 @@ const saveOrderToDatabase = async (order: SaveOrderInput) => {
       order.deliveryMethod === Enum_Order_Deliverymethod.NovaPoshta
         ? `${order.addressData.cityDescription}, ${order.addressData.warehouseDescription}`
         : `${senderAddress.CityDescription}, ${senderAddress.Description}`,
-    users_permissions_user: session?.user.strapiUserId?.toString(),
+    users_permissions_user: session?.user.strapiUserId,
     orderItems: order.cartItems,
     publishedAt: new Date().toISOString(),
   };

@@ -4,3 +4,4 @@ export {
   getNovaPoshtaWarehouses,
   createNovaPoshtaShipment,
 } from "./nova-poshta";
+export { sendOtp } from "./phone-otp";

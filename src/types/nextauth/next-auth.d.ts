@@ -10,7 +10,7 @@ declare module "next-auth" {
 
   interface Session {
     strapiToken?: string;
-    provider?: "google" | "local";
+    provider?: "google" | "local" | "phoneOtp";
     user: User;
   }
 
@@ -20,7 +20,8 @@ declare module "next-auth" {
    */
   interface User extends DefaultSession["user"] {
     // not setting this will throw ts error in authorize function
-    strapiUserId?: number;
+    strapiUserId?: string;
+    jwt?: string;
     blocked?: boolean;
   }
 }
@@ -28,9 +29,9 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   // Returned by the `jwt` callback and `getToken`, when using JWT sessions
   interface JWT {
-    strapiUserId?: number;
+    strapiUserId?: string;
     blocked?: boolean;
     strapiToken?: string;
-    provider?: "local" | "google";
+    provider?: "local" | "google" | "phoneOtp";
   }
 }

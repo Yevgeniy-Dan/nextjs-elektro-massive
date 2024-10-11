@@ -3,17 +3,18 @@ import React from "react";
 
 interface SpinnerProps {
   size?: number;
+  color?: string;
   className?: string;
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ size = 64, className = "" }) => {
+const Spinner: React.FC<SpinnerProps> = ({
+  size = 64,
+  color = "text-elektro-red",
+  className = "",
+}) => {
   return (
     <div className="relative">
-      <Loader
-        size={size}
-        strokeWidth={3}
-        className="animate-spin text-elektro-red"
-      />
+      <Loader size={size} strokeWidth={3} className={`animate-spin ${color}`} />
     </div>
   );
 };

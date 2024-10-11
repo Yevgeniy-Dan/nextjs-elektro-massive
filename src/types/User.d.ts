@@ -1,12 +1,15 @@
 export type StrapiUserT = {
-  id: number;
+  id: string;
   username: string;
   email: string;
-  provider: "local" | "google";
+  phone: string;
+  provider: "local" | "google" | "phoneOtp";
   blocked: boolean;
+  role: string;
 };
 
 export type StrapiLoginResponseT = {
   jwt: string;
   user: StrapiUserT;
+  message?: string;
 };

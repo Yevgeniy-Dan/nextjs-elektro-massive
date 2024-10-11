@@ -1,5 +1,6 @@
 "use client";
 
+import { sendOtp } from "@/app/actions";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { closeSignInModal } from "@/store/signInModalSlice";
@@ -10,6 +11,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
+import CenteredSpinner from "./CenteredSpinner";
+import Spinner from "./Spinner";
 
 const phoneSchema = z.object({
   phone: z
@@ -20,13 +23,23 @@ const phoneSchema = z.object({
 
 const SignInModal = () => {
   const dispatch = useAppDispatch();
+
   const isOpen = useAppSelector((state) => state.signInModal.isOpen);
+
   const redirectUrl = useAppSelector((state) => state.signInModal.redirectUrl);
+
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
+
   const [googleSignInError, setGoogleSignInError] = useState<string | null>(
     null
   );
-  const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
+
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [otpSignInError, setOtpSignInError] = useState<string | null>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const formatPhoneNumber = (value: string) => {
     const digits = value.replace(/\D/g, "");
@@ -46,16 +59,53 @@ const SignInModal = () => {
     setPhoneNumber(formatted);
   };
 
-  const validatePhone = () => {
+  const handleOtpChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOtp(event.target.value);
+  };
+
+  const handleSendOtp = async () => {
+    setIsLoading(true);
     try {
-      phoneSchema.parse({ phone: phoneNumber });
+      const { phone } = phoneSchema.parse({ phone: phoneNumber });
       setPhoneNumberError(null);
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setPhoneNumberError(err.errors[0].message);
+
+      await sendOtp(phone);
+
+      setIsOtpSent(true);
+      setOtpSignInError(null);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setPhoneNumberError(error.errors[0].message);
       } else {
-        setPhoneNumberError("Сталася помилка. Спробуйте пізніше.");
+        setOtpSignInError("Не вдалося надіслати OTP. Спробуйте ще раз.");
+        console.error("Error sending OTP: ", error);
       }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOtpSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const result = await signIn("phoneOtp", {
+        phone: phoneSchema.parse({ phone: phoneNumber }).phone,
+        token: otp,
+        redirect: false,
+        callbackUrl: redirectUrl || window.location.href,
+      });
+
+      if (result?.error) {
+        setOtpSignInError(result.error);
+      } else if (result?.url) {
+        window.location.href = result.url;
+      }
+    } catch (error) {
+      setOtpSignInError(
+        "Не вдалося увійти. Перевірте введені дані та спробуйте ще раз."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,16 +115,18 @@ const SignInModal = () => {
         callbackUrl: redirectUrl || window.location.href,
       });
     } catch (error) {
-      setGoogleSignInError(
-        "An error occurred while signing in. Please try again."
-      );
+      setGoogleSignInError("Під час входу сталася помилка. Повторіть спробу.");
       console.error("Sign in in with Google: ", error);
     }
   };
 
   const handleClose = () => {
     setGoogleSignInError(null);
+    setOtpSignInError(null);
+    setIsOtpSent(false);
+    setOtp("");
     setPhoneNumber("");
+    setPhoneNumberError(null);
     dispatch(closeSignInModal());
   };
 
@@ -140,8 +192,10 @@ const SignInModal = () => {
                 <input
                   type="tel"
                   onChange={handlePhoneChange}
+                  onKeyDown={(e) => e.key === "Enter" && handleSendOtp()}
                   value={phoneNumber}
-                  className="block w-full pl-24 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-800 focus:border-red-800"
+                  disabled={isOtpSent}
+                  className="block w-full pl-24 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
                   placeholder="XX-XXX-XXXX"
                 />
               </div>
@@ -149,12 +203,55 @@ const SignInModal = () => {
                 <p className="mt-1 text-sm text-red-800">{phoneNumberError}</p>
               )}
             </div>
-            <button
-              onClick={validatePhone}
-              className="mt-4 w-full bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-md hover:opacity-90"
-            >
-              Продовжити
-            </button>
+            {isOtpSent ? (
+              <>
+                <input
+                  autoFocus
+                  type="text"
+                  onChange={handleOtpChange}
+                  onKeyDown={(e) => e.key === "Enter" && handleOtpSignIn()}
+                  value={otp}
+                  className="mt-4 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
+                  placeholder="Введіть код з SMS"
+                />
+                {otpSignInError && (
+                  <p className="mt-1 text-sm text-red-800">{otpSignInError}</p>
+                )}
+
+                <div className="flex justify-center pt-3">
+                  <button
+                    className="text-blue-500 hover:underline focus:outline-none"
+                    onClick={handleSendOtp}
+                  >
+                    Повторно надіслати код
+                  </button>
+                </div>
+                <button
+                  onClick={handleOtpSignIn}
+                  className={`mt-4 w-full bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-md flex justify-center`}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <Spinner size={24} color="white" />
+                  ) : (
+                    "Продовжити"
+                  )}
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={handleSendOtp}
+                className={`mt-4 w-full bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-md flex justify-center`}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Spinner size={24} color="white" />
+                ) : (
+                  "Надіслати код"
+                )}
+              </button>
+            )}
+
             <div className="flex items-center justify-center">
               <div className="border-t border-gray-300 flex-grow mr-3"></div>
               <p className="text-gray-500">або</p>

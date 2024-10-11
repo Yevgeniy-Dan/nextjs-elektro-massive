@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { StrapiErrorT } from "@/types/strapi/StrapiError";
 import { StrapiLoginResponseT } from "@/types/User";
+import PhoneOtpProvider from "./PhoneOtpProvider";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -13,23 +14,20 @@ export const authOptions: NextAuthOptions = {
           access_type: "offline",
           scope:
             "openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
-          // prompt: "consent",
-          // access_type: "offline",
-          // response_type: "code",
         },
       },
+    }),
+    PhoneOtpProvider({
+      apiBaseUrl: process.env.NEXT_PUBLIC_STRAPI_URL as string,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn(params) {
-      const { user, account, profile } = params;
-      if (account?.provider === "google") {
-        return true;
-      }
-      return false;
+      const { account } = params;
+      return account?.provider === "google" || account?.provider === "phoneOtp";
     },
-    async jwt({ token, trigger, account, user, session }) {
+    async jwt({ token, account, user }) {
       if (account) {
         if (account.provider === "google") {
           try {
@@ -52,6 +50,11 @@ export const authOptions: NextAuthOptions = {
           } catch (error) {
             throw error;
           }
+        } else if (account.provider === "phoneOtp") {
+          token.strapiToken = user.jwt;
+          token.provider = account.provider;
+          token.strapiUserId = user.id;
+          token.blocked = user.blocked || false;
         }
       }
       return token;
