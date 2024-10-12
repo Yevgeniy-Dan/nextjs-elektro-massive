@@ -16,11 +16,11 @@ const PublicOffer = () => {
           виробника/розповсюджувача укласти договір купівлі-продажу Товару,
           представленого на сайті
           <a
-            href="https://www.elektromassive.com"
+            href="https://elektromassive.com"
             className="text-blue-600 hover:underline"
           >
             {" "}
-            https://www.elektromassive.com
+            https://elektromassive.com
           </a>
           .
         </p>
@@ -52,11 +52,11 @@ const PublicOffer = () => {
           бажають і мають можливість придбати Товар, інформація про який
           розміщена в інтернет-магазині ELEKTRO-MASSIVE™ -
           <a
-            href="https://www.elektromassive.com"
+            href="https://elektromassive.com"
             className="text-blue-600 hover:underline"
           >
             {" "}
-            https://www.elektromassive.com
+            https://elektromassive.com
           </a>
           .
         </p>
@@ -96,11 +96,11 @@ const PublicOffer = () => {
           Покупця, здійсненого натисканням кнопки «Підтвердити замовлення», на
           сторінці оформлення замовлення в Розділі «Кошик» на сайті:
           <a
-            href="https://www.elektromassive.com"
+            href="https://elektromassive.com"
             className="text-blue-600 hover:underline"
           >
             {" "}
-            https://www.elektromassive.com
+            https://elektromassive.com
           </a>{" "}
           або телефоном за номерами, вказаними на Сайті.
         </p>
@@ -114,10 +114,10 @@ const PublicOffer = () => {
           <span className="font-semibold">1.4.</span> Інтернет-магазин
           ELEKTRO-MASSIVE™ (інтернет-магазин, сайт) – сайт Продавця за адресою{" "}
           <a
-            href="https://www.elektromassive.com"
+            href="https://elektromassive.com"
             className="text-blue-600 hover:underline"
           >
-            https://www.elektromassive.com
+            https://elektromassive.com
           </a>{" "}
           створений для ознайомлення та укладення договорів роздрібної та
           оптової купівлі-продажу Товару.
@@ -205,10 +205,10 @@ const PublicOffer = () => {
           «Підтвердити замовлення» на сторінці оформлення замовлення в Розділі
           «Кошик» на сайті:{" "}
           <a
-            href="https://www.elektromassive.com"
+            href="https://elektromassive.com"
             className="text-blue-600 hover:underline"
           >
-            https://www.elektromassive.com
+            https://elektromassive.com
           </a>{" "}
           У разі замовлення за допомогою телефонного дзвінка за номерами,
           вказаними на Сайті, Договір вважається укладеним з моменту однозначно

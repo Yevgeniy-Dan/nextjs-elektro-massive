@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "next start",
     "dev": "next dev",
     "build": "next build",
     "generate-sitemap": "node run-sitemap.mjs",

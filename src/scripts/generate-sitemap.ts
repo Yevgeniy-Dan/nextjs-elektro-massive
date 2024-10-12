@@ -5,9 +5,9 @@ import {
   GetProductsQuery,
   GetProductTypeBySlugQuery,
 } from "@/gql/graphql.js";
-const domain = "https://www.elektromassive.com";
+const domain = "https://elektromassive.com";
 const URLS_PER_SITEMAP = 50000;
-const API_URL = `https://www.elektromassive.com/api/graphql`;
+const API_URL = `https://elektromassive.com/api/graphql`;
 type Category = NonNullable<CategoryMenuQuery["categories"]>["data"][number];
 type Subcategory = NonNullable<
   NonNullable<Category["attributes"]>["subcategories"]
