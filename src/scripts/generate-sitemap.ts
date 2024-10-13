@@ -1,3 +1,7 @@
+// UNUSED
+// Used for run-sitemap.mjs
+// SEE run-sitemap.mjs
+
 import { writeFileSync } from "fs";
 import fetch from "node-fetch";
 import {

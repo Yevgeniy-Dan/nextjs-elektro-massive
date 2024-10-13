@@ -1,4 +1,5 @@
 {
+  "_comment": "UNUSED. Used for run-sitemap.mjs. SEE run-sitemap.mjs",
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "ESNext",

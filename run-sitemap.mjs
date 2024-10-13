@@ -1,3 +1,18 @@
+// UNUSED
+// Runs with npm run generate-sitemap
+// This file may be useful in the future when you need to make a sitemap of 50,000 URLs. Now the sitemap is generated automatically, using cron job in vercel.json
+
+// {
+//   "crons": [
+//     {
+//       "path": "/api/generate-sitemap",
+//       "schedule": "*/2 * * * *"
+//     }
+//   ]
+// }
+
+// If you need to process more than 50,000 URLs, you can take part of the logic from this file and transfer it to the file along the route /api/generate.sitemap/route.ts
+
 import { register } from "node:module";
 import { pathToFileURL } from "node:url";
 import path from "path";
