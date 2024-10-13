@@ -4,9 +4,8 @@ import {
   GetProductTypeBySlugQuery,
 } from "@/gql/graphql.js";
 
-const domain = "https://elektromassive.com";
-const URLS_PER_SITEMAP = 50000;
-const API_URL = `https://elektromassive.com/api/graphql`;
+const domain = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = `${domain}/api/graphql`;
 
 type Category = NonNullable<CategoryMenuQuery["categories"]>["data"][number];
 type Subcategory = NonNullable<
