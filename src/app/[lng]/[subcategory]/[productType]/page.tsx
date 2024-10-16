@@ -1,6 +1,5 @@
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import { Suspense } from "react";
-import { getClient } from "../../../../lib/apollo-client";
 import {
   GetProductTypeBySlugQuery,
   GetProductTypeBySlugQueryVariables,
@@ -10,6 +9,7 @@ import {
 import { GET_SUBCATEGORY_BY_SLUG } from "@/components/product/queries";
 import { GET_PRODUCT_TYPE_BY_SLUG } from "@/components/products/queries";
 import ProductListingClient from "@/components/products/ProductListingClient";
+import { getClient } from "@/lib/apollo-client";
 
 interface ProductTypePageProps {
   params: {

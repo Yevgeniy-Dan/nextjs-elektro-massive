@@ -16,31 +16,31 @@ const NavLinks: React.FC<NavLinks> = ({ lng }) => {
         href={"/services"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
-        {t("common:navigation.services")}
+        {t("navigation.services")}
       </Link>
       <Link
         href={"/about"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
-        {t("common:navigation.about")}
+        {t("navigation.about")}
       </Link>
       <Link
         href={"/partnership"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
-        {t("common:navigation.cooperation")}
+        {t("navigation.cooperation")}
       </Link>
       <Link
         href={"/payment-and-delivery"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
-        {t("common:navigation.paymentDelivery")}
+        {t("navigation.paymentDelivery")}
       </Link>
       <Link
         href={"/reviews"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
-        {t("common:navigation.reviews")}
+        {t("navigation.reviews")}
       </Link>
     </div>
   );

@@ -5,12 +5,14 @@ interface IServiceCard {
   title: string;
   description: string;
   imageUrl: string;
+  cartFooterText: string;
 }
 
 const ServiceCard: React.FC<IServiceCard> = ({
   title,
   description,
   imageUrl,
+  cartFooterText,
 }) => {
   return (
     <div className="flex flex-col h-full bg-white rounded-lg shadow-lg overflow-hidden">
@@ -28,9 +30,7 @@ const ServiceCard: React.FC<IServiceCard> = ({
         <h2 className="text-xl font-bold mb-2">{title}</h2>
         <p className="text-gray-700 mb-4 flex-grow">{description}</p>
         <div className="mt-auto">
-          <span className="text-gray-700 block">
-            Локація: Вся Одеська область.
-          </span>
+          <span className="text-gray-700 block">{cartFooterText}</span>
         </div>
       </div>
       <div className="flex items-center justify-between py-3 bg-gradient-elektro-massive-horizontal px-6">

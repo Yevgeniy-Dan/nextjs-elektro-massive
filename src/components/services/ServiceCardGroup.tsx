@@ -4,11 +4,13 @@ import { ServiceCardData } from "@/types/serviceTypes";
 
 interface IServiceCardGroup {
   title: string;
+  cartFooterText: string;
   serviceCards: ServiceCardData[];
 }
 
 const ServiceCardGroup: React.FC<IServiceCardGroup> = ({
   title,
+  cartFooterText,
   serviceCards,
 }) => {
   return (
@@ -21,6 +23,7 @@ const ServiceCardGroup: React.FC<IServiceCardGroup> = ({
             title={card.title}
             description={card.description}
             imageUrl={card.imageUrl}
+            cartFooterText={cartFooterText}
           />
         ))}
       </div>

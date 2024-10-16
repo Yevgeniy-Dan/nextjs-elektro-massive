@@ -1,12 +1,74 @@
 "use client";
 
+import { useTranslation } from "@/app/i18n/client";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Image from "next/image";
 import React from "react";
 
-const PaymentDelivery = () => {
+interface PaymentDeliveryProps {
+  params: {
+    lng: string;
+  };
+}
+
+interface Section {
+  title: string;
+  content: string | string[];
+  subsections?: Subsection[];
+  conditions?: string[];
+  cases?: string[];
+  note?: string;
+}
+
+interface Subsection {
+  title: string;
+  content: string | string[];
+}
+
+const PaymentDelivery: React.FC<PaymentDeliveryProps> = ({
+  params: { lng },
+}) => {
+  const { t } = useTranslation(lng, "paymentDelivery");
+
   const customLabels = {
-    "payment-and-delivery": "Оплата і доставка",
+    "payment-and-delivery": t("breadcrumb"),
+  };
+
+  const sections = t("sections", { returnObjects: true }) as Section[];
+
+  const renderContent = (content: string | string[] | undefined) => {
+    if (!content) return null;
+    if (typeof content === "string") {
+      return <p className="text-base lg:text-lg">{content}</p>;
+    }
+    return content.map((paragraph, index) => (
+      <p key={index} className="text-base lg:text-lg">
+        {paragraph}
+      </p>
+    ));
+  };
+
+  const renderSubsections = (subsections: Subsection[] | undefined) => {
+    if (!subsections) return null;
+    return subsections.map((subsection, index) => (
+      <div key={index}>
+        <h4 className="text-base lg:text-lg font-medium my-3">
+          {subsection.title}
+        </h4>
+        {renderContent(subsection.content)}
+      </div>
+    ));
+  };
+
+  const renderList = (items: string[] | undefined) => {
+    if (!items) return null;
+    return (
+      <ul className="text-base lg:text-lg list-disc pl-5">
+        {items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -14,228 +76,25 @@ const PaymentDelivery = () => {
       <Breadcrumbs customLabels={customLabels} />
       <div className="flex items-start">
         <div className="w-full md:max-w-5xl bg-gray-200 text-gray-950 font-thin rounded-2xl relative">
-          <h2 className="text-lg sm:text-2xl    overflow-hidden  border border-b-8 border-b-[#990000] p-4  font-semibold rounded-t-2xl">
-            Оплата та доставка
+          <h2 className="text-lg sm:text-2xl overflow-hidden border border-b-8 border-b-[#990000] p-4 font-semibold rounded-t-2xl">
+            {t("title")}
           </h2>
           <div className="p-5">
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Прийом замовлень
-              </h3>
-              <p className="text-base lg:text-lg">
-                В інтернет-магазині ELEKTRO-MASSIVE замовлення приймаються в
-                режимі онлайн 24/7, без вихідних. Мінімальна сума замовлення
-                залежить від кратності одиниць в упаковці певного товару.
-                Обробка замовлень проводиться у робочі дні з понеділка по
-                п’ятницю з 9:00 до 18:00. Якщо замовлення надійшло у вихідний
-                або святковий день, воно буде оброблене в найближчий робочий
-                день.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Підтвердження та відправка
-              </h3>
-              <p className="text-base lg:text-lg">
-                Замовлення, підтверджені до 12:00, відправляються в той же день.
-                Замовлення, отримані та підтверджені після 12:00, будуть
-                відправлені наступного робочого дня після підтвердження нашим
-                менеджером.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Доставка замовлення
-              </h3>
-              <p className="text-base lg:text-lg">
-                Ваше замовлення доставляється за допомогою поштово-транспортної
-                компанії «Нова Пошта». Ви можете вибрати найближче до вас
-                відділення або скористатися кур&apos;єрською доставкою прямо до
-                дверей.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Вартість доставки
-              </h3>
-              <p className="text-base lg:text-lg">
-                Для замовлень на суму від 3000 грн доставка до відділення
-                поштової служби здійснюється безкоштовно. При замовленнях на
-                суму до 3000 грн, доставка сплачується клієнтом відповідно до
-                тарифів перевізника. Кур&apos;єрська адресна доставка завжди
-                оплачується клієнтом.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Строки доставки
-              </h3>
-              <p className="text-base lg:text-lg">
-                Термін доставки становить від 1 до 3 робочих днів, в залежності
-                від вашого регіону. Якщо товар не буде забрано з відділення
-                «Нової Пошти» протягом 5 днів, він буде повернений відправнику.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Оплата
-              </h3>
-              <p className="text-base lg:text-lg">
-                Оплатити замовлення можна наступними способами:
-              </p>
-              <p className="text-base lg:text-lg">
-                Онлайн-оплата банківськими картами Visa/MasterCard або через
-                Google Pay/Apple Pay під час оформлення замовлення на сайті.
-                Комісія платіжної системи складає всього 2% від вартості
-                замовлення. Банківський переказ на розрахунковий рахунок. Після
-                оформлення замовлення наш менеджер зв&apos;яжеться з вами для
-                уточнення деталей. Після підтвердження і здійснення оплати,
-                замовлення буде оброблено.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Гарантія та повернення
-              </h3>
-              <h4 className="text-base lg:text-lg font-medium">
-                Перевірка товару при отриманні
-              </h4>
-              <p className="text-base lg:text-lg">
-                При отриманні товару, будь ласка, перевірте його цілісність та
-                відповідність замовленню. Претензії щодо комплектності та
-                зовнішнього вигляду товару приймаються лише у присутності
-                кур&apos;єра.
-              </p>
-              <p className="text-base lg:text-lg">
-                Якщо товар був пошкоджений під час транспортування, ви маєте
-                право відмовитися від його оплати та запросити повторне
-                відправлення. У такому разі, будь ласка, негайно зв&apos;яжіться
-                з нами за номером: +380 98 039 28 53.
-              </p>
-
-              <h4 className="text-base lg:text-lg font-medium">
-                Повернення товару неналежної якості
-              </h4>
-              <p className="text-base lg:text-lg ">
-                Покупець має право повернути товар неналежної якості протягом
-                усього гарантійного періоду, який починається з дати продажу,
-                вказаної в чеку або товарній накладній. Щоб ініціювати
-                повернення, зверніться за номером +380 98 039 28 53.
-              </p>
-              <p className="text-base lg:text-lg">
-                При отриманні товару, будь ласка, перевірте його цілісність та
-                відповідність замовленню. Претензії щодо комплектності та
-                зовнішнього вигляду товару приймаються лише у присутності
-                кур&apos;єра.
-              </p>
-              <p className="text-base lg:text-lg">
-                Якщо товар був пошкоджений під час транспортування, ви маєте
-                право відмовитися від його оплати та запросити повторне
-                відправлення. У такому разі, будь ласка, негайно зв&apos;яжіться
-                з нами за номером: +380 98 039 28 53.
-              </p>
-
-              <h4 className="text-base lg:text-lg font-medium my-3">
-                При зверненні вкажіть:
-              </h4>
-              <ul className="text-base lg:text-lg list-none">
-                <li>
-                  Причину повернення (додайте фото товару, якщо це можливо).
-                </li>
-                <li>Вартість товару.</li>
-                <li>Номер замовлення.</li>
-                <li>Банківські реквізити для повернення коштів.</li>
-                <li>
-                  Надішліть товар, що підлягає поверненню, за адресою, яку
-                  надасть наш співробітник відділу продажу. Грошові кошти
-                  повертаються банківським переказом на ваш картковий рахунок.
-                </li>
-              </ul>
-
-              <h4 className="text-base lg:text-lg font-medium my-3">
-                Необхідні реквізити для повернення коштів:
-              </h4>
-              <ul className="text-base lg:text-lg list-none">
-                <li>Назва банку.</li>
-                <li>МФО банку.</li>
-                <li>ПІБ одержувача коштів.</li>
-                <li>Ідентифікаційний номер (ЄДРПОУ або ІПН).</li>
-                <li>Розрахунковий рахунок.</li>
-                <li>
-                  Призначення платежу (має містити номер карткового рахунку та
-                  ПІБ одержувача).
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Повернення та обмін товару належної якості
-              </h3>
-              <p className="text-base lg:text-lg">
-                Повернення або обмін товарів належної якості, придбаних у нашому
-                магазині, можливі протягом 14 календарних днів з дня покупки,
-                відповідно до статті 9 Закону України «Про захист прав
-                споживачів».
-              </p>
-              <p className="text-base lg:text-lg">
-                Онлайн-оплата банківськими картами Visa/MasterCard або через
-                Google Pay/Apple Pay під час оформлення замовлення на сайті.
-                Комісія платіжної системи складає всього 2% від вартості
-                замовлення. Банківський переказ на розрахунковий рахунок. Після
-                оформлення замовлення наш менеджер зв&apos;яжеться з вами для
-                уточнення деталей. Після підтвердження і здійснення оплати,
-                замовлення буде оброблено.
-              </p>
-
-              <h4 className="text-base lg:text-lg font-medium my-3">
-                Для цього необхідно дотриматися наступних умов:
-              </h4>
-              <ul className="text-base lg:text-lg list-disc pl-5">
-                <li>Товар збережено в працездатному стані.</li>
-                <li>Збережено товарний вигляд, упаковку та усі аксесуари.</li>
-                <li>
-                  Товар не був у використанні та не має механічних пошкоджень.
-                </li>
-                <li>
-                  Надано документ, що підтверджує купівлю (чек, товарна
-                  накладна).
-                </li>
-              </ul>
-              <p className="text-base lg:text-lg">
-                Грошові кошти повертаються банківським переказом на ваш
-                картковий рахунок.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
-                Обмеження гарантії
-              </h3>
-
-              <h4 className="text-base lg:text-lg font-medium my-3">
-                Товар не підлягає гарантійному обслуговуванню у таких випадках:
-              </h4>
-
-              <ul className="text-base lg:text-lg list-none p-0 m-0">
-                <li>Закінчення терміну гарантії.</li>
-                <li>
-                  Наявність механічних пошкоджень або спроби розбирання товару.
-                </li>
-                <li>
-                  Використання товару в умовах, що не відповідають правилам
-                  експлуатації.
-                </li>
-                <li>Відсутність оригінальної упаковки.</li>
-                <li>Відсутність документа, що підтверджує покупку.</li>
-              </ul>
-            </div>
+            {sections &&
+              sections.map((section: Section, index: number) => (
+                <div key={index}>
+                  <h3 className="text-base sm:text-lg xl:text-xl font-semibold py-4">
+                    {section.title}
+                  </h3>
+                  {renderContent(section.content)}
+                  {renderSubsections(section.subsections)}
+                  {renderList(section.conditions)}
+                  {renderList(section.cases)}
+                  {section.note && (
+                    <p className="text-base lg:text-lg">{section.note}</p>
+                  )}
+                </div>
+              ))}
           </div>
         </div>
         <div className="mt-[60%] -ml-2 sm:-ml-4 md:-ml-6 lg:-ml-8">

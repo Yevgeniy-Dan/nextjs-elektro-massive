@@ -2,7 +2,6 @@
 
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import { Suspense } from "react";
-import { getClient } from "../../../lib/apollo-client";
 import { GET_SUBCATEGORY_BY_SLUG } from "@/components/product/queries";
 import {
   GetSubcategoryBySlugQuery,
@@ -10,6 +9,7 @@ import {
 } from "@/gql/graphql";
 import { SubcategoryData } from "@/types/types";
 import ProductListingClient from "@/components/products/ProductListingClient";
+import { getClient } from "@/lib/apollo-client";
 
 interface SubcategoryPageProps {
   params: {

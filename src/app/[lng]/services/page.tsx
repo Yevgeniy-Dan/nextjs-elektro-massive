@@ -1,31 +1,55 @@
 "use client";
 
+import { useTranslation } from "@/app/i18n/client";
 import ServiceCardGroup from "@/components/services/ServiceCardGroup";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import serviceData from "@/data/serviceData";
-import React from "react";
+import React, { useEffect } from "react";
 
-const ServicePage = () => {
+interface ServicePageProps {
+  params: {
+    lng: string;
+  };
+}
+
+const ServicePage: React.FC<ServicePageProps> = ({ params: { lng } }) => {
+  const { t, i18n } = useTranslation(lng, "services");
+
   const customLabels = {
-    services: "Послуги",
+    services: t("breadcrumbs.services"),
   };
 
   return (
     <div className="pt-4">
       <Breadcrumbs customLabels={customLabels} />
-      <h1 className="text-3xl font-bold my-8 ">Послуги</h1>
+      <h1 className="text-3xl font-bold my-8 ">{t("pageTitle")}</h1>
       <div className="space-y-8 mb-8">
         <ServiceCardGroup
-          title="Електричні послуги"
-          serviceCards={serviceData.electricalServiceCards}
+          title={t("serviceGroups.electrical.title")}
+          cartFooterText={t("serviceGroups.cardFooter")}
+          serviceCards={
+            t("serviceGroups.electrical.services", {
+              returnObjects: true,
+            }) as any[]
+          }
         />
         <ServiceCardGroup
-          title="Будівельні послуги"
-          serviceCards={serviceData.futureServiceCards}
+          title={t("serviceGroups.construction.title")}
+          cartFooterText={t("serviceGroups.cardFooter")}
+          serviceCards={
+            t("serviceGroups.construction.services", {
+              returnObjects: true,
+            }) as any[]
+          }
         />
         <ServiceCardGroup
-          title="Сантехнічні послуги"
-          serviceCards={serviceData.plumbingServiceCards}
+          title={t("serviceGroups.plumbing.title")}
+          cartFooterText={t("serviceGroups.cardFooter")}
+          serviceCards={
+            t("serviceGroups.plumbing.services", {
+              returnObjects: true,
+            }) as any[]
+          }
         />
       </div>
     </div>
