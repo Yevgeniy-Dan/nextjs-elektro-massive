@@ -3,7 +3,7 @@
 import { ProductData } from "@/types/types";
 import React, { Suspense } from "react";
 import { GET_PRODUCT_BY_SLUG } from "@/components/product/queries";
-import { getClient } from "../../../../../lib/apollo-client";
+import { getClient } from "@/lib/apollo-client";
 import ProductDetails from "@/components/product/ProductDetails";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import {

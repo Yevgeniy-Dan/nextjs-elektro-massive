@@ -12,7 +12,7 @@ import {
   OrderInput,
 } from "@/gql/graphql";
 import axios from "axios";
-import { getClient } from "../../../lib/apollo-client";
+import { getClient } from "../../lib/apollo-client";
 import { OrderFormData } from "@/hooks/useOrderForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../utils/authOptions";

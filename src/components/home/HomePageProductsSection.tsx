@@ -8,6 +8,7 @@ import {
   GetHomePageProductsQueryVariables,
 } from "@/gql/graphql";
 import TopCardCarousel from "./TopCardCarousel";
+import { useTranslation } from "@/app/i18n/client";
 
 const HomePageProductsSection = () => {
   const { data, loading, error } = useQuery<

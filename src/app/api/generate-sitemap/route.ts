@@ -7,7 +7,7 @@ import {
   fetchAllProducts,
   fetchAllProductTypes,
   fetchAllSubcategories,
-} from "../../../../lib/fetchData";
+} from "../../../lib/fetchData";
 
 import AWS from "aws-sdk";
 
