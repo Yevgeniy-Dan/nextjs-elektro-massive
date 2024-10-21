@@ -1,77 +1,43 @@
-"use server";
+"use client";
 
 import { ProductData } from "@/types/types";
-import React, { Suspense } from "react";
-import { GET_PRODUCT_BY_SLUG } from "@/components/product/queries";
-import { getClient } from "@/lib/apollo-client";
+import React, { useEffect } from "react";
+import {
+  GET_PRODUCT_BY_SLUG,
+  GET_PRODUCT_TRANSLATED_SLUGS,
+} from "@/components/product/queries";
 import ProductDetails from "@/components/product/ProductDetails";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import {
   GetProductBySlugQuery,
   GetProductBySlugQueryVariables,
+  GetTranslatedSlugsQuery,
+  GetTranslatedSlugsQueryVariables,
 } from "@/gql/graphql";
-import { Metadata } from "next";
+import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
+import { lngCookieName, prevLngCookieName } from "@/app/i18n/settings";
+import { useQuery } from "@tanstack/react-query";
+import request from "graphql-request";
 
 interface ProductPageProps {
   params: {
     subcategory: string;
     productType: string;
     product: string;
+    lng: string;
   };
 }
 
-async function getProductBySlug(
-  productSlug: string,
-  productTypeSlug: string
-): Promise<ProductData | null> {
-  const { data } = await getClient().query<
-    GetProductBySlugQuery,
-    GetProductBySlugQueryVariables
-  >({
-    query: GET_PRODUCT_BY_SLUG,
-    variables: {
-      productSlug,
-      productTypeSlug,
-    },
-  });
-
-  return data?.products?.data[0] || null;
-}
-
-export async function generateMetadata({
-  params,
-}: ProductPageProps): Promise<Metadata> {
-  const product = await getProductBySlug(params.product, params.subcategory);
-
-  if (!product || !product.attributes) {
-    return {
-      title: "Product Not Found",
-      description: "The requested product could not be found.",
-    };
-  }
-
-  const { title, description, image_link } = product.attributes;
-
-  return {
-    title: title || "Product",
-    description: description || "No description available",
-    openGraph: {
-      title: title || "Product",
-      description: description || "No description available",
-      images: image_link ? [image_link] : [],
-    },
-  };
-}
-
-async function ProductContainer({
-  productSlug,
+function ProductContainer({
+  product,
   productTypeSlug,
+  lng,
 }: {
-  productSlug: string;
+  product: ProductData;
   productTypeSlug: string;
+  lng: string;
 }) {
-  const product = await getProductBySlug(productSlug, productTypeSlug);
-
   if (!product || !product.attributes || !product.id) {
     return <div>Product not found.</div>;
   }
@@ -100,15 +66,92 @@ async function ProductContainer({
 }
 
 const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
+  const router = useRouter();
+
+  const {
+    data: productData,
+    isLoading: isProductLoading,
+    error: productError,
+  } = useQuery<GetProductBySlugQuery, GetProductBySlugQueryVariables>({
+    queryKey: ["product", params.product, params.productType, params.lng],
+    queryFn: async () =>
+      request(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+        GET_PRODUCT_BY_SLUG,
+        {
+          productSlug: params.product,
+          productTypeSlug: params.productType,
+          locale: params.lng,
+        }
+      ),
+  });
+
+  const { refetch: refetchTranslatedSlugs } = useQuery<
+    GetTranslatedSlugsQuery,
+    GetTranslatedSlugsQueryVariables
+  >({
+    queryKey: ["translatedSlugs", params.product, params.lng],
+    queryFn: async ({ queryKey }) => {
+      const [, productSlug, currentLocale] = queryKey;
+      const prevLng = getCookie(prevLngCookieName) as string;
+      return request(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+        GET_PRODUCT_TRANSLATED_SLUGS,
+        {
+          productSlug,
+          currentLocale: prevLng,
+          targetLocale: currentLocale,
+        }
+      );
+    },
+    enabled: false, // We don't want to run this query automatically
+  });
+
+  useEffect(() => {
+    const handleLanguageChange = async () => {
+      const currentLng = getCookie(lngCookieName);
+      const prevLng = getCookie(prevLngCookieName);
+
+      if (prevLng && currentLng && prevLng !== currentLng) {
+        const { data: translatedSlugsData } = await refetchTranslatedSlugs();
+
+        const product = translatedSlugsData?.products?.data[0]?.attributes;
+        if (product) {
+          const translatedProduct = product.localizations?.data[0]?.attributes;
+          const translatedProductType =
+            product.product_types?.data[0].attributes?.localizations?.data[0]
+              ?.attributes;
+
+          if (!translatedProduct || !translatedProductType) return null;
+          const newPath = `/${currentLng}/${translatedProduct.subcategory?.data?.attributes?.slug}/${translatedProductType.slug}/${translatedProduct.slug}`;
+          router.push(newPath);
+        }
+      }
+    };
+
+    handleLanguageChange();
+  }, [params.product, router, refetchTranslatedSlugs]);
+
+  if (isProductLoading) {
+    return <CenteredSpinner />;
+  }
+
+  if (productError) {
+    return <div>Error loading product. Please try again later.</div>;
+  }
+
+  if (!productData?.products?.data[0]) {
+    //TODO: maybe should be Not Found
+    return <CenteredSpinner />;
+  }
+  const product = productData.products.data[0] as ProductData;
+
   return (
-    <div>
-      <Suspense fallback={<CenteredSpinner />}>
-        <ProductContainer
-          productSlug={params.product}
-          productTypeSlug={params.productType}
-        />
-      </Suspense>
-    </div>
+    <ProductContainer
+      product={product}
+      productTypeSlug={params.productType}
+      lng={params.lng}
+    />
   );
 };
 

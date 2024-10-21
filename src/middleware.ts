@@ -1,12 +1,23 @@
-import { cookieName, fallbackLng, languages } from "@/app/i18n/settings";
+import {
+  lngCookieName,
+  fallbackLng,
+  languages,
+  prevLngCookieName,
+} from "@/app/i18n/settings";
 import acceptLanguage from "accept-language";
 import { NextRequest, NextResponse } from "next/server";
 
 acceptLanguage.languages(languages);
 
+// export const config = {
+//   matcher: [
+//     "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)",
+//   ],
+// };
+
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)",
+    "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest|.*\\.png$|.*\\.jpg$|.*\\.svg$).*)",
   ],
 };
 
@@ -14,8 +25,8 @@ export function middleware(req: NextRequest) {
   console.log("Middleware called for path:", req.nextUrl.pathname);
 
   let lng;
-  if (req.cookies.has(cookieName))
-    lng = acceptLanguage.get(req.cookies.get(cookieName)?.value);
+  if (req.cookies.has(lngCookieName))
+    lng = acceptLanguage.get(req.cookies.get(lngCookieName)?.value);
   if (!lng) lng = acceptLanguage.get(req.headers.get("Accept-Language"));
   if (!lng) lng = fallbackLng;
 
@@ -35,7 +46,15 @@ export function middleware(req: NextRequest) {
       refererUrl.pathname.startsWith(`/${l}`)
     );
     const response = NextResponse.next();
-    if (lngInReferer) response.cookies.set(cookieName, lngInReferer);
+    if (lngInReferer) {
+      const currentLng = req.cookies.get(lngCookieName)?.value;
+
+      if (currentLng && currentLng !== lngInReferer) {
+        response.cookies.set(prevLngCookieName, currentLng);
+      }
+
+      response.cookies.set(lngCookieName, lngInReferer);
+    }
     return response;
   }
 

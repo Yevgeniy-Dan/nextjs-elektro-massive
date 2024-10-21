@@ -15,9 +15,10 @@ import { Box } from "lucide-react";
 
 interface SearchResultsProps {
   query: string;
+  lng: string;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
   const { data, isLoading, error } = useQuery<
     GetSearchProductsQuery,
     GetSearchProductsQueryVariables
@@ -30,6 +31,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
         SEARCH_PRODUCTS,
         {
           searchTerm: query,
+          locale: lng,
         }
       );
     },

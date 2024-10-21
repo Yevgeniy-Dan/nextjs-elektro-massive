@@ -1,21 +1,26 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import React from "react";
+import React, { useEffect } from "react";
 import { GET_HOME_PAGE_PRODUCTS } from "./queries";
 import {
   GetHomePageProductsQuery,
   GetHomePageProductsQueryVariables,
 } from "@/gql/graphql";
 import TopCardCarousel from "./TopCardCarousel";
-import { useTranslation } from "@/app/i18n/client";
 
-const HomePageProductsSection = () => {
-  const { data, loading, error } = useQuery<
+interface HomePageProductsSectionProps {
+  lng: string;
+}
+
+const HomePageProductsSection: React.FC<HomePageProductsSectionProps> = ({
+  lng,
+}) => {
+  const { data, loading } = useQuery<
     GetHomePageProductsQuery,
     GetHomePageProductsQueryVariables
   >(GET_HOME_PAGE_PRODUCTS, {
-    variables: { limit: 20 },
+    variables: { limit: 20, locale: lng },
   });
 
   return (

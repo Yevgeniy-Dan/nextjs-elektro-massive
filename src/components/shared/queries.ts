@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const SEARCH_PRODUCTS = gql`
-  query GetSearchProducts($searchTerm: String!) {
-    products(filters: { title: { containsi: $searchTerm } }) {
+  query GetSearchProducts($searchTerm: String!, $locale: I18NLocaleCode!) {
+    products(filters: { title: { containsi: $searchTerm } }, locale: $locale) {
       data {
         id
         attributes {

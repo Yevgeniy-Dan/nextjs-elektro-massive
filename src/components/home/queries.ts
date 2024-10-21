@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_CATEGORY_MENU = gql`
-  query CategoryMenu {
-    categories {
+  query CategoryMenu($locale: I18NLocaleCode!) {
+    categories(locale: $locale) {
       data {
         id
         attributes {
@@ -38,8 +38,8 @@ export const GET_CATEGORY_MENU = gql`
 `;
 
 export const GET_CATEGORIES = gql`
-  query GetCategories {
-    categories {
+  query GetCategories($locale: I18NLocaleCode!) {
+    categories(locale: $locale) {
       data {
         id
         attributes {
@@ -59,11 +59,12 @@ export const GET_CATEGORIES = gql`
 `;
 
 export const GET_HOME_PAGE_PRODUCTS = gql`
-  query GetHomePageProducts($limit: Int!) {
+  query GetHomePageProducts($limit: Int!, $locale: I18NLocaleCode!) {
     topProducts: products(
       filters: { salesCount: { gt: 0 } }
       sort: "salesCount:desc"
       pagination: { limit: $limit }
+      locale: $locale
     ) {
       data {
         id
@@ -99,6 +100,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
     newProducts: products(
       sort: "createdAt:desc"
       pagination: { limit: $limit }
+      locale: $locale
     ) {
       data {
         id
@@ -136,6 +138,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
       filters: { discount: { gt: 0 } }
       sort: "discount:desc"
       pagination: { limit: $limit }
+      locale: $locale
     ) {
       data {
         id

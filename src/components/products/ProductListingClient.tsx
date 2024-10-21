@@ -39,6 +39,7 @@ interface ProductListingClientProps {
   subcategorySlug: string;
   productTypeSlug?: string;
   productTypeTitle?: string;
+  lng: string;
 }
 
 const ProductListingClient: React.FC<ProductListingClientProps> = ({
@@ -48,6 +49,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   subcategorySlug,
   productTypeSlug,
   productTypeTitle,
+  lng,
 }) => {
   const dispatch = useAppDispatch();
   const pageSize = 5;
@@ -68,14 +70,14 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     GetProductTypesQuery,
     GetProductTypesQueryVariables
   >(GET_PRODUCT_TYPES, {
-    variables: { subcategoryId },
+    variables: { subcategoryId, locale: lng },
   });
 
   const { data: filtersData } = useQuery<
     GetProductTypeFiltersQuery,
     GetProductTypeFiltersQueryVariables
   >(GET_PRODUCT_TYPE_FILTERS, {
-    variables: { productTypeId, subcategoryId },
+    variables: { productTypeId, subcategoryId, locale: lng },
   });
 
   React.useEffect(() => {
@@ -190,6 +192,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           productTypeSlug={productTypeSlug}
           subcategorySlug={subcategorySlug}
           pageSize={pageSize}
+          lng={lng}
         />
       </div>
       {productTypeId && (

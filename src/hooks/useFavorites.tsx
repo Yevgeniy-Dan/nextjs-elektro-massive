@@ -1,5 +1,6 @@
 "use client";
 
+import { fallbackLng, Language } from "@/app/i18n/settings";
 import {
   ADD_TO_FAVORITES,
   GET_FAVORITE_PRODUCTS,
@@ -14,8 +15,11 @@ import {
 } from "@/gql/graphql";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
+import { useCookies } from "react-cookie";
 
 export const useFavorites = () => {
+  const [cookies] = useCookies(["i18next"]);
+
   const queryClient = useQueryClient();
 
   const {
@@ -24,11 +28,14 @@ export const useFavorites = () => {
     isError,
     error,
   } = useQuery<GetUserFavoriteProductsQuery>({
-    queryKey: ["favorites"],
+    queryKey: ["favorites", cookies.i18next],
     queryFn: async () =>
       request(
         `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-        GET_FAVORITE_PRODUCTS
+        GET_FAVORITE_PRODUCTS,
+        {
+          locale: cookies.i18next,
+        }
       ),
   });
 
@@ -45,6 +52,7 @@ export const useFavorites = () => {
           input: {
             ...variables.input,
           },
+          locale: variables.locale,
         }
       ),
     onSuccess: () => {
@@ -68,6 +76,7 @@ export const useFavorites = () => {
           input: {
             ...variables.input,
           },
+          locale: variables.locale,
         }
       ),
     onSuccess: () => {
@@ -81,6 +90,7 @@ export const useFavorites = () => {
         productId,
         productTypeId,
       },
+      locale: cookies.i18next,
     });
   };
 
@@ -89,6 +99,7 @@ export const useFavorites = () => {
       input: {
         productId,
       },
+      locale: cookies.i18next,
     });
   };
 

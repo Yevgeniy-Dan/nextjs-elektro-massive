@@ -23,6 +23,7 @@ interface ProductGridProps {
   pageSize: number;
   subcategoryId: string;
   subcategorySlug: string;
+  lng: string;
 }
 
 const ProductGrid = ({
@@ -31,6 +32,7 @@ const ProductGrid = ({
   subcategoryId,
   subcategorySlug,
   productTypeSlug,
+  lng,
 }: ProductGridProps) => {
   const dispatch = useAppDispatch();
   const currentPage = useAppSelector(
@@ -67,6 +69,7 @@ const ProductGrid = ({
       // cursor: null,
       page: currentPage,
       pageSize,
+      locale: lng,
     },
     notifyOnNetworkStatusChange: true,
   });

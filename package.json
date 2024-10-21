@@ -27,6 +27,7 @@
     "axios": "^1.7.7",
     "card-validator": "^10.0.0",
     "cloudipsp-node-js-sdk": "^1.0.8",
+    "cookies-next": "^4.3.0",
     "credit-card-type": "^10.0.1",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",

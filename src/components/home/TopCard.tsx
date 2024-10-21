@@ -1,9 +1,8 @@
-import { GetFilteredProductsQuery, GetProductsQuery } from "@/gql/graphql";
 import { useCart } from "@/hooks/useCart";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useAppDispatch } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useEffect, useRef, useState } from "react";

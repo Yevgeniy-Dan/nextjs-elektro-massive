@@ -1,10 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: {
-      allowedOrigins: ["secure-redirect.cloudipsp.com"],
-    },
-  },
   reactStrictMode: true,
   swcMinify: true,
   async rewrites() {

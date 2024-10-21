@@ -1,3 +1,5 @@
+"use server";
+
 import axios from "axios";
 import { format } from "date-fns";
 import { calculateProductDimensions } from "../utils/novaPoshtaHeplers";
@@ -142,9 +144,8 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
   }
 
   const senderAddress = await getSenderAddress();
-  const { recipientRef, contactPersonRecipientRef } = await createRecipient(
-    data
-  );
+  const { recipientRef, contactPersonRecipientRef } =
+    await createRecipient(data);
 
   const contactSender = await getSenderCounterpartyContactPersons();
 

@@ -7,7 +7,6 @@ import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import UserActions from "./UserActions";
 import SearchBar from "./SearchBar";
-import { useTranslation } from "@/app/i18n/client";
 import { useRouter, usePathname } from "next/navigation";
 import { languages } from "@/app/i18n/settings";
 
@@ -18,7 +17,6 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ lng }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { t } = useTranslation(lng, "common");
 
   const handleLanguageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -29,8 +27,9 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
     //Remove the current language prefix from the pathname
     const pathWithoutLang = currentPathname.replace(new RegExp(`^/${lng}`), "");
 
-    const newPath = `/${newLang}${pathWithoutLang || "/"}`;
+    const newPath = `/${newLang}${pathWithoutLang || "/"}`.replace(/\/+/g, "/");
 
+    // Remove the last slash if there is one, unless it is just "/"
     router.push(newPath);
   };
 
@@ -57,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
         </div>
       </header>
       <nav className="flex flex-row  justify-start items-center w-full pb-3 gap-2 max-w-7xl mx-auto  ">
-        <CategoryMenu />
+        <CategoryMenu lng={lng} />
 
         <SearchBar />
       </nav>

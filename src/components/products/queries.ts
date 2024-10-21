@@ -1,10 +1,11 @@
 import { gql } from "@apollo/client";
 
 export const GET_PRODUCT_TYPES = gql`
-  query GetProductTypes($subcategoryId: ID!) {
+  query GetProductTypes($subcategoryId: ID!, $locale: I18NLocaleCode!) {
     productTypes(
       filters: { subcategories: { id: { eq: $subcategoryId } } }
       pagination: { limit: -1 }
+      locale: $locale
     ) {
       data {
         id
@@ -31,8 +32,12 @@ export const GET_PRODUCT_TYPES = gql`
 `;
 
 export const GET_PRODUCT_TYPE_BY_SLUG = gql`
-  query GetProductTypeBySlug($slug: String!) {
-    productTypes(filters: { slug: { eq: $slug } }, pagination: { limit: -1 }) {
+  query GetProductTypeBySlug($slug: String!, $locale: I18NLocaleCode!) {
+    productTypes(
+      filters: { slug: { eq: $slug } }
+      pagination: { limit: -1 }
+      locale: $locale
+    ) {
       data {
         id
         attributes {
@@ -58,10 +63,15 @@ export const GET_PRODUCT_TYPE_BY_SLUG = gql`
 `;
 
 export const GET_PRODUCT_TYPE_FILTERS = gql`
-  query GetProductTypeFilters($productTypeId: ID, $subcategoryId: ID!) {
+  query GetProductTypeFilters(
+    $productTypeId: ID
+    $subcategoryId: ID!
+    $locale: I18NLocaleCode!
+  ) {
     productTypeFilters(
       productTypeId: $productTypeId
       subcategoryId: $subcategoryId
+      locale: $locale
     )
   }
 `;
@@ -74,6 +84,7 @@ export const GET_FILTERED_PRODUCTS = gql`
     $page: Int
     $pageSize: Int
     $subcategoryId: ID!
+    $locale: I18NLocaleCode!
   ) {
     filteredProducts(
       productTypeId: $productTypeId
@@ -82,6 +93,7 @@ export const GET_FILTERED_PRODUCTS = gql`
       page: $page
       pageSize: $pageSize
       subcategoryId: $subcategoryId
+      locale: $locale
     ) {
       products {
         id
@@ -121,43 +133,43 @@ export const GET_FILTERED_PRODUCTS = gql`
   }
 `;
 
-export const GET_PRODUCTS = gql`
-  query GetProducts($pageSize: Int!) {
-    products(pagination: { pageSize: $pageSize }) {
-      data {
-        id
-        attributes {
-          part_number
-          title
-          retail
-          currency
-          image_link
-          slug
-          params
-          additional_images {
-            link
-          }
-          subcategory {
-            data {
-              id
-              attributes {
-                slug
-              }
-            }
-          }
-          product_types {
-            data {
-              attributes {
-                slug
-              }
-            }
-          }
-          discount
-        }
-      }
-    }
-  }
-`;
+// export const GET_PRODUCTS = gql`
+//   query GetProducts($pageSize: Int!, $locale: I18NLocaleCode!) {
+//     products(pagination: { pageSize: $pageSize }, locale: $locale) {
+//       data {
+//         id
+//         attributes {
+//           part_number
+//           title
+//           retail
+//           currency
+//           image_link
+//           slug
+//           params
+//           additional_images {
+//             link
+//           }
+//           subcategory {
+//             data {
+//               id
+//               attributes {
+//                 slug
+//               }
+//             }
+//           }
+//           product_types {
+//             data {
+//               attributes {
+//                 slug
+//               }
+//             }
+//           }
+//           discount
+//         }
+//       }
+//     }
+//   }
+// `;
 
 export const GET_BRANDS = gql`
   query GetBrands {
@@ -180,8 +192,8 @@ export const GET_BRANDS = gql`
 `;
 
 export const GET_FAVORITE_PRODUCTS = gql`
-  query GetUserFavoriteProducts {
-    userFavorites {
+  query GetUserFavoriteProducts($locale: I18NLocaleCode!) {
+    userFavorites(locale: $locale) {
       favoriteProducts {
         product {
           data {
@@ -221,8 +233,11 @@ export const GET_FAVORITE_PRODUCTS = gql`
 `;
 
 export const ADD_TO_FAVORITES = gql`
-  mutation AddToFavorites($input: AddToFavoritesInput!) {
-    addToFavorites(input: $input) {
+  mutation AddToFavorites(
+    $input: AddToFavoritesInput!
+    $locale: I18NLocaleCode!
+  ) {
+    addToFavorites(input: $input, locale: $locale) {
       favoriteProducts {
         product {
           data {
@@ -246,8 +261,11 @@ export const ADD_TO_FAVORITES = gql`
 `;
 
 export const REMOVE_FROM_FAVORITES = gql`
-  mutation RemoveFromFavorites($input: RemoveFromFavoritesInput!) {
-    removeFromFavorites(input: $input) {
+  mutation RemoveFromFavorites(
+    $input: RemoveFromFavoritesInput!
+    $locale: I18NLocaleCode!
+  ) {
+    removeFromFavorites(input: $input, locale: $locale) {
       favoriteProducts {
         product {
           data {

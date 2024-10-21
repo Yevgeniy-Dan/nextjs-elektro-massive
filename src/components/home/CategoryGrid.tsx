@@ -9,11 +9,13 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useQuery } from "@apollo/client";
 import { GET_CATEGORIES } from "./queries";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { GetCategoriesQuery } from "@/gql/graphql";
+import { GetCategoriesQuery, GetCategoriesQueryVariables } from "@/gql/graphql";
 
-const CategoryGrid = () => {
-  const { activePageIndex } = useSnapCarousel();
+interface CategoryGridProps {
+  lng: string;
+}
 
+const CategoryGrid: React.FC<CategoryGridProps> = ({ lng }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     dragFree: true,
@@ -42,7 +44,14 @@ const CategoryGrid = () => {
     };
   }, [emblaApi, onSelect]);
 
-  const { data, loading } = useQuery<GetCategoriesQuery>(GET_CATEGORIES);
+  const { data, loading } = useQuery<
+    GetCategoriesQuery,
+    GetCategoriesQueryVariables
+  >(GET_CATEGORIES, {
+    variables: {
+      locale: lng,
+    },
+  });
 
   const PlaceHolderCard = () => (
     <div className="flex flex-col items-center px-2">

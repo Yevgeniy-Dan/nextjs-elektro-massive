@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "@/app/i18n/client";
+import { fallbackLng, Language } from "@/app/i18n/settings";
 import {
   // addItemToLocalStorage,
   clearCartFromLocalStorage,
@@ -17,7 +19,7 @@ import {
   CartInput,
   CartItem,
   GetUserCartQuery,
-  MutationAddToCartArgs,
+  GetUserCartQueryVariables,
   MutationRemoveFromCartArgs,
   MutationUpdateCartArgs,
   RemoveFromCartInput,
@@ -34,8 +36,12 @@ import request from "graphql-request";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
+import { useCookies } from "react-cookie";
 
 export const useCart = () => {
+  const [cookies] = useCookies(["i18next"]);
+  const currentLanguage = (cookies.i18next || fallbackLng) as Language;
+
   const queryClient = useQueryClient();
   const { isModalOpen } = useAppSelector((state) => state.store);
   const dispatch = useAppDispatch();
@@ -43,12 +49,18 @@ export const useCart = () => {
   const router = useRouter();
 
   const { data: cartItems = [], isLoading } = useQuery({
-    queryKey: ["cart"],
+    queryKey: ["cart", currentLanguage],
     queryFn: async () => {
       if (status === "authenticated") {
-        const response = await request<GetUserCartQuery>(
+        const response = await request<
+          GetUserCartQuery,
+          GetUserCartQueryVariables
+        >(
           `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-          GET_AUTH_USER_CART_QUERY
+          GET_AUTH_USER_CART_QUERY,
+          {
+            locale: currentLanguage,
+          }
         );
 
         return response.userCart?.cart.cart_items;
@@ -77,6 +89,7 @@ export const useCart = () => {
               productId: variables.product.product.id,
               qtyChange: variables.qtyChange,
             },
+            locale: currentLanguage,
           }
         );
 
@@ -105,6 +118,7 @@ export const useCart = () => {
           REMOVE_FROM_CART_MUTATION,
           {
             input: { productId: variables.productId },
+            locale: currentLanguage,
           }
         );
       } else {
@@ -114,6 +128,7 @@ export const useCart = () => {
           input: {
             productId: variables.productId,
           },
+          locale: currentLanguage,
         };
       }
     },
@@ -127,7 +142,10 @@ export const useCart = () => {
       if (status === "authenticated") {
         return request(
           `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-          CLEAR_CART_MUTATION
+          CLEAR_CART_MUTATION,
+          {
+            locale: currentLanguage,
+          }
         );
       } else {
         clearCartFromLocalStorage();

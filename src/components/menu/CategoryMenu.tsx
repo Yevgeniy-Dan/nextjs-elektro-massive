@@ -7,9 +7,13 @@ import { GET_CATEGORY_MENU } from "../home/queries";
 import CategorySubmenu from "./CategorySubmenu";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Spinner from "../shared/Spinner";
-import { CategoryMenuQuery } from "@/gql/graphql";
+import { CategoryMenuQuery, CategoryMenuQueryVariables } from "@/gql/graphql";
 
-const CategoryMenu = () => {
+interface CategoryMenuProps {
+  lng: string;
+}
+
+const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showDelayedMenu, setShowDelayedMenu] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
@@ -18,7 +22,12 @@ const CategoryMenu = () => {
     data: menuItems,
     loading,
     error,
-  } = useQuery<CategoryMenuQuery>(GET_CATEGORY_MENU);
+  } = useQuery<CategoryMenuQuery, CategoryMenuQueryVariables>(
+    GET_CATEGORY_MENU,
+    {
+      variables: { locale: lng },
+    }
+  );
 
   const menuRef = useOutsideClick(() => {
     if (isMenuOpen) setIsMenuOpen(false);

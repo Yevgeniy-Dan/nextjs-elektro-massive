@@ -1,71 +1,59 @@
 "use client";
 
+import { fallbackLng, Language } from "@/app/i18n/settings";
 import {
   getCartItemsFromLocaleStorage,
   clearCartFromLocalStorage,
 } from "@/app/utils/cartHeplers";
-import { CartItem } from "@/gql/graphql";
-import { ISyncCartMutationResponse } from "@/types/cart";
+import {
+  CartItem,
+  SyncCartBySignInMutation,
+  SyncCartBySignInMutationVariables,
+} from "@/gql/graphql";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
+import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
-
-export const SYNC_CART_MUTATION = `
-  mutation SyncCart($input: SyncCartInput!) {
-    syncCartBySingIn(input: $input) {
-      cart {
-        cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            part_number
-            params
-          }
-        }
-      }
-    }
-  }
-`;
+import { SYNC_CART_MUTATION } from "./queries";
+import request from "graphql-request";
 
 const syncCart = async (
-  cartItems: CartItem[]
-): Promise<ISyncCartMutationResponse> => {
+  cartItems: CartItem[],
+  locale: Language
+): Promise<SyncCartBySignInMutation> => {
   const input = {
     products: cartItems.map((item: CartItem) => ({
       productId: item.id,
       quantity: item.quantity,
     })),
   };
-
-  return axios.post(process.env.NEXT_PUBLIC_API_URL + "/api/graphql", {
-    query: SYNC_CART_MUTATION,
-    variables: { input },
-  });
+  return request<SyncCartBySignInMutation, SyncCartBySignInMutationVariables>(
+    process.env.NEXT_PUBLIC_API_URL + "/api/graphql",
+    SYNC_CART_MUTATION,
+    { input, locale }
+  );
 };
 
 export const useSingInMergeCart = () => {
+  const [cookies] = useCookies(["i18next"]);
+  const currentLanguage = (cookies.i18next || fallbackLng) as Language;
+
   const queryClient = useQueryClient();
+
   const { status } = useSession();
   const hasSynced = useRef(false);
 
   const mutation = useMutation({
-    mutationFn: syncCart,
+    mutationFn: (cartItems: CartItem[]) => syncCart(cartItems, currentLanguage),
     onSuccess(data, variables, context) {
       clearCartFromLocalStorage();
-      const { syncCartBySingIn } = data.data.data;
-      queryClient.setQueryData(["cart"], syncCartBySingIn.cart.cart_items);
+      const { syncCartBySingIn } = data;
+      queryClient.setQueryData(["cart"], syncCartBySingIn?.cart.cart_items);
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError(error, variables, context) {
-      toast.error(error.message);
+      // toast.error(error.message);
     },
   });
 

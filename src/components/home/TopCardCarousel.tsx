@@ -4,10 +4,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import TopCard from "./TopCard";
 import useEmblaCarousel from "embla-carousel-react";
 
-import { GET_PRODUCTS } from "../products/queries";
-import { useQuery } from "@apollo/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { GetHomePageProductsQuery, GetProductsQuery } from "@/gql/graphql";
+
 import { HomePageProductEntity } from "@/types/types";
 
 interface TopCardCarousel {
@@ -53,12 +51,6 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
     };
   }, [emblaApi, onSelect]);
 
-  const { data, loading, error } = useQuery<GetProductsQuery>(GET_PRODUCTS, {
-    variables: {
-      pageSize: 20,
-    },
-  });
-
   const responsiveCardHeight = "h-80 lg:h-96";
   const responsiveCardWidth = "w-56 lg:w-64";
 
@@ -86,10 +78,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
                   <div
                     key={card.id}
                     className={`embla__slide flex-shrink-0 ${responsiveCardWidth} ${responsiveCardHeight} my-4 p-2 ${
-                      data?.products?.data &&
-                      index === data.products.data.length - 1
-                        ? "pl-4"
-                        : ""
+                      products && index === products.length - 1 ? "pl-4" : ""
                     }`}
                   >
                     <TopCard
@@ -116,7 +105,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
                         ""
                       }
                       productTypeSlug={
-                        card.attributes?.product_types?.data[0].attributes
+                        card.attributes?.product_types?.data[0]?.attributes
                           ?.slug ?? ""
                       }
                       productTypeId={

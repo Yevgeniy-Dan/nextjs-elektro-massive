@@ -6,12 +6,15 @@ interface SearchPageProps {
   searchParams: {
     q: string;
   };
+  params: {
+    lng: string;
+  };
 }
 
-const SearchPage: React.FC<SearchPageProps> = ({ searchParams }) => {
+const SearchPage: React.FC<SearchPageProps> = ({ searchParams, params }) => {
   return (
     <Suspense fallback={<CenteredSpinner />}>
-      <SearchResults query={searchParams.q} />
+      <SearchResults query={searchParams.q} lng={params.lng} />
     </Suspense>
   );
 };
