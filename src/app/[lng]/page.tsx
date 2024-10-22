@@ -21,7 +21,7 @@ const Home: React.FC<HomeProps> = ({ params: { lng } }) => {
       <CategoryGrid lng={lng} />
       <WhyUsSection />
       <AboutSection />
-      <ReviewCarousel />
+      <ReviewCarousel lng={lng} />
     </div>
   );
 };

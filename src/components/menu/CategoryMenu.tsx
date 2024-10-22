@@ -8,12 +8,15 @@ import CategorySubmenu from "./CategorySubmenu";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Spinner from "../shared/Spinner";
 import { CategoryMenuQuery, CategoryMenuQueryVariables } from "@/gql/graphql";
+import { useTranslation } from "@/app/i18n/client";
 
 interface CategoryMenuProps {
   lng: string;
 }
 
 const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
+  const { t } = useTranslation(lng, "header");
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showDelayedMenu, setShowDelayedMenu] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
@@ -80,7 +83,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
       >
         <div className="hidden md:flex justify-center w-full">
           <span className="text-white text-base font-black whitespace-nowrap hidden md:inline">
-            Каталог товарів
+            {t("menuTitle")}
           </span>
         </div>
         <div className="md:block">

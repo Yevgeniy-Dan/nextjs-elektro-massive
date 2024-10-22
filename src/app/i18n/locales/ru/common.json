@@ -1,9 +1,21 @@
 {
-  "navigation": {
-    "services": "Услуги",
-    "about": "О нас",
-    "cooperation": "Сотрудничество",
-    "paymentDelivery": "Оплата и доставка",
-    "reviews": "Отзывы"
+  "favorites": {
+    "title": "Ваши любимые продукты",
+    "subtitle": "Пока нет избранных продуктов!",
+    "description": "Добавьте несколько продуктов в избранное и возвращайтесь позже."
+  },
+  "reviews": {
+    "form": {
+      "title": "Отзывы клиентов",
+      "customerName": "Имя",
+      "comment": "Отзыв",
+      "selectionConvenience": "Удобство выбора",
+      "managerConsultation": "Консультация менеджера",
+      "productDelivery": "Доставка товара",
+      "paymentProcess": "Процесс оплаты",
+      "submitReview": "Оставить отзыв"
+    },
+    "title": "Последние отзывы",
+    "leaveReviewFirst": "Оставьте свой отзыв первым"
   }
 }

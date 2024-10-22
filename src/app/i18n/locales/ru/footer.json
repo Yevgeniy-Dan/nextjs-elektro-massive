@@ -1,0 +1,26 @@
+{
+  "company": "Компания",
+  "companyLinks": [
+    { "href": "services", "title": "Услуги" },
+    { "href": "", "title": "Интернет-магазин" },
+    { "href": "about", "title": "О нас" },
+    { "href": "partnership", "title": "Сотрудничество" },
+    { "href": "payment-and-delivery", "title": "Где купить" }
+  ],
+  "workingHours": {
+    "title": "Время работы:",
+    "hours": "Пн-сб с 8.00 до 18.00"
+  },
+  "additionalLinks": [
+    { "href": "payment-and-delivery", "title": "Оплата и доставка" },
+    { "href": "payment-and-delivery", "title": "Гарантии" },
+    { "href": "payment-and-delivery", "title": "Возврат товара" }
+  ],
+  "contactUs": "Связаться с нами:",
+  "contacts": [
+    { "name": "Евгений", "phone": "+380 (97) 63 23 159" },
+    { "name": "Вероника", "phone": "+380 (98) 039 28 53" },
+    { "name": "Александр", "phone": "+380 (68) 555 94 73" }
+  ],
+  "copyright": "© ELEKTRO MASSIVE, 2017-2024. Все права защищены."
+}

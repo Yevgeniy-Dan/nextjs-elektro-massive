@@ -12,6 +12,7 @@ import CenteredSpinner from "./CenteredSpinner";
 import ErrorMessage from "./ErrorMessage";
 import TopCard from "../home/TopCard";
 import { Box } from "lucide-react";
+import { useTranslation } from "@/app/i18n/client";
 
 interface SearchResultsProps {
   query: string;
@@ -19,6 +20,7 @@ interface SearchResultsProps {
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
+  const { t } = useTranslation(lng, "header");
   const { data, isLoading, error } = useQuery<
     GetSearchProductsQuery,
     GetSearchProductsQueryVariables
@@ -46,7 +48,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
       <div className="my-5 flex flex-col items-center justify-center h-full text-gray-400">
         <Box size={64} className="mb-4" />
         <h2 className="text-lg text-center font-semibold">
-          Ого! Товарів тут поки немає 🧐
+          {t("search.noResults")}
         </h2>
       </div>
     );
@@ -54,7 +56,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
   return (
     <div className="container mx-auto mt-4 bg-white shadow-lg rounded-lg p-6">
       <h2 className="text-2xl font-bold mb-4">
-        Результати пошуку для: {query}
+        {t("search.searchResults")} {query}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {data.products?.data.map(({ attributes, id }) => (

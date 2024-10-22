@@ -5,10 +5,16 @@ import CenteredSpinner from "@/components/shared/CenteredSpinner";
 
 import FavoriteProductsList from "@/components/products/FavoriteProducts";
 
-const FavoritesPage = () => {
+interface FavoritesPageProps {
+  params: {
+    lng: string;
+  };
+}
+
+const FavoritesPage: React.FC<FavoritesPageProps> = async ({ params }) => {
   return (
     <Suspense fallback={<CenteredSpinner />}>
-      <FavoriteProductsList />
+      <FavoriteProductsList lng={params.lng} />
     </Suspense>
   );
 };

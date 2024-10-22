@@ -5,8 +5,14 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "use-debounce";
+import { useTranslation } from "@/app/i18n/client";
 
-const SearchBar = () => {
+interface SearchBarProps {
+  lng: string;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ lng }) => {
+  const { t } = useTranslation(lng, "header");
   const [searchTerm, setSearchTerm] = useState("");
   const searchParams = useSearchParams();
 
@@ -31,7 +37,7 @@ const SearchBar = () => {
 
     const newQueryString = createQueryString("q", newSearchTerm.trim());
     if (newSearchTerm.trim().length > 0) {
-      router.push(`/search?${newQueryString}`, { scroll: false });
+      router.push(`/${lng}/search?${newQueryString}`);
     } else {
       router.push("/");
     }
@@ -43,7 +49,7 @@ const SearchBar = () => {
         <input
           type="text"
           className="bg-transparent border border-white text-white px-4 py-2 rounded-r-2xl focus:outline-none pr-14 w-full"
-          placeholder="Пошук..."
+          placeholder={`${t("search.placeholder")}`}
           value={searchTerm}
           onChange={handleSearchChange}
         />

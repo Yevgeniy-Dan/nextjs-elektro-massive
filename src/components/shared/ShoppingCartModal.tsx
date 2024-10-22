@@ -10,7 +10,11 @@ import CartItemList from "../cart/CartItemList";
 import CartFooter from "../cart/CartFooter";
 import { useCart } from "@/hooks/useCart";
 
-const ShoppingCartModal = () => {
+interface ShoppingCartModalProps {
+  lng: string;
+}
+
+const ShoppingCartModal: React.FC<ShoppingCartModalProps> = ({ lng }) => {
   const {
     isModalOpen,
     isLoading,
@@ -35,11 +39,12 @@ const ShoppingCartModal = () => {
             className="bg-white p-6 rounded-lg shadow-md max-w-xl w-full mx-auto flex flex-col max-h-[90vh]"
           >
             <CartHeader
+              lng={lng}
               onClose={handleCloseModal}
               onClearCart={handleClearCart}
             />
-            <CartItemList isLoading={isLoading} items={cartItems} />
-            <CartFooter />
+            <CartItemList lng={lng} isLoading={isLoading} items={cartItems} />
+            <CartFooter lng={lng} />
           </div>
         </motion.div>
       )}

@@ -6,8 +6,15 @@ import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import UserDropdown from "./UserDropdown";
+import { useTranslation } from "@/app/i18n/client";
 
-const UserActions: React.FC = () => {
+interface UserActionsProps {
+  lng: string;
+}
+
+const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
+  const { t } = useTranslation(lng, "header");
+
   const dispatch = useAppDispatch();
   const { calculateTotal, calculateDiscountTotal } = useCart();
 
@@ -15,7 +22,8 @@ const UserActions: React.FC = () => {
     <div className="md:mb-3 lg:mb-0 flex items-center gap-x-4 text-white">
       <Dropdown
         className="hidden md:flex bg-gray-800 text-white"
-        title="Служба підтримки"
+        title={`${t("supportService.title")}`}
+        lng={lng}
         items={[]}
       />
       <div className="flex items-center gap-3">
@@ -39,7 +47,7 @@ const UserActions: React.FC = () => {
         <Link href="/favorites">
           <Heart size={32} />
         </Link>
-        <UserDropdown />
+        <UserDropdown lng={lng} />
       </div>
     </div>
   );

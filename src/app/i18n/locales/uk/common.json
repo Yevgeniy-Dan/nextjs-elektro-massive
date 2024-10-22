@@ -1,9 +1,21 @@
 {
-  "navigation": {
-    "services": "Послуги",
-    "about": "Про нас",
-    "cooperation": "Співпраця",
-    "paymentDelivery": "Оплата та доставка",
-    "reviews": "Відгуки"
+  "favorites": {
+    "title": "Ваші улюблені продукти",
+    "subtitle": "Ще немає улюблених продуктів!",
+    "description": "Додайте деякі продукти до своїх улюблених і поверніться пізніше."
+  },
+  "reviews": {
+    "form": {
+      "title": "Відгуки клієнтів",
+      "customerName": "Ім'я",
+      "comment": "Відгук",
+      "selectionConvenience": "Зручність вибору",
+      "managerConsultation": "Консультація менеджера",
+      "productDelivery": "Доставка товару",
+      "paymentProcess": "Процес оплати",
+      "submitReview": "Залишити відгук"
+    },
+    "title": "Останні відгуки",
+    "leaveReviewFirst": "Залиште свій відгук першим"
   }
 }

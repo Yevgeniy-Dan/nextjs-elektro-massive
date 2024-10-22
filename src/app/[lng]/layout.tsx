@@ -60,8 +60,8 @@ export default async function RootLayout({
               </div>
             </div>
           </div>
-          <Footer className="flex-shrink-0" />
-          <ShoppingCartModal />
+          <Footer className="flex-shrink-0" lng={lng} />
+          <ShoppingCartModal lng={lng} />
           <SignInModal />
           <ToastContainer />
         </Providers>

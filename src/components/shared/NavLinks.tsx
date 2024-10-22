@@ -8,7 +8,7 @@ interface NavLinks {
 }
 
 const NavLinks: React.FC<NavLinks> = ({ lng }) => {
-  const { t } = useTranslation(lng, "common");
+  const { t } = useTranslation(lng, "header");
 
   return (
     <div className="hidden md:flex flex-wrap justify-center items-center text-white gap-2 sm:gap-4 mb-4 lg:mb-0">

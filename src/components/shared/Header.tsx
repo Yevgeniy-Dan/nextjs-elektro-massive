@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
             <Logo />
           </div>
           <NavLinks lng={lng} />
-          <UserActions />
+          <UserActions lng={lng} />
           <select
             value={lng}
             onChange={handleLanguageChange}
@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
       <nav className="flex flex-row  justify-start items-center w-full pb-3 gap-2 max-w-7xl mx-auto  ">
         <CategoryMenu lng={lng} />
 
-        <SearchBar />
+        <SearchBar lng={lng} />
       </nav>
     </div>
   );

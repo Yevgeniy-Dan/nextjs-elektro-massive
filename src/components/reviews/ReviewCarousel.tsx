@@ -10,8 +10,14 @@ import {
 import ReviewCard from "./ReviewCard";
 import { GET_SHOP_REVIEWS } from "./queries";
 import Link from "next/link";
+import { useTranslation } from "@/app/i18n/client";
 
-const ReviewCarousel = () => {
+interface ReviewCarouselProps {
+  lng: string;
+}
+
+const ReviewCarousel: React.FC<ReviewCarouselProps> = ({ lng }) => {
+  const { t } = useTranslation(lng, "common");
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     dragFree: true,
@@ -59,7 +65,9 @@ const ReviewCarousel = () => {
 
   return (
     <div className="relative w-full max-w-4xl mx-auto px-10">
-      <h2 className="text-2xl font-bold mb-4 text-center">ОСТАННI ВIДГУКИ</h2>
+      <h2 className="text-2xl uppercase font-bold mb-4 text-center">
+        {t("reviews.title")}
+      </h2>
       <div className="embla overflow-hidden" ref={emblaRef}>
         <div className="embla__container flex">
           {loading && placeholders}
@@ -76,14 +84,14 @@ const ReviewCarousel = () => {
             <div className="embla__slide flex-shrink-0 w-full p-2">
               <div className="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col items-center justify-center h-40">
                 <p className="text-lg font-semibold mb-4">
-                  Залиште свій відгук першим
+                  {t("reviews.leaveReviewFirst")}
                 </p>
                 <Link
                   href="/reviews"
                   className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center"
                 >
                   <PenTool className="mr-2" size={18} />
-                  Залишити відгук
+                  {t("reviews.form.submitReview")}
                 </Link>
               </div>
             </div>
@@ -96,7 +104,7 @@ const ReviewCarousel = () => {
               className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center"
             >
               <PenTool className="mr-2" size={18} />
-              Залишити відгук
+              {t("reviews.form.submitReview")}
             </Link>
           </div>
         )}

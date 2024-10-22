@@ -1,3 +1,4 @@
+import { useTranslation } from "@/app/i18n/client";
 import { useAppDispatch } from "@/store/hooks";
 import { openSignInModal } from "@/store/signInModalSlice";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
@@ -8,7 +9,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 
-const UserDropdown = () => {
+interface UserDropdownProps {
+  lng: string;
+}
+
+const UserDropdown: React.FC<UserDropdownProps> = ({ lng }) => {
+  const { t } = useTranslation(lng, "header");
   const { status } = useSession();
   const pathname = usePathname();
 
@@ -45,7 +51,7 @@ const UserDropdown = () => {
         >
           {status === "authenticated" ? (
             <>
-              <MenuItem>
+              {/* <MenuItem>
                 <Link
                   href="/settings"
                   className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:bg-gray-200"
@@ -53,14 +59,14 @@ const UserDropdown = () => {
                   <Settings className="size-4 fill-white/30" />
                   Налаштування
                 </Link>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem>
                 <button
                   onClick={handleLogout}
                   className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:bg-gray-200"
                 >
                   <LogOut className="size-4 fill-white/30" />
-                  Вийти
+                  {t("userMenu.logout")}
                 </button>
               </MenuItem>
             </>

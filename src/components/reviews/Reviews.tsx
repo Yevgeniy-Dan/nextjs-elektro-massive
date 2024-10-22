@@ -12,8 +12,14 @@ import ReviewCard from "./ReviewCard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import ErrorMessage from "../shared/ErrorMessage";
+import { useTranslation } from "@/app/i18n/client";
 
-const Reviews = () => {
+interface ReviewProps {
+  lng: string;
+}
+
+const Reviews: React.FC<ReviewProps> = ({ lng }) => {
+  const { t } = useTranslation(lng, "common");
   const queryClient = useQueryClient();
   const [mutationError, setMutationError] = useState<string | null>(null);
 
@@ -65,9 +71,9 @@ const Reviews = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Відгуки клієнтів</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("reviews.form.title")}</h1>
       <div className="grid md:grid-cols-2 gap-8 mb-12">
-        <ReviewForm onSubmit={handleSumbitReview} />
+        <ReviewForm onSubmit={handleSumbitReview} lng={lng} />
       </div>
       {mutationError && <ErrorMessage message={mutationError} />}
       {isError && (

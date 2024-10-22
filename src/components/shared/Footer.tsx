@@ -1,21 +1,36 @@
+"use client";
+
+import { useTranslation } from "@/app/i18n/client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const companyLinks = [
-  { href: "/services", title: "Послуги" },
-  { href: "/shop", title: "Інтернет-магазин" },
-  { href: "/about", title: "Про нас" },
-  { href: "/partnership", title: "Співпраця" },
-  { href: "/where-to-buy", title: "Де купити" },
-  { href: "/support", title: "Підтримка" },
-];
+interface CompanyLink {
+  href: string;
+  title: string;
+}
+
+interface Contact {
+  name: string;
+  phone: string;
+}
 
 interface FooterProps {
   className?: string;
+  lng: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ className = "" }) => {
+const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
+  const { t } = useTranslation(lng, "footer");
+
+  const companyLinks = t("companyLinks", {
+    returnObjects: true,
+  }) as CompanyLink[];
+  const additionalLinks = t("additionalLinks", {
+    returnObjects: true,
+  }) as CompanyLink[];
+  const contacts = t("contacts", { returnObjects: true }) as Contact[];
+
   return (
     <footer
       className={`bg-gradient-elektro-massive-horizontal text-white py-8 ${className}`}
@@ -33,25 +48,21 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
             </div>
           </div>
           <div className="space-y-2">
-            <h3 className="font-bold mb-3">Компанія</h3>
+            <h3 className="font-bold mb-3">{t("company")}</h3>
             {companyLinks.map((item, index) => (
-              <a key={index} href={`/${item.href}`} className="block mt-2">
+              <Link key={index} href={`/${item.href}`} className="block mt-2">
                 {item.title}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="space-y-2">
-            <h3 className="font-bold mb-2">Час роботи:</h3>
-            <p className="font-light">Пн-сб с 8.00 до 18.00</p>
-            <a href="/payment-and-delivery" className="block mb-2 mt-4">
-              Оплата та доставка
-            </a>
-            <a href="/warranty" className="block mb-2 mt-4">
-              Гарантії
-            </a>
-            <a href="/returns" className="block mb-2 mt-4">
-              Повернення товару
-            </a>
+            <h3 className="font-bold mb-2">{t("workingHours.title")}</h3>
+            <p className="font-light">{t("workingHours.hours")}</p>
+            {additionalLinks.map((item, index) => (
+              <Link key={index} href={item.href} className="block mb-2 mt-4">
+                {item.title}
+              </Link>
+            ))}
           </div>
           <div className="flex flex-col-reverse sm:flex-col">
             <div className="flex flex-wrap justify-start items-center lg:grid lg:grid-cols-2  xl:flex lg:flex-nowrap gap-3 my-4">
@@ -106,25 +117,19 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
               </Link>
             </div>
             <div>
-              <h3 className="font-bold mb-2 mt-4">Зв&#39;язатися з нами:</h3>
+              <h3 className="font-bold mb-2 mt-4">{t("contactUs")}</h3>
               <div className="space-y-3">
-                <p className="font-light">
-                  Євген: <br /> +380 (97) 63 23 159
-                </p>
-                <p className="font-light">
-                  Вероніка: <br /> +380 (98) 039 28 53
-                </p>
-                <p className="font-light">
-                  Олександр: <br /> +380 (68) 555 94 73
-                </p>
+                {contacts.map((contact, index) => (
+                  <p key={index} className="font-light">
+                    {contact.name}: <br /> {contact.phone}
+                  </p>
+                ))}
               </div>
             </div>
           </div>
         </div>
         <div className="mt-12 text-center">
-          <p className="text-sm">
-            &copy; ELEKTRO MASSIVE, 2017-2024. Усі права захищені.
-          </p>
+          <p className="text-sm">{t("copyright")}</p>
         </div>
       </div>
     </footer>

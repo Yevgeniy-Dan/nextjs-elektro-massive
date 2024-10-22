@@ -3,8 +3,10 @@
 import { PenTool, Star } from "lucide-react";
 import React, { useState } from "react";
 import Rating from "./Rating";
+import { useTranslation } from "@/app/i18n/client";
 
 interface ReviewFormProps {
+  lng: string;
   onSubmit: (reviewData: any) => void;
 }
 
@@ -17,7 +19,9 @@ const initialFormState = {
   paymentProcess: 0,
 };
 
-const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
+const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit, lng }) => {
+  const { t } = useTranslation(lng, "common");
+
   const [formData, setFormData] = useState(initialFormState);
 
   const handleInputChange = (
@@ -49,7 +53,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="customerName" className="block mb-1">
-          Ім&apos;я
+          {t("reviews.form.customerName")}
         </label>
         <input
           type="text"
@@ -63,7 +67,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
       </div>
       <div>
         <label htmlFor="comment" className="block mb-1">
-          Відгук
+          {t("reviews.form.comment")}
         </label>
         <textarea
           id="comment"
@@ -77,7 +81,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="block mb-1">Зручність вибору</label>
+          <label htmlFor="block mb-1">
+            {t("reviews.form.selectionConvenience")}
+          </label>
           <Rating
             name="selectionConvenience"
             value={formData.selectionConvenience}
@@ -86,7 +92,10 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
           {/* {renderStars("selectionConvenience", formData.selectionConvenience)} */}
         </div>
         <div>
-          <label htmlFor="block mb-1">Консультація менеджера</label>
+          <label htmlFor="block mb-1">
+            {" "}
+            {t("reviews.form.managerConsultation")}
+          </label>
           <Rating
             name="managerConsultation"
             value={formData.managerConsultation}
@@ -94,7 +103,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
           />
         </div>
         <div>
-          <label htmlFor="block mb-1">Доставка товару</label>
+          <label htmlFor="block mb-1">
+            {t("reviews.form.productDelivery")}
+          </label>
           <Rating
             name="productDelivery"
             value={formData.productDelivery}
@@ -102,7 +113,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
           />
         </div>
         <div>
-          <label htmlFor="block mb-1">Процес оплати</label>
+          <label htmlFor="block mb-1">{t("reviews.form.paymentProcess")}</label>
           <Rating
             name="paymentProcess"
             value={formData.paymentProcess}
@@ -115,7 +126,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
         className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center"
       >
         <PenTool className="mr-2" size={18} />
-        Залишити відгук
+        {t("reviews.form.submitReview")}
       </button>
     </form>
   );

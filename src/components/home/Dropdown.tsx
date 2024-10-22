@@ -3,6 +3,7 @@ import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "@/app/i18n/client";
 
 interface MenuItems {
   href: string;
@@ -13,9 +14,16 @@ interface DropdownProps {
   className?: string;
   title: string;
   items: MenuItems[];
+  lng: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  className,
+  title,
+  items,
+  lng,
+}) => {
+  const { t } = useTranslation(lng, "header");
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -29,7 +37,7 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
       <MenuItems className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white text-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         <div className="px-4 pb-3 font-medium">
           <p className="text-sm font-normal text-center mb-4">
-            з 8:00 до 20:00 (пн-нд)
+            {t("supportService.workTime")}
           </p>
           <div className="space-y-3">
             <Link
@@ -80,7 +88,9 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
                 width={24}
                 height={24}
               />
-              <span className="font-normal">380 (98) 039 28 53 (Вероніка)</span>
+              <span className="font-normal">
+                {t("supportService.firstPhone")}
+              </span>
             </Link>
             <Link href="tel:+380976323159" className="flex items-center">
               <Image
@@ -90,7 +100,9 @@ const Dropdown: React.FC<DropdownProps> = ({ className, title, items }) => {
                 width={24}
                 height={24}
               />
-              <span className="font-normal">380 (97) 632 31 59 (Євген)</span>
+              <span className="font-normal">
+                {t("supportService.secondPhone")}
+              </span>
             </Link>
           </div>
         </div>
