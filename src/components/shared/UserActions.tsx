@@ -26,12 +26,12 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
         lng={lng}
         items={[]}
       />
-      <div className="flex items-center gap-3">
+      <div className="flex justify-center items-center gap-2">
         <button
           className="flex items-center"
           onClick={() => dispatch(openModal())}
         >
-          <div className="w-10 h-10 relative mr-2">
+          <div className="w-8 h-8 relative mr-2">
             <Image
               src="/bucket.png"
               alt="Bucket"
@@ -40,14 +40,19 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
               className="invert"
             />
           </div>
-          <span className="text-base">
+          <span className="hidden sm:inline text-base">
             {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
           </span>
         </button>
-        <Link href="/favorites">
-          <Heart size={32} />
+        <Link
+          href="/favorites"
+          className="w-8 h-8 flex items-center justify-center"
+        >
+          <Heart className="w-full h-full" />
         </Link>
-        <UserDropdown lng={lng} />
+        <div className="w-8 h-8">
+          <UserDropdown lng={lng} />
+        </div>
       </div>
     </div>
   );
