@@ -22,6 +22,7 @@ import request from "graphql-request";
 
 interface ProductPageProps {
   params: {
+    category: string;
     subcategory: string;
     productType: string;
     product: string;
@@ -67,6 +68,8 @@ function ProductContainer({
 
 const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
   const router = useRouter();
+
+  const { category: categorySlug } = params;
 
   const {
     data: productData,
@@ -123,14 +126,27 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
               ?.attributes;
 
           if (!translatedProduct || !translatedProductType) return null;
-          const newPath = `/${currentLng}/${translatedProduct.subcategory?.data?.attributes?.slug}/${translatedProductType.slug}/${translatedProduct.slug}`;
+
+          const subcategoryData =
+            translatedProduct.subcategory?.data?.attributes;
+          if (!subcategoryData) return null;
+
+          // Find the matching category from the categories array
+          const categories = subcategoryData.categories?.data || [];
+          const translatedCategory = categories.find(
+            (category) => category.attributes?.slug === categorySlug
+          );
+
+          if (!translatedCategory?.attributes?.slug) return null;
+
+          const newPath = `/${currentLng}/${translatedCategory.attributes.slug}/${subcategoryData.slug}/${translatedProductType.slug}/${translatedProduct.slug}`;
           router.push(newPath);
         }
       }
     };
 
     handleLanguageChange();
-  }, [params.product, router, refetchTranslatedSlugs]);
+  }, [params.product, router, refetchTranslatedSlugs, categorySlug]);
 
   if (isProductLoading) {
     return <CenteredSpinner />;

@@ -85,6 +85,22 @@ export const GET_SUBCATEGORY_BY_SLUG = gql`
         attributes {
           title
           slug
+          icon {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+          categories {
+            data {
+              id
+              attributes {
+                slug
+                name
+              }
+            }
+          }
         }
       }
     }
@@ -121,6 +137,13 @@ export const GET_PRODUCT_TRANSLATED_SLUGS = gql`
                   data {
                     attributes {
                       slug
+                      categories {
+                        data {
+                          attributes {
+                            slug
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -162,6 +185,22 @@ export const GET_PRODUCT_TYPE_TRANSLATED_SLUGS = gql`
                     }
                   }
                 }
+                categories {
+                  data {
+                    attributes {
+                      slug
+                      localizations(
+                        filters: { locale: { eq: $targetLocale } }
+                      ) {
+                        data {
+                          attributes {
+                            slug
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -187,6 +226,20 @@ export const GET_SUBCATEGORY_TRANSLATED_SLUGS = gql`
             data {
               attributes {
                 slug
+              }
+            }
+          }
+          categories {
+            data {
+              attributes {
+                slug
+                localizations(filters: { locale: { eq: $targetLocale } }) {
+                  data {
+                    attributes {
+                      slug
+                    }
+                  }
+                }
               }
             }
           }

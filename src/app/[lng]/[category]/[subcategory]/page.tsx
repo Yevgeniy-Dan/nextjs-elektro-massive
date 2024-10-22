@@ -21,6 +21,7 @@ import {
 
 interface SubcategoryPageProps {
   params: {
+    category: string;
     subcategory: string;
     lng: string;
   };
@@ -28,7 +29,7 @@ interface SubcategoryPageProps {
 
 const SubcategoryPage: React.FC<SubcategoryPageProps> = ({ params }) => {
   const router = useRouter();
-  const { subcategory: subcategorySlug, lng } = params;
+  const { subcategory: subcategorySlug, category: categorySlug, lng } = params;
 
   const {
     data: subcategoryData,
@@ -82,8 +83,16 @@ const SubcategoryPage: React.FC<SubcategoryPageProps> = ({ params }) => {
           const translatedSubcategorySlug =
             subcategory.localizations?.data[0]?.attributes?.slug;
 
-          if (translatedSubcategorySlug) {
-            const newPath = `/${currentLng}/${translatedSubcategorySlug}`;
+          const categoryData = subcategory.categories?.data.find(
+            (cat) => cat.attributes?.slug === categorySlug
+          );
+
+          // Then get its translation
+          const translatedCategorySlug =
+            categoryData?.attributes?.localizations?.data[0]?.attributes?.slug;
+
+          if (translatedSubcategorySlug && translatedCategorySlug) {
+            const newPath = `/${currentLng}/${translatedCategorySlug}/${translatedSubcategorySlug}`;
             router.push(newPath);
           }
         }
@@ -91,7 +100,7 @@ const SubcategoryPage: React.FC<SubcategoryPageProps> = ({ params }) => {
     };
 
     handleLanguageChange();
-  }, [subcategorySlug, router, refetchTranslatedSlugs]);
+  }, [subcategorySlug, router, refetchTranslatedSlugs, categorySlug]);
 
   if (isLoading) {
     return <CenteredSpinner />;

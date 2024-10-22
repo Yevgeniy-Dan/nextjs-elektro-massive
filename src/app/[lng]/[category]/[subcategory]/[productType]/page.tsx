@@ -14,8 +14,6 @@ import {
   GET_SUBCATEGORY_BY_SLUG,
 } from "@/components/product/queries";
 import {
-  GetProductBySlugQuery,
-  GetProductBySlugQueryVariables,
   GetProductTypeBySlugQuery,
   GetProductTypeBySlugQueryVariables,
   GetSubcategoryBySlugQuery,
@@ -26,6 +24,7 @@ import {
 
 interface ProductTypePageProps {
   params: {
+    category: string;
     subcategory: string;
     productType: string;
     lng: string;
@@ -37,6 +36,7 @@ const ProductTypePage: React.FC<ProductTypePageProps> = ({ params }) => {
   const {
     subcategory: subcategorySlug,
     productType: productTypeSlug,
+    category: categorySlug,
     lng,
   } = params;
 
@@ -108,20 +108,38 @@ const ProductTypePage: React.FC<ProductTypePageProps> = ({ params }) => {
         if (productType) {
           const translatedProductTypeSlug =
             productType.localizations?.data[0]?.attributes?.slug;
-          const translatedSubcategorySlug =
-            productType.subcategories?.data[0]?.attributes?.localizations
-              ?.data[0]?.attributes?.slug;
+          const subcategoryData =
+            productType.subcategories?.data[0]?.attributes;
 
-          if (translatedProductTypeSlug && translatedSubcategorySlug) {
-            const newPath = `/${currentLng}/${translatedSubcategorySlug}/${translatedProductTypeSlug}`;
-            router.push(newPath);
+          if (subcategoryData) {
+            const translatedSubcategorySlug =
+              subcategoryData.localizations?.data[0]?.attributes?.slug;
+
+            // Find the matching category by current slug first
+            const categoryData = subcategoryData.categories?.data.find(
+              (cat) => cat.attributes?.slug === categorySlug
+            );
+
+            // Then get its translation
+            const translatedCategorySlug =
+              categoryData?.attributes?.localizations?.data[0]?.attributes
+                ?.slug;
+
+            if (
+              translatedProductTypeSlug &&
+              translatedSubcategorySlug &&
+              translatedCategorySlug
+            ) {
+              const newPath = `/${currentLng}/${translatedCategorySlug}/${translatedSubcategorySlug}/${translatedProductTypeSlug}`;
+              router.push(newPath);
+            }
           }
         }
       }
     };
 
     handleLanguageChange();
-  }, [productTypeSlug, router, refetchTranslatedSlugs]);
+  }, [productTypeSlug, router, refetchTranslatedSlugs, categorySlug]);
 
   if (isProductTypeLoading || isSubcategoryLoading) {
     return <CenteredSpinner />;
