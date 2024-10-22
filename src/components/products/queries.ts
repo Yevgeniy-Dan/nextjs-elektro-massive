@@ -133,43 +133,44 @@ export const GET_FILTERED_PRODUCTS = gql`
   }
 `;
 
-// export const GET_PRODUCTS = gql`
-//   query GetProducts($pageSize: Int!, $locale: I18NLocaleCode!) {
-//     products(pagination: { pageSize: $pageSize }, locale: $locale) {
-//       data {
-//         id
-//         attributes {
-//           part_number
-//           title
-//           retail
-//           currency
-//           image_link
-//           slug
-//           params
-//           additional_images {
-//             link
-//           }
-//           subcategory {
-//             data {
-//               id
-//               attributes {
-//                 slug
-//               }
-//             }
-//           }
-//           product_types {
-//             data {
-//               attributes {
-//                 slug
-//               }
-//             }
-//           }
-//           discount
-//         }
-//       }
-//     }
-//   }
-// `;
+// DO NOT COMMENT OR DELETE
+export const GET_PRODUCTS = gql`
+  query GetProducts($pageSize: Int!, $locale: I18NLocaleCode!) {
+    products(pagination: { pageSize: $pageSize }, locale: $locale) {
+      data {
+        id
+        attributes {
+          part_number
+          title
+          retail
+          currency
+          image_link
+          slug
+          params
+          additional_images {
+            link
+          }
+          subcategory {
+            data {
+              id
+              attributes {
+                slug
+              }
+            }
+          }
+          product_types {
+            data {
+              attributes {
+                slug
+              }
+            }
+          }
+          discount
+        }
+      }
+    }
+  }
+`;
 
 export const GET_BRANDS = gql`
   query GetBrands {

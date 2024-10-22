@@ -1,34 +1,35 @@
 import { gql } from "@apollo/client";
 
-// export const GET_PRODUCT = gql`
-//   query GetProduct($productId: ID!) {
-//     product(id: $productId) {
-//       data {
-//         id
-//         attributes {
-//           part_number
-//           title
-//           retail
-//           currency
-//           image_link
-//           description
-//           discount
-//           slug
-//           additional_images {
-//             id
-//             link
-//           }
-//           params
-//           subcategory {
-//             data {
-//               id
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
+// DO NOT COMMENT OR DELETE
+export const GET_PRODUCT = gql`
+  query GetProduct($productId: ID!) {
+    product(id: $productId) {
+      data {
+        id
+        attributes {
+          part_number
+          title
+          retail
+          currency
+          image_link
+          description
+          discount
+          slug
+          additional_images {
+            id
+            link
+          }
+          params
+          subcategory {
+            data {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export const GET_PRODUCT_BY_SLUG = gql`
   query GetProductBySlug(
