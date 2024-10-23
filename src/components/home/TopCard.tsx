@@ -22,6 +22,7 @@ export type TopCardProduct = {
 
 export interface ITopCardProps {
   id: string;
+  categorySlug: string;
   subcategoryId: string;
   subcategorySlug: string;
   productTypeSlug: string;
@@ -33,6 +34,7 @@ export interface ITopCardProps {
 
 const TopCard: React.FC<ITopCardProps> = ({
   id,
+  categorySlug,
   subcategorySlug,
   productTypeId,
   productTypeSlug,
@@ -128,7 +130,7 @@ const TopCard: React.FC<ITopCardProps> = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link
-        href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+        href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
         className="relative pt-[100%] block"
       >
         <Image
@@ -190,7 +192,9 @@ const TopCard: React.FC<ITopCardProps> = ({
           maxHeight: isHovered && isTitleOverflowing ? "none" : "56px", // 56px is the approximate height for two lines
         }}
       >
-        <Link href={`/${subcategorySlug}/${productTypeSlug}/${productSlug}`}>
+        <Link
+          href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+        >
           <h2
             ref={titleRef}
             className={`text-sm font-normal transition-all duration-300 ease-in-out

@@ -33,6 +33,7 @@ function isFiltersEmpty(filters: Record<string, string[]>) {
 }
 
 interface ProductListingClientProps {
+  categorySlug: string;
   subcategoryId: string;
   subcategoryTitle: string;
   productTypeId?: string;
@@ -43,6 +44,7 @@ interface ProductListingClientProps {
 }
 
 const ProductListingClient: React.FC<ProductListingClientProps> = ({
+  categorySlug,
   subcategoryId,
   subcategoryTitle,
   productTypeId,
@@ -56,6 +58,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const customLabels: Record<string, string> = {
+    [categorySlug]: categorySlug,
     [subcategorySlug]: subcategoryTitle,
     [productTypeSlug || ""]: productTypeTitle || "",
   };
@@ -85,7 +88,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   }, [dispatch, subcategoryId, productTypeId]);
 
   const handleProductTypeChange = (newProductTypeSlug: string) => {
-    window.location.href = `/${subcategorySlug}/${newProductTypeSlug}`;
+    window.location.href = `/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`;
   };
 
   const handleOutsideClick = useCallback(() => {

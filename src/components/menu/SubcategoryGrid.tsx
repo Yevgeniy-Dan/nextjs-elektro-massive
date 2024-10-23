@@ -25,7 +25,7 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
 
     return (
       <Link
-        href={`/${subcategory.attributes?.slug}`}
+        href={`/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
         onClick={toggleCategory}
         key={subcategory.id}
         className="flex flex-row items-center space-x-4 p-6 hover:text-gray-700 hover:bg-white w-full"

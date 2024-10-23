@@ -21,6 +21,15 @@ export const SEARCH_PRODUCTS = gql`
               id
               attributes {
                 slug
+                categories {
+                  data {
+                    id
+                    attributes {
+                      slug
+                      name
+                    }
+                  }
+                }
               }
             }
           }

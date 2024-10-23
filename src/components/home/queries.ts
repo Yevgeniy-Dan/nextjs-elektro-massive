@@ -83,6 +83,15 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
               id
               attributes {
                 slug
+                categories {
+                  data {
+                    id
+                    attributes {
+                      slug
+                      name
+                    }
+                  }
+                }
               }
             }
           }
@@ -120,6 +129,15 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
               id
               attributes {
                 slug
+                categories {
+                  data {
+                    id
+                    attributes {
+                      slug
+                      name
+                    }
+                  }
+                }
               }
             }
           }
@@ -157,6 +175,15 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
               id
               attributes {
                 slug
+                categories {
+                  data {
+                    id
+                    attributes {
+                      slug
+                      name
+                    }
+                  }
+                }
               }
             }
           }

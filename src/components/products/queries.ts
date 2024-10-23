@@ -121,6 +121,15 @@ export const GET_FILTERED_PRODUCTS = gql`
             id
             attributes {
               slug
+              categories {
+                data {
+                  id
+                  attributes {
+                    slug
+                    name
+                  }
+                }
+              }
             }
           }
         }
@@ -213,6 +222,15 @@ export const GET_FAVORITE_PRODUCTS = gql`
                   id
                   attributes {
                     slug
+                    categories {
+                      data {
+                        id
+                        attributes {
+                          slug
+                          name
+                        }
+                      }
+                    }
                   }
                 }
               }

@@ -44,6 +44,10 @@ const FavoriteProductsList: React.FC<FavoriteProductsListProps> = ({ lng }) => {
                 params: f.product?.data?.attributes?.params,
                 slug: f.product?.data?.attributes?.slug ?? "",
               }}
+              categorySlug={
+                f.product?.data?.attributes?.subcategory?.data?.attributes
+                  ?.categories?.data[0].attributes?.slug ?? ""
+              }
               subcategoryId={
                 f.product?.data?.attributes?.subcategory?.data?.id ?? ""
               }

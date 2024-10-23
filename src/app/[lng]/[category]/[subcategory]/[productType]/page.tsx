@@ -159,6 +159,7 @@ const ProductTypePage: React.FC<ProductTypePageProps> = ({ params }) => {
 
   return (
     <ProductListingClient
+      categorySlug={categorySlug}
       subcategoryId={subcategory.id || ""}
       subcategoryTitle={subcategory.attributes?.title || ""}
       productTypeId={productType.id || ""}

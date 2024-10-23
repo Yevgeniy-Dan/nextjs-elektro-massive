@@ -164,6 +164,10 @@ const ProductGrid = ({
               key={product?.id}
               product={product}
               productSlug={product.slug ?? ""}
+              categorySlug={
+                product.subcategory?.data?.attributes?.categories?.data[0]
+                  .attributes?.slug ?? ""
+              }
               subcategoryId={subcategoryId}
               subcategorySlug={subcategorySlug}
               productTypeSlug={

@@ -74,6 +74,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
               params: attributes?.params,
               slug: attributes?.slug ?? "",
             }}
+            categorySlug={
+              attributes?.subcategory?.data?.attributes?.categories?.data[0]
+                .attributes?.slug ?? ""
+            }
             subcategoryId={attributes?.subcategory?.data?.id ?? ""}
             subcategorySlug={
               attributes?.subcategory?.data?.attributes?.slug ?? ""
