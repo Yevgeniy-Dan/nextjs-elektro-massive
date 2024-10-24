@@ -5,7 +5,8 @@
     { "href": "", "title": "Інтернет-магазин" },
     { "href": "about", "title": "Про нас" },
     { "href": "partnership", "title": "Співпраця" },
-    { "href": "payment-and-delivery", "title": "Де купити" }
+    { "href": "payment-and-delivery", "title": "Де купити" },
+    { "href": "public-offer", "title": "Публічний договір" }
   ],
   "workingHours": {
     "title": "Час роботи:",
