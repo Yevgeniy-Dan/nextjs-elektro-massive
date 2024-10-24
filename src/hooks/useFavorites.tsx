@@ -15,6 +15,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { useCookies } from "react-cookie";
+import { useMemo } from "react";
 
 export const useFavorites = () => {
   const [cookies] = useCookies(["i18next"]);
@@ -37,6 +38,10 @@ export const useFavorites = () => {
         }
       ),
   });
+
+  const totalCount = useMemo(() => {
+    return favorites?.userFavorites?.favoriteProducts?.length ?? 0;
+  }, [favorites?.userFavorites?.favoriteProducts]);
 
   const addToFavorites = useMutation<
     AddToFavoritesMutation,
@@ -107,6 +112,7 @@ export const useFavorites = () => {
     isError,
     error,
     favorites: favorites?.userFavorites?.favoriteProducts ?? [],
+    totalCount,
     handleAddToFavorites,
     handleRemoveFromFavorites,
   };

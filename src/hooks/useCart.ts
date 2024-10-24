@@ -201,6 +201,10 @@ export const useCart = () => {
     );
   }, [cartItems]);
 
+  const totalCount = useMemo(() => {
+    return cartItems?.reduce((total, item) => total + (item?.quantity || 0), 0);
+  }, [cartItems]);
+
   return {
     isModalOpen,
     cartItems,
@@ -212,5 +216,6 @@ export const useCart = () => {
     handleCloseModal,
     calculateTotal,
     calculateDiscountTotal,
+    totalCount,
   };
 };

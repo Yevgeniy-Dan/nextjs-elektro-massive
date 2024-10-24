@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 import { useTranslation } from "@/app/i18n/client";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface UserActionsProps {
   lng: string;
@@ -16,7 +17,12 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
   const { t } = useTranslation(lng, "header");
 
   const dispatch = useAppDispatch();
-  const { calculateTotal, calculateDiscountTotal } = useCart();
+  const {
+    calculateTotal,
+    calculateDiscountTotal,
+    totalCount: cartTotalCount,
+  } = useCart();
+  const { totalCount: favoritesTotalCount } = useFavorites();
 
   return (
     <div className="md:mb-3 lg:mb-0 flex items-center gap-x-4 text-white">
@@ -40,6 +46,11 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
               className="invert object-contain"
               priority
             />
+            {cartTotalCount > 0 && (
+              <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-elektro-red rounded-full z-30">
+                {cartTotalCount}
+              </span>
+            )}
           </div>
           <span className="hidden sm:inline text-base">
             {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
@@ -47,9 +58,14 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
         </button>
         <Link
           href="/favorites"
-          className="w-8 h-8 flex items-center justify-center"
+          className="relative w-8 h-8 flex items-center justify-center"
         >
           <Heart className="w-full h-full" />
+          {favoritesTotalCount > 0 && (
+            <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-elektro-red rounded-full z-30">
+              {favoritesTotalCount}
+            </span>
+          )}
         </Link>
         <div className="w-8 h-8">
           <UserDropdown lng={lng} />
