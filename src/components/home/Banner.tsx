@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import React from "react";
 import Slider from "react-slick";
-import { GET_BANNERS } from "./queries";
+import { GET_BANNERS } from "@/graphql/queries/common";
 import { GetBannersQuery } from "@/gql/graphql";
 
 const BannerPlaceholder = () => (
@@ -56,6 +56,7 @@ const Banner = () => {
                 className="w-full h-[15rem] md:h-[30rem] object-cover pointer-events-none"
                 width={1200}
                 height={600}
+                priority
               />
             </div>
           ))}

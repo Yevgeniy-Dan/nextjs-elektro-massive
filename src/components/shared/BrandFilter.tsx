@@ -71,8 +71,14 @@ const BrandFilter: React.FC<BrandFilterProps> = ({
                   <Image
                     src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${brand.attributes.logo.data.attributes.url}`}
                     alt={brand.attributes.title}
-                    layout="fill"
-                    objectFit="contain"
+                    fill
+                    sizes="(max-width: 640px) 50vw, 
+                       (max-width: 768px) 33.333vw,
+                       (max-width: 1024px) 25vw,
+                       (max-width: 1280px) 20vw,
+                       16.666vw"
+                    className="object-contain"
+                    priority
                   />
                 </div>
               </button>

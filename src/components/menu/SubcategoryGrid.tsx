@@ -41,6 +41,7 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
             width={80}
             height={80}
             className="rounded-sm object-cover"
+            priority
           />
         </div>
         <span className="flex-grow text-lg font-medium line-clamp-3 overflow-ellipsis break-words">

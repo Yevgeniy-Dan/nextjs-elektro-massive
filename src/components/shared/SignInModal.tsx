@@ -168,6 +168,7 @@ const SignInModal = () => {
               alt="Your Company Logo"
               width={120}
               height={120}
+              priority
             />
           </div>
           {/* PHONE NUMBER INPUT */}
@@ -186,6 +187,7 @@ const SignInModal = () => {
                     alt="Ukrainian flag"
                     width={20}
                     height={15}
+                    priority
                   />
                   <span className="ml-2 font-semibold">+380</span>
                 </div>

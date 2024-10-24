@@ -14,16 +14,13 @@ import {
   GET_AUTH_USER_CART_QUERY,
   REMOVE_FROM_CART_MUTATION,
   UPDATE_CART_ITEM_MUTATION,
-} from "@/components/cart/queries";
+} from "@/graphql/queries/cart";
 import {
-  CartInput,
   CartItem,
   GetUserCartQuery,
   GetUserCartQueryVariables,
   MutationRemoveFromCartArgs,
-  MutationUpdateCartArgs,
   RemoveFromCartInput,
-  UpdateCartItemInput,
   UpdateCartItemMutation,
   UpdateCartItemMutationVariables,
 } from "@/gql/graphql";

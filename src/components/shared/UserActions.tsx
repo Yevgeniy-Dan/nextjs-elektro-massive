@@ -35,9 +35,10 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
             <Image
               src="/bucket.png"
               alt="Bucket"
-              layout="fill"
-              objectFit="contain"
-              className="invert"
+              fill
+              sizes="32px"
+              className="invert object-contain"
+              priority
             />
           </div>
           <span className="hidden sm:inline text-base">

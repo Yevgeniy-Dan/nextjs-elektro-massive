@@ -6,7 +6,7 @@ import {
 } from "@/gql/graphql";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { SEARCH_PRODUCTS } from "./queries";
+import { SEARCH_PRODUCTS } from "@/graphql/queries/common";
 import request from "graphql-request";
 import CenteredSpinner from "./CenteredSpinner";
 import ErrorMessage from "./ErrorMessage";

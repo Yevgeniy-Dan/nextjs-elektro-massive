@@ -3,7 +3,7 @@ import Image from "next/image";
 import { FaChevronDown } from "react-icons/fa6";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
-import { GET_CATEGORY_MENU } from "../home/queries";
+import { GET_CATEGORY_MENU } from "@/graphql/queries/categories";
 import CategorySubmenu from "./CategorySubmenu";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Spinner from "../shared/Spinner";
@@ -86,13 +86,14 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
             {t("menuTitle")}
           </span>
         </div>
-        <div className="md:block">
+        <div className="relative md:block w-6 h-6">
           <Image
             src="/menu-hamburger.png"
             alt="Menu icon"
             className="h-6 w-6 invert hover:invert-[80%]"
-            width={24}
-            height={24}
+            fill
+            sizes="24px"
+            priority
           />
         </div>
       </button>
@@ -137,6 +138,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                         width={36}
                         height={36}
                         className="rounded-sm object-cover"
+                        priority
                       />
                     </div>
                     <div className="flex items-center justify-between w-full">

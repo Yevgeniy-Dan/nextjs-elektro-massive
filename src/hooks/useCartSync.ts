@@ -14,8 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 import { useCookies } from "react-cookie";
-import { toast } from "react-toastify";
-import { SYNC_CART_MUTATION } from "./queries";
+import { SYNC_CART_MUTATION } from "@/graphql/queries/cart";
 import request from "graphql-request";
 
 const syncCart = async (

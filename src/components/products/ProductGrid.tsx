@@ -1,8 +1,8 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import TopCard from "../home/TopCard";
 import Pagination from "../shared/Pagination";
-import { GET_FILTERED_PRODUCTS } from "./queries";
+import { GET_FILTERED_PRODUCTS } from "@/graphql/queries/products";
 import CenteredSpinner from "../shared/CenteredSpinner";
 import {
   GetFilteredProductsQuery,
@@ -16,6 +16,13 @@ import {
   setLastProductType,
   setLastSubcategoryId,
 } from "@/store/productGridSlice";
+import {
+  selectAppliedFilters,
+  selectCurrentPage,
+  selectLastFilters,
+  selectLastProductType,
+  selectLastSubcategoryId,
+} from "@/store/productGridSelectors";
 
 interface ProductGridProps {
   productTypeId?: string;
@@ -35,21 +42,23 @@ const ProductGrid = ({
   lng,
 }: ProductGridProps) => {
   const dispatch = useAppDispatch();
-  const currentPage = useAppSelector(
-    (state) => state.productGrid.currentPages[subcategoryId] || 1
-  );
-  const lastProductType = useAppSelector(
-    (state) => state.productGrid.lastProductTypes[subcategoryId]
-  );
-  const lastFilters = useAppSelector(
-    (state) => state.productGrid.lastFilters[subcategoryId]
-  );
-  const lastSubcategoryId = useAppSelector(
-    (state) => state.productGrid.lastSubcategoryId
+
+  const currentPage = useAppSelector((state) =>
+    selectCurrentPage(state, subcategoryId)
   );
 
-  const appliedFilters = useAppSelector(
-    (state) => state.productGrid.appliedFilters[subcategoryId] || {}
+  const lastProductType = useAppSelector((state) =>
+    selectLastProductType(state, subcategoryId)
+  );
+
+  const lastFilters = useAppSelector((state) =>
+    selectLastFilters(state, subcategoryId)
+  );
+
+  const lastSubcategoryId = useAppSelector(selectLastSubcategoryId);
+
+  const appliedFilters = useAppSelector((state) =>
+    selectAppliedFilters(state, subcategoryId)
   );
 
   const transformedFilters = useMemo(() => {

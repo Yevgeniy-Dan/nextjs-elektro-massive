@@ -2,12 +2,11 @@
 
 import React from "react";
 
-import { getAllOrdersByNumber } from "@/components/order/queries";
+import { getAllOrdersByNumber } from "@/graphql/queries/order";
 import request from "graphql-request";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import OrderConfirmation from "@/components/order/OrderConfirmation";
-import Spinner from "@/components/shared/Spinner";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 
 const ThankYouPage: React.FC = () => {

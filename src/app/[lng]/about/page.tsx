@@ -46,6 +46,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ params: { lng } }) => {
                   src="/about/about_company.png"
                   alt="Image 1"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className=" object-contain rounded-xl"
                 />
               </div>
@@ -60,6 +61,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ params: { lng } }) => {
                   src="/about/development.jpg"
                   alt="Image 1"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className=" object-cover rounded-xl"
                 />
               </div>
@@ -91,6 +93,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ params: { lng } }) => {
                 src="/about/achievments.jpg"
                 alt="Image 1"
                 fill
+                sizes="60vw"
                 className=" object-cover rounded-xl"
               />
             </div>
@@ -103,6 +106,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ params: { lng } }) => {
                 src="/about/innovations.jpg"
                 alt="Image 1"
                 fill
+                sizes="60vw"
                 className=" object-cover rounded-xl"
               />
             </div>

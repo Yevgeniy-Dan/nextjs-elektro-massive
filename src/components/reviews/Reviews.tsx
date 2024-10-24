@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CREATE_SHOP_REVIEW, GET_SHOP_REVIEWS } from "./queries";
+import { CREATE_SHOP_REVIEW, GET_SHOP_REVIEWS } from "@/graphql/queries/review";
 import {
   CreateShopReviewMutation,
   CreateShopReviewMutationVariables,

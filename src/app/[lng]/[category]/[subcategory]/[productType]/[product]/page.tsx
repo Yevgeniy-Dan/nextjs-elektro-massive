@@ -2,10 +2,8 @@
 
 import { ProductData } from "@/types/types";
 import React, { useEffect } from "react";
-import {
-  GET_PRODUCT_BY_SLUG,
-  GET_PRODUCT_TRANSLATED_SLUGS,
-} from "@/components/product/queries";
+import { GET_PRODUCT_TRANSLATED_SLUGS } from "@/graphql/queries/slugs";
+import { GET_PRODUCT_BY_SLUG } from "@/graphql/queries/product";
 import ProductDetails from "@/components/product/ProductDetails";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import {

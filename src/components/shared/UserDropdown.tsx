@@ -37,9 +37,10 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ lng }) => {
           <Image
             src="/avatar.png"
             alt="Avatar"
-            layout="fill"
-            objectFit="contain"
-            className="invert"
+            fill
+            sizes="32px"
+            className="invert object-contain"
+            priority
           />
         </div>
       </MenuButton>

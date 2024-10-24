@@ -33,7 +33,9 @@ const ProductTypeSelector: React.FC<ProductTypeSelectorProps> = ({
                   src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${type.attributes.icon.data.attributes.url}`}
                   alt={type.attributes.title}
                   fill
+                  sizes="128px"
                   className="object-contain"
+                  priority
                 />
               )}
             </div>

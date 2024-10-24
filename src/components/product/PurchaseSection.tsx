@@ -73,10 +73,6 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
           />{" "}
           Додати в обране
         </button>
-        <button className="flex items-center gap-2 text-gray-600">
-          <BarChart2 size={30} />
-          Додати в порівняння
-        </button>
       </div>
     </div>
   );

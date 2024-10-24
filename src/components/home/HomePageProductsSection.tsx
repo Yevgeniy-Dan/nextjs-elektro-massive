@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import React, { useEffect } from "react";
-import { GET_HOME_PAGE_PRODUCTS } from "./queries";
+import React from "react";
+import { GET_HOME_PAGE_PRODUCTS } from "@/graphql/queries/products";
 import {
   GetHomePageProductsQuery,
   GetHomePageProductsQueryVariables,

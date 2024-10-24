@@ -162,6 +162,7 @@ const ProductDetails: React.FC<{
                   alt={icon.alt}
                   width={36}
                   height={36}
+                  priority
                 />
               </button>
             ))}

@@ -89,6 +89,7 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
                         fill
                         sizes="(max-width: 224px) 100vw, 224px"
                         className="object-cover"
+                        priority
                       />
                     )}
                   </div>

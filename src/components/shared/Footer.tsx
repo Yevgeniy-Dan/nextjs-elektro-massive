@@ -43,7 +43,9 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                 src="/logo-footer.png"
                 alt="Elektro Massive Logo"
                 fill
+                sizes="(max-width: 640px) 128px, (max-width: 768px) 192px, 256px"
                 className="mb-4"
+                priority
               />
             </div>
           </div>
@@ -76,6 +78,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                   alt="Telegram icon"
                   width={48}
                   height={48}
+                  priority
                 />
               </Link>
               <Link
@@ -88,6 +91,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                   alt="Viber icon"
                   width={48}
                   height={48}
+                  priority
                 />
               </Link>
 
@@ -101,6 +105,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                   alt="TikTok icon"
                   width={48}
                   height={48}
+                  priority
                 />
               </Link>
               <Link
@@ -113,6 +118,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                   alt="Instagram icon"
                   width={48}
                   height={48}
+                  priority
                 />
               </Link>
             </div>

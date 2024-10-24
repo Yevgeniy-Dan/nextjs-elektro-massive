@@ -136,9 +136,10 @@ const TopCard: React.FC<ITopCardProps> = ({
         <Image
           src={`${product.image_link}`}
           alt="Product Image"
-          className="absolute top-0 left-0 w-full h-full"
-          layout="fill"
-          objectFit="cover"
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          priority
         />
         <div className="absolute top-2 right-2 flex gap-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Heart
@@ -164,6 +165,7 @@ const TopCard: React.FC<ITopCardProps> = ({
               className="h-6 w-6 cursor-pointer"
               width={32}
               height={32}
+              priority
             />
           </button>
         </div>
@@ -179,7 +181,9 @@ const TopCard: React.FC<ITopCardProps> = ({
               src={label === "new" ? "/new-product-label.png" : "/sale.png"}
               alt={label === "new" ? "new product label" : "sale product label"}
               fill
+              sizes="33vw"
               className="object-contain"
+              priority
             />
           </div>
         )}

@@ -8,7 +8,9 @@ const Logo = () => {
         src="/logo-label.png"
         alt="ElektroMassive Label"
         fill
+        sizes="(max-width: 768px) 192px, 256px"
         className="object-contain"
+        priority
       />
     </Link>
   );

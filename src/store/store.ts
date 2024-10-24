@@ -1,3 +1,5 @@
+import Symbol_observable from "symbol-observable";
+
 import { configureStore } from "@reduxjs/toolkit";
 import storeReducer from "./storeSlice";
 import signInModalReducer from "./signInModalSlice";
@@ -19,6 +21,12 @@ export const store = configureStore({
     signInModal: signInModalReducer,
     productGrid: persistedReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);

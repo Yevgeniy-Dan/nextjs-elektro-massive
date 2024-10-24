@@ -23,6 +23,7 @@ const WhyUsSection = () => {
               className="h-16 w-16 mx-auto mb-4 invert"
               width={64}
               height={64}
+              priority
             />
             <span className="text-sm sm:text-base">{feature.text}</span>
           </div>

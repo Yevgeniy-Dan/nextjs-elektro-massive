@@ -5,10 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import { request } from "graphql-request";
-import {
-  GET_SUBCATEGORY_BY_SLUG,
-  GET_SUBCATEGORY_TRANSLATED_SLUGS,
-} from "@/components/product/queries";
+import { GET_SUBCATEGORY_TRANSLATED_SLUGS } from "@/graphql/queries/slugs";
+import { GET_SUBCATEGORY_BY_SLUG } from "@/graphql/queries/subcategory";
 import { lngCookieName, prevLngCookieName } from "@/app/i18n/settings";
 import ProductListingClient from "@/components/products/ProductListingClient";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";

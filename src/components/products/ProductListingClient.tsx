@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@apollo/client";
 import ProductTypeSelector from "./ProductTypeSelector";
 
+import { GET_BRANDS } from "@/graphql/queries/common";
 import {
-  GET_BRANDS,
   GET_PRODUCT_TYPE_FILTERS,
   GET_PRODUCT_TYPES,
-} from "./queries";
+} from "@/graphql/queries/productType";
 import ProductFilterSection from "./ProductFilterSection";
 import ProductGrid from "./ProductGrid";
 import {
@@ -27,6 +27,7 @@ import { Filter, X } from "lucide-react";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Breadcrumbs from "../shared/Breadcrumbs";
 import BrandFilter from "../shared/BrandFilter";
+import { selectAppliedFiltersForSubcategory } from "@/store/productGridSelectors";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
@@ -54,7 +55,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   lng,
 }) => {
   const dispatch = useAppDispatch();
-  const pageSize = 5;
+  const pageSize = 40;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const customLabels: Record<string, string> = {
@@ -63,8 +64,8 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     [productTypeSlug || ""]: productTypeTitle || "",
   };
 
-  const appliedFilters = useAppSelector(
-    (state) => state.productGrid.appliedFilters[subcategoryId] || {}
+  const appliedFilters = useAppSelector((state) =>
+    selectAppliedFiltersForSubcategory(state, subcategoryId)
   );
 
   const { data: brandsData } = useQuery<GetBrandsQuery>(GET_BRANDS);
@@ -95,18 +96,21 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     setIsFilterOpen(false);
   }, []);
 
-  const handleBrandsSelect = (brandName: string) => {
-    const newFilters = { ...appliedFilters };
+  const handleBrandsSelect = useCallback(
+    (brandName: string) => {
+      const newFilters = { ...appliedFilters };
 
-    if (newFilters["Бренд"]?.includes(brandName)) {
-      newFilters["Бренд"] = newFilters["Бренд"].filter(
-        (brand) => brand !== brandName
-      );
-    } else {
-      newFilters["Бренд"] = [brandName];
-    }
-    dispatch(setAppliedFilters({ subcategoryId, filters: newFilters }));
-  };
+      if (newFilters["Бренд"]?.includes(brandName)) {
+        newFilters["Бренд"] = newFilters["Бренд"].filter(
+          (brand) => brand !== brandName
+        );
+      } else {
+        newFilters["Бренд"] = [brandName];
+      }
+      dispatch(setAppliedFilters({ subcategoryId, filters: newFilters }));
+    },
+    [appliedFilters, dispatch, subcategoryId]
+  );
 
   const filterPanelRef = useOutsideClick(handleOutsideClick);
 

@@ -1,11 +1,10 @@
 "use client";
 
-import { fallbackLng, Language } from "@/app/i18n/settings";
 import {
   ADD_TO_FAVORITES,
   GET_FAVORITE_PRODUCTS,
   REMOVE_FROM_FAVORITES,
-} from "@/components/products/queries";
+} from "@/graphql/queries/favorites";
 import {
   AddToFavoritesMutation,
   AddToFavoritesMutationVariables,

@@ -7,7 +7,7 @@ import { useSnapCarousel } from "react-snap-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 
 import { useQuery } from "@apollo/client";
-import { GET_CATEGORIES } from "./queries";
+import { GET_CATEGORIES } from "@/graphql/queries/categories";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { GetCategoriesQuery, GetCategoriesQueryVariables } from "@/gql/graphql";
 
@@ -96,8 +96,10 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ lng }) => {
                             alt={`${
                               category.attributes?.name || "Category"
                             } Image`}
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            sizes="(max-width: 768px) 160px, 224px"
+                            className="object-cover"
+                            priority
                           />
                         )}
                       </div>

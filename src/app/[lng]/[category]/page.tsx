@@ -8,12 +8,9 @@ import { request } from "graphql-request";
 
 import { lngCookieName, prevLngCookieName } from "@/app/i18n/settings";
 
-import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import CategoryListingClient from "@/components/category/CategoryListingClient";
-import {
-  GET_CATEGORY_BY_SLUG,
-  GET_CATEGORY_TRANSLATED_SLUGS,
-} from "@/components/category/queires";
+import { GET_CATEGORY_TRANSLATED_SLUGS } from "@/graphql/queries/slugs";
+import { GET_CATEGORY_BY_SLUG } from "@/graphql/queries/categories";
 import {
   GetCategoryBySlugQuery,
   GetCategoryBySlugQueryVariables,

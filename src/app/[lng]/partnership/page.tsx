@@ -134,6 +134,7 @@ const PartnershipPage: React.FC<PartnershipPageProps> = ({
                     alt={`trade-organizations Icon`}
                     className="h-64 w-64 mx-auto rounded-lg"
                     fill
+                    sizes="33.333vw"
                     objectFit="cover"
                   />
                 </div>
@@ -157,6 +158,7 @@ const PartnershipPage: React.FC<PartnershipPageProps> = ({
                     alt={`business-owner Icon`}
                     className="h-64 w-64 mx-auto rounded-lg"
                     fill
+                    sizes="(max-width: 768px) 33vw, 50vw"
                     objectFit="cover"
                   />
                 </div>
@@ -181,6 +183,7 @@ const PartnershipPage: React.FC<PartnershipPageProps> = ({
                     alt={`designers-and-design-bureaus Icon`}
                     className="h-64 w-64 mx-auto rounded-lg"
                     fill
+                    sizes="(max-width: 576px) 33vw, 192px"
                     objectFit="cover"
                   />
                 </div>

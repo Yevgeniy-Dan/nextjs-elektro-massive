@@ -8,7 +8,7 @@ import {
   GetShopReviewsQueryVariables,
 } from "@/gql/graphql";
 import ReviewCard from "./ReviewCard";
-import { GET_SHOP_REVIEWS } from "./queries";
+import { GET_SHOP_REVIEWS } from "@/graphql/queries/review";
 import Link from "next/link";
 import { useTranslation } from "@/app/i18n/client";
 

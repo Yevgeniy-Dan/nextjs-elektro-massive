@@ -66,10 +66,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
             key={image.id}
             src={image.link ?? ""}
             alt={title}
-            layout="fill"
-            objectFit="contain"
+            fill
+            sizes="100vw"
             priority={index === selectedIndex}
-            className={index === selectedIndex ? "opacity-100" : "opacity-0"}
+            className={`${index === selectedIndex ? "opacity-100" : "opacity-0"} object-contain`}
           />
         ))}
       </div>

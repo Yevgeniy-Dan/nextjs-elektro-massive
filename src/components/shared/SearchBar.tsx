@@ -61,6 +61,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ lng }) => {
               className="h-6 w-6 invert"
               width={32}
               height={32}
+              priority
             />
           </div>
         </button>

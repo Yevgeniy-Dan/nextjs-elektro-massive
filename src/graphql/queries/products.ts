@@ -1,31 +1,97 @@
 import { gql } from "@apollo/client";
 
-export const GET_CATEGORY_MENU = gql`
-  query CategoryMenu($locale: I18NLocaleCode!) {
-    categories(locale: $locale) {
+// DO NOT COMMENT OR DELETE
+// IT IS NEEDED FOR graphql-codegen
+export const GET_PRODUCTS = gql`
+  query GetProducts($pageSize: Int!, $locale: I18NLocaleCode!) {
+    products(pagination: { pageSize: $pageSize }, locale: $locale) {
       data {
         id
         attributes {
-          name
+          part_number
+          title
+          retail
+          currency
+          image_link
           slug
-          icon {
-            data {
-              attributes {
-                url
-              }
-            }
+          params
+          additional_images {
+            link
           }
-          subcategories(pagination: { limit: -1 }) {
+          subcategory {
             data {
               id
               attributes {
-                title
                 slug
-                icon {
-                  data {
-                    attributes {
-                      url
-                    }
+              }
+            }
+          }
+          product_types {
+            data {
+              id
+              attributes {
+                slug
+              }
+            }
+          }
+          discount
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FILTERED_PRODUCTS = gql`
+  query GetFilteredProducts(
+    $productTypeId: ID
+    $filters: [FilterInput!]
+    $cursor: String
+    $page: Int
+    $pageSize: Int
+    $subcategoryId: ID!
+    $locale: I18NLocaleCode!
+  ) {
+    filteredProducts(
+      productTypeId: $productTypeId
+      filters: $filters
+      cursor: $cursor
+      page: $page
+      pageSize: $pageSize
+      subcategoryId: $subcategoryId
+      locale: $locale
+    ) {
+      products {
+        id
+        title
+        part_number
+        retail
+        image_link
+        params
+        currency
+        additional_images {
+          link
+        }
+        discount
+        slug
+        product_types {
+          data {
+            id
+            attributes {
+              slug
+            }
+          }
+        }
+        subcategory {
+          data {
+            id
+            attributes {
+              slug
+              categories {
+                data {
+                  id
+                  attributes {
+                    slug
+                    name
                   }
                 }
               }
@@ -33,27 +99,10 @@ export const GET_CATEGORY_MENU = gql`
           }
         }
       }
-    }
-  }
-`;
-
-export const GET_CATEGORIES = gql`
-  query GetCategories($locale: I18NLocaleCode!) {
-    categories(locale: $locale) {
-      data {
-        id
-        attributes {
-          name
-          image {
-            data {
-              attributes {
-                url
-                previewUrl
-              }
-            }
-          }
-        }
-      }
+      nextCursor
+      pageCount
+      totalCount
+      currentPage
     }
   }
 `;
@@ -192,30 +241,6 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
               id
               attributes {
                 slug
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_BANNERS = gql`
-  query GetBanners {
-    banners(sort: "order:asc", filters: { isActive: { eq: true } }) {
-      data {
-        id
-        attributes {
-          title
-          altText
-          order
-          image {
-            data {
-              attributes {
-                url
-                width
-                height
               }
             }
           }
