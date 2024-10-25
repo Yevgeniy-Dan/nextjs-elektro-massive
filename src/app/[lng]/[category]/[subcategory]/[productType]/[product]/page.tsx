@@ -31,10 +31,13 @@ interface ProductPageProps {
 function ProductContainer({
   product,
   productTypeSlug,
-  lng,
+  categorySlug,
+  subcategorySlug,
 }: {
-  product: ProductData;
+  categorySlug: string;
+  subcategorySlug: string;
   productTypeSlug: string;
+  product: ProductData;
   lng: string;
 }) {
   if (!product || !product.attributes || !product.id) {
@@ -51,15 +54,21 @@ function ProductContainer({
         )?.id || ""
       }
       productTypeSlug={productTypeSlug}
-      subcategorySlug={
-        product.attributes.subcategory?.data?.attributes?.slug || ""
-      }
       productTypeTitle={
-        product?.attributes?.product_types?.data[0]?.attributes?.title || ""
+        product?.attributes?.product_types?.data.find(
+          (type) => type.attributes?.slug === productTypeSlug
+        )?.attributes?.title || ""
       }
+      subcategorySlug={subcategorySlug || ""}
       subcategoryTitle={
         product?.attributes?.subcategory?.data?.attributes?.title || ""
       }
+      categoryTitle={
+        product.attributes?.subcategory?.data?.attributes?.categories?.data.find(
+          (category) => category.attributes?.slug === categorySlug
+        )?.attributes?.name || ""
+      }
+      categorySlug={categorySlug}
     />
   );
 }
@@ -162,6 +171,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
 
   return (
     <ProductContainer
+      categorySlug={categorySlug}
+      subcategorySlug={params.subcategory}
       product={product}
       productTypeSlug={params.productType}
       lng={params.lng}

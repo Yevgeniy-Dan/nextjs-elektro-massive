@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@apollo/client";
 import ProductTypeSelector from "./ProductTypeSelector";
@@ -28,12 +28,14 @@ import useOutsideClick from "@/hooks/useOutsideClick";
 import Breadcrumbs from "../shared/Breadcrumbs";
 import BrandFilter from "../shared/BrandFilter";
 import { selectAppliedFiltersForSubcategory } from "@/store/productGridSelectors";
+import { useScrollToElement } from "@/hooks/useScrollToElement";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
 }
 
 interface ProductListingClientProps {
+  categoryTitle: string;
   categorySlug: string;
   subcategoryId: string;
   subcategoryTitle: string;
@@ -45,6 +47,7 @@ interface ProductListingClientProps {
 }
 
 const ProductListingClient: React.FC<ProductListingClientProps> = ({
+  categoryTitle,
   categorySlug,
   subcategoryId,
   subcategoryTitle,
@@ -54,12 +57,14 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   productTypeTitle,
   lng,
 }) => {
+  const productListingRef = useRef<HTMLDivElement>(null);
+  const { scrollToElement } = useScrollToElement();
   const dispatch = useAppDispatch();
   const pageSize = 40;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const customLabels: Record<string, string> = {
-    [categorySlug]: categorySlug,
+    [categorySlug]: categoryTitle,
     [subcategorySlug]: subcategoryTitle,
     [productTypeSlug || ""]: productTypeTitle || "",
   };
@@ -134,7 +139,10 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   }, [brandsData, filters]);
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:p-8 relative">
+    <div
+      className="max-w-7xl mx-auto p-4 sm:px-6 lg:p-8 relative"
+      ref={productListingRef}
+    >
       <Breadcrumbs customLabels={customLabels} />
       <ProductTypeSelector
         types={productTypesData?.productTypes?.data || []}
@@ -199,6 +207,9 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           productTypeSlug={productTypeSlug}
           subcategorySlug={subcategorySlug}
           pageSize={pageSize}
+          onScrollToUp={() => {
+            scrollToElement(productListingRef);
+          }}
           lng={lng}
         />
       </div>

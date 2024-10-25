@@ -2,6 +2,7 @@ import { SubcategoryData } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Breadcrumbs from "../shared/Breadcrumbs";
 
 interface CategoryListingClientProps {
   categoryId: string;
@@ -24,13 +25,16 @@ const PlaceHolderCard = () => (
 );
 
 const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
-  categoryId,
   categorySlug,
   categoryTitle,
   lng,
   subcategories,
   isLoading = false,
 }) => {
+  const customLabels: Record<string, string> = {
+    [categorySlug]: categoryTitle,
+  };
+
   const placeholders = Array(9)
     .fill(null)
     .map((_, index) => <PlaceHolderCard key={`placehodler-${index}`} />);
@@ -60,6 +64,7 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
 
   return (
     <div className="text-white my-10">
+      <Breadcrumbs customLabels={customLabels} />
       <div className="-ml-4 sm:-ml-8 md:-ml-12 lg:-ml-16 xl:ml-0 mb-10">
         <h2 className="bg-gradient-elektro-massive-horizontal text-white font-bold mb-2 pl-4 sm:pl-12 pr-28 py-5 rounded-r-3xl xl:rounded-full text-xl uppercase tracking-wide">
           {categoryTitle}

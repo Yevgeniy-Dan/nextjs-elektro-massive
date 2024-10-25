@@ -24,16 +24,20 @@ const ProductDetails: React.FC<{
   product: ProductAttributes;
   id: string;
   productTypeId: string;
+  categoryTitle: string;
   productTypeTitle: string;
   subcategoryTitle: string;
+  categorySlug: string;
   productTypeSlug: string;
   subcategorySlug: string;
 }> = ({
   product,
   id,
   productTypeId,
+  categorySlug,
   productTypeSlug,
   subcategorySlug,
+  categoryTitle,
   productTypeTitle,
   subcategoryTitle,
 }) => {
@@ -66,11 +70,12 @@ const ProductDetails: React.FC<{
   } = product;
 
   const customLabels = {
-    [slug]: title,
+    [categorySlug]: categoryTitle,
     [subcategorySlug]: subcategoryTitle,
     [productTypeSlug]: productTypeTitle,
+    [slug]: title,
   };
-
+  console.log(customLabels);
   const images: { id: string; link: string }[] = [
     { id: "main", link: image_link ?? "" },
     ...(additional_images

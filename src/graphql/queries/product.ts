@@ -61,6 +61,15 @@ export const GET_PRODUCT_BY_SLUG = gql`
               attributes {
                 slug
                 title
+                categories {
+                  data {
+                    id
+                    attributes {
+                      slug
+                      name
+                    }
+                  }
+                }
               }
             }
           }

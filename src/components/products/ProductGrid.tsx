@@ -1,5 +1,5 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import TopCard from "../home/TopCard";
 import Pagination from "../shared/Pagination";
 import { GET_FILTERED_PRODUCTS } from "@/graphql/queries/products";
@@ -23,6 +23,7 @@ import {
   selectLastProductType,
   selectLastSubcategoryId,
 } from "@/store/productGridSelectors";
+import { useScrollToElement } from "@/hooks/useScrollToElement";
 
 interface ProductGridProps {
   productTypeId?: string;
@@ -31,6 +32,7 @@ interface ProductGridProps {
   subcategoryId: string;
   subcategorySlug: string;
   lng: string;
+  onScrollToUp: () => void;
 }
 
 const ProductGrid = ({
@@ -40,6 +42,7 @@ const ProductGrid = ({
   subcategorySlug,
   productTypeSlug,
   lng,
+  onScrollToUp,
 }: ProductGridProps) => {
   const dispatch = useAppDispatch();
 
@@ -116,6 +119,7 @@ const ProductGrid = ({
   ]);
 
   const handlePageChange = (newPage: number) => {
+    onScrollToUp();
     dispatch(setCurrentPage({ subcategoryId, page: newPage }));
 
     fetchMore({
