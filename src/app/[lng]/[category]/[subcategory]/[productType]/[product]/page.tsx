@@ -140,13 +140,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
 
           // Find the matching category from the categories array
           const categories = subcategoryData.categories?.data || [];
-          const translatedCategory = categories.find(
-            (category) => category.attributes?.slug === categorySlug
-          );
 
-          if (!translatedCategory?.attributes?.slug) return null;
+          const newPath = `/${currentLng}/${categories[0].attributes?.slug}/${subcategoryData.slug}/${translatedProductType.slug}/${translatedProduct.slug}`;
 
-          const newPath = `/${currentLng}/${translatedCategory.attributes.slug}/${subcategoryData.slug}/${translatedProductType.slug}/${translatedProduct.slug}`;
           router.push(newPath);
         }
       }

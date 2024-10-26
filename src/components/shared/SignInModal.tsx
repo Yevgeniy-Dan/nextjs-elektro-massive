@@ -13,6 +13,7 @@ import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
 import CenteredSpinner from "./CenteredSpinner";
 import Spinner from "./Spinner";
+import { useTranslation } from "@/app/i18n/client";
 
 const phoneSchema = z.object({
   phone: z
@@ -21,7 +22,12 @@ const phoneSchema = z.object({
     .transform((val) => `+380${val.replace(/-/g, "")}`),
 });
 
-const SignInModal = () => {
+interface SignInModalProps {
+  lng: string;
+}
+
+const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
+  const { t } = useTranslation(lng, "common");
   const dispatch = useAppDispatch();
 
   const isOpen = useAppSelector((state) => state.signInModal.isOpen);
@@ -77,7 +83,7 @@ const SignInModal = () => {
       if (error instanceof z.ZodError) {
         setPhoneNumberError(error.errors[0].message);
       } else {
-        setOtpSignInError("Не вдалося надіслати OTP. Спробуйте ще раз.");
+        setOtpSignInError(`${t("signInModal.firstOtpError")}`);
         console.error("Error sending OTP: ", error);
       }
     } finally {
@@ -101,9 +107,7 @@ const SignInModal = () => {
         window.location.href = result.url;
       }
     } catch (error) {
-      setOtpSignInError(
-        "Не вдалося увійти. Перевірте введені дані та спробуйте ще раз."
-      );
+      setOtpSignInError(`${t("signInModal.secondOtpError")}`);
     } finally {
       setIsLoading(false);
     }
@@ -115,7 +119,7 @@ const SignInModal = () => {
         callbackUrl: redirectUrl || window.location.href,
       });
     } catch (error) {
-      setGoogleSignInError("Під час входу сталася помилка. Повторіть спробу.");
+      setGoogleSignInError(`${t("signInModal.googleSignInError")}`);
       console.error("Sign in in with Google: ", error);
     }
   };
@@ -149,7 +153,7 @@ const SignInModal = () => {
           {/* HEADER */}
           <div className="p-4 border-b">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold">Вхід</h2>
+              <h2 className="text-xl font-bold">{t("signInModal.title")}</h2>
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => handleClose()}
@@ -178,7 +182,7 @@ const SignInModal = () => {
                 htmlFor="phone"
                 className="block text-sm font-medium text-gray-700"
               >
-                Телефон
+                {t("signInModal.phoneInputTitle")}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -214,7 +218,7 @@ const SignInModal = () => {
                   onKeyDown={(e) => e.key === "Enter" && handleOtpSignIn()}
                   value={otp}
                   className="mt-4 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
-                  placeholder="Введіть код з SMS"
+                  placeholder={`${t("signInModal.enterSmsCode")}`}
                 />
                 {otpSignInError && (
                   <p className="mt-1 text-sm text-red-800">{otpSignInError}</p>
@@ -225,7 +229,7 @@ const SignInModal = () => {
                     className="text-blue-500 hover:underline focus:outline-none"
                     onClick={handleSendOtp}
                   >
-                    Повторно надіслати код
+                    {t("signInModal.resendCode")}
                   </button>
                 </div>
                 <button
@@ -236,7 +240,7 @@ const SignInModal = () => {
                   {isLoading ? (
                     <Spinner size={24} color="white" />
                   ) : (
-                    "Продовжити"
+                    `${t("signInModal.continue")}`
                   )}
                 </button>
               </>
@@ -249,14 +253,14 @@ const SignInModal = () => {
                 {isLoading ? (
                   <Spinner size={24} color="white" />
                 ) : (
-                  "Надіслати код"
+                  `${t("signInModal.sendCode")}`
                 )}
               </button>
             )}
 
             <div className="flex items-center justify-center">
               <div className="border-t border-gray-300 flex-grow mr-3"></div>
-              <p className="text-gray-500">або</p>
+              <p className="text-gray-500">{t("signInModal.or")}</p>
               <div className="border-t border-gray-300 flex-grow ml-3"></div>
             </div>
 

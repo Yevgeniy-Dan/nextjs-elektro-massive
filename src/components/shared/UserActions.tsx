@@ -8,6 +8,7 @@ import { Heart } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 import { useTranslation } from "@/app/i18n/client";
 import { useFavorites } from "@/hooks/useFavorites";
+import LanguageToggler from "./LanguageToggler";
 
 interface UserActionsProps {
   lng: string;
@@ -69,6 +70,9 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
         </Link>
         <div className="w-8 h-8">
           <UserDropdown lng={lng} />
+        </div>
+        <div className="shrink-0 text-gray-800">
+          <LanguageToggler lng={lng} />
         </div>
       </div>
     </div>

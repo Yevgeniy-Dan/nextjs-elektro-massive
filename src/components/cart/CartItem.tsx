@@ -15,7 +15,7 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
   return (
     <div key={item.id} className="flex items-center mb-4 border-b pb-2">
       <button
-        onClick={() => handleRemoveItem(item.product.id)}
+        onClick={() => handleRemoveItem(item.product)}
         className="text-red-800 hover:text-red-700 mr-2 flex-shrink-0"
       >
         <Trash2 size={20} />

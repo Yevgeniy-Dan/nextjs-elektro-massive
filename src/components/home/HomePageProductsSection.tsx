@@ -8,6 +8,7 @@ import {
   GetHomePageProductsQueryVariables,
 } from "@/gql/graphql";
 import TopCardCarousel from "./TopCardCarousel";
+import { useTranslation } from "@/app/i18n/client";
 
 interface HomePageProductsSectionProps {
   lng: string;
@@ -16,6 +17,8 @@ interface HomePageProductsSectionProps {
 const HomePageProductsSection: React.FC<HomePageProductsSectionProps> = ({
   lng,
 }) => {
+  const { t } = useTranslation(lng, "common");
+
   const { data, loading } = useQuery<
     GetHomePageProductsQuery,
     GetHomePageProductsQueryVariables
@@ -26,19 +29,19 @@ const HomePageProductsSection: React.FC<HomePageProductsSectionProps> = ({
   return (
     <>
       <TopCardCarousel
-        title="Популярне"
+        title={`${t("home.sections.top")}`}
         label="top"
         products={data?.topProducts?.data || []}
         isLoading={loading}
       />
       <TopCardCarousel
-        title="Акції"
+        title={`${t("home.sections.sale")}`}
         label="sale"
         products={data?.saleProducts?.data || []}
         isLoading={loading}
       />
       <TopCardCarousel
-        title="Гарячі новинки"
+        title={`${t("home.sections.new")}`}
         label="new"
         products={data?.newProducts?.data || []}
         isLoading={loading}

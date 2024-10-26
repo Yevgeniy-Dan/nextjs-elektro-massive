@@ -21,6 +21,8 @@ import {
   GetUserCartQueryVariables,
   MutationRemoveFromCartArgs,
   RemoveFromCartInput,
+  RemoveFromCartMutation,
+  RemoveFromCartMutationVariables,
   UpdateCartItemMutation,
   UpdateCartItemMutationVariables,
 } from "@/gql/graphql";
@@ -32,7 +34,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useCookies } from "react-cookie";
 
 export const useCart = () => {
@@ -62,7 +64,7 @@ export const useCart = () => {
 
         return response.userCart?.cart.cart_items;
       } else {
-        return getCartItemsFromLocaleStorage();
+        return getCartItemsFromLocaleStorage(currentLanguage);
       }
     },
     refetchOnMount: "always",
@@ -94,7 +96,8 @@ export const useCart = () => {
       } else {
         return updateCartItemInLocalStorage(
           variables.product,
-          variables.qtyChange
+          variables.qtyChange,
+          currentLanguage
         );
       }
     },
@@ -104,28 +107,33 @@ export const useCart = () => {
   });
 
   const removeFromCartMutation = useMutation<
-    MutationRemoveFromCartArgs,
+    RemoveFromCartMutation,
     Error,
-    RemoveFromCartInput
+    { product: CartItem["product"] }
   >({
     mutationFn: async (variables) => {
       if (status === "authenticated") {
-        return request(
+        return request<RemoveFromCartMutation, RemoveFromCartMutationVariables>(
           `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
           REMOVE_FROM_CART_MUTATION,
           {
-            input: { productId: variables.productId },
+            input: { productId: variables.product.id },
             locale: currentLanguage,
           }
         );
       } else {
-        removeCartItemFromLocalStorage(variables.productId);
+        removeCartItemFromLocalStorage(
+          variables.product.id,
+          variables.product,
+          currentLanguage
+        );
 
         return {
-          input: {
-            productId: variables.productId,
+          removeFromCart: {
+            cart: {
+              cart_items: [],
+            },
           },
-          locale: currentLanguage,
         };
       }
     },
@@ -160,9 +168,9 @@ export const useCart = () => {
     });
   };
 
-  const handleRemoveItem = (productId: string) => {
+  const handleRemoveItem = (product: CartItem["product"]) => {
     removeFromCartMutation.mutate({
-      productId,
+      product: product,
     });
   };
 

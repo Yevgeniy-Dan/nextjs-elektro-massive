@@ -28,11 +28,10 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
 
   return (
     <div className="relative flex items-center">
-      <Languages className="absolute left-2 w-5 h-5 pointer-events-none" />
       <select
         value={lng}
         onChange={handleLanguageChange}
-        className="pl-8 pr-3 py-2 border rounded appearance-none outline-none"
+        className="px-3 py-2 border rounded appearance-none outline-none"
       >
         {languages.map((lang) => (
           <option key={lang} value={lang}>

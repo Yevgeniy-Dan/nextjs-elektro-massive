@@ -14,6 +14,7 @@
     "secondPhone": "380 (97) 632 31 59 (Евгений)"
   },
   "userMenu": {
+    "login": "Войти",
     "logout": "Выйти"
   },
   "search": {

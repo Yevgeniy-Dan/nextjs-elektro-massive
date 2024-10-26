@@ -58,12 +58,12 @@ export const useSingInMergeCart = () => {
 
   useEffect(() => {
     if (status === "authenticated" && !hasSynced.current) {
-      const cartItems = getCartItemsFromLocaleStorage();
+      const cartItems = getCartItemsFromLocaleStorage(currentLanguage);
 
       mutation.mutate(cartItems);
       hasSynced.current = true;
     }
-  }, [status, mutation]);
+  }, [status, mutation, currentLanguage]);
 
   return mutation;
 };

@@ -1,10 +1,13 @@
 import { useCart } from "@/hooks/useCart";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useAppDispatch } from "@/store/hooks";
+import { openSignInModal } from "@/store/signInModalSlice";
 import { openModal } from "@/store/storeSlice";
 import { Heart } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 //TODO: change to CartItem type
@@ -42,6 +45,13 @@ const TopCard: React.FC<ITopCardProps> = ({
   label,
   product,
 }) => {
+  const { status } = useSession();
+  const pathname = usePathname();
+
+  const handleLogin = () => {
+    dispatch(openSignInModal(`${pathname}`));
+  };
+
   const { favorites, handleAddToFavorites, handleRemoveFromFavorites } =
     useFavorites();
   const isFavorite = favorites.some(
@@ -49,7 +59,9 @@ const TopCard: React.FC<ITopCardProps> = ({
   );
 
   const toggleFavorite = () => {
-    if (isFavorite) {
+    if (status === "unauthenticated") {
+      handleLogin();
+    } else if (isFavorite) {
       handleRemoveFromFavorites(product.id);
     } else {
       handleAddToFavorites(product.id, productTypeId);

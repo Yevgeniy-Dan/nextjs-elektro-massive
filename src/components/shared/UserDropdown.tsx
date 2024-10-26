@@ -68,7 +68,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ lng }) => {
               className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:bg-gray-200"
             >
               <LogIn className="size-4 fill-white/30" />
-              Увійти
+              {t("userMenu.login")}
             </button>
           </MenuItem>
         )}

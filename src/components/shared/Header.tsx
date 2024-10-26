@@ -7,7 +7,6 @@ import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import UserActions from "./UserActions";
 import SearchBar from "./SearchBar";
-import LanguageToggler from "./LanguageToggler";
 
 interface HeaderProps {
   lng: string;
@@ -32,9 +31,6 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
           <CategoryMenu lng={lng} />
 
           <SearchBar lng={lng} />
-        </div>
-        <div className="shrink-0">
-          <LanguageToggler lng={lng} />
         </div>
       </nav>
     </div>

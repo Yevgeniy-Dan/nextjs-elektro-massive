@@ -20,10 +20,11 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
   const { scrollToElement } = useScrollToElement();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showDelayedMenu, setShowDelayedMenu] = useState(false);
+
   const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
 
   const categoryRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const delayTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const setCategoryRef = useCallback(
     (el: HTMLDivElement | null, index: number) => {
@@ -54,18 +55,14 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
   };
 
   const handleMouseEnter = () => {
+    if (delayTimeout.current) clearTimeout(delayTimeout.current);
     setIsMenuOpen(true);
-    setShowDelayedMenu(true);
   };
 
   const handleMouseLeave = () => {
-    setShowDelayedMenu(false);
-
-    setTimeout(() => {
-      if (!showDelayedMenu) {
-        setIsMenuOpen(false);
-        setOpenSubmenu(null);
-      }
+    delayTimeout.current = setTimeout(() => {
+      setIsMenuOpen(false);
+      setOpenSubmenu(null);
     }, 300);
   };
 
@@ -76,7 +73,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
   const handleCategoryClick = (index: number) => {
     if (openSubmenu === index) {
       setOpenSubmenu(null);
-      // Скролл к началу меню при закрытии категории
+      // Scroll to top of menu when closing category
       scrollToElement(scrollRef);
     } else {
       setTimeout(() => {
@@ -92,6 +89,9 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
     if (!isMenuOpen) {
       setOpenSubmenu(null);
     }
+    return () => {
+      if (delayTimeout.current) clearTimeout(delayTimeout.current);
+    };
   }, [isMenuOpen]);
 
   return (

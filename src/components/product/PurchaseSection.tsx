@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Heart, BarChart2, ShoppingCart } from "lucide-react";
 import { ProductAttributes } from "@/types/types";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import { openSignInModal } from "@/store/signInModalSlice";
 
 interface PurchaseSectionProps {
   id: string;
@@ -16,15 +20,25 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
   onBuyClick,
   productTypeId,
 }) => {
+  const { status } = useSession();
+  const pathname = usePathname();
   const { retail } = product;
   const [quantity, setQuantity] = useState(1);
+
+  const dispatch = useAppDispatch();
+
+  const handleLogin = () => {
+    dispatch(openSignInModal(`${pathname}`));
+  };
 
   const { favorites, handleAddToFavorites, handleRemoveFromFavorites } =
     useFavorites();
   const isFavorite = favorites.some((fav) => fav.product?.data?.id === id);
 
   const toggleFavorite = () => {
-    if (isFavorite) {
+    if (status === "unauthenticated") {
+      handleLogin();
+    } else if (isFavorite) {
       handleRemoveFromFavorites(id);
     } else {
       handleAddToFavorites(id, productTypeId);

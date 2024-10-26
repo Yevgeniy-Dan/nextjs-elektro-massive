@@ -722,6 +722,7 @@ export type Mutation = {
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
   syncCartBySingIn?: Maybe<CartResponse>;
+  syncFavotitesBySignIn?: Maybe<FavoriteProductResponse>;
   updateBanner?: Maybe<BannerEntityResponse>;
   updateBrand?: Maybe<BrandEntityResponse>;
   updateCart?: Maybe<CartEntityResponse>;
@@ -1029,6 +1030,12 @@ export type MutationResetPasswordArgs = {
 
 export type MutationSyncCartBySingInArgs = {
   input: SyncCartInput;
+  locale: Scalars['I18NLocaleCode']['input'];
+};
+
+
+export type MutationSyncFavotitesBySignInArgs = {
+  input: Array<AddToFavoritesInput>;
   locale: Scalars['I18NLocaleCode']['input'];
 };
 
