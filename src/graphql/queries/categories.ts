@@ -1,8 +1,4 @@
 import { gql } from "@apollo/client";
-import {
-  CATEGORY_FRAGMENT,
-  CATEGORY_WITH_SUBCATEGORIES_FRAGMENT,
-} from "../fragments";
 
 export const GET_CATEGORY_MENU = gql`
   query CategoryMenu($locale: I18NLocaleCode!) {
@@ -49,12 +45,28 @@ export const GET_CATEGORIES = gql`
       data {
         id
         attributes {
-          ...CategoryFields
+          name
+          slug
+          icon {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
         }
       }
     }
   }
-  ${CATEGORY_FRAGMENT}
 `;
 
 export const GET_CATEGORY_BY_SLUG = gql`
@@ -63,10 +75,43 @@ export const GET_CATEGORY_BY_SLUG = gql`
       data {
         id
         attributes {
-          ...CategoryWithSubcategories
+          name
+          slug
+          icon {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          subcategories(pagination: { limit: -1 }) {
+            data {
+              id
+              attributes {
+                title
+                slug
+                icon {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
   }
-  ${CATEGORY_WITH_SUBCATEGORIES_FRAGMENT}
 `;

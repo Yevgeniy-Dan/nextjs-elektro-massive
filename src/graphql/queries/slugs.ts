@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import { CATEGORY_FRAGMENT } from "../fragments";
 
 export const GET_PRODUCT_TRANSLATED_SLUGS = gql`
   query GetTranslatedSlugs(
@@ -119,7 +118,24 @@ export const GET_CATEGORY_TRANSLATED_SLUGS = gql`
           localizations(filters: { locale: { eq: $targetLocale } }) {
             data {
               attributes {
-                ...CategoryFields
+                name
+                slug
+                icon {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
               }
             }
           }
@@ -127,7 +143,6 @@ export const GET_CATEGORY_TRANSLATED_SLUGS = gql`
       }
     }
   }
-  ${CATEGORY_FRAGMENT}
 `;
 
 export const GET_SUBCATEGORY_TRANSLATED_SLUGS = gql`
