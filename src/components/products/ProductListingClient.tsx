@@ -43,6 +43,7 @@ interface ProductListingClientProps {
   subcategorySlug: string;
   productTypeSlug?: string;
   productTypeTitle?: string;
+  subcategoryDescription?: string;
   lng: string;
 }
 
@@ -53,6 +54,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   subcategoryTitle,
   productTypeId,
   subcategorySlug,
+  subcategoryDescription,
   productTypeSlug,
   productTypeTitle,
   lng,
@@ -138,6 +140,10 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     );
   }, [brandsData, filters]);
 
+  const renderDescription = (desc: string) => (
+    <ReactMarkdown className="text-md">{desc}</ReactMarkdown>
+  );
+
   return (
     <div
       className="max-w-7xl mx-auto p-4 sm:px-6 lg:p-8 relative"
@@ -213,11 +219,10 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           lng={lng}
         />
       </div>
-      {productTypeId && (
-        <ReactMarkdown className="text-md">
-          {selectedProductType?.attributes?.description}
-        </ReactMarkdown>
-      )}
+      {subcategoryDescription
+        ? renderDescription(subcategoryDescription)
+        : productTypeId &&
+          renderDescription(selectedProductType?.attributes?.description || "")}
     </div>
   );
 };

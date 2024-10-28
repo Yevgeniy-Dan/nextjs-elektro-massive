@@ -22,6 +22,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const categoryRefs = useRef<Array<HTMLDivElement | null>>([]);
   const delayTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -32,6 +33,15 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
     },
     []
   );
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   const menuRef = useOutsideClick(() => {
     if (isMenuOpen) setIsMenuOpen(false);
@@ -71,17 +81,19 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
   };
 
   const handleCategoryClick = (index: number) => {
-    if (openSubmenu === index) {
-      setOpenSubmenu(null);
-      // Scroll to top of menu when closing category
-      scrollToElement(scrollRef);
-    } else {
-      setTimeout(() => {
-        setOpenSubmenu(index);
-        if (categoryRefs.current[index]) {
-          scrollToElement({ current: categoryRefs.current[index] });
-        }
-      }, 100);
+    if (isMobile) {
+      if (openSubmenu === index) {
+        setOpenSubmenu(null);
+        // Scroll to top of menu when closing category
+        scrollToElement(scrollRef);
+      } else {
+        setTimeout(() => {
+          setOpenSubmenu(index);
+          if (categoryRefs.current[index]) {
+            scrollToElement({ current: categoryRefs.current[index] });
+          }
+        }, 100);
+      }
     }
   };
 

@@ -124,6 +124,7 @@ const SubcategoryPage: React.FC<SubcategoryPageProps> = ({ params }) => {
       subcategoryId={subcategory.id}
       subcategorySlug={subcategorySlug}
       subcategoryTitle={subcategory.attributes?.title || ""}
+      subcategoryDescription={subcategory.attributes?.description || ""}
       lng={lng}
     />
   );

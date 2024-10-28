@@ -153,7 +153,7 @@ const TopCard: React.FC<ITopCardProps> = ({
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority
         />
-        <div className="absolute top-2 right-2 flex gap-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute top-2 right-2 flex gap-x-1 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Heart
             size={22}
             fill={isFavorite ? "red" : "none"}

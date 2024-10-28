@@ -14,8 +14,8 @@
   },
   "additionalLinks": [
     { "href": "payment-and-delivery", "title": "Оплата та доставка" },
-    { "href": "payment-and-delivery", "title": "Гарантії" },
-    { "href": "payment-and-delivery", "title": "Повернення товару" }
+    { "href": "guarantees-and-returns", "title": "Гарантії" },
+    { "href": "guarantees-and-returns", "title": "Повернення товару" }
   ],
   "contactUs": "Зв'язатися з нами:",
   "contacts": [

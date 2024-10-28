@@ -14,8 +14,8 @@
   },
   "additionalLinks": [
     { "href": "payment-and-delivery", "title": "Оплата и доставка" },
-    { "href": "payment-and-delivery", "title": "Гарантии" },
-    { "href": "payment-and-delivery", "title": "Возврат товара" }
+    { "href": "guarantees-and-returns", "title": "Гарантии" },
+    { "href": "guarantees-and-returns", "title": "Возврат товара" }
   ],
   "contactUs": "Связаться с нами:",
   "contacts": [
