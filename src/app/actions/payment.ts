@@ -11,16 +11,21 @@ import {
   Enum_Order_Deliverymethod,
   OrderInput,
 } from "@/gql/graphql";
-import axios from "axios";
 import { getClient } from "../../lib/apollo-client";
 import { OrderFormData } from "@/hooks/useOrderForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../utils/authOptions";
+import { cookies } from "next/headers";
+import { fallbackLng, lngCookieName } from "../i18n/settings";
 
 const LIQPAY_PUBLIC_KEY = process.env.LIQPAY_PUBLIC_KEY;
 const LIQPAY_PRIVATE_KEY = process.env.LIQPAY_PRIVATE_KEY;
 
 export async function buyAction(formData: FormData) {
+  const cookieStore = cookies();
+
+  const currentLanguage = cookieStore.get(lngCookieName)?.value || fallbackLng;
+
   // await new Promise<void>((resolve) => setTimeout(resolve, 4000));
 
   const rawFormData = Object.fromEntries(formData.entries());
@@ -111,7 +116,7 @@ export async function buyAction(formData: FormData) {
     } else {
       return {
         success: true,
-        redirectUrl: `${process.env.NEXT_PUBLIC_API_URL}/thankyou?orderNumber=${orderNumber}`,
+        redirectUrl: `${process.env.NEXT_PUBLIC_API_URL}/${currentLanguage}/thankyou?orderNumber=${orderNumber}`,
       };
     }
   } catch (error) {
@@ -145,8 +150,6 @@ type SaveOrderInput = OrderFormData & {
 const saveOrderToDatabase = async (order: SaveOrderInput) => {
   const session = await getServerSession(authOptions);
   const senderAddress = await getSenderAddress();
-
-  console.log("senderAddress: ", senderAddress);
 
   const input: OrderInput = {
     orderNumber: order.orderNumber,

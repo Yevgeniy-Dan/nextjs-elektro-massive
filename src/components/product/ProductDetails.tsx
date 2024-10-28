@@ -75,7 +75,7 @@ const ProductDetails: React.FC<{
     [productTypeSlug]: productTypeTitle,
     [slug]: title,
   };
-  console.log(customLabels);
+
   const images: { id: string; link: string }[] = [
     { id: "main", link: image_link ?? "" },
     ...(additional_images

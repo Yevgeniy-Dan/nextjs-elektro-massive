@@ -10,7 +10,13 @@ import { ExtendedFormProvider } from "@/hooks/extendedFormContext";
 import { OrderFormData, useOrderForm } from "@/hooks/useOrderForm";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 
-const CheckoutPage = () => {
+interface CheckoutPageProps {
+  params: {
+    lng: string;
+  };
+}
+
+const CheckoutPage: React.FC<CheckoutPageProps> = ({ params }) => {
   const methods = useOrderForm();
   const [activeSection, setActiveSection] = React.useState<number>(1);
   const [showError, setShowError] = useState<boolean>(false);
@@ -65,6 +71,7 @@ const CheckoutPage = () => {
           </div>
           <div className="lg:col-span-2">
             <Summary
+              lng={params.lng}
               onErrors={() => {
                 setShowError(true);
               }}

@@ -63,6 +63,23 @@ export const GET_CATEGORIES = gql`
               }
             }
           }
+          subcategories(pagination: { limit: -1 }) {
+            data {
+              id
+              attributes {
+                title
+                slug
+                icon {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

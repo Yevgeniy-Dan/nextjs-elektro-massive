@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { OrderAttributes } from "@/types/types";
 import {
   Enum_Order_Deliverymethod,
@@ -16,8 +16,13 @@ const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
 }) => {
   const { handleClearCart } = useCart();
 
+  const clearCartRef = useRef(false);
+
   useEffect(() => {
-    handleClearCart();
+    if (!clearCartRef.current) {
+      handleClearCart();
+      clearCartRef.current = true;
+    }
   }, [handleClearCart]);
 
   if (!order) {

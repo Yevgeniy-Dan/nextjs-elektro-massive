@@ -16,9 +16,10 @@ const DEBOUNCE_DELAY = 3000; // 3 seconds
 
 interface SummaryProps {
   onErrors: () => void;
+  lng: string;
 }
 
-const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
+const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
   const { cartItems, calculateTotal, calculateDiscountTotal } = useCart();
   const router = useRouter();
 
@@ -80,7 +81,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
   useEffect(() => {
     if (paymentStatusData) {
       if (paymentStatusData.status === "success") {
-        router.push(`/thankyou?orderNumber=${returnedOrderId}`);
+        router.push(`/${lng}/thankyou?orderNumber=${returnedOrderId}`);
       } else {
         showErrorToast(
           `Оплата не вдалася: ${
@@ -97,6 +98,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors }) => {
     }
   }, [
     cleanUpUrl,
+    lng,
     paymentStatusData,
     paymentStatusError,
     returnedOrderId,
