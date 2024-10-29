@@ -56,6 +56,9 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                 {item.title}
               </Link>
             ))}
+            <Link href="/privacy-policy" className="block mt-2">
+              Privacy Policy
+            </Link>
           </div>
           <div className="space-y-2">
             <h3 className="font-bold mb-2">{t("workingHours.title")}</h3>

@@ -33,7 +33,7 @@ interface INovaPoshtaMethodProperties {
   RecipientAddress?: string;
   ContactRecipient: string;
   RecipientsPhone: string;
-  OptionsSeat: Array<{
+  OptionsSeat?: Array<{
     volumetricVolume: string;
     volumetricWidth: string;
     volumetricLength: string;
@@ -196,7 +196,8 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     ServiceType: "WarehouseWarehouse",
     SeatsAmount: "1", // is responsible for the number of positions per EN.
     // SeatsAmount: optionsSeat.length.toString(),
-    Description: data.cartItems.map((c) => c.product.title).join(", "),
+    // Description: data.cartItems.map((c) => c.product.title).join(", "),
+    Description: "Товар", //TODO: add description
     Cost: Math.ceil(data.totalAmount).toString(),
     CitySender: await getSenderCityRef("Ізмаїл"),
     Sender: process.env.NOVA_POSHTA_SENDER_REF,
@@ -209,7 +210,7 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     RecipientAddress: data.warehouseRef,
     ContactRecipient: contactPersonRecipientRef,
     RecipientsPhone: data.phone,
-    OptionsSeat: [optionsSeat],
+    // OptionsSeat: [optionsSeat],
   };
 
   if (!Enum_Order_Paymentmethod.Card) {
