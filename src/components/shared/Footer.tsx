@@ -81,19 +81,6 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                   priority
                 />
               </Link>
-              <Link
-                href="viber://chat?number=+YourViberNumber"
-                className="text-white hover:text-gray-300  hover:opacity-75 transition-opacity"
-              >
-                <Image
-                  className="w-10 h-10"
-                  src="/viber.png"
-                  alt="Viber icon"
-                  width={48}
-                  height={48}
-                  priority
-                />
-              </Link>
 
               <Link
                 href="https://www.tiktok.com/@YourTikTokUsername"

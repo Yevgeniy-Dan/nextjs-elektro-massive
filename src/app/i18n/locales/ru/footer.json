@@ -6,7 +6,8 @@
     { "href": "about", "title": "О нас" },
     { "href": "partnership", "title": "Сотрудничество" },
     { "href": "payment-and-delivery", "title": "Где купить" },
-    { "href": "public-offer", "title": "Публичный договор" }
+    { "href": "public-offer", "title": "Публичный договор" },
+    { "href": "privacy-policy", "title": "Политика конфиденциальности" }
   ],
   "workingHours": {
     "title": "Время работы:",
