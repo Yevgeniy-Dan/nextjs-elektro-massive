@@ -7,7 +7,10 @@
     { "href": "partnership", "title": "Співпраця" },
     { "href": "payment-and-delivery", "title": "Де купити" },
     { "href": "public-offer", "title": "Публічний договір" },
-    { "href": "privacy-policy", "title": "Політика конфіденційності" }
+    {
+      "href": "privacy-policy",
+      "title": "Privacy Policy (Політика конфіденційності)"
+    }
   ],
   "workingHours": {
     "title": "Час роботи:",
