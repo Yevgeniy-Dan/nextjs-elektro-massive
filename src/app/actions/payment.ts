@@ -67,6 +67,7 @@ export async function buyAction(formData: FormData) {
       ...addressData,
       deliveryMethod: deliveryMethod,
       cartItems: cartItems,
+      totalAmount,
     });
 
     const orderNumber = shipmentNumber;

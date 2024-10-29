@@ -1,7 +1,7 @@
 "use server";
 
 import axios from "axios";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { calculateProductDimensions } from "../utils/novaPoshtaHeplers";
 import {
   CartItem,
@@ -11,6 +11,37 @@ import {
 
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const API_KEY = process.env.NOVA_POSHTA_API_KEY;
+
+interface INovaPoshtaMethodProperties {
+  PayerType: string;
+  PaymentMethod: string;
+  DateTime: string;
+  CargoType: string;
+  VolumeGeneral: string;
+  Weight: string;
+  ServiceType: string;
+  SeatsAmount: string;
+  Description: string;
+  Cost: string;
+  CitySender: string;
+  Sender: string;
+  SenderAddress: string;
+  ContactSender: string;
+  SendersPhone: string;
+  CityRecipient?: string;
+  Recipient: string;
+  RecipientAddress?: string;
+  ContactRecipient: string;
+  RecipientsPhone: string;
+  OptionsSeat: Array<{
+    volumetricVolume: string;
+    volumetricWidth: string;
+    volumetricLength: string;
+    volumetricHeight: string;
+    weight: string;
+  }>[];
+  AfterpaymentOnGoodsCost?: string;
+}
 
 interface NovaPoshtaApiResponse<T> {
   success: boolean;
@@ -52,6 +83,7 @@ interface IShipmentData {
   cityRef?: string;
   cartItems: CartItem[];
   deliveryMethod: Enum_Order_Deliverymethod;
+  totalAmount: number;
 }
 
 export async function getNovaPoshtaCities(search?: string) {
@@ -149,23 +181,23 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
 
   const contactSender = await getSenderCounterpartyContactPersons();
 
-  const { totalWeight, declaredValue, totalVolume } = await getProductsParams(
+  const { totalWeight, optionsSeat, totalVolume } = await getProductsParams(
     data.cartItems
   );
 
   //TODO: split the pacel by 30kg
-  const methodProperties = {
-    PayerType: "Sender",
-    PaymentMethod: "Cash", //TODO: CHANGE IT
-    DateTime: format(new Date(), "dd.MM.yyyy"), //TODO: NOT SURE. Дата відправки, завтра
+  const methodProperties: INovaPoshtaMethodProperties = {
+    PayerType: data.totalAmount >= 3000 ? "Sender" : "Recipient",
+    PaymentMethod: data.totalAmount >= 3000 ? "NonCash" : "Cash",
+    DateTime: format(addDays(new Date(), 1), "dd.MM.yyyy"),
     CargoType: "Parcel",
     VolumeGeneral: totalVolume.toFixed(4),
     Weight: totalWeight.toFixed(3),
     ServiceType: "WarehouseWarehouse",
-    SeatsAmount: "1", //TODO: NOT SURE
+    SeatsAmount: "1", // is responsible for the number of positions per EN.
     // SeatsAmount: optionsSeat.length.toString(),
-    Description: "Товар",
-    Cost: Math.ceil(declaredValue).toString(),
+    Description: data.cartItems.map((c) => c.product.title).join(", "),
+    Cost: Math.ceil(data.totalAmount).toString(),
     CitySender: await getSenderCityRef("Ізмаїл"),
     Sender: process.env.NOVA_POSHTA_SENDER_REF,
     // SenderAddress: senderAddress,
@@ -177,8 +209,14 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     RecipientAddress: data.warehouseRef,
     ContactRecipient: contactPersonRecipientRef,
     RecipientsPhone: data.phone,
-    // OptionsSeat: optionsSeat, //TODO: NOT SURE
+    OptionsSeat: [optionsSeat],
   };
+
+  if (!Enum_Order_Paymentmethod.Card) {
+    methodProperties.AfterpaymentOnGoodsCost = Math.ceil(
+      data.totalAmount
+    ).toString();
+  }
 
   const response = await axios.post<
     NovaPoshtaApiResponse<{ IntDocNumber: string }>
@@ -297,7 +335,7 @@ async function getSenderCounterpartyContactPersons(): Promise<ISenderContactPers
 export async function getProductsParams(cartItems: CartItem[]) {
   let totalWeight = 0;
   let totalVolume = 0;
-  let declaredValue = 0;
+
   const optionsSeat: Array<{
     volumetricVolume: string;
     volumetricWidth: string;
@@ -312,9 +350,6 @@ export async function getProductsParams(cartItems: CartItem[]) {
 
     totalWeight += weight * item.quantity;
     totalVolume += volume * item.quantity;
-    const itemValue =
-      (item.product.retail - (item.product.discount || 0)) * item.quantity;
-    declaredValue += itemValue;
 
     for (let i = 0; i < item.quantity; i++) {
       optionsSeat.push({
@@ -330,7 +365,6 @@ export async function getProductsParams(cartItems: CartItem[]) {
   return {
     totalWeight,
     totalVolume,
-    declaredValue,
     optionsSeat,
   };
 }
