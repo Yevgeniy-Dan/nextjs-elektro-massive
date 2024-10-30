@@ -122,7 +122,7 @@
 import { Enum_Order_Paymentmethod } from "@/gql/graphql";
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
 import { OrderFormData } from "@/hooks/useOrderForm";
-import { CreditCard, Truck } from "lucide-react";
+import { Check, CreditCard, Truck } from "lucide-react";
 import React from "react";
 
 const Payment: React.FC = () => {
@@ -131,8 +131,8 @@ const Payment: React.FC = () => {
   return (
     <section>
       <h2 className="text-lg font-semibold mb-2 flex items-center">
-        <span className="w-6 h-6 rounded-full bg-gradient-elektro-massive-horizontal text-white flex items-center justify-center mr-2">
-          3
+        <span className="w-6 h-6 rounded-full bg-green-500/80 text-white flex items-center justify-center mr-2">
+          <Check size={16} />
         </span>
         Оплата
       </h2>

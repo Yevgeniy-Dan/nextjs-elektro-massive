@@ -34,6 +34,7 @@ export const GET_BANNERS = gql`
             data {
               id
               attributes {
+                formats
                 url
                 width
                 height

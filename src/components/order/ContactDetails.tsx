@@ -2,7 +2,7 @@ import React from "react";
 import PhoneInput from "./PhoneInput";
 import { OrderFormData } from "@/hooks/useOrderForm";
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
-import { Edit, Phone, User } from "lucide-react";
+import { Check, Edit, Phone, User } from "lucide-react";
 
 interface ContactDetailsProps {
   isActive: boolean;
@@ -17,14 +17,20 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
 }) => {
   const {
     register,
-    formState: { errors, touchedFields },
+    formState: { errors },
     watch,
     setValue,
   } = useExtendedFormContext<OrderFormData>();
 
   const phoneNumber = watch("contactData.phone");
   const firstName = watch("contactData.firstName");
+  const secondName = watch("contactData.secondName");
   const lastName = watch("contactData.lastName");
+  const phone = watch("contactData.phone");
+
+  const isContactFilled = Boolean(firstName && secondName && lastName && phone);
+  const hasContactErrors =
+    errors.contactData && Object.keys(errors.contactData).length > 0;
 
   if (!isActive) {
     return (
@@ -37,8 +43,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
           <Edit size={18} />
         </button>
         <h2 className="text-lg font-semibold mb-2 flex items-center">
-          <span className="w-6 h-6 rounded-full bg-gradient-elektro-massive-horizontal text-white flex items-center justify-center mr-2">
-            1
+          <span
+            className={`w-6 h-6 rounded-full text-white flex items-center justify-center mr-2 ${
+              isContactFilled && !hasContactErrors
+                ? "bg-green-500/80"
+                : "bg-gradient-elektro-massive-horizontal"
+            }`}
+          >
+            {isContactFilled && !hasContactErrors ? <Check size={16} /> : "1"}
           </span>
           Контактні дані
         </h2>
@@ -48,7 +60,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
 
             {firstName && lastName
               ? `${firstName} ${lastName}`
-              : "Ім'я та прізвище не вказані"}
+              : "Ім'я та/або прізвище не вказані"}
           </p>
           <p className="flex items-center mt-1">
             <Phone size={16} className="mr-2" />
@@ -62,15 +74,20 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
   return (
     <section>
       <h2 className="text-lg font-semibold mb-2 flex items-center">
-        <span className="w-6 h-6 rounded-full bg-gradient-elektro-massive-horizontal text-white flex items-center justify-center mr-2">
-          1
+        <span
+          className={`w-6 h-6 rounded-full text-white flex items-center justify-center mr-2 ${
+            isContactFilled && !hasContactErrors
+              ? "bg-green-500/80"
+              : "bg-gradient-elektro-massive-horizontal"
+          }`}
+        >
+          {isContactFilled && !hasContactErrors ? <Check size={16} /> : "1"}
         </span>
         Контактні дані
       </h2>
       <div className="space-y-4">
         <PhoneInput
           register={register}
-          // error={showError("phone") ? errors.contactData?.phone : undefined}
           error={errors.contactData?.phone}
           value={phoneNumber}
           setValue={setValue}

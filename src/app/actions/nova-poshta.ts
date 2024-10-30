@@ -175,17 +175,25 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     return `SELF-PICKUP-${Date.now()}`;
   }
 
-  const senderAddress = await getSenderAddress();
   const { recipientRef, contactPersonRecipientRef } =
     await createRecipient(data);
 
   const contactSender = await getSenderCounterpartyContactPersons();
 
-  const { totalWeight, optionsSeat, totalVolume } = await getProductsParams(
-    data.cartItems
-  );
+  const {
+    totalWeight,
+    optionsSeat /*if you plan to create an EN with/to a post office*/,
+    totalVolume,
+  } = await getProductsParams(data.cartItems);
 
-  //TODO: split the pacel by 30kg
+  const description = data.cartItems.reduce((acc, item) => {
+    const itemDesc = `${item.product.title} (${item.quantity} шт.)`;
+    if ((acc + itemDesc).length <= 128) {
+      return acc ? `${acc}; ${itemDesc}` : itemDesc;
+    }
+    return acc;
+  }, "");
+
   const methodProperties: INovaPoshtaMethodProperties = {
     PayerType: data.totalAmount >= 3000 ? "Sender" : "Recipient",
     PaymentMethod: data.totalAmount >= 3000 ? "NonCash" : "Cash",
@@ -195,13 +203,10 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     Weight: totalWeight.toFixed(3),
     ServiceType: "WarehouseWarehouse",
     SeatsAmount: "1", // is responsible for the number of positions per EN.
-    // SeatsAmount: optionsSeat.length.toString(),
-    // Description: data.cartItems.map((c) => c.product.title).join(", "),
-    Description: "Товар", //TODO: add description
+    Description: description,
     Cost: Math.ceil(data.totalAmount).toString(),
     CitySender: await getSenderCityRef("Ізмаїл"),
     Sender: process.env.NOVA_POSHTA_SENDER_REF,
-    // SenderAddress: senderAddress,
     SenderAddress: "37de97e8-30c7-11ec-b7f0-b8830365bd14",
     ContactSender: contactSender.Ref,
     SendersPhone: contactSender.Phones,
@@ -210,7 +215,6 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     RecipientAddress: data.warehouseRef,
     ContactRecipient: contactPersonRecipientRef,
     RecipientsPhone: data.phone,
-    // OptionsSeat: [optionsSeat],
   };
 
   if (!Enum_Order_Paymentmethod.Card) {

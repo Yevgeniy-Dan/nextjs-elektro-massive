@@ -3,7 +3,7 @@ import React from "react";
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
 import { OrderFormData } from "@/hooks/useOrderForm";
 import Image from "next/image";
-import { Edit, Home, MapPin, Truck } from "lucide-react";
+import { Check, Edit, Home, MapPin, Truck } from "lucide-react";
 import { Enum_Order_Deliverymethod } from "@/gql/graphql";
 
 interface DeliveryProps {
@@ -31,8 +31,21 @@ const Delivery: React.FC<DeliveryProps> = ({
 
   const deliveryMethod = watch("deliveryMethod");
   const cityDescription = watch("addressData.cityDescription");
+  const warehouseDescription = watch("addressData.warehouseDescription");
   const warehouseRef = watch("addressData.warehouseRef");
+  const cityRef = watch("addressData.cityRef");
   const selectedWarehouse = warehouses.find((w) => w.Ref === warehouseRef);
+
+  const isDeliveryFilled =
+    (deliveryMethod === Enum_Order_Deliverymethod.NovaPoshta &&
+      Boolean(
+        cityRef && warehouseRef && cityDescription && warehouseDescription
+      )) ||
+    deliveryMethod === Enum_Order_Deliverymethod.SelfPickup;
+  const hasDeliveryErrors =
+    deliveryMethod === Enum_Order_Deliverymethod.NovaPoshta &&
+    errors.addressData &&
+    Object.keys(errors.addressData).length > 0;
 
   const handleDeliveryMethodChange = (method: Enum_Order_Deliverymethod) => {
     setValue("deliveryMethod", method);
@@ -56,8 +69,14 @@ const Delivery: React.FC<DeliveryProps> = ({
           <Edit size={18} />
         </button>
         <h2 className="text-lg font-semibold mb-2 flex items-center">
-          <span className="w-6 h-6 rounded-full bg-gradient-elektro-massive-horizontal text-white flex items-center justify-center mr-2">
-            2
+          <span
+            className={`w-6 h-6 rounded-full text-white flex items-center justify-center mr-2 ${
+              isDeliveryFilled && !hasDeliveryErrors
+                ? "bg-green-500/80"
+                : "bg-gradient-elektro-massive-horizontal"
+            }`}
+          >
+            {isDeliveryFilled && !hasDeliveryErrors ? <Check size={16} /> : "2"}
           </span>
           Доставка
         </h2>
@@ -99,8 +118,14 @@ const Delivery: React.FC<DeliveryProps> = ({
   return (
     <section>
       <h2 className="text-lg font-semibold mb-2 flex items-center">
-        <span className="w-6 h-6 rounded-full bg-gradient-elektro-massive-horizontal text-white flex items-center justify-center mr-2">
-          2
+        <span
+          className={`w-6 h-6 rounded-full text-white flex items-center justify-center mr-2 ${
+            isDeliveryFilled && !hasDeliveryErrors
+              ? "bg-green-500/80"
+              : "bg-gradient-elektro-massive-horizontal"
+          }`}
+        >
+          {isDeliveryFilled && !hasDeliveryErrors ? <Check size={16} /> : "2"}
         </span>
         Доставка
       </h2>

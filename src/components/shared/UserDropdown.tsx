@@ -33,7 +33,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ lng }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <MenuButton>
-        <div className="hover:text-gray-300 w-8 h-8 relative">
+        <div className="hover:text-gray-300 w-6 sm:w-8 h-6 sm:h-8 relative">
           <Image
             src="/avatar.png"
             alt="Avatar"

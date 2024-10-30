@@ -6,6 +6,7 @@ import React from "react";
 import Slider from "react-slick";
 import { GET_BANNERS } from "@/graphql/queries/common";
 import { GetBannersQuery } from "@/gql/graphql";
+import { BannerImage } from "@/types/types";
 
 const BannerPlaceholder = () => (
   <div className="rounded-t-2xl overflow-hidden">
@@ -30,6 +31,20 @@ const Banner = () => {
     arrows: false,
   };
 
+  const getResponsiveImage = (image: BannerImage) => {
+    const formats = image?.data?.attributes?.formats;
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+
+    if (formats?.small?.width < 500) {
+      return `${baseUrl}${formats.small.url}`;
+    } else if (formats?.medium?.width < 750) {
+      return `${baseUrl}${formats.medium.url}`;
+    } else if (formats?.large?.width < 1000) {
+      return `${baseUrl}${formats.large.url}`;
+    }
+    return `${baseUrl}${image.data?.attributes?.url}`;
+  };
+
   if (loading) {
     return (
       <div className="relative py-2">
@@ -46,20 +61,26 @@ const Banner = () => {
 
   return (
     <div className="relative py-2">
-      <div className="rounded-t-2xl overflow-x-hidden pb-8">
+      <div className="rounded-t-2xl overflow-x-hidden">
         <Slider {...settings}>
-          {banners.map((banner) => (
-            <div key={banner.id} className="rounded-t-2xl overflow-hidden">
-              <Image
-                src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${banner.attributes?.image?.data?.attributes?.url}`}
-                alt={banner.attributes?.altText || ""}
-                className="w-full h-[15rem] md:h-[30rem] object-cover pointer-events-none"
-                width={1200}
-                height={600}
-                priority
-              />
-            </div>
-          ))}
+          {banners.map((banner) => {
+            const image = banner.attributes?.image;
+            if (!image?.data?.attributes) return null;
+
+            return (
+              <div key={banner.id} className="rounded-t-2xl overflow-hidden">
+                <Image
+                  src={getResponsiveImage(image)}
+                  alt={banner.attributes?.altText || ""}
+                  sizes="(max-width: 500px) 500px, (max-width: 750px) 750px, (max-width: 1000px) 1000px, 1280px"
+                  className="w-full h-full object-contain"
+                  width={Number(image.data.attributes.width)}
+                  height={Number(image.data.attributes.height)}
+                  priority
+                />
+              </div>
+            );
+          })}
         </Slider>
       </div>
     </div>

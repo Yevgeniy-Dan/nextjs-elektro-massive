@@ -26,19 +26,19 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
   const { totalCount: favoritesTotalCount } = useFavorites();
 
   return (
-    <div className="md:mb-3 lg:mb-0 flex items-center gap-x-4 text-white">
+    <div className="md:mb-3 lg:mb-0 flex items-center gap-x-2 text-white">
       <Dropdown
         className="hidden md:flex bg-gray-800 text-white"
         title={`${t("supportService.title")}`}
         lng={lng}
         items={[]}
       />
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex justify-center items-center gap-1 sm:gap-2">
         <button
           className="flex items-center"
           onClick={() => dispatch(openModal())}
         >
-          <div className="w-8 h-8 relative mr-2">
+          <div className="w-6 sm:w-8 h-6 sm:h-8 relative mr-2">
             <Image
               src="/bucket.png"
               alt="Bucket"
@@ -57,9 +57,12 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
             {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
           </span>
         </button>
+        {/* <div className="flex items-center"> */}
+        <LanguageToggler lng={lng} />
+        {/* </div> */}
         <Link
           href="/favorites"
-          className="relative w-8 h-8 flex items-center justify-center"
+          className="relative w-6 sm:w-8 h-6 sm:h-8 flex items-center justify-center"
         >
           <Heart className="w-full h-full" />
           {favoritesTotalCount > 0 && (
@@ -68,11 +71,8 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
             </span>
           )}
         </Link>
-        <div className="w-8 h-8">
+        <div className="w-6 sm:w-8 h-6 sm:h-8">
           <UserDropdown lng={lng} />
-        </div>
-        <div className="shrink-0 text-gray-800">
-          <LanguageToggler lng={lng} />
         </div>
       </div>
     </div>

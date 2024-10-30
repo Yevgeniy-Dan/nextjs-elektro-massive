@@ -45,6 +45,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "elektromassivebucketproduction.s3.amazonaws.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "postimg.cc",
         pathname: "/**",
       },

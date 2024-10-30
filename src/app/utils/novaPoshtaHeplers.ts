@@ -14,9 +14,19 @@ export function calculateProductDimensions(product: Product): {
   let height = 10;
 
   if (params["Вага"]) {
-    const weightMatch = params["Вага"].match(/(\d+(\.\d+)?)/);
+    const weightStr = params["Вага"].toLowerCase();
+    const weightMatch = weightStr.match(/(\d+(\.\d+)?)\s*(г|кг|g|kg)?/);
+
     if (weightMatch) {
-      weight = parseFloat(weightMatch[1]) / 1000; // Convert grams to kg //TODO: is there gaurantee that always will be in grams?
+      const value = parseFloat(weightMatch[1]);
+      const unit = weightMatch[3];
+
+      // Convert to kg depending on the unit of measurement
+      if (!unit || unit === "г" || unit === "g") {
+        weight = value / 1000; // from grams to kg
+      } else if (unit === "кг" || unit === "kg") {
+        weight = value; // already in kg
+      }
     }
   }
 

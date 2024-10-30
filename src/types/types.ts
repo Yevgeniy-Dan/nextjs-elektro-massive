@@ -1,4 +1,5 @@
 import {
+  GetBannersQuery,
   GetHomePageProductsQuery,
   GetOrderByOrderNumberQuery,
   GetProductBySlugQuery,
@@ -45,3 +46,7 @@ export type HomePageProductEntity =
 export type ShopReview = NonNullable<
   NonNullable<GetShopReviewsQuery["shopReviews"]>["data"][number]
 >;
+
+export type BannerImage = NonNullable<
+  NonNullable<GetBannersQuery["banners"]>["data"][number]["attributes"]
+>["image"];

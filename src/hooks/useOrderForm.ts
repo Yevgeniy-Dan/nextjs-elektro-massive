@@ -99,7 +99,7 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
   const [cardType, setCardType] = useState("");
   const [cities, setCities] = useState<ICity[]>([]);
   const [warehouses, setWarehouses] = useState<IWarehouse[]>([]);
-  const [isOverweightOrder, setIsOverweightOrder] = useState(false);
+
   const { cartItems } = useCart();
 
   const methods = useForm<OrderFormData>({
@@ -118,7 +118,6 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
 
   const calculateTotalWeight = useCallback(async () => {
     const { totalWeight } = await getProductsParams(cartItems);
-    setIsOverweightOrder(totalWeight > WEIGHT_THRESHOLD);
     return totalWeight;
   }, [cartItems]);
 
