@@ -186,17 +186,18 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     totalVolume,
   } = await getProductsParams(data.cartItems);
 
-  const description = data.cartItems.reduce((acc, item) => {
-    const itemDesc = `${item.product.title} (${item.quantity} шт.)`;
-    if ((acc + itemDesc).length <= 128) {
-      return acc ? `${acc}; ${itemDesc}` : itemDesc;
-    }
-    return acc;
-  }, "");
+  const description =
+    data.cartItems.reduce((acc, item) => {
+      const itemDesc = `${item.product.title} (${item.quantity} шт.)`;
+      if ((acc + itemDesc).length <= 36) {
+        return acc ? `${acc}; ${itemDesc}` : itemDesc;
+      }
+      return acc;
+    }, "") || data.cartItems[0].product.title.slice(0, 36);
 
   const methodProperties: INovaPoshtaMethodProperties = {
     PayerType: data.totalAmount >= 3000 ? "Sender" : "Recipient",
-    PaymentMethod: data.totalAmount >= 3000 ? "NonCash" : "Cash",
+    PaymentMethod: "Cash",
     DateTime: format(addDays(new Date(), 1), "dd.MM.yyyy"),
     CargoType: "Parcel",
     VolumeGeneral: totalVolume.toFixed(4),
