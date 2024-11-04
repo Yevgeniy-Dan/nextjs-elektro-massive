@@ -24,6 +24,13 @@ export const config = {
 export function middleware(req: NextRequest) {
   console.log("Middleware called for path:", req.nextUrl.pathname);
 
+  if (req.nextUrl.pathname === "/sitemap.xml") {
+    return NextResponse.redirect(
+      "https://elektromassivebucketproduction.s3.amazonaws.com/sitemap/sitemap.xml",
+      301
+    );
+  }
+
   let lng;
   if (req.cookies.has(lngCookieName))
     lng = acceptLanguage.get(req.cookies.get(lngCookieName)?.value);
