@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://elektromassivebucketproduction.s3.amazonaws.com/sitemap/sitemap.xml
