@@ -72,7 +72,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
           <div className="flex flex-col-reverse sm:flex-col">
             <div className="flex flex-wrap justify-start items-center lg:grid lg:grid-cols-2  xl:flex lg:flex-nowrap gap-3 my-4">
               <Link
-                href="https://t.me/YourTelegramUsername"
+                href="https://t.me/elektromassive"
                 className="text-white hover:text-gray-300 hover:opacity-75 transition-opacity"
               >
                 <Image
@@ -86,7 +86,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
               </Link>
 
               <Link
-                href="https://www.tiktok.com/@YourTikTokUsername"
+                href="https://www.tiktok.com/@elektromassive"
                 className="text-white hover:text-gray-300  hover:opacity-75 transition-opacity"
               >
                 <Image
@@ -99,7 +99,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                 />
               </Link>
               <Link
-                href="https://www.instagram.com/YourInstagramUsername"
+                href="https://www.instagram.com/elektromassive"
                 className="text-white hover:text-gray-300  hover:opacity-75 transition-opacity"
               >
                 <Image

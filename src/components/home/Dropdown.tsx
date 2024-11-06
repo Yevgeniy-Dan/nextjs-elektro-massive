@@ -41,7 +41,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           </p>
           <div className="space-y-3">
             <Link
-              href={`viber://chat?number=${process.env.SUPPORT_VIBER_PHONE_NUMBER}`}
+              href={`viber://chat?number=+380964992448`}
               className="flex items-center"
             >
               <Image
