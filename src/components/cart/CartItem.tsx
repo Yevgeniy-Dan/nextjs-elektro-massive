@@ -36,10 +36,6 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
         <p className="font-semibold mb-2">{item.product.title}</p>
 
         <div className="flex items-center justify-around">
-          <div className="flex-1">
-            <span>{item.product.retail.toFixed(2)} грн</span>
-          </div>
-
           <QuantityAdjuster
             quantity={item.quantity}
             onQuantityChange={(qtyChange) => handleUpdateItem(item, qtyChange)}

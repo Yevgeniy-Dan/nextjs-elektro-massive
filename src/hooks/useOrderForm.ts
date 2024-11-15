@@ -189,14 +189,14 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
       const warehouseData = await getNovaPoshtaWarehouses(city.Ref);
       const totalWeight = await calculateTotalWeight();
 
-      if (totalWeight > WEIGHT_THRESHOLD) {
-        const filteredWarehouses = warehouseData.filter(
-          (warehouse) => warehouse.TypeOfWarehouse === CARGO_WAREHOUSE_REF
-        );
-        setWarehouses(filteredWarehouses);
-      } else {
-        setWarehouses(warehouseData);
-      }
+      // if (totalWeight > WEIGHT_THRESHOLD) {
+      //   const filteredWarehouses = warehouseData.filter(
+      //     (warehouse) => warehouse.TypeOfWarehouse === CARGO_WAREHOUSE_REF
+      //   );
+      //   setWarehouses(filteredWarehouses);
+      // } else {
+      setWarehouses(warehouseData);
+      // }
     } catch (err) {
       console.error("Error fetching warehouses:", err);
       setWarehouses([]);
