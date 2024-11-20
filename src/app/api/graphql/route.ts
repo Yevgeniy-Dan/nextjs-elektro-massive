@@ -27,7 +27,19 @@ export async function POST(request: Request) {
     });
 
     if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+      if (res.status === 401) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
+      return NextResponse.json(
+        {
+          error: `Error ${res.statusText}`,
+        },
+
+        {
+          status: res.status,
+        }
+      );
     }
 
     const data = await res.json();
