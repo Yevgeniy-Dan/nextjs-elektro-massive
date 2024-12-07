@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import { request } from "graphql-request";
 import { GET_SUBCATEGORY_TRANSLATED_SLUGS } from "@/graphql/queries/slugs";
@@ -111,8 +111,7 @@ const SubcategoryPage: React.FC<SubcategoryPageProps> = ({ params }) => {
   const subcategory = subcategoryData?.subcategories?.data[0];
 
   if (!subcategory || !subcategory.id) {
-    //TODO: maybe should be Not Found
-    return <CenteredSpinner />;
+    notFound();
   }
 
   return (

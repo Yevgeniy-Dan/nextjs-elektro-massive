@@ -9,12 +9,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 // acceptLanguage.languages(languages);
 
-// export const config = {
-//   matcher: [
-//     "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)",
-//   ],
-// };
-
 export const config = {
   matcher: [
     "/((?!api|_next/static|_next/image|assets|favicon.ico|robots.txt|sw.js|site.webmanifest|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\jpeg$).*)",
@@ -31,19 +25,19 @@ export function middleware(req: NextRequest) {
     );
   }
 
-  // Always redirect to Ukrainian version if not already there
   if (
-    !req.nextUrl.pathname.startsWith("/uk") &&
-    !req.nextUrl.pathname.startsWith("/_next")
+    req.nextUrl.pathname === "/" ||
+    (!req.nextUrl.pathname.startsWith("/uk/") &&
+      !req.nextUrl.pathname.startsWith("/ru/") &&
+      !req.nextUrl.pathname.startsWith("/_next"))
   ) {
-    // Remove /ru/ from path if present
-    const pathWithoutLang = req.nextUrl.pathname.replace(/^\/ru/, "");
-    return NextResponse.redirect(new URL(`/uk${pathWithoutLang}`, req.url));
+    return NextResponse.rewrite(new URL(`/uk${req.nextUrl.pathname}`, req.url));
   }
 
   return NextResponse.next();
 
-  //for russian also
+  //TODO: DO NOT DELETE THE CODE BELOW
+  // IN FUTURE IT WILL BE POSSIBLE TO CHANGE LANGUAGE
   // let lng;
   // if (req.cookies.has(lngCookieName))
   //   lng = acceptLanguage.get(req.cookies.get(lngCookieName)?.value);

@@ -23,7 +23,9 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "gradient-elektro-massive-horizontal":
           "linear-gradient(to right, #990000, #663333, #333333)",
-        "gradient-elektro-massive-vertical":
+        "primary-gradient-elektro-massive-vertical":
+          "linear-gradient(to bottom, #990000, #663333, #333333)",
+        "secondary-gradient-elektro-massive-vertical":
           "linear-gradient(to bottom, #663333, #5A3449, #343165)",
         "secondary-gradient-elektro-massive-horizontal":
           "linear-gradient(to right, #00EF53, #00C83A, #00BE21)",

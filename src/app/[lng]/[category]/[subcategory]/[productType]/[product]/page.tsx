@@ -12,7 +12,7 @@ import {
   GetTranslatedSlugsQuery,
   GetTranslatedSlugsQueryVariables,
 } from "@/gql/graphql";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import { lngCookieName, prevLngCookieName } from "@/app/i18n/settings";
 import { useQuery } from "@tanstack/react-query";
@@ -160,8 +160,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
   }
 
   if (!productData?.products?.data[0]) {
-    //TODO: maybe should be Not Found
-    return <CenteredSpinner />;
+    notFound();
   }
   const product = productData.products.data[0] as ProductData;
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import { request } from "graphql-request";
 
@@ -17,6 +17,7 @@ import {
   GetCategoryTranslatedSlugsQuery,
   GetCategoryTranslatedSlugsQueryVariables,
 } from "@/gql/graphql";
+import Head from "next/head";
 
 interface CategoryPageProps {
   params: {
@@ -111,28 +112,43 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ params }) => {
   const category = categoryData?.categories?.data[0];
 
   if (!category || !category.id) {
-    // TODO: maybe should be Not Found
-    return (
-      <CategoryListingClient
-        categoryId=""
-        categorySlug={categorySlug}
-        categoryTitle="Loading..."
-        lng={lng}
-        subcategories={[]}
-        isLoading={true}
-      />
-    );
+    notFound();
   }
 
   return (
-    <CategoryListingClient
-      categoryId={category.id}
-      categorySlug={categorySlug}
-      categoryTitle={category.attributes?.name || ""}
-      lng={lng}
-      subcategories={category.attributes?.subcategories?.data || []}
-      isLoading={false}
-    />
+    <>
+      {/* TODO: for multilangual SEO 
+      <Head>
+        <link
+          rel="canonical"
+          href={`https://elektromassive.com/${categorySlug}`} // canonical URL lead to Ukrainian version
+        />
+        <link
+          rel="alternate"
+          hrefLang="uk"
+          href={`https://elektromassive.com/${categorySlug}`} // without uk/
+        />
+        <link
+          rel="alternate"
+          hrefLang="ru"
+          href={`https://elektromassive.com/ru/${categorySlug}`}
+        />
+        <link
+          rel="alternate"
+          hrefLang="x-default"
+          href={`https://elektromassive.com/${categorySlug}`} // without uk/
+        />
+      </Head>
+      */}
+      <CategoryListingClient
+        categoryId={category.id}
+        categorySlug={categorySlug}
+        categoryTitle={category.attributes?.name || ""}
+        lng={lng}
+        subcategories={category.attributes?.subcategories?.data || []}
+        isLoading={false}
+      />
+    </>
   );
 };
 
