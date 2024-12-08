@@ -36,11 +36,17 @@ const CartItemsCarousel: React.FC<CartItemsCarouselProps> = ({ cartItems }) => {
   }, [emblaApi, onSelect]);
 
   const scrollPrev = useCallback(
-    () => emblaApi && emblaApi.scrollPrev(),
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      emblaApi && emblaApi.scrollPrev();
+    },
     [emblaApi]
   );
   const scrollNext = useCallback(
-    () => emblaApi && emblaApi.scrollNext(),
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      emblaApi && emblaApi.scrollNext();
+    },
     [emblaApi]
   );
 

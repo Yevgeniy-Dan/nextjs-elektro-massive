@@ -1,5 +1,6 @@
 import {
   GetBannersQuery,
+  GetBlogPostsQuery,
   GetHomePageProductsQuery,
   GetOrderByOrderNumberQuery,
   GetProductBySlugQuery,
@@ -50,3 +51,11 @@ export type ShopReview = NonNullable<
 export type BannerImage = NonNullable<
   NonNullable<GetBannersQuery["banners"]>["data"][number]["attributes"]
 >["image"];
+
+export type BlogMainImage = NonNullable<
+  NonNullable<GetBlogPostsQuery["blogPosts"]>["data"][number]["attributes"]
+>["image"];
+
+export type BlogPost = NonNullable<
+  NonNullable<GetBlogPostsQuery["blogPosts"]>["data"]
+>[number];
