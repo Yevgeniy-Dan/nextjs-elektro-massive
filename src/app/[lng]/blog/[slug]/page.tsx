@@ -1,40 +1,12 @@
-import { getClient } from "@/lib/apollo-client";
 import BlogPostCard from "../BlogPostCard";
-import {
-  GetBlogPostsBySlugQuery,
-  GetBlogPostsBySlugQueryVariables,
-} from "@/gql/graphql";
-import { getBlogPosts } from "../page";
+
 import ReactMarkdown from "react-markdown";
 import { notFound } from "next/navigation";
-import { GET_BLOG_POST_BY_SLUG } from "@/graphql/queries/blogPost";
 import { BlogArticleBreadcrumbs } from "../BlogBreadcrumbs";
+import { getBlogPostBySlug } from "../actions";
 
-export async function getBlogPostBySlug(slug: string, lng: string) {
-  try {
-    const [postResponse, relatedPostsResponse] = await Promise.all([
-      getClient().query<
-        GetBlogPostsBySlugQuery,
-        GetBlogPostsBySlugQueryVariables
-      >({
-        query: GET_BLOG_POST_BY_SLUG,
-        variables: {
-          slug,
-          locale: lng,
-        },
-      }),
-      getBlogPosts(1, 10),
-    ]);
-
-    return {
-      post: postResponse.data.blogPosts?.data[0] || null,
-      relatedPosts: relatedPostsResponse.posts || [],
-    };
-  } catch (error) {
-    console.error("Error fetching blog post:", error);
-    return { post: null, relatedPosts: [] };
-  }
-}
+export const dynamic = "force-static";
+export const revalidate = 3600;
 
 export default async function BlogPost({
   params: { slug, lng },

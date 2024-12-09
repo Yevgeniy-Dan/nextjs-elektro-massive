@@ -1,38 +1,13 @@
-import { GetBlogPostsQuery, GetBlogPostsQueryVariables } from "@/gql/graphql";
-import { GET_BLOG_POSTS } from "@/graphql/queries/blogPost";
-import { getClient } from "@/lib/apollo-client";
 import Image from "next/image";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import PaginationServerComponent from "./Pagination";
 import { BlogMainImage } from "@/types/types";
 import BlogBreadcrumbs from "./BlogBreadcrumbs";
+import { getBlogPosts } from "./actions";
 
+export const dynamic = "force-static";
 export const revalidate = 3600;
-
-export async function getBlogPosts(page: number = 1, pageSize: number = 20) {
-  try {
-    const { data } = await getClient().query<
-      GetBlogPostsQuery,
-      GetBlogPostsQueryVariables
-    >({
-      query: GET_BLOG_POSTS,
-      variables: {
-        locale: "uk",
-        page,
-        pageSize,
-      },
-    });
-
-    return {
-      posts: data.blogPosts?.data || [],
-      pagination: data.blogPosts?.meta.pagination,
-    };
-  } catch (error) {
-    console.error("Error fetching blog posts:", error);
-    return { posts: [], pagination: null };
-  }
-}
 
 const getResponsiveImage = (image: BlogMainImage) => {
   const formats = image?.data?.attributes?.formats;
