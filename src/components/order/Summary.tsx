@@ -6,7 +6,6 @@ import CartItemsCarousel from "./CartItemsCarousel";
 import { buyAction } from "@/app/actions";
 import { OrderFormData } from "@/hooks/useOrderForm";
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
-import { useFormStatus } from "react-dom";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import Spinner from "../shared/Spinner";
@@ -31,7 +30,6 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
   } = useExtendedFormContext<OrderFormData>();
 
   const { formState } = useExtendedFormContext<OrderFormData>();
-  const { pending } = useFormStatus();
 
   const searchParams = useSearchParams();
 
@@ -193,13 +191,11 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
         <button
           onClick={handleBuyClick}
           disabled={
-            isSubmitting ||
-            pending ||
-            calculateTotal - calculateDiscountTotal === 0
+            isSubmitting || calculateTotal - calculateDiscountTotal === 0
           }
           className="w-full mt-4 bg-green-500 text-white py-3 rounded-md font-semibold hover:bg-green-600 transition-colors"
         >
-          {isSubmitting || pending ? "Обробка" : "Купити"}
+          {isSubmitting ? "Обробка" : "Купити"}
         </button>
 
         <p className="text-xs text-gray-500 mt-2">

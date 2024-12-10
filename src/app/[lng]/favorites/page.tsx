@@ -11,7 +11,7 @@ interface FavoritesPageProps {
   };
 }
 
-const FavoritesPage: React.FC<FavoritesPageProps> = async ({ params }) => {
+const FavoritesPage = async ({ params }: FavoritesPageProps) => {
   return (
     <Suspense fallback={<CenteredSpinner />}>
       <FavoriteProductsList lng={params.lng} />

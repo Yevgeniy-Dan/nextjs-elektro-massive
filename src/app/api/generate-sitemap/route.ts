@@ -69,6 +69,12 @@ export async function POST() {
 }
 
 const uploadSitemapToS3 = async (sitemapContent: string) => {
+  if (!process.env.AWS_BUCKET_NAME) {
+    throw new Error(
+      "AWS_BUCKET_NAME is not defined in the environment variables."
+    );
+  }
+
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: `sitemap.xml`,
