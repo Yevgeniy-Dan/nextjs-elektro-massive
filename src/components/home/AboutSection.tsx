@@ -24,7 +24,7 @@ const AboutSection = () => {
           </p>
           <div className="relative w-2/5 -my-2 rounded-xl">
             <Image
-              src="https://elektromassivebucket.s3.amazonaws.com/shared/main_page_1.jpg"
+              src={`https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/shared/main_page_1.jpg`}
               alt="Image 1"
               fill
               sizes="(max-width: 640px) 40vw, (max-width: 1024px) 40vw"
@@ -42,7 +42,7 @@ const AboutSection = () => {
         <div className="flex lg:hidden relative mt-10 -mx-8 sm:-mx-10  md:-mx-12 h-80 sm:h-64">
           <div className="relative w-2/5 -my-2 rounded-xl">
             <Image
-              src="https://elektromassivebucket.s3.amazonaws.com/shared/main_page_2.jpg"
+              src={`https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/shared/main_page_2.jpg`}
               alt="Image 1"
               fill
               sizes="(max-width: 1024px) 40vw"
@@ -68,7 +68,7 @@ const AboutSection = () => {
           </p>
           <div className="relative w-2/5 -my-2 rounded-xl">
             <Image
-              src="https://elektromassivebucket.s3.amazonaws.com/shared/main_page_3.png"
+              src={`https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/shared/main_page_3.png`}
               alt="Image 1"
               fill
               sizes="(max-width: 1024px) 40vw"
@@ -86,7 +86,7 @@ const AboutSection = () => {
       <div className="hidden lg:block relative w-full lg:w-2/4 h-64 sm:h-80 md:h-96 lg:h-[300px] xl:h-[350px] mx-auto mb-20 md:mb-28 lg:mb-0 lg:mt-10">
         <div className="rounded-lg overflow-hidden absolute inset-0">
           <Image
-            src="https://elektromassivebucket.s3.amazonaws.com/shared/main_page_1.jpg"
+            src={`https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/shared/main_page_1.jpg`}
             alt="Image 1"
             fill
             sizes="(min-width: 1024px) 50vw"
@@ -96,7 +96,7 @@ const AboutSection = () => {
         </div>
         <div className="absolute w-1/3 h-full bottom-[-70%] left-[10%] z-10 rounded-lg overflow-hidden">
           <Image
-            src="https://elektromassivebucket.s3.amazonaws.com/shared/main_page_2.jpg"
+            src={`https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/shared/main_page_2.jpg`}
             alt="Image 2"
             fill
             sizes="(min-width: 1024px) 33vw"
@@ -106,7 +106,7 @@ const AboutSection = () => {
         </div>
         <div className="absolute w-1/2 h-1/2 left-[65%] top-[115%] transform -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg overflow-hidden">
           <Image
-            src="https://elektromassivebucket.s3.amazonaws.com/shared/main_page_3.png"
+            src={`https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/shared/main_page_3.png`}
             alt="Image 3"
             fill
             sizes="(min-width: 1024px) 25vw"

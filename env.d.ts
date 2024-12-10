@@ -22,7 +22,7 @@ namespace NodeJS {
     AWS_ACCESS_KEY_ID: string;
     AWS_SECRET_ACCESS_KEY: string;
     AWS_REGION: string;
-    AWS_BUCKET_NAME: string;
+    NEXT_PUBLIC_AWS_BUCKET_NAME: string;
     SITEMAP_URL: string;
   }
 }
