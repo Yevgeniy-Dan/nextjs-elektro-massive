@@ -46,11 +46,24 @@ const DeliveryPaymentSection: React.FC = () => {
               src="/product-page/transfer-to-account.jpg"
               width={48}
               height={48}
-              alt="Visa"
+              alt="Transfer to Account"
               className="w-8 h-8"
             />
             <div>
               <span>Переказ на рахунок</span>
+            </div>
+          </li>
+          <li className="flex items-center gap-2">
+            <Image
+              src="/product-page/cash-on-delivery.png"
+              width={48}
+              height={48}
+              alt="Cash on Delivery"
+              className="w-8 h-8"
+            />
+            <div>
+              <span>Наложений платіж</span>
+              <span className="block">Оплата при отриманні у відділенні</span>
             </div>
           </li>
         </ul>
