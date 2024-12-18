@@ -76,17 +76,17 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
             }}
             categorySlug={
               attributes?.subcategory?.data?.attributes?.categories?.data[0]
-                .attributes?.slug ?? ""
+                ?.attributes?.slug ?? ""
             }
             subcategoryId={attributes?.subcategory?.data?.id ?? ""}
             subcategorySlug={
               attributes?.subcategory?.data?.attributes?.slug ?? ""
             }
             productTypeSlug={
-              attributes?.product_types?.data[0].attributes?.slug ?? ""
+              attributes?.product_types?.data[0]?.attributes?.slug ?? ""
             }
             productSlug={attributes?.slug ?? ""}
-            productTypeId={attributes?.product_types?.data[0].id ?? ""}
+            productTypeId={attributes?.product_types?.data[0]?.id ?? ""}
           />
         ))}
       </div>

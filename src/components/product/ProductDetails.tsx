@@ -182,13 +182,13 @@ const ProductDetails: React.FC<{
         <div className="hidden md:block border-t-2 -ml-16 border-gray-300 mb-2"></div>
         <div className="lg:flex ">
           <div className="w-full lg:w-2/3 pr-4">
-            <div className="flex items-center gap-2 mb-2">
+            {/* <div className="flex items-center gap-2 mb-2">
               <span className="text-green-500">В наявності</span>
               <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-            </div>
+            </div> */}
             <div className="hidden md:block">
               <ProductParams
-                params={params}
+                params={{ Артикуль: part_number, ...params }}
                 initialParamsCount={initialParamsCount}
               />
             </div>

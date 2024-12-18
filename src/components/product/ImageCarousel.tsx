@@ -56,7 +56,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="border-2 rounded-xl">
+    <div className="rounded-xl">
       <div
         className="relative w-full aspect-square mb-4 flex items-center justify-center cursor-pointer"
         onClick={() => setIsOpen(true)}
@@ -69,7 +69,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
             fill
             sizes="100vw"
             priority={index === selectedIndex}
-            className={`${index === selectedIndex ? "opacity-100" : "opacity-0"} object-contain`}
+            className={`${index === selectedIndex ? "opacity-100" : "opacity-0"} object-contain   border-2 rounded-xl`}
           />
         ))}
       </div>
@@ -91,6 +91,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
                   height={100}
                   layout="intrinsic"
                   objectFit="contain"
+                  className="border-2 rounded-xl"
                 />
               </div>
             ))}

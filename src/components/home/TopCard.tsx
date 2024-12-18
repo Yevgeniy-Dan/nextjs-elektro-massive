@@ -148,7 +148,7 @@ const TopCard: React.FC<ITopCardProps> = ({
         <Image
           src={`${product.image_link}`}
           alt="Product Image"
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          className="absolute top-0 left-0 w-full h-full object-contain"
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority
@@ -200,25 +200,40 @@ const TopCard: React.FC<ITopCardProps> = ({
           </div>
         )}
       </Link>
-      <div
-        className={`flex-grow p-3 transition-all duration-300 ease-in-out
-    ${isHovered && isTitleOverflowing ? "absolute left-0 right-0  bg-white bg-opacity-90" : ""}`}
-        style={{
-          bottom: isHovered && isTitleOverflowing ? `${35}px` : "35px",
-          maxHeight: isHovered && isTitleOverflowing ? "none" : "56px", // 56px is the approximate height for two lines
-        }}
-      >
-        <Link
-          href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
-        >
-          <h2
-            ref={titleRef}
-            className={`text-sm font-normal transition-all duration-300 ease-in-out
-        ${isHovered && isTitleOverflowing ? "" : "line-clamp-2"}`}
+
+      {/* Mobile version */}
+      <div className="block sm:hidden">
+        <div className="flex-grow p-3">
+          <Link
+            href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
           >
-            {title}
-          </h2>
-        </Link>
+            <h2 className="text-sm font-normal line-clamp-2">{title}</h2>
+          </Link>
+        </div>
+      </div>
+
+      {/* Desktop version */}
+      <div className="hidden sm:block">
+        <div
+          className={`flex-grow p-3 transition-all duration-300 ease-in-out
+    ${isHovered && isTitleOverflowing ? "absolute left-0 right-0  bg-white bg-opacity-90" : ""}`}
+          style={{
+            bottom: isHovered && isTitleOverflowing ? `${35}px` : "35px",
+            maxHeight: isHovered && isTitleOverflowing ? "none" : "56px", // 56px is the approximate height for two lines
+          }}
+        >
+          <Link
+            href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+          >
+            <h2
+              ref={titleRef}
+              className={`text-sm font-normal transition-all duration-300 ease-in-out
+        ${isHovered && isTitleOverflowing ? "" : "line-clamp-2"}`}
+            >
+              {title}
+            </h2>
+          </Link>
+        </div>
       </div>
       <div className="mt-auto">
         <div className="flex items-center justify-between">

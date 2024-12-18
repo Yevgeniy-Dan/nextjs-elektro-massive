@@ -179,6 +179,7 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
   };
 
   const handleCitySelect = async (city: ICity) => {
+    console.log("Selected city:", city);
     setValue("addressData.cityRef", city.Ref, { shouldValidate: true });
     setValue("addressData.cityDescription", city.Description, {
       shouldValidate: true,
@@ -195,6 +196,7 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
       //   );
       //   setWarehouses(filteredWarehouses);
       // } else {
+      console.log("Все отделения: ", warehouseData);
       setWarehouses(warehouseData);
       // }
     } catch (err) {

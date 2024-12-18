@@ -42,6 +42,12 @@ const NavLinks: React.FC<NavLinks> = ({ lng }) => {
       >
         {t("navigation.reviews")}
       </Link>
+      <Link
+        href={"/blog"}
+        className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
+      >
+        {t("navigation.blog")}
+      </Link>
     </div>
   );
 };

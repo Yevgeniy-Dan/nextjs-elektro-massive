@@ -50,6 +50,7 @@ export const GET_FILTERED_PRODUCTS = gql`
     $pageSize: Int
     $subcategoryId: ID!
     $locale: I18NLocaleCode!
+    $sort: [String!]
   ) {
     filteredProducts(
       productTypeId: $productTypeId
@@ -59,6 +60,7 @@ export const GET_FILTERED_PRODUCTS = gql`
       pageSize: $pageSize
       subcategoryId: $subcategoryId
       locale: $locale
+      sort: $sort
     ) {
       products {
         id

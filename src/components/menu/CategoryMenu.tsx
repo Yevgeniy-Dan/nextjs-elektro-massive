@@ -229,6 +229,13 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                 >
                   Оплата та доставка
                 </Link>
+                <Link
+                  href={"/blog"}
+                  className="p-6 py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Блог
+                </Link>
               </div>
             </div>
           </div>

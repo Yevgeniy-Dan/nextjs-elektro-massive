@@ -1,5 +1,5 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import TopCard from "../home/TopCard";
 import Pagination from "../shared/Pagination";
 import { GET_FILTERED_PRODUCTS } from "@/graphql/queries/products";
@@ -24,6 +24,7 @@ import {
   selectLastSubcategoryId,
 } from "@/store/productGridSelectors";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
+import ProductSorting from "./ProductSorting";
 
 interface ProductGridProps {
   productTypeId?: string;
@@ -45,6 +46,12 @@ const ProductGrid = ({
   onScrollToUp,
 }: ProductGridProps) => {
   const dispatch = useAppDispatch();
+
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  const handleSortChange = (direction: "asc" | "desc") => {
+    setSortDirection(direction);
+  };
 
   const currentPage = useAppSelector((state) =>
     selectCurrentPage(state, subcategoryId)
@@ -81,6 +88,7 @@ const ProductGrid = ({
       // cursor: null,
       page: currentPage,
       pageSize,
+      sort: [sortDirection === "asc" ? "retail:asc" : "retail:desc"],
       locale: lng,
     },
     notifyOnNetworkStatusChange: true,
@@ -169,6 +177,10 @@ const ProductGrid = ({
 
   return (
     <div className="w-full md:w-3/4">
+      <ProductSorting
+        currentSort={{ direction: sortDirection }}
+        onSortChange={handleSortChange}
+      />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4  gap-4">
         {data &&
           data.filteredProducts.products.map((product) => (

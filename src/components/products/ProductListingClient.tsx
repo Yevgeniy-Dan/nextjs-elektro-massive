@@ -29,6 +29,7 @@ import Breadcrumbs from "../shared/Breadcrumbs";
 import BrandFilter from "../shared/BrandFilter";
 import { selectAppliedFiltersForSubcategory } from "@/store/productGridSelectors";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
+import { useRouter } from "next/navigation";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
@@ -65,6 +66,8 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const pageSize = 40;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const router = useRouter();
+
   const customLabels: Record<string, string> = {
     [categorySlug]: categoryTitle,
     [subcategorySlug]: subcategoryTitle,
@@ -96,7 +99,14 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   }, [dispatch, subcategoryId, productTypeId]);
 
   const handleProductTypeChange = (newProductTypeSlug: string) => {
-    window.location.href = `/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`;
+    const currentProductTypeSlug = productTypeSlug;
+    if (currentProductTypeSlug === newProductTypeSlug) {
+      router.push(`/${lng}/${categorySlug}/${subcategorySlug}`);
+    } else {
+      router.push(
+        `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`
+      );
+    }
   };
 
   const handleOutsideClick = useCallback(() => {

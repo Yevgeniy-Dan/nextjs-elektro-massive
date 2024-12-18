@@ -117,8 +117,8 @@ export async function getNovaPoshtaCities(search?: string) {
 }
 
 async function getWarehousesByType(
-  cityRef: string,
-  typeOfWarehouseRef: string
+  cityRef: string
+  // typeOfWarehouseRef: string
 ): Promise<IWarehouse[]> {
   try {
     const response = await axios.post<NovaPoshtaApiResponse<IWarehouse>>(
@@ -129,13 +129,17 @@ async function getWarehousesByType(
         calledMethod: "getWarehouses",
         methodProperties: {
           CityRef: cityRef,
-          TypeOfWarehouseRef: typeOfWarehouseRef,
+          // TypeOfWarehouseRef: typeOfWarehouseRef,
         },
       }
     );
 
     if (response.data.success) {
-      return response.data.data;
+      return response.data.data.filter(
+        (warehouse) =>
+          warehouse.Description.startsWith("Відділення") ||
+          warehouse.Description.startsWith("Пункт")
+      );
     } else {
       console.error("API request failed:", response.data.errors);
       return [];
@@ -156,10 +160,11 @@ export async function getNovaPoshtaWarehouses(
   ];
 
   try {
-    const warehousePromises = warehouseTypes.map((type) =>
-      getWarehousesByType(cityRef, type)
-    );
-    const warehouseArrays = await Promise.all(warehousePromises);
+    // const warehousePromises = warehouseTypes.map((type) =>
+    //   getWarehousesByType(cityRef, type)
+    // );
+    const warehouses = await getWarehousesByType(cityRef);
+    const warehouseArrays = await Promise.all(warehouses);
 
     return warehouseArrays.flat();
   } catch (error) {
