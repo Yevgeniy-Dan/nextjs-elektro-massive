@@ -25,6 +25,13 @@ export function middleware(req: NextRequest) {
     );
   }
 
+  if (req.nextUrl.pathname === "/search") {
+    const searchParams = req.nextUrl.searchParams;
+    return NextResponse.rewrite(
+      new URL(`/uk/search?${searchParams.toString()}`, req.url)
+    );
+  }
+
   if (
     req.nextUrl.pathname === "/" ||
     (!req.nextUrl.pathname.startsWith("/uk/") &&

@@ -37,7 +37,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ lng }) => {
 
     const newQueryString = createQueryString("q", newSearchTerm.trim());
     if (newSearchTerm.trim().length > 0) {
-      router.push(`/${lng}/search?${newQueryString}`);
+      router.push(`/search?${newQueryString}`);
     } else {
       router.push("/");
     }

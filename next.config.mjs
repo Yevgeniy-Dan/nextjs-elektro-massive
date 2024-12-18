@@ -64,6 +64,11 @@ const nextConfig = {
         hostname: "i.postimg.cc",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "feron.ua",
+        pathname: "/**",
+      },
     ],
   },
 };
