@@ -25,6 +25,17 @@ export function middleware(req: NextRequest) {
     );
   }
 
+  // If the path starts with /uk/ or /ru/, redirect to the version without the prefix
+  if (
+    req.nextUrl.pathname.startsWith("/uk/") ||
+    req.nextUrl.pathname.startsWith("/ru/")
+  ) {
+    const newPath = req.nextUrl.pathname.replace(/\/(uk|ru)\//, "/");
+    if (newPath !== req.nextUrl.pathname) {
+      return NextResponse.redirect(new URL(newPath, req.url), 301);
+    }
+  }
+
   if (req.nextUrl.pathname === "/search") {
     const searchParams = req.nextUrl.searchParams;
     return NextResponse.rewrite(
