@@ -66,7 +66,7 @@ const CategoryCarousel = ({
           <div className="embla__container flex">
             {category.attributes?.subcategories?.data.map((subcategory) => (
               <Link
-                href={`/${lng}/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
+                href={`/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
                 className="flex-shrink-0 w-48 md:w-64 flex flex-col items-center px-2 cursor-pointer"
                 key={subcategory.id}
               >

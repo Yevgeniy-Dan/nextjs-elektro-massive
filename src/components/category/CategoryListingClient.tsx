@@ -81,7 +81,7 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
           return (
             <Link
               key={subcategory.id}
-              href={`/${lng}/${categorySlug}/${subcategorySlug}`}
+              href={`/${categorySlug}/${subcategorySlug}`}
               className="block transition-transform hover:scale-105 cursor-pointer"
             >
               <div className="flex flex-col items-center px-2">

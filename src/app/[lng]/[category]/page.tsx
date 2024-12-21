@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { notFound, useRouter } from "next/navigation";
@@ -18,6 +16,8 @@ import {
   GetCategoryTranslatedSlugsQueryVariables,
 } from "@/gql/graphql";
 import Head from "next/head";
+import { getCategory } from "./actions";
+import CategoryPageClient from "./CategoryPageClient";
 
 interface CategoryPageProps {
   params: {
@@ -26,130 +26,13 @@ interface CategoryPageProps {
   };
 }
 
-const CategoryPage: React.FC<CategoryPageProps> = ({ params }) => {
-  const router = useRouter();
+export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug, lng } = params;
+  const category = await getCategory(categorySlug, lng);
 
-  const {
-    data: categoryData,
-    isLoading,
-    error,
-  } = useQuery<GetCategoryBySlugQuery, GetCategoryBySlugQueryVariables>({
-    queryKey: ["category", categorySlug, lng],
-    queryFn: async () =>
-      request(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-        GET_CATEGORY_BY_SLUG,
-        {
-          slug: categorySlug,
-          locale: lng,
-        }
-      ),
-  });
-
-  const { refetch: refetchTranslatedSlugs } = useQuery<
-    GetCategoryTranslatedSlugsQuery,
-    GetCategoryTranslatedSlugsQueryVariables
-  >({
-    queryKey: ["translatedSlugsCategory", categorySlug, lng],
-    queryFn: async ({ queryKey }) => {
-      const [, currentCategorySlug, currentLocale] = queryKey;
-      const prevLng = getCookie(prevLngCookieName) as string;
-      return request(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-        GET_CATEGORY_TRANSLATED_SLUGS,
-        {
-          categorySlug: currentCategorySlug,
-          currentLocale: prevLng,
-          targetLocale: currentLocale,
-        }
-      );
-    },
-    enabled: false,
-  });
-
-  useEffect(() => {
-    const handleLanguageChange = async () => {
-      const currentLng = getCookie(lngCookieName);
-      const prevLng = getCookie(prevLngCookieName);
-
-      if (prevLng && currentLng && prevLng !== currentLng) {
-        const { data: translatedSlugsData } = await refetchTranslatedSlugs();
-        const category = translatedSlugsData?.categories?.data[0]?.attributes;
-
-        if (category) {
-          const translatedCategorySlug =
-            category.localizations?.data[0]?.attributes?.slug;
-
-          if (translatedCategorySlug) {
-            const newPath = `/${currentLng}/${translatedCategorySlug}`;
-            router.push(newPath);
-          }
-        }
-      }
-    };
-
-    handleLanguageChange();
-  }, [categorySlug, router, refetchTranslatedSlugs]);
-
-  if (isLoading) {
-    return (
-      <CategoryListingClient
-        categoryId=""
-        categorySlug={categorySlug}
-        categoryTitle="Loading..."
-        lng={lng}
-        subcategories={[]}
-        isLoading={true}
-      />
-    );
-  }
-
-  if (error) {
-    return <div>Error loading category. Please try again later.</div>;
-  }
-
-  const category = categoryData?.categories?.data[0];
-
-  if (!category || !category.id) {
+  if (!category) {
     notFound();
   }
 
-  return (
-    <>
-      {/* TODO: for multilangual SEO 
-      <Head>
-        <link
-          rel="canonical"
-          href={`https://elektromassive.com/${categorySlug}`} // canonical URL lead to Ukrainian version
-        />
-        <link
-          rel="alternate"
-          hrefLang="uk"
-          href={`https://elektromassive.com/${categorySlug}`} // without uk/
-        />
-        <link
-          rel="alternate"
-          hrefLang="ru"
-          href={`https://elektromassive.com/ru/${categorySlug}`}
-        />
-        <link
-          rel="alternate"
-          hrefLang="x-default"
-          href={`https://elektromassive.com/${categorySlug}`} // without uk/
-        />
-      </Head>
-      */}
-      <CategoryListingClient
-        categoryId={category.id}
-        categorySlug={categorySlug}
-        categoryTitle={category.attributes?.name || ""}
-        lng={lng}
-        subcategories={category.attributes?.subcategories?.data || []}
-        isLoading={false}
-      />
-    </>
-  );
-};
-
-export default CategoryPage;
+  return <CategoryPageClient params={params} initialData={category} />;
+}

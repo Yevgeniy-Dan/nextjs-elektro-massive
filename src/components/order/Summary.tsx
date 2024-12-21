@@ -79,7 +79,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
   useEffect(() => {
     if (paymentStatusData) {
       if (paymentStatusData.status === "success") {
-        router.push(`/${lng}/thankyou?orderNumber=${returnedOrderId}`);
+        router.push(`/thankyou?orderNumber=${returnedOrderId}`);
       } else {
         showErrorToast(
           `Оплата не вдалася: ${

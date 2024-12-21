@@ -101,11 +101,9 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const handleProductTypeChange = (newProductTypeSlug: string) => {
     const currentProductTypeSlug = productTypeSlug;
     if (currentProductTypeSlug === newProductTypeSlug) {
-      router.push(`/${lng}/${categorySlug}/${subcategorySlug}`);
+      router.push(`/${categorySlug}/${subcategorySlug}`);
     } else {
-      router.push(
-        `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`
-      );
+      router.push(`/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`);
     }
   };
 

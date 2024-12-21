@@ -117,7 +117,7 @@ export async function buyAction(formData: FormData) {
     } else {
       return {
         success: true,
-        redirectUrl: `${process.env.NEXT_PUBLIC_API_URL}/${currentLanguage}/thankyou?orderNumber=${orderNumber}`,
+        redirectUrl: `${process.env.NEXT_PUBLIC_API_URL}/thankyou?orderNumber=${orderNumber}`,
       };
     }
   } catch (error) {
