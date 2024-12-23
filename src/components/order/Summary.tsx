@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import Spinner from "../shared/Spinner";
 import { useCheckPaymentStatus } from "@/hooks/useCheckPaymentStatus";
+import { deleteNovaPoshtaShipment } from "@/app/actions/nova-poshta";
+import { deleteOrder } from "@/app/actions/payment";
 
 const DEBOUNCE_DELAY = 3000; // 3 seconds
 
@@ -49,6 +51,14 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
     error: paymentStatusError,
   } = useCheckPaymentStatus(returnedFromLiqPay ? returnedOrderId : null);
 
+  async function cleanupFailedPayment(orderNumber: string) {
+    console.log("Cleaning up resources after failed payment...");
+    const [novaPoshtaResult, strapiResult] = await Promise.all([
+      deleteNovaPoshtaShipment(orderNumber),
+      deleteOrder(orderNumber),
+    ]);
+  }
+
   const showErrorToast = useCallback((message: string) => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
@@ -77,23 +87,47 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
   }, [router]);
 
   useEffect(() => {
-    if (paymentStatusData) {
-      if (paymentStatusData.status === "success") {
-        router.push(`/thankyou?orderNumber=${returnedOrderId}`);
-      } else {
-        showErrorToast(
-          `Оплата не вдалася: ${
-            paymentStatusData.err_description || "Будь ласка, спробуйте ще раз."
-          }`
-        );
-        cleanUpUrl();
+    const handlePaymentStatus = async () => {
+      if (paymentStatusData) {
+        if (paymentStatusData.status === "success") {
+          router.push(`/thankyou?orderNumber=${returnedOrderId}`);
+        } else {
+          showErrorToast(
+            `Оплата не вдалася: ${
+              paymentStatusData.err_description ||
+              "Будь ласка, спробуйте ще раз."
+            }`
+          );
+          if (returnedOrderId) {
+            try {
+              await cleanupFailedPayment(returnedOrderId);
+            } catch (error) {
+              console.error("Failed to cleanup after payment failure:", error);
+            } finally {
+              cleanUpUrl();
+            }
+          }
+        }
       }
-    }
 
-    if (paymentStatusError) {
-      showErrorToast("Помилка перевірки статусу оплати");
-      cleanUpUrl();
-    }
+      if (paymentStatusError) {
+        showErrorToast("Помилка перевірки статусу оплати");
+        if (returnedOrderId) {
+          try {
+            await cleanupFailedPayment(returnedOrderId);
+          } catch (error) {
+            console.error(
+              "Failed to cleanup after payment check error:",
+              error
+            );
+          } finally {
+            cleanUpUrl();
+          }
+        }
+      }
+    };
+
+    handlePaymentStatus();
   }, [
     cleanUpUrl,
     lng,

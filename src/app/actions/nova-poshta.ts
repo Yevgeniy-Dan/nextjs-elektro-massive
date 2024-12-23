@@ -8,6 +8,7 @@ import {
   Enum_Order_Deliverymethod,
   Enum_Order_Paymentmethod,
 } from "@/gql/graphql";
+import { getOrder } from "./payment";
 
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const API_KEY = process.env.NOVA_POSHTA_API_KEY;
@@ -245,6 +246,75 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
   }
 
   return response.data.data[0]?.IntDocNumber;
+}
+
+export async function deleteNovaPoshtaShipment(orderNumber: string) {
+  try {
+    // Skip deletion if it's a self-pickup order
+    if (orderNumber.startsWith("SELF-PICKUP-")) {
+      return true;
+    }
+
+    const { orderDate } = await getOrder(orderNumber);
+
+    const date = new Date(orderDate);
+
+    const fromDate = new Date(date);
+    fromDate.setDate(fromDate.getDate() - 1);
+    const toDate = new Date(date);
+    toDate.setDate(toDate.getDate() + 1);
+
+    const dateTimeFrom = format(fromDate, "dd.MM.yyyy");
+    const dateTimeTo = format(toDate, "dd.MM.yyyy");
+
+    const documentsResponse = await axios.post(NOVA_POSHTA_API_URL, {
+      apiKey: API_KEY,
+      modelName: "InternetDocumentGeneral",
+      calledMethod: "getDocumentList",
+      methodProperties: {
+        DateTimeFrom: dateTimeFrom,
+        DateTimeTo: dateTimeTo,
+        GetFullList: "1",
+      },
+    });
+
+    if (!documentsResponse.data.success) {
+      console.error(
+        `Failed to get document list: ${documentsResponse.data.errors.join(", ")}`
+      );
+      return false;
+    }
+
+    const documentToDelete = documentsResponse.data.data.find((doc: any) => {
+      return doc.IntDocNumber === orderNumber;
+    });
+
+    if (!documentToDelete) {
+      console.error(`No document found for order number: ${orderNumber}`);
+      return false;
+    }
+
+    const deleteResponse = await axios.post(NOVA_POSHTA_API_URL, {
+      apiKey: API_KEY,
+      modelName: "InternetDocumentGeneral",
+      calledMethod: "delete",
+      methodProperties: {
+        DocumentRefs: documentToDelete.Ref,
+      },
+    });
+
+    if (!deleteResponse.data.success) {
+      console.error(
+        `Failed to delete Nova Poshta shipment: ${deleteResponse.data.errors.join(", ")}`
+      );
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting Nova Poshta shipment:", error);
+    return false;
+  }
 }
 
 export async function getSenderCityRef(cityName: string) {

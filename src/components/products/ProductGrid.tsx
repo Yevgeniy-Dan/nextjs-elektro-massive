@@ -24,7 +24,6 @@ import {
   selectLastSubcategoryId,
 } from "@/store/productGridSelectors";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
-import ProductSorting from "./ProductSorting";
 
 interface ProductGridProps {
   productTypeId?: string;
@@ -33,7 +32,9 @@ interface ProductGridProps {
   subcategoryId: string;
   subcategorySlug: string;
   lng: string;
+  maxPriceFilter: number | null;
   onScrollToUp: () => void;
+  sortDirection: "asc" | "desc";
 }
 
 const ProductGrid = ({
@@ -43,15 +44,11 @@ const ProductGrid = ({
   subcategorySlug,
   productTypeSlug,
   lng,
+  maxPriceFilter,
+  sortDirection,
   onScrollToUp,
 }: ProductGridProps) => {
   const dispatch = useAppDispatch();
-
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-
-  const handleSortChange = (direction: "asc" | "desc") => {
-    setSortDirection(direction);
-  };
 
   const currentPage = useAppSelector((state) =>
     selectCurrentPage(state, subcategoryId)
@@ -77,6 +74,7 @@ const ProductGrid = ({
     );
   }, [appliedFilters]);
 
+  console.log("maxPriceFilter", maxPriceFilter);
   const { data, loading, error, fetchMore, networkStatus, refetch } = useQuery<
     GetFilteredProductsQuery,
     GetFilteredProductsQueryVariables
@@ -90,6 +88,7 @@ const ProductGrid = ({
       pageSize,
       sort: [sortDirection === "asc" ? "retail:asc" : "retail:desc"],
       locale: lng,
+      maxPrice: maxPriceFilter && maxPriceFilter > 0 ? maxPriceFilter : null,
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -164,6 +163,9 @@ const ProductGrid = ({
   }
 
   if (!data || !data.filteredProducts) {
+    if (loading) {
+      return <CenteredSpinner />;
+    }
     return (
       <div className="absolute">
         <div className="text-3xl text-gray-600">Немає товарів</div>
@@ -177,10 +179,6 @@ const ProductGrid = ({
 
   return (
     <div className="w-full md:w-3/4">
-      <ProductSorting
-        currentSort={{ direction: sortDirection }}
-        onSortChange={handleSortChange}
-      />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4  gap-4">
         {data &&
           data.filteredProducts.products.map((product) => (

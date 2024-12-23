@@ -51,6 +51,7 @@ export const GET_FILTERED_PRODUCTS = gql`
     $subcategoryId: ID!
     $locale: I18NLocaleCode!
     $sort: [String!]
+    $maxPrice: Float
   ) {
     filteredProducts(
       productTypeId: $productTypeId
@@ -61,6 +62,7 @@ export const GET_FILTERED_PRODUCTS = gql`
       subcategoryId: $subcategoryId
       locale: $locale
       sort: $sort
+      maxPrice: $maxPrice
     ) {
       products {
         id
@@ -106,6 +108,20 @@ export const GET_FILTERED_PRODUCTS = gql`
       totalCount
       currentPage
     }
+  }
+`;
+
+export const GET_MAX_PRICE = gql`
+  query GetMaxPrice(
+    $subcategoryId: ID!
+    $productTypeId: ID
+    $locale: I18NLocaleCode!
+  ) {
+    maxProductPrice(
+      subcategoryId: $subcategoryId
+      productTypeId: $productTypeId
+      locale: $locale
+    )
   }
 `;
 

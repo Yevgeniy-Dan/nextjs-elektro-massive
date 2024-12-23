@@ -14,6 +14,8 @@ import ProductFilterSection from "./ProductFilterSection";
 import ProductGrid from "./ProductGrid";
 import {
   GetBrandsQuery,
+  GetMaxPriceQuery,
+  GetMaxPriceQueryVariables,
   GetProductTypeFiltersQuery,
   GetProductTypeFiltersQueryVariables,
   GetProductTypesQuery,
@@ -30,6 +32,8 @@ import BrandFilter from "../shared/BrandFilter";
 import { selectAppliedFiltersForSubcategory } from "@/store/productGridSelectors";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
 import { useRouter } from "next/navigation";
+import ProductSorting from "./ProductSorting";
+import { GET_MAX_PRICE } from "@/graphql/queries/products";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
@@ -65,6 +69,13 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const dispatch = useAppDispatch();
   const pageSize = 40;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  const [priceFilter, setPriceFilter] = useState<number | null>(null);
+
+  const handlePriceChange = (price: number) => {
+    setPriceFilter(price);
+  };
 
   const router = useRouter();
 
@@ -79,6 +90,17 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   );
 
   const { data: brandsData } = useQuery<GetBrandsQuery>(GET_BRANDS);
+
+  const { data: maxPriceData } = useQuery<
+    GetMaxPriceQuery,
+    GetMaxPriceQueryVariables
+  >(GET_MAX_PRICE, {
+    variables: {
+      productTypeId: productTypeId || undefined,
+      subcategoryId,
+      locale: lng,
+    },
+  });
 
   const { data: productTypesData } = useQuery<
     GetProductTypesQuery,
@@ -152,6 +174,10 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     <ReactMarkdown className="text-md">{desc}</ReactMarkdown>
   );
 
+  const handleSortChange = (direction: "asc" | "desc") => {
+    setSortDirection(direction);
+  };
+
   return (
     <div
       className="max-w-7xl mx-auto p-4 sm:px-6 lg:p-8 relative"
@@ -208,12 +234,20 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           )}
         </AnimatePresence>
         <div className="hidden md:block w-1/4">
-          {!isFiltersEmpty(filters) && (
-            <ProductFilterSection
-              filters={filters}
-              subcategoryId={subcategoryId}
+          <>
+            <ProductSorting
+              currentSort={{ direction: sortDirection }}
+              onSortChange={handleSortChange}
+              onPriceRangeChange={handlePriceChange}
+              maxPrice={maxPriceData?.maxProductPrice || 0}
             />
-          )}
+            {!isFiltersEmpty(filters) && (
+              <ProductFilterSection
+                filters={filters}
+                subcategoryId={subcategoryId}
+              />
+            )}
+          </>
         </div>
         <ProductGrid
           subcategoryId={subcategoryId}
@@ -221,10 +255,12 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           productTypeSlug={productTypeSlug}
           subcategorySlug={subcategorySlug}
           pageSize={pageSize}
+          sortDirection={sortDirection}
           onScrollToUp={() => {
             scrollToElement(productListingRef);
           }}
           lng={lng}
+          maxPriceFilter={priceFilter}
         />
       </div>
       {subcategoryDescription

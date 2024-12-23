@@ -4,11 +4,19 @@ import { formSchema } from "./schemas";
 import { createNovaPoshtaShipment, getSenderAddress } from "./nova-poshta";
 import { z } from "zod";
 import CryptoJS from "crypto-js";
-import { CREATE_ORDER_MUTATION } from "@/components/order/mutations";
+import {
+  CREATE_ORDER_MUTATION,
+  GET_ORDER_BY_NUMBER,
+  DELETE_ORDER_MUTATION,
+} from "@/components/order/mutations";
 import {
   CreateOrderMutation,
   CreateOrderMutationVariables,
+  DeleteOrderMutation,
+  DeleteOrderMutationVariables,
   Enum_Order_Deliverymethod,
+  GetOrderByNumberQuery,
+  GetOrderByNumberQueryVariables,
   OrderInput,
 } from "@/gql/graphql";
 import { getClient } from "../../lib/apollo-client";
@@ -183,3 +191,53 @@ const saveOrderToDatabase = async (order: SaveOrderInput) => {
 
   return data?.createOrder?.data?.attributes?.orderNumber;
 };
+
+export async function deleteOrder(orderNumber: string) {
+  try {
+    const { orderId } = await getOrder(orderNumber);
+
+    if (!orderId) {
+      console.log("Order not found:", orderNumber);
+      return false;
+    }
+
+    await getClient().mutate<DeleteOrderMutation, DeleteOrderMutationVariables>(
+      {
+        mutation: DELETE_ORDER_MUTATION,
+        variables: {
+          id: orderId,
+        },
+      }
+    );
+    return true;
+  } catch (error) {
+    console.error("Error deleting Strapi order:", error);
+    return false;
+  }
+}
+
+export async function getOrder(orderNumber: string) {
+  const { data: orderData } = await getClient().query<
+    GetOrderByNumberQuery,
+    GetOrderByNumberQueryVariables
+  >({
+    query: GET_ORDER_BY_NUMBER,
+    variables: {
+      orderNumber,
+    },
+    fetchPolicy: "no-cache",
+  });
+
+  if (!orderData?.orders?.data?.[0]) {
+    console.log("Order not found:", orderNumber);
+    return {
+      orderId: null,
+      orderDate: null,
+    };
+  }
+
+  const orderId = orderData.orders.data[0].id;
+  const orderDate = orderData.orders.data[0].attributes?.orderDate;
+
+  return { orderId, orderDate };
+}
