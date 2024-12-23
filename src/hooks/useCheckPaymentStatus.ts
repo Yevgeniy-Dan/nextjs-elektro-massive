@@ -24,6 +24,7 @@ const checkPaymentStatus = async (
 };
 
 export const useCheckPaymentStatus = (orderId: string | null) => {
+  console.log("Starting payment status check for order:", orderId);
   return useQuery<CheckPaymentStatusResponseProps, Error>({
     queryKey: ["checkPaymentStatus", orderId],
     queryFn: () => checkPaymentStatus(orderId!),

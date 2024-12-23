@@ -51,14 +51,6 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
     error: paymentStatusError,
   } = useCheckPaymentStatus(returnedFromLiqPay ? returnedOrderId : null);
 
-  async function cleanupFailedPayment(orderNumber: string) {
-    console.log("Cleaning up resources after failed payment...");
-    const [novaPoshtaResult, strapiResult] = await Promise.all([
-      deleteNovaPoshtaShipment(orderNumber),
-      deleteOrder(orderNumber),
-    ]);
-  }
-
   const showErrorToast = useCallback((message: string) => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
@@ -88,42 +80,41 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
 
   useEffect(() => {
     const handlePaymentStatus = async () => {
-      if (paymentStatusData) {
-        if (paymentStatusData.status === "success") {
-          router.push(`/thankyou?orderNumber=${returnedOrderId}`);
-        } else {
-          showErrorToast(
-            `Оплата не вдалася: ${
-              paymentStatusData.err_description ||
-              "Будь ласка, спробуйте ще раз."
-            }`
-          );
-          if (returnedOrderId) {
-            try {
-              await cleanupFailedPayment(returnedOrderId);
-            } catch (error) {
-              console.error("Failed to cleanup after payment failure:", error);
-            } finally {
-              cleanUpUrl();
-            }
-          }
-        }
+      const orderNumber = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("pendingOrderNumber="))
+        ?.split("=")[1];
+
+      if (!orderNumber) {
+        console.log("No pending order found");
+        return;
       }
 
-      if (paymentStatusError) {
-        showErrorToast("Помилка перевірки статусу оплати");
-        if (returnedOrderId) {
-          try {
-            await cleanupFailedPayment(returnedOrderId);
-          } catch (error) {
-            console.error(
-              "Failed to cleanup after payment check error:",
-              error
-            );
-          } finally {
-            cleanUpUrl();
-          }
-        }
+      if (paymentStatusData?.status === "success" && returnedFromLiqPay) {
+        document.cookie = "pendingOrderNumber=; path=/; max-age=0";
+
+        router.push(`/thankyou?orderNumber=${returnedOrderId}`);
+        return;
+      }
+
+      if (paymentStatusData?.status === "error" || paymentStatusError) {
+        showErrorToast(
+          paymentStatusError
+            ? "Помилка перевірки статусу оплати"
+            : `Оплата не вдалася: ${paymentStatusData?.err_description || "Будь ласка, спробуйте ще раз."}`
+        );
+      }
+
+      try {
+        await Promise.all([
+          deleteNovaPoshtaShipment(orderNumber),
+          deleteOrder(orderNumber),
+        ]);
+      } catch (error) {
+        console.error("Failed to cleanup after payment failure:", error);
+      } finally {
+        document.cookie = "pendingOrderNumber=; path=/; max-age=0";
+        cleanUpUrl();
       }
     };
 
@@ -135,6 +126,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
     paymentStatusError,
     returnedOrderId,
     router,
+    returnedFromLiqPay,
     showErrorToast,
   ]);
 

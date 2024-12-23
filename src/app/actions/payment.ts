@@ -80,6 +80,11 @@ export async function buyAction(formData: FormData) {
 
     const orderNumber = shipmentNumber;
 
+    cookieStore.set("pendingOrderNumber", orderNumber, {
+      path: "/",
+      maxAge: 60 * 60,
+    });
+
     await saveOrderToDatabase({
       orderNumber,
       addressData,
@@ -121,11 +126,12 @@ export async function buyAction(formData: FormData) {
         dataString
       )}&signature=${encodeURIComponent(signature)}`;
 
-      return { success: true, redirectUrl };
+      return { success: true, redirectUrl, orderNumber };
     } else {
       return {
         success: true,
         redirectUrl: `${process.env.NEXT_PUBLIC_API_URL}/thankyou?orderNumber=${orderNumber}`,
+        orderNumber,
       };
     }
   } catch (error) {
