@@ -7,9 +7,21 @@ import { z } from "zod";
 // Define the schema for contact data
 export const contactSchema = z.object({
   phone: z.string().regex(/^\+380\d{9}$/, "Невірний формат номера телефону"),
-  firstName: z.string().min(1, "Ім'я є обов'язковим"),
-  secondName: z.string().min(1, "По-батькові є обов'язковим"),
-  lastName: z.string().min(1, "Прізвище є обов'язковим"),
+  firstName: z
+    .string()
+    .trim()
+    .min(1, "Ім'я є обов'язковим")
+    .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ'\s]+$/, "Тільки кирилиця"),
+  secondName: z
+    .string()
+    .trim()
+    .min(1, "По-батькові є обов'язковим")
+    .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ'\s]+$/, "Тільки кирилиця"),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, "Прізвище є обов'язковим")
+    .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ'\s]+$/, "Тільки кирилиця"),
 });
 
 // Define the schema for address data in Ukrainian

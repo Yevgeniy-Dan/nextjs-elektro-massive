@@ -31,20 +31,24 @@ const orderFormSchema = z
     contactData: z.object({
       phone: z
         .string()
+        .trim()
         .regex(/^\d{2}-\d{3}-\d{4}$/, "Невірний формат номера телефону")
         .transform((val) => `+380${val.replace(/-/g, "")}`),
       firstName: z
         .string()
+        .trim()
         .min(1, "Ім'я є обов'язковим")
-        .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ']+$/, "Тільки кирилиця"),
+        .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ'\s]+$/, "Тільки кирилиця"),
       secondName: z
         .string()
+        .trim()
         .min(1, "По-батькові є обов'язковим")
-        .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ']+$/, "Тільки кирилиця"),
+        .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ'\s]+$/, "Тільки кирилиця"),
       lastName: z
         .string()
+        .trim()
         .min(1, "Прізвище є обов'язковим")
-        .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ']+$/, "Тільки кирилиця"),
+        .regex(/^[А-ЯЁІЇЄҐа-яёіїєґ'\s]+$/, "Тільки кирилиця"),
     }),
     addressData: z.object({
       // warehouseRef: z.string().min(1, "Відділення є обов'язковим"),
@@ -83,7 +87,9 @@ const orderFormSchema = z
   .refine(
     (data) => {
       if (data.deliveryMethod === Enum_Order_Deliverymethod.NovaPoshta) {
-        return data.addressData.warehouseRef && data.addressData.cityRef;
+        return Boolean(
+          data.addressData.warehouseRef && data.addressData.cityRef
+        );
       }
       return true;
     },
