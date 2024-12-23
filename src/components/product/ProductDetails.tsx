@@ -188,7 +188,7 @@ const ProductDetails: React.FC<{
             </div> */}
             <div className="hidden md:block">
               <ProductParams
-                params={{ Артикуль: part_number, ...params }}
+                params={{ Артикул: part_number, ...params }}
                 initialParamsCount={initialParamsCount}
               />
             </div>
