@@ -23,7 +23,6 @@ import {
   selectLastProductType,
   selectLastSubcategoryId,
 } from "@/store/productGridSelectors";
-import { useScrollToElement } from "@/hooks/useScrollToElement";
 
 interface ProductGridProps {
   productTypeId?: string;
@@ -74,7 +73,6 @@ const ProductGrid = ({
     );
   }, [appliedFilters]);
 
-  console.log("maxPriceFilter", maxPriceFilter);
   const { data, loading, error, fetchMore, networkStatus, refetch } = useQuery<
     GetFilteredProductsQuery,
     GetFilteredProductsQueryVariables
@@ -98,8 +96,13 @@ const ProductGrid = ({
   }, [dispatch, subcategoryId, appliedFilters]);
 
   useEffect(() => {
+    const currentProductType = productTypeId || "";
+    const previousProductType = lastProductType || "";
+
     const shouldResetPage =
-      productTypeId !== lastProductType ||
+      (currentProductType || previousProductType
+        ? currentProductType !== previousProductType
+        : false) ||
       JSON.stringify(appliedFilters) !== JSON.stringify(lastFilters) ||
       subcategoryId !== lastSubcategoryId;
 
