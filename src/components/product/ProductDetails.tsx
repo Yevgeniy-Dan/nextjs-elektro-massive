@@ -6,7 +6,7 @@ import ImageCarousel from "./ImageCarousel";
 import ProductParams from "./ProductParams";
 import PurchaseSection from "./PurchaseSection";
 import DeliveryPaymentSection from "./DeliveryPaymentSection";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useAppDispatch } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
@@ -76,15 +76,18 @@ const ProductDetails: React.FC<{
     [slug]: title,
   };
 
-  const images: { id: string; link: string }[] = [
-    { id: "main", link: image_link ?? "" },
-    ...(additional_images
-      ?.filter((img): img is ComponentImagesImages => img !== null)
-      .map((img) => ({
-        id: img.id,
-        link: img.link ?? "",
-      })) ?? []),
-  ];
+  const images: { id: string; link: string }[] = useMemo(
+    () => [
+      { id: "main", link: image_link ?? "" },
+      ...(additional_images
+        ?.filter((img): img is ComponentImagesImages => img !== null)
+        .map((img) => ({
+          id: img.id,
+          link: img.link ?? "",
+        })) ?? []),
+    ],
+    [image_link, additional_images]
+  );
 
   const handleBuyClick = useCallback(
     (qty: number) => {

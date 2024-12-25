@@ -78,8 +78,6 @@ const ProductPageClient: React.FC<ProductPageProps> = ({
   params,
   initialData,
 }) => {
-  const router = useRouter();
-
   const { category: categorySlug } = params;
 
   const {
