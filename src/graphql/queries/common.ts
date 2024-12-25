@@ -49,7 +49,15 @@ export const GET_BANNERS = gql`
 
 export const SEARCH_PRODUCTS = gql`
   query GetSearchProducts($searchTerm: String!, $locale: I18NLocaleCode!) {
-    products(filters: { title: { containsi: $searchTerm } }, locale: $locale) {
+    products(
+      filters: {
+        or: [
+          { title: { containsi: $searchTerm } }
+          { part_number: { containsi: $searchTerm } }
+        ]
+      }
+      locale: $locale
+    ) {
       data {
         id
         attributes {

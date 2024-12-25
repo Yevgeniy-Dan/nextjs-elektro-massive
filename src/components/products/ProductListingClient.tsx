@@ -71,10 +71,10 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  const [priceFilter, setPriceFilter] = useState<number | null>(null);
+  const [priceFilters, setPriceFilters] = useState<number[] | null>(null);
 
-  const handlePriceChange = (price: number) => {
-    setPriceFilter(price);
+  const handlePriceChange = (minPrice: number, maxPrice: number) => {
+    setPriceFilters([minPrice, maxPrice]);
   };
 
   const router = useRouter();
@@ -223,6 +223,12 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
                 >
                   <X size={24} />
                 </button>
+                <ProductSorting
+                  currentSort={{ direction: sortDirection }}
+                  onSortChange={handleSortChange}
+                  onPriceRangeChange={handlePriceChange}
+                  maxPrice={maxPriceData?.maxProductPrice || 0}
+                />
                 {!isFiltersEmpty(filters) && (
                   <ProductFilterSection
                     filters={filters}
@@ -260,7 +266,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
             scrollToElement(productListingRef);
           }}
           lng={lng}
-          maxPriceFilter={priceFilter}
+          priceRange={priceFilters}
         />
       </div>
       {subcategoryDescription

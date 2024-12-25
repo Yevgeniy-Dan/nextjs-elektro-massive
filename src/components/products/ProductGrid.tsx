@@ -31,7 +31,7 @@ interface ProductGridProps {
   subcategoryId: string;
   subcategorySlug: string;
   lng: string;
-  maxPriceFilter: number | null;
+  priceRange: number[] | null;
   onScrollToUp: () => void;
   sortDirection: "asc" | "desc";
 }
@@ -43,7 +43,7 @@ const ProductGrid = ({
   subcategorySlug,
   productTypeSlug,
   lng,
-  maxPriceFilter,
+  priceRange,
   sortDirection,
   onScrollToUp,
 }: ProductGridProps) => {
@@ -86,7 +86,8 @@ const ProductGrid = ({
       pageSize,
       sort: [sortDirection === "asc" ? "retail:asc" : "retail:desc"],
       locale: lng,
-      maxPrice: maxPriceFilter && maxPriceFilter > 0 ? maxPriceFilter : null,
+      minPrice: priceRange?.[0] || null,
+      maxPrice: priceRange?.[1] || null,
     },
     notifyOnNetworkStatusChange: true,
   });

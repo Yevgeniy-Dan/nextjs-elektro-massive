@@ -208,7 +208,7 @@ const ProductDetails: React.FC<{
 
       <div className="w-full md:hidden mt-4">
         <ProductParams
-          params={params}
+          params={{ Артикул: part_number, ...params }}
           initialParamsCount={initialParamsCount}
         />
       </div>

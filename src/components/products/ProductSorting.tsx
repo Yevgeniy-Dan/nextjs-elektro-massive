@@ -9,7 +9,7 @@ export type SortOption = {
 
 interface ProductSortingProps {
   onSortChange: (direction: "asc" | "desc") => void;
-  onPriceRangeChange: (maxPrice: number) => void;
+  onPriceRangeChange: (minPrice: number, maxPrice: number) => void;
   currentSort?: SortOption;
   maxPrice: number;
 }
@@ -20,10 +20,10 @@ const ProductSorting: React.FC<ProductSortingProps> = ({
   onPriceRangeChange,
   maxPrice,
 }) => {
-  const [sliderValue, setSliderValue] = useState(0);
+  const [sliderValues, setSliderValues] = useState([0, maxPrice]);
   const [isDragging, setIsDragging] = useState(false);
   useEffect(() => {
-    setSliderValue(maxPrice);
+    setSliderValues([0, maxPrice]);
   }, [maxPrice]);
 
   const handleSortClick = () => {
@@ -31,14 +31,17 @@ const ProductSorting: React.FC<ProductSortingProps> = ({
     onSortChange(newDirection);
   };
 
-  const handleSliderChange = (value: number[]) => {
-    setSliderValue(value[0]);
-    setIsDragging(true);
+  const handleSliderChange = (values: number[]) => {
+    const [min, max] = values;
+    if (min <= max) {
+      setSliderValues(values);
+      setIsDragging(true);
+    }
   };
 
-  const handleSliderDragEnd = (value: number[]) => {
+  const handleSliderDragEnd = (values: number[]) => {
     setIsDragging(false);
-    onPriceRangeChange(value[0]);
+    onPriceRangeChange(values[0], values[1]);
   };
 
   return (
@@ -59,11 +62,12 @@ const ProductSorting: React.FC<ProductSortingProps> = ({
 
       <div className="px-2">
         <Slider
-          defaultValue={[maxPrice]}
+          minStepsBetweenThumbs={1}
+          defaultValue={[0, maxPrice]}
           max={maxPrice}
           min={0}
           step={1}
-          value={[sliderValue]}
+          value={sliderValues}
           onValueChange={handleSliderChange}
           onValueCommit={handleSliderDragEnd}
           className="w-full"
@@ -71,9 +75,11 @@ const ProductSorting: React.FC<ProductSortingProps> = ({
       </div>
 
       <div className="flex justify-between text-sm text-gray-600">
-        <span>0 ₴</span>
         <span className={isDragging ? "text-blue-500 font-medium" : ""}>
-          {sliderValue.toLocaleString()} ₴
+          {sliderValues[0].toLocaleString()} ₴
+        </span>
+        <span className={isDragging ? "text-blue-500 font-medium" : ""}>
+          {sliderValues[1].toLocaleString()} ₴
         </span>
       </div>
     </div>

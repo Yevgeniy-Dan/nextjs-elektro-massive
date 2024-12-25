@@ -51,6 +51,7 @@ export const GET_FILTERED_PRODUCTS = gql`
     $subcategoryId: ID!
     $locale: I18NLocaleCode!
     $sort: [String!]
+    $minPrice: Float
     $maxPrice: Float
   ) {
     filteredProducts(
@@ -62,6 +63,7 @@ export const GET_FILTERED_PRODUCTS = gql`
       subcategoryId: $subcategoryId
       locale: $locale
       sort: $sort
+      minPrice: $minPrice
       maxPrice: $maxPrice
     ) {
       products {
