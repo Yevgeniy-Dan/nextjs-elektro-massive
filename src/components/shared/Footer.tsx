@@ -64,7 +64,11 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
             <h3 className="font-bold mb-2">{t("workingHours.title")}</h3>
             <p className="font-light">{t("workingHours.hours")}</p>
             {additionalLinks.map((item, index) => (
-              <Link key={index} href={item.href} className="block mb-2 mt-4">
+              <Link
+                key={index}
+                href={`/${item.href}`}
+                className="block mb-2 mt-4"
+              >
                 {item.title}
               </Link>
             ))}

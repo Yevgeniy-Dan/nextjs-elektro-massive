@@ -2,6 +2,7 @@ import { dir } from "i18next";
 
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -66,6 +67,7 @@ export default async function RootLayout({
           <ToastContainer />
         </Providers>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
     </html>
   );
 }
