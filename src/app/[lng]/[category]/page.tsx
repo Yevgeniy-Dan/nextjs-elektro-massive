@@ -1,21 +1,7 @@
-import React, { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { notFound, useRouter } from "next/navigation";
-import { getCookie } from "cookies-next";
-import { request } from "graphql-request";
+import React from "react";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
-import { lngCookieName, prevLngCookieName } from "@/app/i18n/settings";
-
-import CategoryListingClient from "@/components/category/CategoryListingClient";
-import { GET_CATEGORY_TRANSLATED_SLUGS } from "@/graphql/queries/slugs";
-import { GET_CATEGORY_BY_SLUG } from "@/graphql/queries/categories";
-import {
-  GetCategoryBySlugQuery,
-  GetCategoryBySlugQueryVariables,
-  GetCategoryTranslatedSlugsQuery,
-  GetCategoryTranslatedSlugsQueryVariables,
-} from "@/gql/graphql";
-import Head from "next/head";
 import { getCategory } from "./actions";
 import CategoryPageClient from "./CategoryPageClient";
 
@@ -23,6 +9,25 @@ interface CategoryPageProps {
   params: {
     category: string;
     lng: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: CategoryPageProps): Promise<Metadata> {
+  const { category: categorySlug } = params;
+  const canonicalPath = `/${categorySlug}`;
+  const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
+
+  return {
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        uk: `${process.env.NEXT_PUBLIC_API_URL}/uk${canonicalPath}`,
+        ru: `${process.env.NEXT_PUBLIC_API_URL}/ru${canonicalPath}`,
+        "x-default": canonicalUrl,
+      },
+    },
   };
 }
 

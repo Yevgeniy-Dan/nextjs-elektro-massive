@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getProductType } from "./actions";
@@ -11,6 +12,29 @@ interface ProductTypePageProps {
     subcategory: string;
     productType: string;
     lng: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: ProductTypePageProps): Promise<Metadata> {
+  const {
+    category: categorySlug,
+    subcategory: subcategorySlug,
+    productType: productTypeSlug,
+  } = params;
+  const canonicalPath = `/${categorySlug}/${subcategorySlug}/${productTypeSlug}`;
+  const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
+
+  return {
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        uk: `${process.env.NEXT_PUBLIC_API_URL}/uk${canonicalPath}`,
+        ru: `${process.env.NEXT_PUBLIC_API_URL}/ru${canonicalPath}`,
+        "x-default": canonicalUrl,
+      },
+    },
   };
 }
 

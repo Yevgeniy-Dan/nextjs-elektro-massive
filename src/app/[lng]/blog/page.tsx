@@ -5,6 +5,16 @@ import PaginationServerComponent from "./Pagination";
 import { BlogMainImage } from "@/types/types";
 import BlogBreadcrumbs from "./BlogBreadcrumbs";
 import { getBlogPosts } from "./actions";
+import { Metadata } from "next";
+
+interface BlogListProps {
+  params: {
+    lng: string;
+  };
+  searchParams: {
+    page?: string;
+  };
+}
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -23,13 +33,30 @@ const getResponsiveImage = (image: BlogMainImage) => {
   return `${baseUrl}${image.data?.attributes?.url}`;
 };
 
+export async function generateMetadata({
+  params,
+  searchParams,
+}: BlogListProps): Promise<Metadata> {
+  const currentPage = Number(searchParams.page) || 1;
+  const canonicalPath = `/blog${currentPage > 1 ? `?page=${currentPage}` : ""}`;
+  const canonicalUrl = `${process.env.NEXT_PUBLIC_SITE_URL}${canonicalPath}`;
+
+  return {
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        uk: `${process.env.NEXT_PUBLIC_SITE_URL}/uk${canonicalPath}`,
+        ru: `${process.env.NEXT_PUBLIC_SITE_URL}/ru${canonicalPath}`,
+        "x-default": canonicalUrl,
+      },
+    },
+  };
+}
+
 export default async function BlogList({
   params: { lng },
   searchParams,
-}: {
-  params: { lng: string };
-  searchParams: { page?: string };
-}) {
+}: BlogListProps) {
   const currentPage = Number(searchParams.page) || 1;
   const { pagination, posts } = await getBlogPosts(currentPage);
 

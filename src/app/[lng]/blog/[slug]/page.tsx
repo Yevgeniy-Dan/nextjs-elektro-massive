@@ -1,18 +1,45 @@
 import BlogPostCard from "../BlogPostCard";
 
-import ReactMarkdown from "react-markdown";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+import ReactMarkdown from "react-markdown";
+
 import { BlogArticleBreadcrumbs } from "../BlogBreadcrumbs";
 import { getBlogPostBySlug } from "../actions";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
 
+interface BlogPostProps {
+  params: {
+    slug: string;
+    lng: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: BlogPostProps): Promise<Metadata> {
+  const { slug: blogSlug } = params;
+  const canonicalPath = `/blog/${blogSlug}`;
+  const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
+
+  return {
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        uk: `${process.env.NEXT_PUBLIC_API_URL}/uk${canonicalPath}`,
+        ru: `${process.env.NEXT_PUBLIC_API_URL}/ru${canonicalPath}`,
+        "x-default": canonicalUrl,
+      },
+    },
+  };
+}
+
 export default async function BlogPost({
   params: { slug, lng },
-}: {
-  params: { slug: string; lng: string };
-}) {
+}: BlogPostProps) {
   const { post, relatedPosts } = await getBlogPostBySlug(slug, lng);
 
   if (!post) {
