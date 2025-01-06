@@ -43,15 +43,6 @@ export function middleware(req: NextRequest) {
     );
   }
 
-  if (
-    req.nextUrl.pathname === "/" ||
-    (!req.nextUrl.pathname.startsWith("/uk/") &&
-      !req.nextUrl.pathname.startsWith("/ru/") &&
-      !req.nextUrl.pathname.startsWith("/_next"))
-  ) {
-    return NextResponse.rewrite(new URL(`/uk${req.nextUrl.pathname}`, req.url));
-  }
-
   return NextResponse.next();
 
   //TODO: DO NOT DELETE THE CODE BELOW
