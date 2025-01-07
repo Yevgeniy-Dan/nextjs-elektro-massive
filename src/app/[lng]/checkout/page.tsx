@@ -25,6 +25,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ params }) => {
     setActiveSection((prev) => prev + 1);
   };
 
+  //TODO: add lang support
+
   const customLabels = {
     checkout: "Оформлення замовлення",
   };

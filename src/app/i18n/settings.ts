@@ -1,6 +1,6 @@
 export const fallbackLng = "uk";
-// export const languages = [fallbackLng, "ru"];
-export const languages = ["uk"];
+export const languages = [fallbackLng, "ru"];
+// export const languages = ["uk"];
 export const defaultNS = "header";
 export const lngCookieName = "i18next";
 export const prevLngCookieName = "i18nextPrevLng";
@@ -21,7 +21,7 @@ export function getOptions(
   ns: string = defaultNS
 ): I18nextOptions {
   return {
-    //debug: true,
+    // debug: true,
     supportedLngs: languages,
     fallbackLng,
     lng,

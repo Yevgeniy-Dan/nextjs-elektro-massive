@@ -7,13 +7,18 @@ import {
   Enum_Order_Paymentmethod,
 } from "@/gql/graphql";
 import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
+import LocalizedLink from "../shared/LocalizedLink";
+import { useCookies } from "react-cookie";
+import { fallbackLng, Language } from "@/app/i18n/settings";
 
 const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
   order,
 }) => {
+  const [cookies] = useCookies(["i18next"]);
+  const lng = (cookies.i18next || fallbackLng) as Language;
+
   const { handleClearCart } = useCart();
 
   const clearCartRef = useRef(false);
@@ -29,6 +34,7 @@ const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
     return <div>Деталі замовлення недоступні.</div>;
   }
 
+  // TODO: add lnag support
   return (
     <div className=" min-h-screen p-4 flex justify-center items-center">
       <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full overflow-hidden">
@@ -51,13 +57,14 @@ const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
           </div>
         </div>
         <div className="p-6">
-          <Link
+          <LocalizedLink
+            lng={lng}
             href="/"
             className="mb-6 flex items-center text-gray-600 hover:text-gray-800"
           >
             <ArrowLeft size={24} />
             На головну
-          </Link>
+          </LocalizedLink>
           <div className="bg-gray-100 p-4 rounded-lg mb-6">
             <h2 className="text-lg font-semibold mb-2">
               Номер вашого замовлення:

@@ -1,9 +1,17 @@
 import Image from "next/image";
-import Link from "next/link";
+import LocalizedLink from "./LocalizedLink";
 
-const Logo = () => {
+interface LogoProps {
+  lng: string;
+}
+
+const Logo: React.FC<LogoProps> = ({ lng }) => {
   return (
-    <Link href={"/"} className="relative w-48 h-16 md:w-64 md:h-24">
+    <LocalizedLink
+      lng={lng}
+      href={`/`}
+      className="relative w-48 h-16 md:w-64 md:h-24"
+    >
       <Image
         src="/logo-label.png"
         alt="ElektroMassive Label"
@@ -12,7 +20,7 @@ const Logo = () => {
         className="object-contain"
         priority
       />
-    </Link>
+    </LocalizedLink>
   );
 };
 

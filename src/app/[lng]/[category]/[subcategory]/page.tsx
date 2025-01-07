@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { getSubcategory } from "./actions";
 import SubcategoryPageClient from "./SubcategoryPageClient";
+import LanguageUnavailablePlaceholder from "@/components/shared/LanguageUnavailablePlaceholder";
 
 interface SubcategoryPageProps {
   params: {
@@ -38,6 +39,11 @@ export default async function SubcategoryPage({
   const { subcategory: subcategorySlug, category: categorySlug, lng } = params;
 
   const subcategory = await getSubcategory(subcategorySlug, lng);
+
+  // If the language is Russian, we show a special message
+  if (lng === "ru") {
+    return <LanguageUnavailablePlaceholder />;
+  }
 
   if (!subcategory || !subcategory.id) {
     notFound();

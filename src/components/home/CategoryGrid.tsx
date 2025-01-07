@@ -9,8 +9,8 @@ import { useQuery } from "@apollo/client";
 import { GET_CATEGORIES } from "@/graphql/queries/categories";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { GetCategoriesQuery, GetCategoriesQueryVariables } from "@/gql/graphql";
-import Link from "next/link";
 import CategoryGridPlaceholder from "./CategoryGridPlaceholder";
+import LocalizedLink from "../shared/LocalizedLink";
 
 interface CategoryGridProps {
   lng: string;
@@ -65,7 +65,8 @@ const CategoryCarousel = ({
         <div className="embla overflow-hidden" ref={emblaRef}>
           <div className="embla__container flex">
             {category.attributes?.subcategories?.data.map((subcategory) => (
-              <Link
+              <LocalizedLink
+                lng={lng}
                 href={`/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
                 className="flex-shrink-0 w-48 md:w-64 flex flex-col items-center px-2 cursor-pointer"
                 key={subcategory.id}
@@ -92,7 +93,7 @@ const CategoryCarousel = ({
                     </p>
                   </div>
                 </div>
-              </Link>
+              </LocalizedLink>
             ))}
           </div>
         </div>

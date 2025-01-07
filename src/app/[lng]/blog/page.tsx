@@ -1,11 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import PaginationServerComponent from "./Pagination";
 import { BlogMainImage } from "@/types/types";
 import BlogBreadcrumbs from "./BlogBreadcrumbs";
 import { getBlogPosts } from "./actions";
 import { Metadata } from "next";
+import LocalizedLink from "@/components/shared/LocalizedLink";
 
 interface BlogListProps {
   params: {
@@ -74,7 +74,8 @@ export default async function BlogList({
       <BlogBreadcrumbs lng={lng} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (
-          <Link
+          <LocalizedLink
+            lng={lng}
             href={`/blog/${post.attributes?.slug}`}
             key={post.id}
             className="block"
@@ -114,7 +115,7 @@ export default async function BlogList({
                 </div>
               </div>
             </article>
-          </Link>
+          </LocalizedLink>
         ))}
       </div>
 

@@ -6,9 +6,9 @@ import { openModal } from "@/store/storeSlice";
 import { Heart } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import LocalizedLink from "../shared/LocalizedLink";
 
 //TODO: change to CartItem type
 export type TopCardProduct = {
@@ -33,6 +33,7 @@ export interface ITopCardProps {
   productSlug: string;
   product: TopCardProduct;
   label?: "top" | "new" | "sale";
+  lng: string;
 }
 
 const TopCard: React.FC<ITopCardProps> = ({
@@ -44,6 +45,7 @@ const TopCard: React.FC<ITopCardProps> = ({
   productSlug,
   label,
   product,
+  lng,
 }) => {
   const { status } = useSession();
   const pathname = usePathname();
@@ -141,7 +143,8 @@ const TopCard: React.FC<ITopCardProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link
+      <LocalizedLink
+        lng={lng}
         href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
         className="relative pt-[100%] block"
       >
@@ -199,16 +202,17 @@ const TopCard: React.FC<ITopCardProps> = ({
             />
           </div>
         )}
-      </Link>
+      </LocalizedLink>
 
       {/* Mobile version */}
       <div className="block sm:hidden">
         <div className="flex-grow p-3">
-          <Link
+          <LocalizedLink
+            lng={lng}
             href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
           >
             <h2 className="text-sm font-normal line-clamp-2">{title}</h2>
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
 
@@ -222,7 +226,8 @@ const TopCard: React.FC<ITopCardProps> = ({
             maxHeight: isHovered && isTitleOverflowing ? "none" : "56px", // 56px is the approximate height for two lines
           }}
         >
-          <Link
+          <LocalizedLink
+            lng={lng}
             href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
           >
             <h2
@@ -232,7 +237,7 @@ const TopCard: React.FC<ITopCardProps> = ({
             >
               {title}
             </h2>
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
       <div className="mt-auto">

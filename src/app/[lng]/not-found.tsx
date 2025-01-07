@@ -1,7 +1,13 @@
+import LocalizedLink from "@/components/shared/LocalizedLink";
 import Image from "next/image";
-import Link from "next/link";
+import { fallbackLng, Language } from "@/app/i18n/settings";
+import { cookies } from "next/headers";
 
 export default function NotFound() {
+  const cookieStore = cookies();
+  const lng = (cookieStore.get("i18next")?.value as Language) || fallbackLng;
+
+  //TODO: language support
   return (
     <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-16">
       <div
@@ -24,12 +30,13 @@ export default function NotFound() {
               На жаль, сторінка не знайдена. Але все потрібне ви знайдете на
               головній!
             </p>
-            <Link
+            <LocalizedLink
               href="/"
               className="inline-block px-6 py-3 bg-primary-gradient-elektro-massive-vertical text-white rounded transition-colors hover:bg-[#A61919]"
+              lng={lng}
             >
               Перейти на головну
-            </Link>
+            </LocalizedLink>
           </div>
         </div>
       </div>

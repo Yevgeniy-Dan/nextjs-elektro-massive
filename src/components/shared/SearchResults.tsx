@@ -61,6 +61,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {data.products?.data.map(({ attributes, id }) => (
           <TopCard
+            lng={lng}
             key={id}
             id={id ?? ""}
             product={{

@@ -1,10 +1,11 @@
+import { fallbackLng } from "@/app/i18n/settings";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import SearchResults from "@/components/shared/SearchResults";
 import { Suspense } from "react";
 
 interface SearchPageProps {
   searchParams: {
-    q: string;
+    q?: string;
   };
   params: {
     lng: string;
@@ -12,9 +13,12 @@ interface SearchPageProps {
 }
 
 const SearchPage: React.FC<SearchPageProps> = ({ searchParams, params }) => {
+  const query = searchParams.q || "";
+  const lng = params.lng || fallbackLng;
+
   return (
     <Suspense fallback={<CenteredSpinner />}>
-      <SearchResults query={searchParams.q} lng={params.lng} />
+      <SearchResults query={query} lng={lng} />
     </Suspense>
   );
 };

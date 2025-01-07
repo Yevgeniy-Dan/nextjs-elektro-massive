@@ -4,6 +4,7 @@ import { useTranslation } from "@/app/i18n/client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import LocalizedLink from "./LocalizedLink";
 
 interface CompanyLink {
   href: string;
@@ -52,9 +53,14 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
           <div className="space-y-2">
             <h3 className="font-bold mb-3">{t("company")}</h3>
             {companyLinks.map((item, index) => (
-              <Link key={index} href={`/${item.href}`} className="block mt-2">
+              <LocalizedLink
+                lng={lng}
+                key={index}
+                href={`/${item.href}`}
+                className="block mt-2"
+              >
                 {item.title}
-              </Link>
+              </LocalizedLink>
             ))}
             <Link href="/privacy-policy" className="block mt-2">
               Privacy Policy
@@ -64,13 +70,14 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
             <h3 className="font-bold mb-2">{t("workingHours.title")}</h3>
             <p className="font-light">{t("workingHours.hours")}</p>
             {additionalLinks.map((item, index) => (
-              <Link
+              <LocalizedLink
+                lng={lng}
                 key={index}
                 href={`/${item.href}`}
                 className="block mb-2 mt-4"
               >
                 {item.title}
-              </Link>
+              </LocalizedLink>
             ))}
           </div>
           <div className="flex flex-col-reverse sm:flex-col">

@@ -1,14 +1,16 @@
 import { Category, Subcategory } from "@/types/menu";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import LocalizedLink from "../shared/LocalizedLink";
 
 interface SubcategoryGridProps {
+  lng: string;
   category: Category;
   toggleCategory: (e: React.MouseEvent) => void;
 }
 
 const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
+  lng,
   category,
   toggleCategory,
 }) => {
@@ -24,7 +26,8 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
     const isImage = subcategory.attributes?.icon?.data;
 
     return (
-      <Link
+      <LocalizedLink
+        lng={lng}
         href={`/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
         onClick={toggleCategory}
         key={subcategory.id}
@@ -47,7 +50,7 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
         <span className="flex-grow text-lg font-medium line-clamp-3 overflow-ellipsis break-words">
           {subcategory.attributes?.title}
         </span>
-      </Link>
+      </LocalizedLink>
     );
   };
 

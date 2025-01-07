@@ -3,6 +3,7 @@ import { Metadata } from "next";
 
 import { getProduct } from "./actions";
 import ProductPageClient from "./ProductPageClient";
+import LanguageUnavailablePlaceholder from "@/components/shared/LanguageUnavailablePlaceholder";
 
 interface ProductPageProps {
   params: {
@@ -42,6 +43,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { product, productType, lng } = params;
 
   const productData = await getProduct(product, productType, lng);
+
+  // If the language is Russian, we show a special message
+  if (lng === "ru") {
+    return <LanguageUnavailablePlaceholder />;
+  }
 
   if (!productData || !productData.id) {
     notFound();

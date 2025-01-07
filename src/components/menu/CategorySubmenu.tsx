@@ -1,5 +1,5 @@
 import { Category } from "@/types/menu";
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import SubcategoryGrid from "./SubcategoryGrid";
 
 interface CategoryProps {
@@ -7,6 +7,7 @@ interface CategoryProps {
   isOpen: boolean;
   toggleMenu: (e: React.MouseEvent) => void;
   toggleCategory: (e: React.MouseEvent) => void;
+  lng: string;
 }
 
 const CategorySubmenu: React.FC<CategoryProps> = ({
@@ -14,6 +15,7 @@ const CategorySubmenu: React.FC<CategoryProps> = ({
   isOpen,
   toggleCategory,
   toggleMenu,
+  lng,
 }) => {
   return (
     <div>
@@ -27,6 +29,7 @@ const CategorySubmenu: React.FC<CategoryProps> = ({
           <SubcategoryGrid
             category={category}
             toggleCategory={toggleCategory}
+            lng={lng}
           />
         </div>
       </div>
@@ -36,7 +39,11 @@ const CategorySubmenu: React.FC<CategoryProps> = ({
         className={`hidden sm:block absolute top-0 left-full bg-gray-800 text-white rounded-r-2xl ${isOpen ? "" : "invisible"}`}
       >
         <div className="w-screen max-w-screen-xl sm:w-auto sm:min-w-[500px] lg:min-w-[700px] xl:min-w-[900px]">
-          <SubcategoryGrid category={category} toggleCategory={toggleMenu} />
+          <SubcategoryGrid
+            category={category}
+            toggleCategory={toggleMenu}
+            lng={lng}
+          />
         </div>
       </div>
     </div>

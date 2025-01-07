@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getProductType } from "./actions";
 import ProductTypePageClient from "./ProductTypePageClient";
 import { getSubcategory } from "../actions";
+import LanguageUnavailablePlaceholder from "@/components/shared/LanguageUnavailablePlaceholder";
 
 interface ProductTypePageProps {
   params: {
@@ -54,6 +55,11 @@ export default async function ProductTypePage({
 
   const { productType, total } = productTypeData;
   const subcategory = subcategoryData;
+
+  // If the language is Russian, we show a special message
+  if (lng === "ru") {
+    return <LanguageUnavailablePlaceholder />;
+  }
 
   if (!productType || !productType.id || !subcategory || !subcategory.id) {
     notFound();

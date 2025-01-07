@@ -1,8 +1,9 @@
+import React from "react";
+
 import { SubcategoryData } from "@/types/types";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
 import Breadcrumbs from "../shared/Breadcrumbs";
+import LocalizedLink from "../shared/LocalizedLink";
 
 interface CategoryListingClientProps {
   categoryId: string;
@@ -79,7 +80,8 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
           const iconUrl = icon?.data?.attributes?.url;
 
           return (
-            <Link
+            <LocalizedLink
+              lng={lng}
               key={subcategory.id}
               href={`/${categorySlug}/${subcategorySlug}`}
               className="block transition-transform hover:scale-105 cursor-pointer"
@@ -105,7 +107,7 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
                   </div>
                 </div>
               </div>
-            </Link>
+            </LocalizedLink>
           );
         })}
       </div>

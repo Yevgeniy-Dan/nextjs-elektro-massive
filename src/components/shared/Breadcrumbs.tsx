@@ -1,19 +1,26 @@
+"use client";
+
 import React from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-import { languages } from "@/app/i18n/settings";
+import { fallbackLng, Language, languages } from "@/app/i18n/settings";
+import LocalizedLink from "./LocalizedLink";
+import { useCookies } from "react-cookie";
 
 interface BreadcrumbsProps {
   customLabels?: { [key: string]: string };
 }
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customLabels = {} }) => {
+  const [cookies] = useCookies(["i18next"]);
+  const lng = (cookies.i18next || fallbackLng) as Language;
+
   const pathname = usePathname();
   const pathSegments = pathname
     .split("/")
     .filter((segment) => segment && !languages.includes(segment));
 
+  // TODO: add lang support
   return (
     <nav
       aria-label="Breadcrumb"
@@ -21,9 +28,13 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customLabels = {} }) => {
     >
       <ol className="list-none p-0 inline-flex whitespace-nowrap min-w-0">
         <li className="flex items-center shrink-0">
-          <Link href="/" className="text-blue-500 hover:text-blue-600">
+          <LocalizedLink
+            lng={lng}
+            href="/"
+            className="text-blue-500 hover:text-blue-600"
+          >
             Головна
-          </Link>
+          </LocalizedLink>
         </li>
         {pathSegments.map((segment, index) => {
           const href = `/${pathSegments.slice(0, index + 1).join("/")}`;
@@ -36,9 +47,13 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customLabels = {} }) => {
               {isLast ? (
                 <span className="text-gray-500">{label}</span>
               ) : (
-                <Link href={href} className="text-blue-500 hover:text-blue-600">
+                <LocalizedLink
+                  lng={lng}
+                  href={href}
+                  className="text-blue-500 hover:text-blue-600"
+                >
                   {label}
-                </Link>
+                </LocalizedLink>
               )}
             </li>
           );

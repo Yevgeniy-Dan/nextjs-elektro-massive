@@ -187,6 +187,7 @@ const ProductGrid = ({
         {data &&
           data.filteredProducts.products.map((product) => (
             <TopCard
+              lng={lng}
               id={product?.id}
               key={product?.id}
               product={product}

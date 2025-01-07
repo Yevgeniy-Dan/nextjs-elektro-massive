@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
       <header className="mt-2 font-medium">
         <div className="flex flex-row md:flex-col lg:flex-row justify-between items-center w-full">
           <div className="flex items-center w-1/2 sm:2/3 md:w-auto">
-            <Logo />
+            <Logo lng={lng} />
           </div>
           <NavLinks lng={lng} />
           <div className="flex items-center shrink-0">

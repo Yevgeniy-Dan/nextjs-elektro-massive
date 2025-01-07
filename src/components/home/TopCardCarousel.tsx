@@ -7,6 +7,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { HomePageProductEntity } from "@/types/types";
+import { useCookies } from "react-cookie";
+import { fallbackLng, Language } from "@/app/i18n/settings";
 
 interface TopCardCarousel {
   isLoading: boolean;
@@ -21,6 +23,9 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
   label,
   products,
 }) => {
+  const [cookies] = useCookies(["i18next"]);
+  const lng = (cookies.i18next || fallbackLng) as Language;
+
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     dragFree: true,
@@ -82,6 +87,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
                     }`}
                   >
                     <TopCard
+                      lng={lng}
                       id={card.id ?? ""}
                       subcategoryId={
                         card.attributes?.subcategory?.data?.id ?? ""

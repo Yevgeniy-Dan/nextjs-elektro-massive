@@ -4,6 +4,7 @@ import { Metadata } from "next";
 
 import { getCategory } from "./actions";
 import CategoryPageClient from "./CategoryPageClient";
+import LanguageUnavailablePlaceholder from "@/components/shared/LanguageUnavailablePlaceholder";
 
 interface CategoryPageProps {
   params: {
@@ -34,6 +35,11 @@ export async function generateMetadata({
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug, lng } = params;
   const category = await getCategory(categorySlug, lng);
+
+  // If the language is Russian, we show a special message
+  if (lng === "ru") {
+    return <LanguageUnavailablePlaceholder />;
+  }
 
   if (!category) {
     notFound();

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { FaChevronDown } from "react-icons/fa6";
-import Link from "next/link";
 import { useQuery } from "@apollo/client";
 import { GET_CATEGORY_MENU } from "@/graphql/queries/categories";
 import CategorySubmenu from "./CategorySubmenu";
@@ -10,6 +9,7 @@ import Spinner from "../shared/Spinner";
 import { CategoryMenuQuery, CategoryMenuQueryVariables } from "@/gql/graphql";
 import { useTranslation } from "@/app/i18n/client";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
+import LocalizedLink from "../shared/LocalizedLink";
 
 interface CategoryMenuProps {
   lng: string;
@@ -189,6 +189,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                       </div>
                     </div>
                     <CategorySubmenu
+                      lng={lng}
                       category={category}
                       isOpen={openSubmenu === index}
                       toggleCategory={(e) => {
@@ -201,41 +202,54 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                 ))
               )}
               <div className="flex flex-col py-5 md:hidden">
-                <Link
+                <LocalizedLink
+                  lng={lng}
                   href={"/services"}
                   className="p-6 py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Послуги
-                </Link>
-                <Link
+                  {t("navigation.services")}
+                </LocalizedLink>
+                <LocalizedLink
+                  lng={lng}
                   href={"/about"}
                   className="p-6 py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Про нас
-                </Link>
-                <Link
+                  {t("navigation.about")}
+                </LocalizedLink>
+                <LocalizedLink
+                  lng={lng}
                   href={"/partnership"}
                   className="p-6 py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Співпраця
-                </Link>
-                <Link
+                  {t("navigation.cooperation")}
+                </LocalizedLink>
+                <LocalizedLink
+                  lng={lng}
                   href={"/payment-and-delivery"}
                   className="p-6 py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Оплата та доставка
-                </Link>
-                <Link
+                  {t("navigation.paymentDelivery")}
+                </LocalizedLink>
+                <LocalizedLink
+                  lng={lng}
+                  href={"/reviews"}
+                  className="p-6 py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t("navigation.reviews")}
+                </LocalizedLink>
+                <LocalizedLink
+                  lng={lng}
                   href={"/blog"}
                   className="p-6 py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Блог
-                </Link>
+                  {t("navigation.blog")}
+                </LocalizedLink>
               </div>
             </div>
           </div>

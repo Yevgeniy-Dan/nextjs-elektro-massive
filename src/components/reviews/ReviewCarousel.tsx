@@ -9,8 +9,8 @@ import {
 } from "@/gql/graphql";
 import ReviewCard from "./ReviewCard";
 import { GET_SHOP_REVIEWS } from "@/graphql/queries/review";
-import Link from "next/link";
 import { useTranslation } from "@/app/i18n/client";
+import LocalizedLink from "../shared/LocalizedLink";
 
 interface ReviewCarouselProps {
   lng: string;
@@ -86,26 +86,28 @@ const ReviewCarousel: React.FC<ReviewCarouselProps> = ({ lng }) => {
                 <p className="text-lg font-semibold mb-4">
                   {t("reviews.leaveReviewFirst")}
                 </p>
-                <Link
+                <LocalizedLink
+                  lng={lng}
                   href="/reviews"
                   className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center"
                 >
                   <PenTool className="mr-2" size={18} />
                   {t("reviews.form.submitReview")}
-                </Link>
+                </LocalizedLink>
               </div>
             </div>
           )}
         </div>
         {reviews.length > 0 && (
           <div className="embla__slide flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-2">
-            <Link
+            <LocalizedLink
+              lng={lng}
               href="/reviews"
               className="bg-gradient-elektro-massive-horizontal text-white py-2 px-4 rounded-full flex items-center"
             >
               <PenTool className="mr-2" size={18} />
               {t("reviews.form.submitReview")}
-            </Link>
+            </LocalizedLink>
           </div>
         )}
       </div>

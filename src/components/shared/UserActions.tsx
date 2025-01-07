@@ -9,6 +9,7 @@ import UserDropdown from "./UserDropdown";
 import { useTranslation } from "@/app/i18n/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import LanguageToggler from "./LanguageToggler";
+import LocalizedLink from "./LocalizedLink";
 
 interface UserActionsProps {
   lng: string;
@@ -60,7 +61,8 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
         {/* <div className="flex items-center"> */}
         <LanguageToggler lng={lng} />
         {/* </div> */}
-        <Link
+        <LocalizedLink
+          lng={lng}
           href="/favorites"
           className="relative w-6 sm:w-8 h-6 sm:h-8 flex items-center justify-center"
         >
@@ -70,7 +72,7 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
               {favoritesTotalCount}
             </span>
           )}
-        </Link>
+        </LocalizedLink>
         <div className="w-6 sm:w-8 h-6 sm:h-8">
           <UserDropdown lng={lng} />
         </div>

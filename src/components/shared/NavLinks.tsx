@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslation } from "@/app/i18n/client";
-import Link from "next/link";
+import LocalizedLink from "./LocalizedLink";
 
 interface NavLinks {
   lng: string;
@@ -12,42 +12,48 @@ const NavLinks: React.FC<NavLinks> = ({ lng }) => {
 
   return (
     <div className="hidden md:flex flex-wrap justify-center items-center text-white gap-2 sm:gap-4 mb-4 lg:mb-0">
-      <Link
+      <LocalizedLink
+        lng={lng}
         href={"/services"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
         {t("navigation.services")}
-      </Link>
-      <Link
+      </LocalizedLink>
+      <LocalizedLink
+        lng={lng}
         href={"/about"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
         {t("navigation.about")}
-      </Link>
-      <Link
+      </LocalizedLink>
+      <LocalizedLink
+        lng={lng}
         href={"/partnership"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
         {t("navigation.cooperation")}
-      </Link>
-      <Link
+      </LocalizedLink>
+      <LocalizedLink
+        lng={lng}
         href={"/payment-and-delivery"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
         {t("navigation.paymentDelivery")}
-      </Link>
-      <Link
+      </LocalizedLink>
+      <LocalizedLink
+        lng={lng}
         href={"/reviews"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
         {t("navigation.reviews")}
-      </Link>
-      <Link
+      </LocalizedLink>
+      <LocalizedLink
+        lng={lng}
         href={"/blog"}
         className="border border-white px-2 py-2 hover:bg-gray-800 hover:border-gray-300 transition-all duration-300"
       >
         {t("navigation.blog")}
-      </Link>
+      </LocalizedLink>
     </div>
   );
 };
