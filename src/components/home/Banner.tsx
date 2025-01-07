@@ -61,7 +61,7 @@ const Banner = () => {
 
   return (
     <div className="relative py-2">
-      <div className="rounded-t-2xl overflow-x-hidden">
+      <div className="rounded-t-2xl overflow-x-hidden pb-8">
         <Slider {...settings}>
           {banners.map((banner) => {
             const image = banner.attributes?.image;
