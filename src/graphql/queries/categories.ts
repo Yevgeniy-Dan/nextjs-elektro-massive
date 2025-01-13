@@ -8,6 +8,7 @@ export const GET_CATEGORY_MENU = gql`
         attributes {
           name
           slug
+          description
           icon {
             data {
               id
@@ -22,6 +23,7 @@ export const GET_CATEGORY_MENU = gql`
               attributes {
                 title
                 slug
+                description
                 icon {
                   data {
                     id
@@ -47,6 +49,7 @@ export const GET_CATEGORIES = gql`
         attributes {
           name
           slug
+          description
           icon {
             data {
               id
@@ -69,6 +72,7 @@ export const GET_CATEGORIES = gql`
               attributes {
                 title
                 slug
+                description
                 icon {
                   data {
                     id
@@ -117,6 +121,7 @@ export const GET_CATEGORY_BY_SLUG = gql`
               attributes {
                 title
                 slug
+                description
                 icon {
                   data {
                     id

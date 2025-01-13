@@ -79,6 +79,7 @@ const ProductPageClient: React.FC<ProductPageProps> = ({
   initialData,
 }) => {
   const { category: categorySlug } = params;
+  const router = useRouter();
 
   const {
     data: productData,
@@ -103,61 +104,62 @@ const ProductPageClient: React.FC<ProductPageProps> = ({
     },
   });
 
-  //TODO: it's fot multilangual SEO
-  // const { refetch: refetchTranslatedSlugs } = useQuery<
-  //   GetTranslatedSlugsQuery,
-  //   GetTranslatedSlugsQueryVariables
-  // >({
-  //   queryKey: ["translatedSlugs", params.product, params.lng],
-  //   queryFn: async ({ queryKey }) => {
-  //     const [, productSlug, currentLocale] = queryKey;
-  //     const prevLng = getCookie(prevLngCookieName) as string;
-  //     return request(
-  //       `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-  //       GET_PRODUCT_TRANSLATED_SLUGS,
-  //       {
-  //         productSlug,
-  //         currentLocale: prevLng,
-  //         targetLocale: currentLocale,
-  //       }
-  //     );
-  //   },
-  //   enabled: false, // We don't want to run this query automatically
-  // });
+  /* It's for translating the product slug to the current locale */
+  const { refetch: refetchTranslatedSlugs } = useQuery<
+    GetTranslatedSlugsQuery,
+    GetTranslatedSlugsQueryVariables
+  >({
+    queryKey: ["translatedSlugs", params.product, params.lng],
+    queryFn: async ({ queryKey }) => {
+      const [, productSlug, currentLocale] = queryKey;
+      const prevLng = getCookie(prevLngCookieName) as string;
+      return request(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+        GET_PRODUCT_TRANSLATED_SLUGS,
+        {
+          productSlug,
+          currentLocale: prevLng,
+          targetLocale: currentLocale,
+        }
+      );
+    },
+    enabled: false, // We don't want to run this query automatically
+  });
 
-  // useEffect(() => {
-  //   const handleLanguageChange = async () => {
-  //     const currentLng = getCookie(lngCookieName);
-  //     const prevLng = getCookie(prevLngCookieName);
+  useEffect(() => {
+    const handleLanguageChange = async () => {
+      const currentLng = getCookie(lngCookieName);
+      const prevLng = getCookie(prevLngCookieName);
 
-  //     if (prevLng && currentLng && prevLng !== currentLng) {
-  //       const { data: translatedSlugsData } = await refetchTranslatedSlugs();
+      if (prevLng && currentLng && prevLng !== currentLng) {
+        const { data: translatedSlugsData } = await refetchTranslatedSlugs();
 
-  //       const product = translatedSlugsData?.products?.data[0]?.attributes;
-  //       if (product) {
-  //         const translatedProduct = product.localizations?.data[0]?.attributes;
-  //         const translatedProductType =
-  //           product.product_types?.data[0].attributes?.localizations?.data[0]
-  //             ?.attributes;
+        const product = translatedSlugsData?.products?.data[0]?.attributes;
+        if (product) {
+          const translatedProduct = product.localizations?.data[0]?.attributes;
+          const translatedProductType =
+            product.product_types?.data[0].attributes?.localizations?.data[0]
+              ?.attributes;
 
-  //         if (!translatedProduct || !translatedProductType) return null;
+          if (!translatedProduct || !translatedProductType) return null;
 
-  //         const subcategoryData =
-  //           translatedProduct.subcategory?.data?.attributes;
-  //         if (!subcategoryData) return null;
+          const subcategoryData =
+            translatedProduct.subcategory?.data?.attributes;
+          if (!subcategoryData) return null;
 
-  //         // Find the matching category from the categories array
-  //         const categories = subcategoryData.categories?.data || [];
+          // Find the matching category from the categories array
+          const categories = subcategoryData.categories?.data || [];
 
-  //         const newPath = `/${currentLng}/${categories[0].attributes?.slug}/${subcategoryData.slug}/${translatedProductType.slug}/${translatedProduct.slug}`;
+          const newPath = `/${currentLng}/${categories[0].attributes?.slug}/${subcategoryData.slug}/${translatedProductType.slug}/${translatedProduct.slug}`;
 
-  //         router.push(newPath);
-  //       }
-  //     }
-  //   };
+          router.push(newPath);
+        }
+      }
+    };
 
-  //   handleLanguageChange();
-  // }, [params.product, router, refetchTranslatedSlugs, categorySlug]);
+    handleLanguageChange();
+  }, [params.product, router, refetchTranslatedSlugs, categorySlug]);
+  /* The end of the translation logic */
 
   if (isProductLoading) {
     return <CenteredSpinner />;

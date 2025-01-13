@@ -56,60 +56,61 @@ const SubcategoryPageClient: React.FC<SubcategoryPageProps> = ({
     },
   });
 
-  //TODO: it's fot multilangual SEO
-  // const { refetch: refetchTranslatedSlugs } = useQuery<
-  //   GetSubcategoryTranslatedSlugsQuery,
-  //   GetSubcategoryTranslatedSlugsQueryVariables
-  // >({
-  //   queryKey: ["translatedSlugsSubcategory", subcategorySlug, lng],
-  //   queryFn: async ({ queryKey }) => {
-  //     const [, currentSubcategorySlug, currentLocale] = queryKey;
-  //     const prevLng = getCookie(prevLngCookieName) as string;
-  //     return request(
-  //       `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-  //       GET_SUBCATEGORY_TRANSLATED_SLUGS,
-  //       {
-  //         subcategorySlug: currentSubcategorySlug,
-  //         currentLocale: prevLng,
-  //         targetLocale: currentLocale,
-  //       }
-  //     );
-  //   },
-  //   enabled: false,
-  // });
+  /* It's for getting translated slugs of subcategory */
+  const { refetch: refetchTranslatedSlugs } = useQuery<
+    GetSubcategoryTranslatedSlugsQuery,
+    GetSubcategoryTranslatedSlugsQueryVariables
+  >({
+    queryKey: ["translatedSlugsSubcategory", subcategorySlug, lng],
+    queryFn: async ({ queryKey }) => {
+      const [, currentSubcategorySlug, currentLocale] = queryKey;
+      const prevLng = getCookie(prevLngCookieName) as string;
+      return request(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+        GET_SUBCATEGORY_TRANSLATED_SLUGS,
+        {
+          subcategorySlug: currentSubcategorySlug,
+          currentLocale: prevLng,
+          targetLocale: currentLocale,
+        }
+      );
+    },
+    enabled: false,
+  });
 
-  // useEffect(() => {
-  //   const handleLanguageChange = async () => {
-  //     const currentLng = getCookie(lngCookieName);
-  //     const prevLng = getCookie(prevLngCookieName);
+  useEffect(() => {
+    const handleLanguageChange = async () => {
+      const currentLng = getCookie(lngCookieName);
+      const prevLng = getCookie(prevLngCookieName);
 
-  //     if (prevLng && currentLng && prevLng !== currentLng) {
-  //       const { data: translatedSlugsData } = await refetchTranslatedSlugs();
-  //       const subcategory =
-  //         translatedSlugsData?.subcategories?.data[0]?.attributes;
+      if (prevLng && currentLng && prevLng !== currentLng) {
+        const { data: translatedSlugsData } = await refetchTranslatedSlugs();
+        const subcategory =
+          translatedSlugsData?.subcategories?.data[0]?.attributes;
 
-  //       if (subcategory) {
-  //         const translatedSubcategorySlug =
-  //           subcategory.localizations?.data[0]?.attributes?.slug;
+        if (subcategory) {
+          const translatedSubcategorySlug =
+            subcategory.localizations?.data[0]?.attributes?.slug;
 
-  //         const categoryData = subcategory.categories?.data.find(
-  //           (cat) => cat.attributes?.slug === categorySlug
-  //         );
+          const categoryData = subcategory.categories?.data.find(
+            (cat) => cat.attributes?.slug === categorySlug
+          );
 
-  //         // Then get its translation
-  //         const translatedCategorySlug =
-  //           categoryData?.attributes?.localizations?.data[0]?.attributes?.slug;
+          // Then get its translation
+          const translatedCategorySlug =
+            categoryData?.attributes?.localizations?.data[0]?.attributes?.slug;
 
-  //         if (translatedSubcategorySlug && translatedCategorySlug) {
-  //           const newPath = `/${currentLng}/${translatedCategorySlug}/${translatedSubcategorySlug}`;
-  //           router.push(newPath);
-  //         }
-  //       }
-  //     }
-  //   };
+          if (translatedSubcategorySlug && translatedCategorySlug) {
+            const newPath = `/${currentLng}/${translatedCategorySlug}/${translatedSubcategorySlug}`;
+            router.push(newPath);
+          }
+        }
+      }
+    };
 
-  //   handleLanguageChange();
-  // }, [subcategorySlug, router, refetchTranslatedSlugs, categorySlug]);
+    handleLanguageChange();
+  }, [subcategorySlug, router, refetchTranslatedSlugs, categorySlug]);
+  /* The end of refetching translated slugs */
 
   if (isLoading) {
     return <CenteredSpinner />;
