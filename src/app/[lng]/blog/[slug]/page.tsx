@@ -9,7 +9,7 @@ import { BlogArticleBreadcrumbs } from "../BlogBreadcrumbs";
 import { getBlogPostBySlug } from "../actions";
 
 export const dynamic = "force-static";
-export const revalidate = 3600;
+export const revalidate = 1500;
 
 interface BlogPostProps {
   params: {
@@ -21,11 +21,32 @@ interface BlogPostProps {
 export async function generateMetadata({
   params,
 }: BlogPostProps): Promise<Metadata> {
-  const { slug: blogSlug } = params;
+  const { slug: blogSlug, lng } = params;
+  const { post } = await getBlogPostBySlug(blogSlug, lng);
+
+  if (!post) {
+    return {
+      title:
+        lng === "uk"
+          ? `Статтю не знайдено | ELEKTRO-MASSIVE`
+          : `Статья не найдена | ELEKTRO-MASSIVE`,
+      description:
+        lng === "uk"
+          ? `Запитану статтю не існує або була видалена`
+          : `Запрашиваемая статья не существует или была удалена`,
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
   const canonicalPath = `/blog/${blogSlug}`;
   const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
 
   return {
+    title: post.attributes?.name + " | ELEKTRO-MASSIVE",
+    description: post.attributes?.description?.slice(0, 155) + "...",
     alternates: {
       canonical: canonicalUrl,
       languages: {

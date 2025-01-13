@@ -16,7 +16,19 @@ export async function generateMetadata({
   const canonicalPath = `/payment-and-delivery`;
   const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
 
+  const title =
+    params.lng === "uk"
+      ? "Оплата та доставка | ELEKTRO-MASSIVE - Умови доставки та способи оплати"
+      : "Оплата и доставка | ELEKTRO-MASSIVE - Условия доставки и способы оплаты";
+
+  const description =
+    params.lng === "uk"
+      ? "Інформація про способи оплати, доставку Новою Поштою, терміни обробки замовлень. Безкоштовна доставка від 3000 грн, онлайн оплата, накладений платіж."
+      : "Информация о способах оплаты, доставке Новой Почтой, сроках обработки заказов. Бесплатная доставка от 3000 грн, онлайн оплата, наложенный платеж.";
+
   return {
+    title,
+    description,
     alternates: {
       canonical: canonicalUrl,
       languages: {

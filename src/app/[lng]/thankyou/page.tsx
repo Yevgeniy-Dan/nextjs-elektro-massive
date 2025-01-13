@@ -1,39 +1,33 @@
-"use client";
+import { Metadata } from "next";
+import ThankYouPage from "./ThankYouPage";
 
-import React from "react";
+interface ThankyouPageProps {
+  params: { lng: string };
+}
 
-import { getAllOrdersByNumber } from "@/graphql/queries/order";
-import request from "graphql-request";
-import { useSearchParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import OrderConfirmation from "@/components/order/OrderConfirmation";
-import CenteredSpinner from "@/components/shared/CenteredSpinner";
+export async function generateMetadata({
+  params,
+}: ThankyouPageProps): Promise<Metadata> {
+  const title =
+    params.lng === "uk"
+      ? "Дякуємо за замовлення | ELEKTRO-MASSIVE"
+      : "Спасибо за заказ | ELEKTRO-MASSIVE";
 
-const ThankYouPage: React.FC = () => {
-  const searchParams = useSearchParams();
-  const orderNumber = searchParams.get("orderNumber");
+  const description =
+    params.lng === "uk"
+      ? "Підтвердження та деталі вашого замовлення в ELEKTRO-MASSIVE"
+      : "Подтверждение и детали вашего заказа в ELEKTRO-MASSIVE";
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["order", orderNumber],
-    queryFn: async () =>
-      request(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-        getAllOrdersByNumber,
-        { orderNumber: orderNumber ?? "" }
-      ),
-  });
+  return {
+    title,
+    description,
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
 
-  if (isLoading) {
-    return <CenteredSpinner />;
-  }
-
-  if (isError) {
-    return <div>{JSON.stringify(error)}</div>;
-  }
-
-  const order = data?.orders?.data[0].attributes || null;
-
-  return <OrderConfirmation order={order} />;
-};
-
-export default ThankYouPage;
+export default function Page() {
+  return <ThankYouPage />;
+}

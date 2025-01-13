@@ -11,7 +11,19 @@ export async function generateMetadata({
   const canonicalPath = `/partnership`;
   const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
 
+  const title =
+    params.lng === "uk"
+      ? "Співпраця | ELEKTRO-MASSIVE - Партнерська програма для бізнесу"
+      : "Сотрудничество | ELEKTRO-MASSIVE - Партнерская программа для бизнеса";
+
+  const description =
+    params.lng === "uk"
+      ? "Вигідні умови співпраці для торгових організацій, власників бізнесу, дизайнерів. Широкий асортимент, технічна підтримка та спеціальні пропозиції."
+      : "Выгодные условия сотрудничества для торговых организаций, владельцев бизнеса, дизайнеров. Широкий ассортимент, техническая поддержка и специальные предложения.";
+
   return {
+    title,
+    description,
     alternates: {
       canonical: canonicalUrl,
       languages: {

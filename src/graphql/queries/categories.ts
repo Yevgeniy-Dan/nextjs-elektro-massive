@@ -94,6 +94,7 @@ export const GET_CATEGORY_BY_SLUG = gql`
         attributes {
           name
           slug
+          description
           icon {
             data {
               id

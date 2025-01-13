@@ -18,7 +18,19 @@ export async function generateMetadata({
   const canonicalPath = `/favorites`;
   const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
 
+  const title =
+    params.lng === "uk"
+      ? "Обрані товари | ELEKTRO-MASSIVE - Ваш список улюблених товарів"
+      : "Избранные товары | ELEKTRO-MASSIVE - Ваш список избранных товаров";
+
+  const description =
+    params.lng === "uk"
+      ? "Переглядайте та керуйте списком обраних товарів. Збережені електротовари, будматеріали та сантехніка від ELEKTRO-MASSIVE."
+      : "Просматривайте и управляйте списком избранных товаров. Сохраненные электротовары, стройматериалы и сантехника от ELEKTRO-MASSIVE.";
+
   return {
+    title,
+    description,
     alternates: {
       canonical: canonicalUrl,
       languages: {

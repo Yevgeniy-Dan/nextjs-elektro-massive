@@ -12,7 +12,11 @@ import {
   GET_BLOG_POSTS,
 } from "@/graphql/queries/blogPost";
 
-export async function getBlogPosts(page: number = 1, pageSize: number = 20) {
+export async function getBlogPosts(
+  page: number = 1,
+  pageSize: number = 20,
+  lng: string
+) {
   try {
     const { data } = await getClient().query<
       GetBlogPostsQuery,
@@ -20,7 +24,7 @@ export async function getBlogPosts(page: number = 1, pageSize: number = 20) {
     >({
       query: GET_BLOG_POSTS,
       variables: {
-        locale: "uk",
+        locale: lng,
         page,
         pageSize,
       },
@@ -49,7 +53,7 @@ export async function getBlogPostBySlug(slug: string, lng: string) {
           locale: lng,
         },
       }),
-      getBlogPosts(1, 10),
+      getBlogPosts(1, 10, lng),
     ]);
 
     return {

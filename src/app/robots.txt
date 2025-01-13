@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /ru/
 Sitemap: https://elektromassivebucketproduction.s3.amazonaws.com/sitemap/sitemap.xml

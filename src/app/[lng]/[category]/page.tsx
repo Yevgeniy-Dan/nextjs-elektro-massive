@@ -4,7 +4,6 @@ import { Metadata } from "next";
 
 import { getCategory } from "./actions";
 import CategoryPageClient from "./CategoryPageClient";
-import LanguageUnavailablePlaceholder from "@/components/shared/LanguageUnavailablePlaceholder";
 
 interface CategoryPageProps {
   params: {
@@ -16,30 +15,52 @@ interface CategoryPageProps {
 export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
-  const { category: categorySlug } = params;
+  const { category: categorySlug, lng } = params;
+
   const canonicalPath = `/${categorySlug}`;
   const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
 
-  return {
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        uk: `${process.env.NEXT_PUBLIC_API_URL}/uk${canonicalPath}`,
-        ru: `${process.env.NEXT_PUBLIC_API_URL}/ru${canonicalPath}`,
-        "x-default": canonicalUrl,
-      },
+  const alternates = {
+    canonical: canonicalUrl,
+    languages: {
+      uk: `${process.env.NEXT_PUBLIC_API_URL}/uk${canonicalPath}`,
+      ru: `${process.env.NEXT_PUBLIC_API_URL}/ru${canonicalPath}`,
+      "x-default": canonicalUrl,
     },
+  };
+
+  const category = await getCategory(categorySlug, lng);
+
+  const name = category?.attributes?.name;
+  const description = category?.attributes?.description;
+
+  if (!category) {
+    return {
+      title:
+        params.lng === "uk"
+          ? `Сторінку не знайдено | ELEKTRO-MASSIVE`
+          : `Страница не найдена | ELEKTRO-MASSIVE`,
+      description:
+        params.lng === "uk"
+          ? `Запитану сторінку не знайдено. Поверніться на головну або скористайтеся пошуком.`
+          : `Запрашиваемая страница не найдена. Вернитесь на главную или воспользуйтесь поиском.`,
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  return {
+    title: name + " | ELEKTRO-MASSIVE",
+    description: description.slice(0, 155) + "...",
+    alternates,
   };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug, lng } = params;
   const category = await getCategory(categorySlug, lng);
-
-  // If the language is Russian, we show a special message
-  if (lng === "ru") {
-    return <LanguageUnavailablePlaceholder />;
-  }
 
   if (!category) {
     notFound();

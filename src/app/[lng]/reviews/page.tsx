@@ -9,11 +9,25 @@ interface ReviewsPageProps {
   };
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ReviewsPageProps): Promise<Metadata> {
   const canonicalPath = `/reviews`;
   const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
 
+  const title =
+    params.lng === "uk"
+      ? "Відгуки клієнтів | ELEKTRO-MASSIVE - Думки та враження наших покупців"
+      : "Отзывы клиентов | ELEKTRO-MASSIVE - Мнения и впечатления наших покупателей";
+
+  const description =
+    params.lng === "uk"
+      ? "Відгуки покупців про досвід придбання електротехніки, будматеріалів та сантехніки в ELEKTRO-MASSIVE. Реальні оцінки якості товарів та обслуговування."
+      : "Отзывы покупателей об опыте приобретения электротехники, стройматериалов и сантехники в ELEKTRO-MASSIVE. Реальные оценки качества товаров и обслуживания.";
+
   return {
+    title,
+    description,
     alternates: {
       canonical: canonicalUrl,
       languages: {

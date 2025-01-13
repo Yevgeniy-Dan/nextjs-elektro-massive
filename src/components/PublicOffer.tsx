@@ -1,5 +1,7 @@
 import React from "react";
+import LocalizedLink from "./shared/LocalizedLink";
 
+//TODO: add lnag support
 const PublicOffer = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 font-sans text-gray-800">
@@ -15,13 +17,14 @@ const PublicOffer = () => {
           Цей договір є офіційною та публічною пропозицією
           виробника/розповсюджувача укласти договір купівлі-продажу Товару,
           представленого на сайті
-          <a
+          <LocalizedLink
+            lng="uk"
             href="https://elektromassive.com"
             className="text-blue-600 hover:underline"
           >
             {" "}
             https://elektromassive.com
-          </a>
+          </LocalizedLink>
           .
         </p>
 

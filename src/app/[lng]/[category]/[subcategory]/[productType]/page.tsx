@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { getProductType } from "./actions";
 import ProductTypePageClient from "./ProductTypePageClient";
 import { getSubcategory } from "../actions";
-import LanguageUnavailablePlaceholder from "@/components/shared/LanguageUnavailablePlaceholder";
 
 interface ProductTypePageProps {
   params: {
@@ -23,19 +22,45 @@ export async function generateMetadata({
     category: categorySlug,
     subcategory: subcategorySlug,
     productType: productTypeSlug,
+    lng,
   } = params;
+
   const canonicalPath = `/${categorySlug}/${subcategorySlug}/${productTypeSlug}`;
   const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
 
-  return {
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        uk: `${process.env.NEXT_PUBLIC_API_URL}/uk${canonicalPath}`,
-        ru: `${process.env.NEXT_PUBLIC_API_URL}/ru${canonicalPath}`,
-        "x-default": canonicalUrl,
-      },
+  const alternates = {
+    canonical: canonicalUrl,
+    languages: {
+      uk: `${process.env.NEXT_PUBLIC_API_URL}/uk${canonicalPath}`,
+      ru: `${process.env.NEXT_PUBLIC_API_URL}/ru${canonicalPath}`,
+      "x-default": canonicalUrl,
     },
+  };
+  const productTypeData = await getProductType(productTypeSlug, lng);
+
+  if (!productTypeData) {
+    return {
+      title:
+        params.lng === "uk"
+          ? `Сторінку не знайдено | ELEKTRO-MASSIVE`
+          : `Страница не найдена | ELEKTRO-MASSIVE`,
+      description:
+        params.lng === "uk"
+          ? `Запитану сторінку не знайдено. Поверніться на головну або скористайтеся пошуком.`
+          : `Запрашиваемая страница не найдена. Вернитесь на главную или воспользуйтесь поиском.`,
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  return {
+    title: `${productTypeData.productType?.attributes?.title} | ELEKTRO-MASSIVE`,
+    description:
+      productTypeData.productType?.attributes?.description?.slice(0, 155) +
+      "...",
+    alternates,
   };
 }
 
@@ -55,11 +80,6 @@ export default async function ProductTypePage({
 
   const { productType, total } = productTypeData;
   const subcategory = subcategoryData;
-
-  // If the language is Russian, we show a special message
-  if (lng === "ru") {
-    return <LanguageUnavailablePlaceholder />;
-  }
 
   if (!productType || !productType.id || !subcategory || !subcategory.id) {
     notFound();
