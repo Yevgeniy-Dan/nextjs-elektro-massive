@@ -47,17 +47,17 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
     return (
       <div className="my-5 flex flex-col items-center justify-center h-full text-gray-400">
         <Box size={64} className="mb-4" />
-        <h2 className="text-lg text-center font-semibold">
+        <h1 className="text-lg text-center font-semibold">
           {t("search.noResults")}
-        </h2>
+        </h1>
       </div>
     );
 
   return (
     <div className="container mx-auto mt-4 bg-white shadow-lg rounded-lg p-6">
-      <h2 className="text-2xl font-bold mb-4">
+      <h1 className="text-2xl font-bold mb-4">
         {t("search.searchResults")} {query}
-      </h2>
+      </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {data.products?.data.map(({ attributes, id }) => (
           <TopCard

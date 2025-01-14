@@ -6,7 +6,6 @@ import {
   clearCartFromLocalStorage,
 } from "@/app/utils/cartHeplers";
 import {
-  CartItem,
   SyncCartBySignInMutation,
   SyncCartBySignInMutationVariables,
 } from "@/gql/graphql";
@@ -16,13 +15,14 @@ import { useEffect, useRef } from "react";
 import { useCookies } from "react-cookie";
 import { SYNC_CART_MUTATION } from "@/graphql/queries/cart";
 import request from "graphql-request";
+import { CartItemType } from "@/types/types";
 
 const syncCart = async (
-  cartItems: CartItem[],
+  cartItems: CartItemType[],
   locale: Language
 ): Promise<SyncCartBySignInMutation> => {
   const input = {
-    products: cartItems.map((item: CartItem) => ({
+    products: cartItems.map((item: CartItemType) => ({
       productId: item.id,
       quantity: item.quantity,
     })),
@@ -44,7 +44,8 @@ export const useSingInMergeCart = () => {
   const hasSynced = useRef(false);
 
   const mutation = useMutation({
-    mutationFn: (cartItems: CartItem[]) => syncCart(cartItems, currentLanguage),
+    mutationFn: (cartItems: CartItemType[]) =>
+      syncCart(cartItems, currentLanguage),
     onSuccess(data, variables, context) {
       clearCartFromLocalStorage();
       const { syncCartBySingIn } = data;

@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CartItem } from "@/gql/graphql";
+import { CartItemType } from "@/types/types";
 
 interface CartItemsCarouselProps {
-  cartItems: CartItem[];
+  cartItems: CartItemType[];
 }
 
 const CartItemsCarousel: React.FC<CartItemsCarouselProps> = ({ cartItems }) => {

@@ -4,11 +4,11 @@ import axios from "axios";
 import { addDays, format } from "date-fns";
 import { calculateProductDimensions } from "../utils/novaPoshtaHeplers";
 import {
-  CartItem,
   Enum_Order_Deliverymethod,
   Enum_Order_Paymentmethod,
 } from "@/gql/graphql";
 import { getOrder } from "./payment";
+import { CartItemType } from "@/types/types";
 
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const API_KEY = process.env.NOVA_POSHTA_API_KEY;
@@ -75,6 +75,8 @@ interface ISenderContactPerson {
   Email: string;
 }
 
+type CartItemForShipment = Pick<CartItemType, "id" | "quantity" | "product">;
+
 interface IShipmentData {
   firstName: string;
   secondName: string;
@@ -82,7 +84,7 @@ interface IShipmentData {
   phone: string;
   warehouseRef?: string;
   cityRef?: string;
-  cartItems: CartItem[];
+  cartItems: CartItemForShipment[];
   deliveryMethod: Enum_Order_Deliverymethod;
   totalAmount: number;
 }
@@ -413,7 +415,7 @@ async function getSenderCounterpartyContactPersons(): Promise<ISenderContactPers
   }
 }
 
-export async function getProductsParams(cartItems: CartItem[]) {
+export async function getProductsParams(cartItems: CartItemForShipment[]) {
   let totalWeight = 0;
   let totalVolume = 0;
 
@@ -427,7 +429,7 @@ export async function getProductsParams(cartItems: CartItem[]) {
 
   cartItems.forEach((item, index) => {
     const { volume, weight, width, length, height } =
-      calculateProductDimensions(item.product);
+      calculateProductDimensions(item.product.params);
 
     totalWeight += weight * item.quantity;
     totalVolume += volume * item.quantity;

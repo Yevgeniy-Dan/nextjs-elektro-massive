@@ -22,7 +22,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
     <div className="py-5">
       <Breadcrumbs customLabels={customLabels} />
       <div className="bg-secondary-gradient-elektro-massive-vertical text-white  py-10 px-6   my-4 space-y-4 rounded-none  -mx-4 sm:-ml-10 md:-ml-16 lg:ml-0 ">
-        <p className="text-lg md:text-xl lg:text-2xl">{t("title")}</p>
+        <h1 className="text-lg md:text-xl lg:text-2xl">{t("title")}</h1>
 
         <p className="text-base md:text-lg lg:text-xl">{t("intro.0")}</p>
         <p className="text-base md:text-lg lg:text-xl">{t("intro.1")}</p>

@@ -1,6 +1,8 @@
-import { Product } from "@/gql/graphql";
+import { CartProductFieldsFragment, Product } from "@/gql/graphql";
 
-export function calculateProductDimensions(product: Product): {
+export function calculateProductDimensions(
+  product: Pick<CartProductFieldsFragment, "params">
+): {
   volume: number;
   weight: number;
   width: number;

@@ -1,4 +1,6 @@
 import {
+  CartItemFieldsFragment,
+  CartProductFieldsFragment,
   GetBannersQuery,
   GetBlogPostsQuery,
   GetCategoryBySlugQuery,
@@ -8,6 +10,7 @@ import {
   GetProductTypeBySlugQuery,
   GetShopReviewsQuery,
   GetSubcategoryBySlugQuery,
+  GetUserCartQuery,
 } from "@/gql/graphql";
 
 export type ProductAttributes = NonNullable<
@@ -68,3 +71,12 @@ export type BlogMainImage = NonNullable<
 export type BlogPost = NonNullable<
   NonNullable<GetBlogPostsQuery["blogPosts"]>["data"]
 >[number];
+
+export type CartProductType = Omit<
+  CartProductFieldsFragment,
+  "__typename" | " $fragmentName"
+>;
+export type CartItemType = Omit<
+  CartItemFieldsFragment,
+  "__typename" | " $fragmentName"
+> & { product: CartProductType };

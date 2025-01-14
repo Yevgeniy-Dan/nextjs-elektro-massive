@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import CartItemComponent from "./CartItem";
-import { CartItem } from "@/gql/graphql";
 import CenteredSpinner from "../shared/CenteredSpinner";
 import { useTranslation } from "@/app/i18n/client";
+import { CartItemType } from "@/types/types";
 
 interface CartItemListProps {
-  items: CartItem[];
+  items: CartItemType[];
   isLoading: boolean;
   lng: string;
 }

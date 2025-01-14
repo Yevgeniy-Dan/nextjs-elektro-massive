@@ -1,9 +1,7 @@
 "use client";
 
-import { useTranslation } from "@/app/i18n/client";
 import { fallbackLng, Language } from "@/app/i18n/settings";
 import {
-  // addItemToLocalStorage,
   clearCartFromLocalStorage,
   getCartItemsFromLocaleStorage,
   removeCartItemFromLocalStorage,
@@ -16,11 +14,8 @@ import {
   UPDATE_CART_ITEM_MUTATION,
 } from "@/graphql/queries/cart";
 import {
-  CartItem,
   GetUserCartQuery,
   GetUserCartQueryVariables,
-  MutationRemoveFromCartArgs,
-  RemoveFromCartInput,
   RemoveFromCartMutation,
   RemoveFromCartMutationVariables,
   UpdateCartItemMutation,
@@ -36,6 +31,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useCookies } from "react-cookie";
+import { CartItemType } from "@/types/types";
 
 export const useCart = () => {
   const [cookies] = useCookies(["i18next"]);
@@ -62,7 +58,7 @@ export const useCart = () => {
           }
         );
 
-        return response.userCart?.cart.cart_items;
+        return response.userCart?.cart.cart_items as CartItemType[];
       } else {
         return getCartItemsFromLocaleStorage(currentLanguage);
       }
@@ -71,9 +67,9 @@ export const useCart = () => {
   });
 
   const updateCartItemMutation = useMutation<
-    CartItem[],
+    CartItemType[],
     Error,
-    { product: CartItem; qtyChange: number }
+    { product: CartItemType; qtyChange: number }
   >({
     mutationFn: async (variables) => {
       if (status === "authenticated") {
@@ -92,7 +88,8 @@ export const useCart = () => {
           }
         );
 
-        return response.updateCartItem?.cart.cart_items || [];
+        return (response.updateCartItem?.cart.cart_items ||
+          []) as CartItemType[];
       } else {
         return updateCartItemInLocalStorage(
           variables.product,
@@ -109,7 +106,7 @@ export const useCart = () => {
   const removeFromCartMutation = useMutation<
     RemoveFromCartMutation,
     Error,
-    { product: CartItem["product"] }
+    { product: CartItemType["product"] }
   >({
     mutationFn: async (variables) => {
       if (status === "authenticated") {
@@ -161,14 +158,14 @@ export const useCart = () => {
     },
   });
 
-  const handleUpdateItem = (product: CartItem, increaseQtyBy: number) => {
+  const handleUpdateItem = (product: CartItemType, increaseQtyBy: number) => {
     updateCartItemMutation.mutate({
       product: product,
       qtyChange: increaseQtyBy,
     });
   };
 
-  const handleRemoveItem = (product: CartItem["product"]) => {
+  const handleRemoveItem = (product: CartItemType["product"]) => {
     removeFromCartMutation.mutate({
       product: product,
     });

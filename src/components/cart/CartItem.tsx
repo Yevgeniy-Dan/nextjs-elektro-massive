@@ -3,10 +3,10 @@ import QuantityAdjuster from "./QuantityAdjuster";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
-import { CartItem } from "@/gql/graphql";
+import { CartItemType } from "@/types/types";
 
 interface CartItemProps {
-  item: CartItem;
+  item: CartItemType;
 }
 
 const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {

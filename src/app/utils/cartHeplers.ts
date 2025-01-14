@@ -1,7 +1,7 @@
 "use client";
 
-import { CartItem } from "@/gql/graphql";
 import { Language, languages } from "../i18n/settings";
+import { CartItemType } from "@/types/types";
 
 export const CART_LOCAL_STORAGE_NAME = "user_cart";
 
@@ -9,13 +9,15 @@ const getLocalizedStorageKey = (locale: Language): string => {
   return `${CART_LOCAL_STORAGE_NAME}_${locale}`;
 };
 
-export const getCartItemsFromLocaleStorage = (locale: Language): CartItem[] => {
+export const getCartItemsFromLocaleStorage = (
+  locale: Language
+): CartItemType[] => {
   const cartItems = localStorage.getItem(getLocalizedStorageKey(locale));
   return cartItems ? JSON.parse(cartItems) : [];
 };
 
 export const saveCartToLocalStorage = (
-  cartItems: CartItem[],
+  cartItems: CartItemType[],
   locale: Language
 ): void => {
   localStorage.setItem(
@@ -25,10 +27,10 @@ export const saveCartToLocalStorage = (
 };
 
 export const updateCartItemInLocalStorage = (
-  cartItem: CartItem,
+  cartItem: CartItemType,
   qtyChange: number,
   currentLocale: Language
-): CartItem[] => {
+): CartItemType[] => {
   //Never change like cartItem.quantity = 0; DO NOT DO THE OPERATIONS WITH cartItem.quantity
 
   languages.forEach((locale) => {
@@ -76,7 +78,7 @@ export const updateCartItemInLocalStorage = (
 
 export const removeCartItemFromLocalStorage = (
   productId: string,
-  product: CartItem["product"],
+  product: CartItemType["product"],
   currentLocale: Language
 ): void => {
   languages.forEach((locale) => {

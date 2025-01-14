@@ -21,9 +21,9 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
     <div className="py-5">
       <Breadcrumbs customLabels={customLabels} />
       <div>
-        <h2 className="text-lg md:text-xl lg:text-2xl uppercase py-5">
+        <h1 className="text-lg md:text-xl lg:text-2xl uppercase py-5">
           {t("title")}
-        </h2>
+        </h1>
 
         <p className="text-base md:text-lg lg:text-xl">{t("intro")}</p>
       </div>

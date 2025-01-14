@@ -1,23 +1,46 @@
 import { gql } from "@apollo/client";
 
+export const CART_PRODUCT_FIELDS = gql`
+  fragment CartProductFields on Product {
+    id
+    title
+    retail
+    currency
+    discount
+    image_link
+    params
+    part_number
+    slug
+    localizations {
+      data {
+        id
+        attributes {
+          locale
+          slug
+        }
+      }
+    }
+  }
+`;
+
+export const CART_ITEM_FIELDS = gql`
+  fragment CartItemFields on CartItem {
+    id
+    quantity
+    product {
+      ...CartProductFields
+    }
+  }
+`;
+
 export const GET_AUTH_USER_CART_QUERY = gql`
+  ${CART_PRODUCT_FIELDS}
+  ${CART_ITEM_FIELDS}
   query GetUserCart($locale: I18NLocaleCode!) {
     userCart(locale: $locale) {
       cart {
         cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            params
-            part_number
-            slug
-          }
+          ...CartItemFields
         }
       }
     }
@@ -25,6 +48,8 @@ export const GET_AUTH_USER_CART_QUERY = gql`
 `;
 
 export const UPDATE_CART_ITEM_MUTATION = gql`
+  ${CART_PRODUCT_FIELDS}
+  ${CART_ITEM_FIELDS}
   mutation UpdateCartItem(
     $input: UpdateCartItemInput!
     $locale: I18NLocaleCode!
@@ -32,19 +57,7 @@ export const UPDATE_CART_ITEM_MUTATION = gql`
     updateCartItem(input: $input, locale: $locale) {
       cart {
         cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            params
-            part_number
-            slug
-          }
+          ...CartItemFields
         }
       }
     }
@@ -52,6 +65,8 @@ export const UPDATE_CART_ITEM_MUTATION = gql`
 `;
 
 export const REMOVE_FROM_CART_MUTATION = gql`
+  ${CART_PRODUCT_FIELDS}
+  ${CART_ITEM_FIELDS}
   mutation RemoveFromCart(
     $input: RemoveFromCartInput!
     $locale: I18NLocaleCode!
@@ -59,18 +74,7 @@ export const REMOVE_FROM_CART_MUTATION = gql`
     removeFromCart(input: $input, locale: $locale) {
       cart {
         cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            params
-            part_number
-          }
+          ...CartItemFields
         }
       }
     }
@@ -94,22 +98,13 @@ export const CLEAR_CART_MUTATION = gql`
 `;
 
 export const SYNC_CART_MUTATION = gql`
+  ${CART_PRODUCT_FIELDS}
+  ${CART_ITEM_FIELDS}
   mutation SyncCartBySignIn($input: SyncCartInput!, $locale: I18NLocaleCode!) {
     syncCartBySingIn(input: $input, locale: $locale) {
       cart {
         cart_items {
-          id
-          quantity
-          product {
-            id
-            title
-            retail
-            currency
-            discount
-            image_link
-            part_number
-            params
-          }
+          ...CartItemFields
         }
       }
     }

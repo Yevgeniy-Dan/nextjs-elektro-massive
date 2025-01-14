@@ -76,9 +76,9 @@ const PaymentDeliveryClient: React.FC<PaymentDeliveryProps> = ({
       <Breadcrumbs customLabels={customLabels} />
       <div className="flex items-start">
         <div className="w-full md:max-w-5xl bg-gray-200 text-gray-950 font-thin rounded-2xl relative">
-          <h2 className="text-lg sm:text-2xl overflow-hidden border border-b-8 border-b-[#990000] p-4 font-semibold rounded-t-2xl">
+          <h1 className="text-lg sm:text-2xl overflow-hidden border border-b-8 border-b-[#990000] p-4 font-semibold rounded-t-2xl">
             {t("title")}
-          </h2>
+          </h1>
           <div className="p-5">
             {sections &&
               sections.map((section: Section, index: number) => (
