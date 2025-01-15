@@ -99,6 +99,8 @@ export const GET_CATEGORY_BY_SLUG = gql`
           name
           slug
           description
+          metaTitle
+          metaDescription
           icon {
             data {
               id
@@ -122,6 +124,8 @@ export const GET_CATEGORY_BY_SLUG = gql`
                 title
                 slug
                 description
+                metaTitle
+                metaDescription
                 icon {
                   data {
                     id

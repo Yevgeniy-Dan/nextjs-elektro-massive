@@ -12,6 +12,8 @@ export const GET_PRODUCT_TYPES = gql`
         attributes {
           title
           slug
+          metaTitle
+          metaDescription
           icon {
             data {
               id
@@ -44,6 +46,8 @@ export const GET_PRODUCT_TYPE_BY_SLUG = gql`
         attributes {
           title
           slug
+          metaTitle
+          metaDescription
           icon {
             data {
               id

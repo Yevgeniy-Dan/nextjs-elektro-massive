@@ -50,8 +50,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: subcategory.attributes?.title + " | ELEKTRO-MASSIVE",
-    description: subcategory.attributes?.description?.slice(0, 155) + "...",
+    title: subcategory.attributes?.metaTitle + " | ELEKTRO-MASSIVE",
+    description: subcategory.attributes?.metaDescription?.slice(0, 155) + "...",
     alternates,
   };
 }

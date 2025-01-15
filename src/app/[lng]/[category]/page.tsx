@@ -31,8 +31,8 @@ export async function generateMetadata({
 
   const category = await getCategory(categorySlug, lng);
 
-  const name = category?.attributes?.name;
-  const description = category?.attributes?.description;
+  const name = category?.attributes?.metaTitle;
+  const description = category?.attributes?.metaDescription;
 
   if (!category) {
     return {

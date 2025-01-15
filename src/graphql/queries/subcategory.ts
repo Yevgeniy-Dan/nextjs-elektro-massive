@@ -9,6 +9,8 @@ export const GET_SUBCATEGORY_BY_SLUG = gql`
           title
           slug
           description
+          metaTitle
+          metaDescription
           icon {
             data {
               attributes {

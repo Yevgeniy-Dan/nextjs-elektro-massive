@@ -56,9 +56,9 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${productTypeData.productType?.attributes?.title} | ELEKTRO-MASSIVE`,
+    title: `${productTypeData.productType?.attributes?.metaTitle} | ELEKTRO-MASSIVE`,
     description:
-      productTypeData.productType?.attributes?.description?.slice(0, 155) +
+      productTypeData.productType?.attributes?.metaDescription?.slice(0, 155) +
       "...",
     alternates,
   };
