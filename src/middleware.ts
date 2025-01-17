@@ -8,9 +8,7 @@ export const config = {
 };
 
 export function middleware(req: NextRequest) {
-  console.log("Middleware called for path:", req.nextUrl.pathname);
-
-  const { pathname, origin, searchParams } = req.nextUrl;
+  const { pathname, origin } = req.nextUrl;
 
   if (pathname === "/sitemap.xml") {
     return NextResponse.redirect(
@@ -30,6 +28,7 @@ export function middleware(req: NextRequest) {
       301
     );
   }
+
   // Обработка поискового запроса с параметром q
   if (pathname === "/uk/search") {
     return NextResponse.next();

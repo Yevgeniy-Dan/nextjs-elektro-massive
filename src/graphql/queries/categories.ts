@@ -99,6 +99,7 @@ export const GET_CATEGORY_BY_SLUG = gql`
           name
           slug
           description
+          langMatches
           metaTitle
           metaDescription
           icon {
@@ -126,6 +127,7 @@ export const GET_CATEGORY_BY_SLUG = gql`
                 description
                 metaTitle
                 metaDescription
+                langMatches
                 icon {
                   data {
                     id

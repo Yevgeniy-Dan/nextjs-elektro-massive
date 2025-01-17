@@ -1,23 +1,17 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { getCookie } from "cookies-next";
 import { request } from "graphql-request";
 
-import { lngCookieName, prevLngCookieName } from "@/app/i18n/settings";
-
 import CategoryListingClient from "@/components/category/CategoryListingClient";
-import { GET_CATEGORY_TRANSLATED_SLUGS } from "@/graphql/queries/slugs";
 import { GET_CATEGORY_BY_SLUG } from "@/graphql/queries/categories";
 import {
   GetCategoryBySlugQuery,
   GetCategoryBySlugQueryVariables,
-  GetCategoryTranslatedSlugsQuery,
-  GetCategoryTranslatedSlugsQueryVariables,
 } from "@/gql/graphql";
 import { CategoryData } from "@/types/types";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 interface CategoryPageClientProps {
   params: {
@@ -31,7 +25,6 @@ const CategoryPageClient: React.FC<CategoryPageClientProps> = ({
   params,
   initialData,
 }) => {
-  const router = useRouter();
   const { category: categorySlug, lng } = params;
 
   const {
@@ -56,52 +49,10 @@ const CategoryPageClient: React.FC<CategoryPageClientProps> = ({
     },
   });
 
-  /* It's for refetching translated slugs */
-  const { refetch: refetchTranslatedSlugs } = useQuery<
-    GetCategoryTranslatedSlugsQuery,
-    GetCategoryTranslatedSlugsQueryVariables
-  >({
-    queryKey: ["translatedSlugsCategory", categorySlug, lng],
-    queryFn: async ({ queryKey }) => {
-      const [, currentCategorySlug, currentLocale] = queryKey;
-      const prevLng = getCookie(prevLngCookieName) as string;
-      return request(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-        GET_CATEGORY_TRANSLATED_SLUGS,
-        {
-          categorySlug: currentCategorySlug,
-          currentLocale: prevLng,
-          targetLocale: currentLocale,
-        }
-      );
-    },
-    enabled: false,
+  useLangMatches({
+    data: categoryData?.categories?.data,
+    type: "category",
   });
-
-  useEffect(() => {
-    const handleLanguageChange = async () => {
-      const currentLng = getCookie(lngCookieName);
-      const prevLng = getCookie(prevLngCookieName);
-
-      if (prevLng && currentLng && prevLng !== currentLng) {
-        const { data: translatedSlugsData } = await refetchTranslatedSlugs();
-        const category = translatedSlugsData?.categories?.data[0]?.attributes;
-
-        if (category) {
-          const translatedCategorySlug =
-            category.localizations?.data[0]?.attributes?.slug;
-
-          if (translatedCategorySlug) {
-            const newPath = `/${currentLng}/${translatedCategorySlug}`;
-            router.push(newPath);
-          }
-        }
-      }
-    };
-
-    handleLanguageChange();
-  }, [categorySlug, router, refetchTranslatedSlugs]);
-  /* The end of refetching translated slugs */
 
   if (isLoading) {
     return (

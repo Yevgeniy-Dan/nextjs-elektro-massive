@@ -14,6 +14,7 @@ export const GET_PRODUCT_TYPES = gql`
           slug
           metaTitle
           metaDescription
+          langMatches
           icon {
             data {
               id
@@ -48,6 +49,7 @@ export const GET_PRODUCT_TYPE_BY_SLUG = gql`
           slug
           metaTitle
           metaDescription
+          langMatches
           icon {
             data {
               id

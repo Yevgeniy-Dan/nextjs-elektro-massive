@@ -1,22 +1,17 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { notFound, useRouter } from "next/navigation";
-import { getCookie } from "cookies-next";
 import { request } from "graphql-request";
-import { GET_SUBCATEGORY_TRANSLATED_SLUGS } from "@/graphql/queries/slugs";
 import { GET_SUBCATEGORY_BY_SLUG } from "@/graphql/queries/subcategory";
-import { lngCookieName, prevLngCookieName } from "@/app/i18n/settings";
 import ProductListingClient from "@/components/products/ProductListingClient";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import {
   GetSubcategoryBySlugQuery,
   GetSubcategoryBySlugQueryVariables,
-  GetSubcategoryTranslatedSlugsQuery,
-  GetSubcategoryTranslatedSlugsQueryVariables,
 } from "@/gql/graphql";
 import { SubcategoryData } from "@/types/types";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 interface SubcategoryPageProps {
   params: {
@@ -31,7 +26,6 @@ const SubcategoryPageClient: React.FC<SubcategoryPageProps> = ({
   params,
   initialData,
 }) => {
-  const router = useRouter();
   const { subcategory: subcategorySlug, category: categorySlug, lng } = params;
 
   const {
@@ -56,61 +50,10 @@ const SubcategoryPageClient: React.FC<SubcategoryPageProps> = ({
     },
   });
 
-  /* It's for getting translated slugs of subcategory */
-  const { refetch: refetchTranslatedSlugs } = useQuery<
-    GetSubcategoryTranslatedSlugsQuery,
-    GetSubcategoryTranslatedSlugsQueryVariables
-  >({
-    queryKey: ["translatedSlugsSubcategory", subcategorySlug, lng],
-    queryFn: async ({ queryKey }) => {
-      const [, currentSubcategorySlug, currentLocale] = queryKey;
-      const prevLng = getCookie(prevLngCookieName) as string;
-      return request(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-        GET_SUBCATEGORY_TRANSLATED_SLUGS,
-        {
-          subcategorySlug: currentSubcategorySlug,
-          currentLocale: prevLng,
-          targetLocale: currentLocale,
-        }
-      );
-    },
-    enabled: false,
+  useLangMatches({
+    data: subcategoryData?.subcategories?.data,
+    type: "subcategory",
   });
-
-  useEffect(() => {
-    const handleLanguageChange = async () => {
-      const currentLng = getCookie(lngCookieName);
-      const prevLng = getCookie(prevLngCookieName);
-
-      if (prevLng && currentLng && prevLng !== currentLng) {
-        const { data: translatedSlugsData } = await refetchTranslatedSlugs();
-        const subcategory =
-          translatedSlugsData?.subcategories?.data[0]?.attributes;
-
-        if (subcategory) {
-          const translatedSubcategorySlug =
-            subcategory.localizations?.data[0]?.attributes?.slug;
-
-          const categoryData = subcategory.categories?.data.find(
-            (cat) => cat.attributes?.slug === categorySlug
-          );
-
-          // Then get its translation
-          const translatedCategorySlug =
-            categoryData?.attributes?.localizations?.data[0]?.attributes?.slug;
-
-          if (translatedSubcategorySlug && translatedCategorySlug) {
-            const newPath = `/${currentLng}/${translatedCategorySlug}/${translatedSubcategorySlug}`;
-            router.push(newPath);
-          }
-        }
-      }
-    };
-
-    handleLanguageChange();
-  }, [subcategorySlug, router, refetchTranslatedSlugs, categorySlug]);
-  /* The end of refetching translated slugs */
 
   if (isLoading) {
     return <CenteredSpinner />;

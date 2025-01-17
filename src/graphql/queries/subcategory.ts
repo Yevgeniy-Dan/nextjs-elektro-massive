@@ -11,6 +11,7 @@ export const GET_SUBCATEGORY_BY_SLUG = gql`
           description
           metaTitle
           metaDescription
+          langMatches
           icon {
             data {
               attributes {

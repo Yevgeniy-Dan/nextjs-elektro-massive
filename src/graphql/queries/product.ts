@@ -50,6 +50,7 @@ export const GET_PRODUCT_BY_SLUG = gql`
           description
           discount
           slug
+          langMatches
           additional_images {
             id
             link

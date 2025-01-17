@@ -1,22 +1,17 @@
 "use client";
 
 import { ProductData } from "@/types/types";
-import React, { useEffect } from "react";
-import { GET_PRODUCT_TRANSLATED_SLUGS } from "@/graphql/queries/slugs";
+import React from "react";
 import { GET_PRODUCT_BY_SLUG } from "@/graphql/queries/product";
 import ProductDetails from "@/components/product/ProductDetails";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import {
   GetProductBySlugQuery,
   GetProductBySlugQueryVariables,
-  GetTranslatedSlugsQuery,
-  GetTranslatedSlugsQueryVariables,
 } from "@/gql/graphql";
-import { useRouter } from "next/navigation";
-import { getCookie } from "cookies-next";
-import { lngCookieName, prevLngCookieName } from "@/app/i18n/settings";
 import { useQuery } from "@tanstack/react-query";
 import request from "graphql-request";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 interface ProductPageProps {
   params: {
@@ -79,7 +74,6 @@ const ProductPageClient: React.FC<ProductPageProps> = ({
   initialData,
 }) => {
   const { category: categorySlug } = params;
-  const router = useRouter();
 
   const {
     data: productData,
@@ -104,62 +98,10 @@ const ProductPageClient: React.FC<ProductPageProps> = ({
     },
   });
 
-  /* It's for translating the product slug to the current locale */
-  const { refetch: refetchTranslatedSlugs } = useQuery<
-    GetTranslatedSlugsQuery,
-    GetTranslatedSlugsQueryVariables
-  >({
-    queryKey: ["translatedSlugs", params.product, params.lng],
-    queryFn: async ({ queryKey }) => {
-      const [, productSlug, currentLocale] = queryKey;
-      const prevLng = getCookie(prevLngCookieName) as string;
-      return request(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-        GET_PRODUCT_TRANSLATED_SLUGS,
-        {
-          productSlug,
-          currentLocale: prevLng,
-          targetLocale: currentLocale,
-        }
-      );
-    },
-    enabled: false, // We don't want to run this query automatically
+  useLangMatches({
+    data: productData?.products?.data,
+    type: "product",
   });
-
-  useEffect(() => {
-    const handleLanguageChange = async () => {
-      const currentLng = getCookie(lngCookieName);
-      const prevLng = getCookie(prevLngCookieName);
-
-      if (prevLng && currentLng && prevLng !== currentLng) {
-        const { data: translatedSlugsData } = await refetchTranslatedSlugs();
-
-        const product = translatedSlugsData?.products?.data[0]?.attributes;
-        if (product) {
-          const translatedProduct = product.localizations?.data[0]?.attributes;
-          const translatedProductType =
-            product.product_types?.data[0].attributes?.localizations?.data[0]
-              ?.attributes;
-
-          if (!translatedProduct || !translatedProductType) return null;
-
-          const subcategoryData =
-            translatedProduct.subcategory?.data?.attributes;
-          if (!subcategoryData) return null;
-
-          // Find the matching category from the categories array
-          const categories = subcategoryData.categories?.data || [];
-
-          const newPath = `/${currentLng}/${categories[0].attributes?.slug}/${subcategoryData.slug}/${translatedProductType.slug}/${translatedProduct.slug}`;
-
-          router.push(newPath);
-        }
-      }
-    };
-
-    handleLanguageChange();
-  }, [params.product, router, refetchTranslatedSlugs, categorySlug]);
-  /* The end of the translation logic */
 
   if (isProductLoading) {
     return <CenteredSpinner />;
