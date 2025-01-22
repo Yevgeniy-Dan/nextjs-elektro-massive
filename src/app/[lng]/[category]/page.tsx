@@ -4,6 +4,7 @@ import { Metadata } from "next";
 
 import { getCategory } from "./actions";
 import CategoryPageClient from "./CategoryPageClient";
+import { languages } from "@/app/i18n/settings";
 
 interface CategoryPageProps {
   params: {
@@ -66,5 +67,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  return <CategoryPageClient params={params} initialData={category} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `${category?.attributes?.langMatches[l]}`,
+    }),
+    {}
+  );
+
+  return (
+    <CategoryPageClient
+      params={params}
+      initialData={category}
+      fullTranslatedPath={fullTranslatedPath}
+    />
+  );
 }

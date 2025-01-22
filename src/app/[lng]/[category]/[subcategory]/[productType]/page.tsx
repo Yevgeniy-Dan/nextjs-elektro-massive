@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 import { getProductType } from "./actions";
 import ProductTypePageClient from "./ProductTypePageClient";
 import { getSubcategory } from "../actions";
+import { getCategory } from "../../actions";
+import { languages } from "@/app/i18n/settings";
+import { cookies } from "next/headers";
 
 interface ProductTypePageProps {
   params: {
@@ -71,19 +74,29 @@ export default async function ProductTypePage({
     productType: productTypeSlug,
     lng,
     subcategory: subcategorySlug,
+    category: categorySlug,
   } = params;
 
-  const [productTypeData, subcategoryData] = await Promise.all([
+  const [productTypeData, subcategoryData, categoryData] = await Promise.all([
     getProductType(productTypeSlug, lng),
     getSubcategory(subcategorySlug, lng),
+    getCategory(categorySlug, lng),
   ]);
 
   const { productType, total } = productTypeData;
   const subcategory = subcategoryData;
 
-  if (!productType || !productType.id || !subcategory || !subcategory.id) {
+  if (!productType?.id || !subcategory?.id || !categoryData?.id) {
     notFound();
   }
+
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `${categoryData.attributes?.langMatches[l]}/${subcategoryData?.attributes?.langMatches[l]}/${productType.attributes?.langMatches[l]}`,
+    }),
+    {}
+  );
 
   return (
     <ProductTypePageClient
@@ -91,6 +104,7 @@ export default async function ProductTypePage({
       initialProductTypeData={productType}
       initialSubcategoryData={subcategory}
       total={total || 1}
+      fullTranslatedPath={fullTranslatedPath}
     />
   );
 }

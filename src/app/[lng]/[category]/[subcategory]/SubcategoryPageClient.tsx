@@ -12,6 +12,7 @@ import {
 } from "@/gql/graphql";
 import { SubcategoryData } from "@/types/types";
 import { useLangMatches } from "@/hooks/useLangMatches";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 
 interface SubcategoryPageProps {
   params: {
@@ -20,11 +21,13 @@ interface SubcategoryPageProps {
     lng: string;
   };
   initialData: SubcategoryData;
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 const SubcategoryPageClient: React.FC<SubcategoryPageProps> = ({
   params,
   initialData,
+  fullTranslatedPath,
 }) => {
   const { subcategory: subcategorySlug, category: categorySlug, lng } = params;
 
@@ -50,10 +53,7 @@ const SubcategoryPageClient: React.FC<SubcategoryPageProps> = ({
     },
   });
 
-  useLangMatches({
-    data: subcategoryData?.subcategories?.data,
-    type: "subcategory",
-  });
+  useLangMatches(fullTranslatedPath);
 
   if (isLoading) {
     return <CenteredSpinner />;

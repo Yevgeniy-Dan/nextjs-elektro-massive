@@ -6,65 +6,51 @@ import { usePathname, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 
 import { languages } from "@/app/i18n/settings";
+import { LANG_MATCHES_KEY } from "@/app/utils/constants";
 
-export const LANG_MATCHES_KEY = "langMatches";
-
-type AvailableLanguages = (typeof languages)[number];
-export interface LangMatches {
-  category?: {
-    [K in AvailableLanguages]?: string;
-  };
-  subcategory?: {
-    [K in AvailableLanguages]?: string;
-  };
-  productType?: {
-    [K in AvailableLanguages]?: string;
-  };
-  product?: {
-    [K in AvailableLanguages]?: string;
-  };
-}
+export type AvailableLanguages = (typeof languages)[number];
 
 interface LanguageTogglerProps {
   lng: string;
 }
 
+type LangMatches = {
+  [key in AvailableLanguages]: string;
+};
+
 const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const getSlugs = (lang: string, langMatches: LangMatches, limit: number) => {
-    const levels: (keyof LangMatches)[] = [
-      "category",
-      "subcategory",
-      "productType",
-      "product",
-    ];
-
-    return levels
-      .slice(0, limit)
-      .map((level) => {
-        const translations = langMatches[level];
-        if (!translations) return null;
-        return translations[(lang || "uk") as AvailableLanguages];
-      })
-      .filter((slug): slug is string => Boolean(slug))
-      .join("/");
+  /**
+   * Retrieves the translated path for the specified language from langMatches.
+   * @param lang - Target language
+   * @param langMatches - Object containing language matches
+   * @returns The translated path or an empty string
+   */
+  const getSlug = (lang: string, langMatches: LangMatches) => {
+    return langMatches[lang] || "";
   };
 
+  /**
+   * Handles language change.
+   * Redirects the user to the translated path if it exists;
+   * otherwise, generates a fallback path based on the current one.
+   * @param event - Change event from the select element
+   * @returns {void}
+   */
   const handleLanguageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  ): void => {
     const newLang = event.target.value;
     const currentPathname = pathname;
-    const pathWithoutLang = currentPathname.replace(new RegExp(`^/${lng}`), "");
+    const pathWithoutLang = currentPathname.replace(new RegExp(`^/${lng}`), ""); // Remove the current language prefix from the path
 
     const langMatchesCookie = getCookie(LANG_MATCHES_KEY);
     if (langMatchesCookie) {
       try {
-        const pathParts = pathWithoutLang.split("/").filter(Boolean);
         const langMatches = JSON.parse(langMatchesCookie) as LangMatches;
-        let translatedPath = getSlugs(newLang, langMatches, pathParts.length);
+        let translatedPath = getSlug(newLang, langMatches);
 
         if (translatedPath) {
           const newPath = `/${newLang}/${translatedPath}`;
@@ -76,6 +62,7 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
       }
     }
 
+    // If no translation is available, create a fallback path
     const newPath = `/${newLang}${pathWithoutLang || "/"}`.replace(/\/+/g, "/");
     router.push(newPath);
     return;

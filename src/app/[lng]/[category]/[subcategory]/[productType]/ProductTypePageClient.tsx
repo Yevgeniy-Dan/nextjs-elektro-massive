@@ -15,6 +15,7 @@ import {
 } from "@/gql/graphql";
 import { ProductTypeData, SubcategoryData } from "@/types/types";
 import { useLangMatches } from "@/hooks/useLangMatches";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 
 interface ProductTypePageProps {
   params: {
@@ -26,6 +27,7 @@ interface ProductTypePageProps {
   initialProductTypeData: ProductTypeData;
   initialSubcategoryData: SubcategoryData;
   total: number;
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 const ProductTypePageClient: React.FC<ProductTypePageProps> = ({
@@ -33,6 +35,7 @@ const ProductTypePageClient: React.FC<ProductTypePageProps> = ({
   initialProductTypeData,
   initialSubcategoryData,
   total,
+  fullTranslatedPath,
 }) => {
   const {
     subcategory: subcategorySlug,
@@ -40,6 +43,8 @@ const ProductTypePageClient: React.FC<ProductTypePageProps> = ({
     category: categorySlug,
     lng,
   } = params;
+
+  useLangMatches(fullTranslatedPath);
 
   const {
     data: productTypeData,
@@ -90,10 +95,10 @@ const ProductTypePageClient: React.FC<ProductTypePageProps> = ({
     },
   });
 
-  useLangMatches({
-    data: productTypeData?.productTypes?.data,
-    type: "productType",
-  });
+  // useLangMatches({
+  //   data: productTypeData?.productTypes?.data,
+  //   type: "productType",
+  // });
 
   if (isProductTypeLoading || isSubcategoryLoading) {
     return <CenteredSpinner />;

@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 
 import { getSubcategory } from "./actions";
 import SubcategoryPageClient from "./SubcategoryPageClient";
+import { getCategory } from "../actions";
+import { languages } from "@/app/i18n/settings";
 
 interface SubcategoryPageProps {
   params: {
@@ -61,11 +63,28 @@ export default async function SubcategoryPage({
 }: SubcategoryPageProps) {
   const { subcategory: subcategorySlug, category: categorySlug, lng } = params;
 
-  const subcategory = await getSubcategory(subcategorySlug, lng);
+  const [category, subcategory] = await Promise.all([
+    getCategory(categorySlug, lng),
+    getSubcategory(subcategorySlug, lng),
+  ]);
 
   if (!subcategory || !subcategory.id) {
     notFound();
   }
 
-  return <SubcategoryPageClient params={params} initialData={subcategory} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `${category?.attributes?.langMatches[l]}/${subcategory?.attributes?.langMatches[l]}`,
+    }),
+    {}
+  );
+
+  return (
+    <SubcategoryPageClient
+      params={params}
+      initialData={subcategory}
+      fullTranslatedPath={fullTranslatedPath}
+    />
+  );
 }

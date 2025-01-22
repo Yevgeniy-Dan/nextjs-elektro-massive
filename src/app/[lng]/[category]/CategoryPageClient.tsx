@@ -12,6 +12,7 @@ import {
 } from "@/gql/graphql";
 import { CategoryData } from "@/types/types";
 import { useLangMatches } from "@/hooks/useLangMatches";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 
 interface CategoryPageClientProps {
   params: {
@@ -19,13 +20,17 @@ interface CategoryPageClientProps {
     lng: string;
   };
   initialData: CategoryData;
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 const CategoryPageClient: React.FC<CategoryPageClientProps> = ({
   params,
   initialData,
+  fullTranslatedPath,
 }) => {
   const { category: categorySlug, lng } = params;
+
+  useLangMatches(fullTranslatedPath);
 
   const {
     data: categoryData,
@@ -47,11 +52,6 @@ const CategoryPageClient: React.FC<CategoryPageClientProps> = ({
         data: [initialData],
       },
     },
-  });
-
-  useLangMatches({
-    data: categoryData?.categories?.data,
-    type: "category",
   });
 
   if (isLoading) {

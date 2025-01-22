@@ -1,8 +1,15 @@
+"use server";
+
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 import { getProduct } from "./actions";
 import ProductPageClient from "./ProductPageClient";
+import { languages } from "@/app/i18n/settings";
+import { getProductType } from "../actions";
+import { getSubcategory } from "../../actions";
+import { getCategory } from "../../../actions";
+import { cookies } from "next/headers";
 
 interface ProductPageProps {
   params: {
@@ -63,13 +70,37 @@ export async function generateMetadata({
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { product, productType, lng } = params;
+  const { product, productType, lng, category, subcategory } = params;
 
-  const productData = await getProduct(product, productType, lng);
-
-  if (!productData?.id) {
+  const [productTypeData, subcategoryData, categoryData, productData] =
+    await Promise.all([
+      getProductType(productType, lng),
+      getSubcategory(subcategory, lng),
+      getCategory(category, lng),
+      getProduct(product, productType, lng),
+    ]);
+  if (
+    !productTypeData?.productType?.id ||
+    !subcategoryData?.id ||
+    !categoryData?.id ||
+    !productData?.id
+  ) {
     notFound();
   }
 
-  return <ProductPageClient params={params} initialData={productData} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `${categoryData.attributes?.langMatches[l]}/${subcategoryData?.attributes?.langMatches[l]}/${productTypeData.productType.attributes?.langMatches[l]}/${productData.attributes?.langMatches[l]}`,
+    }),
+    {}
+  );
+
+  return (
+    <ProductPageClient
+      params={params}
+      initialData={productData}
+      fullTranslatedPath={fullTranslatedPath}
+    />
+  );
 }

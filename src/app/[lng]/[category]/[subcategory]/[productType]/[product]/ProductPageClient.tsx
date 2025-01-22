@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductData } from "@/types/types";
-import React from "react";
+import React, { useEffect } from "react";
 import { GET_PRODUCT_BY_SLUG } from "@/graphql/queries/product";
 import ProductDetails from "@/components/product/ProductDetails";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
@@ -12,6 +12,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import request from "graphql-request";
 import { useLangMatches } from "@/hooks/useLangMatches";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 
 interface ProductPageProps {
   params: {
@@ -22,6 +23,7 @@ interface ProductPageProps {
     lng: string;
   };
   initialData: ProductData;
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 function ProductContainer({
@@ -72,8 +74,12 @@ function ProductContainer({
 const ProductPageClient: React.FC<ProductPageProps> = ({
   params,
   initialData,
+  fullTranslatedPath,
 }) => {
   const { category: categorySlug } = params;
+  console.log("Lang matches set in cookie:", fullTranslatedPath);
+
+  useLangMatches(fullTranslatedPath);
 
   const {
     data: productData,
@@ -96,11 +102,6 @@ const ProductPageClient: React.FC<ProductPageProps> = ({
         data: [initialData],
       },
     },
-  });
-
-  useLangMatches({
-    data: productData?.products?.data,
-    type: "product",
   });
 
   if (isProductLoading) {
