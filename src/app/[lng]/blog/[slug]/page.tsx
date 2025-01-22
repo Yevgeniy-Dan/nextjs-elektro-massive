@@ -45,8 +45,8 @@ export async function generateMetadata({
   const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
 
   return {
-    title: post.attributes?.name + " | ELEKTRO-MASSIVE",
-    description: post.attributes?.description?.slice(0, 155) + "...",
+    title: post.attributes?.metaTitle + " | ELEKTRO-MASSIVE",
+    description: post.attributes?.metaDescription?.slice(0, 155) + "...",
     alternates: {
       canonical: canonicalUrl,
       languages: {

@@ -51,6 +51,8 @@ export const GET_BLOG_POST_BY_SLUG = gql`
           name
           description
           slug
+          metaTitle
+          metaDescription
           image {
             data {
               attributes {
