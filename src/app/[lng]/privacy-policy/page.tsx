@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = "Privacy Policy | ELEKTRO-MASSIVE";
 
   const description =
-    "Privacy Policy for ELEKTRO-MASSIVE website. Learn how we collect, use and protect your personal information, including Google Sign-In data and cookies policy.";
+    "Privacy Policy for ELEKTRO-MASSIVE website. Learn how we collect, use and protect your personal information, including Google Sign-In data and cookies policy | ELEKTRO-MASSIVE";
 
   return {
     title,

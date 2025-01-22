@@ -67,9 +67,9 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
     <div className="text-white my-10">
       <Breadcrumbs customLabels={customLabels} />
       <div className="-ml-4 sm:-ml-8 md:-ml-12 lg:-ml-16 xl:ml-0 mb-10">
-        <h2 className="bg-gradient-elektro-massive-horizontal text-white font-bold mb-2 pl-4 sm:pl-12 pr-28 py-5 rounded-r-3xl xl:rounded-full text-xl uppercase tracking-wide">
+        <h1 className="bg-gradient-elektro-massive-horizontal text-white font-bold mb-2 pl-4 sm:pl-12 pr-28 py-5 rounded-r-3xl xl:rounded-full text-xl uppercase tracking-wide">
           {categoryTitle}
-        </h2>
+        </h1>
       </div>
 
       <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">

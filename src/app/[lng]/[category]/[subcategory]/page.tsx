@@ -42,8 +42,8 @@ export async function generateMetadata({
           : `Страница не найдена | ELEKTRO-MASSIVE`,
       description:
         params.lng === "uk"
-          ? `Запитану сторінку не знайдено. Поверніться на головну або скористайтеся пошуком.`
-          : `Запрашиваемая страница не найдена. Вернитесь на главную или воспользуйтесь поиском.`,
+          ? `Запитану сторінку не знайдено. Поверніться на головну або скористайтеся пошуком | ELEKTRO-MASSIVE`
+          : `Запрашиваемая страница не найдена. Вернитесь на главную или воспользуйтесь поиском | ELEKTRO-MASSIVE`,
       robots: {
         index: false,
         follow: false,
@@ -53,7 +53,9 @@ export async function generateMetadata({
 
   return {
     title: subcategory.attributes?.metaTitle + " | ELEKTRO-MASSIVE",
-    description: subcategory.attributes?.metaDescription?.slice(0, 155) + "...",
+    description:
+      subcategory.attributes?.metaDescription?.slice(0, 155) +
+      " | ELEKTRO-MASSIVE",
     alternates,
   };
 }
@@ -75,7 +77,7 @@ export default async function SubcategoryPage({
   const fullTranslatedPath = languages.reduce(
     (acc, l) => ({
       ...acc,
-      [l]: `${category?.attributes?.langMatches[l]}/${subcategory?.attributes?.langMatches[l]}`,
+      [l]: `${category?.attributes?.langMatches?.[l]}/${subcategory?.attributes?.langMatches?.[l]}`,
     }),
     {}
   );

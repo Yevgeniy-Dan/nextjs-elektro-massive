@@ -123,9 +123,11 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const handleProductTypeChange = (newProductTypeSlug: string) => {
     const currentProductTypeSlug = productTypeSlug;
     if (currentProductTypeSlug === newProductTypeSlug) {
-      router.push(`/${categorySlug}/${subcategorySlug}`);
+      router.push(`/${lng}/${categorySlug}/${subcategorySlug}`);
     } else {
-      router.push(`/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`);
+      router.push(
+        `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`
+      );
     }
   };
 
@@ -184,6 +186,11 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
       ref={productListingRef}
     >
       <Breadcrumbs customLabels={customLabels} />
+      <h1 className="text-gray-700 font-medium mb-2 py-5 md:text-2xl lg:text-3xl">
+        {productTypeSlug
+          ? `${productTypeTitle} ${subcategoryTitle.toLowerCase()}`
+          : subcategoryTitle}
+      </h1>
       <ProductTypeSelector
         types={productTypesData?.productTypes?.data || []}
         selectedTypeId={productTypeId || ""}

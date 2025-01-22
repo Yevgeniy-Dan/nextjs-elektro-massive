@@ -32,8 +32,8 @@ export async function generateMetadata({
           : `Статья не найдена | ELEKTRO-MASSIVE`,
       description:
         lng === "uk"
-          ? `Запитану статтю не існує або була видалена`
-          : `Запрашиваемая статья не существует или была удалена`,
+          ? `Запитану статтю не існує або була видалена | ELEKTRO-MASSIVE`
+          : `Запрашиваемая статья не существует или была удалена | ELEKTRO-MASSIVE`,
       robots: {
         index: false,
         follow: false,
@@ -46,7 +46,8 @@ export async function generateMetadata({
 
   return {
     title: post.attributes?.metaTitle + " | ELEKTRO-MASSIVE",
-    description: post.attributes?.metaDescription?.slice(0, 155) + "...",
+    description:
+      post.attributes?.metaDescription?.slice(0, 155) + " | ELEKTRO-MASSIVE",
     alternates: {
       canonical: canonicalUrl,
       languages: {

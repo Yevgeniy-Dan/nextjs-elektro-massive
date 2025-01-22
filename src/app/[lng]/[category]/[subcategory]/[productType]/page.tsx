@@ -49,8 +49,8 @@ export async function generateMetadata({
           : `Страница не найдена | ELEKTRO-MASSIVE`,
       description:
         params.lng === "uk"
-          ? `Запитану сторінку не знайдено. Поверніться на головну або скористайтеся пошуком.`
-          : `Запрашиваемая страница не найдена. Вернитесь на главную или воспользуйтесь поиском.`,
+          ? `Запитану сторінку не знайдено. Поверніться на головну або скористайтеся пошуком | ELEKTRO-MASSIVE`
+          : `Запрашиваемая страница не найдена. Вернитесь на главную или воспользуйтесь поиском | ELEKTRO-MASSIVE`,
       robots: {
         index: false,
         follow: false,
@@ -62,7 +62,7 @@ export async function generateMetadata({
     title: `${productTypeData.productType?.attributes?.metaTitle} | ELEKTRO-MASSIVE`,
     description:
       productTypeData.productType?.attributes?.metaDescription?.slice(0, 155) +
-      "...",
+      " | ELEKTRO-MASSIVE",
     alternates,
   };
 }
@@ -93,7 +93,7 @@ export default async function ProductTypePage({
   const fullTranslatedPath = languages.reduce(
     (acc, l) => ({
       ...acc,
-      [l]: `${categoryData.attributes?.langMatches[l]}/${subcategoryData?.attributes?.langMatches[l]}/${productType.attributes?.langMatches[l]}`,
+      [l]: `${categoryData.attributes?.langMatches?.[l]}/${subcategoryData?.attributes?.langMatches?.[l]}/${productType.attributes?.langMatches?.[l]}`,
     }),
     {}
   );

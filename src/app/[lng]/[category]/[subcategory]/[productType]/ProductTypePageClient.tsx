@@ -95,11 +95,6 @@ const ProductTypePageClient: React.FC<ProductTypePageProps> = ({
     },
   });
 
-  // useLangMatches({
-  //   data: productTypeData?.productTypes?.data,
-  //   type: "productType",
-  // });
-
   if (isProductTypeLoading || isSubcategoryLoading) {
     return <CenteredSpinner />;
   }

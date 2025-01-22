@@ -15,8 +15,8 @@ export async function generateMetadata({
 
   const description =
     params.lng === "uk"
-      ? "Підтвердження та деталі вашого замовлення в ELEKTRO-MASSIVE"
-      : "Подтверждение и детали вашего заказа в ELEKTRO-MASSIVE";
+      ? "Підтвердження та деталі вашого замовлення в ELEKTRO-MASSIVE | ELEKTRO-MASSIVE"
+      : "Подтверждение и детали вашего заказа в ELEKTRO-MASSIVE | ELEKTRO-MASSIVE";
 
   return {
     title,
