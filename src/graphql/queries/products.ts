@@ -177,7 +177,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
     }
     newProducts: products(
       sort: "createdAt:desc"
-      pagination: { limit: $limit }
+      pagination: { limit: 200 }
       locale: $locale
     ) {
       data {
