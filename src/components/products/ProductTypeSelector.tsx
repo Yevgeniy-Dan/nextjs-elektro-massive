@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface ProductTypeSelectorProps {
   types: ProductTypeBySlug[];
   selectedTypeId: string | null;
-  onTypeChange: (typeSlug: string) => void;
+  onTypeChange: (typeSlug: string, typeTitle: string) => void;
 }
 
 const ProductTypeSelector: React.FC<ProductTypeSelectorProps> = ({
@@ -58,7 +58,12 @@ const ProductTypeSelector: React.FC<ProductTypeSelectorProps> = ({
                       ? "opacity-100"
                       : "opacity-50 hover:opacity-100"
                   }`}
-                  onClick={() => onTypeChange(type?.attributes?.slug ?? "")}
+                  onClick={() =>
+                    onTypeChange(
+                      type?.attributes?.slug ?? "",
+                      type.attributes?.title ?? ""
+                    )
+                  }
                 >
                   <div className="w-32 h-32 mb-2 relative">
                     {type?.attributes?.icon?.data?.attributes && (

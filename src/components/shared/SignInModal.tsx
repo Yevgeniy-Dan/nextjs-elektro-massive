@@ -93,6 +93,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
 
   const handleOtpSignIn = async () => {
     setIsLoading(true);
+    window.gtag("event", "login", { method: "Phone OTP" });
     try {
       const result = await signIn("phoneOtp", {
         phone: phoneSchema.parse({ phone: phoneNumber }).phone,
@@ -115,6 +116,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
 
   const handleGoogleSignIn = async () => {
     try {
+      window.gtag("event", "login", { method: "Google" });
+
       await signIn("google", {
         callbackUrl: redirectUrl || window.location.href,
       });

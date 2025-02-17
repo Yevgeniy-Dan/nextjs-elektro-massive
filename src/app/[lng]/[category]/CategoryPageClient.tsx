@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { request } from "graphql-request";
 
@@ -53,6 +53,24 @@ const CategoryPageClient: React.FC<CategoryPageClientProps> = ({
       },
     },
   });
+
+  useEffect(() => {
+    if (categoryData && !isLoading && !error) {
+      window.gtag("event", "view_item_list", {
+        item_list_name: "Subcategory",
+        item_list_id: categoryData.categories?.data[0].id,
+        item_list_category: categoryData.categories?.data[0].attributes?.slug,
+        items:
+          categoryData.categories?.data[0].attributes?.subcategories?.data.map(
+            (subcategory) => ({
+              item_id: subcategory.id,
+              item_name: subcategory.attributes?.title,
+              item_category: subcategory.attributes?.slug,
+            })
+          ) || [],
+      });
+    }
+  }, [categoryData, isLoading, error]);
 
   if (isLoading) {
     return (

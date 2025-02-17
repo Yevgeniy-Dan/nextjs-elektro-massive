@@ -68,6 +68,14 @@ const CategoryCarousel = ({
               <LocalizedLink
                 lng={lng}
                 href={`/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
+                onClick={() => {
+                  window.gtag("event", "navigation", {
+                    event_category: "Navigation",
+                    event_action: "Subcategory Click",
+                    event_label: subcategory.attributes?.title,
+                    page_path: `/${category.attributes?.slug}/${subcategory.attributes?.slug}`,
+                  });
+                }}
                 className="flex-shrink-0 w-48 md:w-64 flex flex-col items-center px-2 cursor-pointer"
                 key={subcategory.id}
               >

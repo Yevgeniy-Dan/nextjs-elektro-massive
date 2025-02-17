@@ -77,7 +77,6 @@ const ProductPageClient: React.FC<ProductPageProps> = ({
   fullTranslatedPath,
 }) => {
   const { category: categorySlug } = params;
-  console.log("Lang matches set in cookie:", fullTranslatedPath);
 
   useLangMatches(fullTranslatedPath);
 

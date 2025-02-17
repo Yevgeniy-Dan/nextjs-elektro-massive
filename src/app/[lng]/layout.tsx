@@ -25,6 +25,7 @@ import SignInModal from "@/components/shared/SignInModal";
 import ShoppingCartModal from "@/components/shared/ShoppingCartModal";
 import { Analytics } from "@vercel/analytics/react";
 import { languages } from "../i18n/settings";
+import { GoogleAnalytic } from "@/components/services/GoogleAnalytic";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -51,6 +52,7 @@ export default async function RootLayout({
   return (
     <html lang={lng} dir={dir(lng)}>
       <body className={`${roboto.className} flex flex-col min-h-screen`}>
+        <GoogleAnalytic />
         <Providers session={session}>
           <div className="flex-grow">
             <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
@@ -67,7 +69,7 @@ export default async function RootLayout({
           <ToastContainer />
         </Providers>
       </body>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      {/* <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} /> */}
     </html>
   );
 }

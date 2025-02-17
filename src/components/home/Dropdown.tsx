@@ -43,6 +43,13 @@ const Dropdown: React.FC<DropdownProps> = ({
             <Link
               href={`viber://chat?number=+380964992448`}
               className="flex items-center"
+              onClick={() => {
+                window.gtag("event", "support_service_click", {
+                  event_category: "Support Service",
+                  event_action: "Click",
+                  event_label: "Viber Chat",
+                });
+              }}
             >
               <Image
                 src="/viber-black-white-icon.png"
@@ -56,6 +63,13 @@ const Dropdown: React.FC<DropdownProps> = ({
             <Link
               href={`https://t.me/Elektro_Massive`}
               className="flex items-center"
+              onClick={() => {
+                window.gtag("event", "support_service_click", {
+                  event_category: "Support Service",
+                  event_action: "Click",
+                  event_label: "Telegram Chat",
+                });
+              }}
             >
               <Image
                 src="/telegram-black-white-icon.png"
@@ -69,6 +83,13 @@ const Dropdown: React.FC<DropdownProps> = ({
             <Link
               href={`mailto:elektromassive@gmail.com`}
               className="flex items-center"
+              onClick={() => {
+                window.gtag("event", "support_service_click", {
+                  event_category: "Support Service",
+                  event_action: "Click",
+                  event_label: "E-mail",
+                });
+              }}
             >
               <Image
                 src="/wing-black-white-icon.png"
@@ -80,7 +101,17 @@ const Dropdown: React.FC<DropdownProps> = ({
               <span>E-mail</span>
             </Link>
             <hr className="my-3 border-gray-200" />
-            <Link href="tel:+380980392853" className="flex items-center">
+            <Link
+              href="tel:+380980392853"
+              className="flex items-center"
+              onClick={() => {
+                window.gtag("event", "support_service_click", {
+                  event_category: "Support Service",
+                  event_action: "Click",
+                  event_label: "Phone",
+                });
+              }}
+            >
               <Image
                 src="/phone.png"
                 alt="Phone Icon"
@@ -92,7 +123,17 @@ const Dropdown: React.FC<DropdownProps> = ({
                 {t("supportService.firstPhone")}
               </span>
             </Link>
-            <Link href="tel:+380976323159" className="flex items-center">
+            <Link
+              href="tel:+380976323159"
+              className="flex items-center"
+              onClick={() => {
+                window.gtag("event", "support_service_click", {
+                  event_category: "Support Service",
+                  event_action: "Click",
+                  event_label: "Phone",
+                });
+              }}
+            >
               <Image
                 src="/phone.png"
                 alt="Phone Icon"

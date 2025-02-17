@@ -29,7 +29,15 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
       <LocalizedLink
         lng={lng}
         href={`/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
-        onClick={toggleCategory}
+        onClick={(e) => {
+          window.gtag("event", "navigation", {
+            event_category: "Navigation",
+            event_action: "Subcategory Click",
+            event_label: subcategory.attributes?.title,
+            page_path: `/${category.attributes?.slug}/${subcategory.attributes?.slug}`,
+          });
+          toggleCategory(e);
+        }}
         key={subcategory.id}
         className="flex flex-row items-center space-x-4 p-6 hover:text-gray-700 hover:bg-white w-full"
       >

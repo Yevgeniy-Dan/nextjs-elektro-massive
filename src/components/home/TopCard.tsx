@@ -123,6 +123,13 @@ const TopCard: React.FC<ITopCardProps> = ({
       1
     );
     dispatch(openModal());
+
+    window.gtag("event", "add_to_cart", {
+      event_category: "CTA",
+      event_label: "Купить",
+      value: retail,
+      quantity: 1,
+    });
   }, [
     handleUpdateItem,
     id,
@@ -146,6 +153,14 @@ const TopCard: React.FC<ITopCardProps> = ({
       <LocalizedLink
         lng={lng}
         href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+        onClick={() => {
+          window.gtag("event", "navigation", {
+            event_category: "Navigation",
+            event_action: "Product Click",
+            event_label: title,
+            page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
+          });
+        }}
         className="relative pt-[100%] block"
       >
         <Image
@@ -210,6 +225,14 @@ const TopCard: React.FC<ITopCardProps> = ({
           <LocalizedLink
             lng={lng}
             href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+            onClick={() => {
+              window.gtag("event", "navigation", {
+                event_category: "Navigation",
+                event_action: "Product Click",
+                event_label: title,
+                page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
+              });
+            }}
           >
             <h2 className="text-sm font-normal line-clamp-2">{title}</h2>
           </LocalizedLink>
@@ -229,6 +252,14 @@ const TopCard: React.FC<ITopCardProps> = ({
           <LocalizedLink
             lng={lng}
             href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
+            onClick={() => {
+              window.gtag("event", "navigation", {
+                event_category: "Navigation",
+                event_action: "Product Click",
+                event_label: title,
+                page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
+              });
+            }}
           >
             <h2
               ref={titleRef}

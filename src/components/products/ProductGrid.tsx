@@ -93,6 +93,17 @@ const ProductGrid = ({
   });
 
   useEffect(() => {
+    if (data && !loading && !error) {
+      window.gtag("event", "view_item_list", {
+        item_list_name: "Product",
+        item_list_subcategory: subcategorySlug,
+        item_list_product_type: productTypeSlug,
+        item_page: currentPage,
+      });
+    }
+  }, [data, subcategorySlug, productTypeSlug, currentPage, loading, error]);
+
+  useEffect(() => {
     dispatch(setAppliedFilters({ subcategoryId, filters: appliedFilters }));
   }, [dispatch, subcategoryId, appliedFilters]);
 

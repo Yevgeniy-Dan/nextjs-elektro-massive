@@ -120,11 +120,20 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     dispatch(setAppliedFilters({ subcategoryId, filters: {} }));
   }, [dispatch, subcategoryId, productTypeId]);
 
-  const handleProductTypeChange = (newProductTypeSlug: string) => {
+  const handleProductTypeChange = (
+    newProductTypeSlug: string,
+    newProductTypeTitle: string
+  ) => {
     const currentProductTypeSlug = productTypeSlug;
     if (currentProductTypeSlug === newProductTypeSlug) {
       router.push(`/${lng}/${categorySlug}/${subcategorySlug}`);
     } else {
+      window.gtag("event", "navigation", {
+        event_category: "Navigation",
+        event_action: "Product Type Click",
+        event_label: newProductTypeSlug,
+        page_path: `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`,
+      });
       router.push(
         `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`
       );

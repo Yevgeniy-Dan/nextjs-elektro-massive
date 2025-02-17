@@ -20,6 +20,26 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customLabels = {} }) => {
     .split("/")
     .filter((segment) => segment && !languages.includes(segment));
 
+  const handleBreadcrumbClick = (index: number, href: string) => {
+    let eventAction =
+      index === 0
+        ? "Category"
+        : index === 1
+          ? "Subcategory"
+          : index === 2
+            ? "Product Type"
+            : "Product";
+
+    console.log("eventAction", eventAction);
+
+    window.gtag("event", "navigation", {
+      event_category: "Navigation",
+      event_action: `${eventAction} Click`,
+      event_label: pathSegments[index],
+      page_path: href,
+    });
+  };
+
   // TODO: add lang support
   return (
     <nav
@@ -50,6 +70,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customLabels = {} }) => {
                 <LocalizedLink
                   lng={lng}
                   href={href}
+                  onClick={() => handleBreadcrumbClick(index, href)}
                   className="text-blue-500 hover:text-blue-600"
                 >
                   {label}

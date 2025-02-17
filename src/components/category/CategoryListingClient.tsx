@@ -84,6 +84,14 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
               lng={lng}
               key={subcategory.id}
               href={`/${categorySlug}/${subcategorySlug}`}
+              onClick={() => {
+                window.gtag("event", "navigation", {
+                  event_category: "Navigation",
+                  event_action: "Subcategory Click",
+                  event_label: subcategory.attributes?.title,
+                  page_path: `/${categorySlug}/${subcategorySlug}`,
+                });
+              }}
               className="block transition-transform hover:scale-105 cursor-pointer"
             >
               <div className="flex flex-col items-center px-2">

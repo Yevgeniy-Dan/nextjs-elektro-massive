@@ -91,6 +91,13 @@ const ProductDetails: React.FC<{
 
   const handleBuyClick = useCallback(
     (qty: number) => {
+      window.gtag("event", "add_to_cart", {
+        event_category: "CTA",
+        event_label: "Купить",
+        value: retail,
+        quantity: Math.max(qty, 1),
+      });
+
       const addedCartItem = {
         id,
         quantity: Math.max(qty, 1),

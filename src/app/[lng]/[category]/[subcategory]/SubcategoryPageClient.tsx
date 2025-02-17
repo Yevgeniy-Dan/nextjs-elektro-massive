@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { request } from "graphql-request";
 import { GET_SUBCATEGORY_BY_SLUG } from "@/graphql/queries/subcategory";
