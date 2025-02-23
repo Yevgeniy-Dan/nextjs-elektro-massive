@@ -12,6 +12,7 @@ export const GET_PRODUCT_TYPES = gql`
         attributes {
           title
           slug
+          locale
           metaTitle
           metaDescription
           langMatches
@@ -47,6 +48,7 @@ export const GET_PRODUCT_TYPE_BY_SLUG = gql`
         attributes {
           title
           slug
+          locale
           metaTitle
           metaDescription
           langMatches

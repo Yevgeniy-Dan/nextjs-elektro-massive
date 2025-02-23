@@ -1,7 +1,7 @@
 import { Category, Subcategory } from "@/types/menu";
-import Image from "next/image";
 import React from "react";
 import LocalizedLink from "../shared/LocalizedLink";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface SubcategoryGridProps {
   lng: string;
@@ -30,19 +30,24 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
         lng={lng}
         href={`/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
         onClick={(e) => {
-          window.gtag("event", "navigation", {
-            event_category: "Navigation",
-            event_action: "Subcategory Click",
-            event_label: subcategory.attributes?.title,
-            page_path: `/${category.attributes?.slug}/${subcategory.attributes?.slug}`,
-          });
+          if (
+            typeof window !== "undefined" &&
+            typeof window.gtag === "function"
+          ) {
+            window.gtag("event", "navigation", {
+              event_category: "Navigation",
+              event_action: "Subcategory Click",
+              event_label: subcategory.attributes?.title,
+              page_path: `/${category.attributes?.slug}/${subcategory.attributes?.slug}`,
+            });
+          }
           toggleCategory(e);
         }}
         key={subcategory.id}
         className="flex flex-row items-center space-x-4 p-6 hover:text-gray-700 hover:bg-white w-full"
       >
         <div className="flex-shrink-0 w-20 h-20">
-          <Image
+          <OptimizedImage
             src={`${
               isImage
                 ? process.env.NEXT_PUBLIC_STRAPI_URL + isImage.attributes?.url
@@ -52,7 +57,6 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
             width={80}
             height={80}
             className="rounded-sm object-cover"
-            priority
           />
         </div>
         <span className="flex-grow text-lg font-medium line-clamp-3 overflow-ellipsis break-words">

@@ -7,7 +7,6 @@ import ProductTypePageClient from "./ProductTypePageClient";
 import { getSubcategory } from "../actions";
 import { getCategory } from "../../actions";
 import { languages } from "@/app/i18n/settings";
-import { cookies } from "next/headers";
 
 interface ProductTypePageProps {
   params: {

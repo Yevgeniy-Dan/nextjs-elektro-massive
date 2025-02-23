@@ -76,10 +76,12 @@ export const SEARCH_PRODUCTS = gql`
               id
               attributes {
                 slug
+                locale
                 categories {
                   data {
                     id
                     attributes {
+                    locale
                       slug
                       name
                     }
@@ -92,6 +94,7 @@ export const SEARCH_PRODUCTS = gql`
             data {
               id
               attributes {
+              locale
                 slug
               }
             }

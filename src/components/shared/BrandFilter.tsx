@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import OptimizedImage from "./OptimizedImage";
 
 interface BrandFilterProps {
   brands: any[];
@@ -68,7 +69,7 @@ const BrandFilter: React.FC<BrandFilterProps> = ({
                 }`}
               >
                 <div className="w-full aspect-[8/2] relative">
-                  <Image
+                  <OptimizedImage
                     src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${brand.attributes.logo.data.attributes.url}`}
                     alt={brand.attributes.title}
                     fill

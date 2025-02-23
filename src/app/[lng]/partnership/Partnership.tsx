@@ -2,7 +2,7 @@
 
 import { useTranslation } from "@/app/i18n/client";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
-import Image from "next/image";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 import React from "react";
 
 interface PartnershipPageProps {
@@ -33,7 +33,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
           <div className=" max-w-4xl space-y-5">
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
-                <Image
+                <OptimizedImage
                   src={t("advantages.items.0.icon")}
                   alt={`great-quality Icon`}
                   className="h-16 w-16 mx-auto "
@@ -50,7 +50,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
             </div>
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
-                <Image
+                <OptimizedImage
                   src={t("advantages.items.1.icon")}
                   alt={`wide-range Icon`}
                   className="h-16 w-16 mx-auto "
@@ -67,7 +67,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
             </div>
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
-                <Image
+                <OptimizedImage
                   src={t("advantages.items.2.icon")}
                   alt={`certified-products Icon`}
                   className="h-16 w-16 mx-auto "
@@ -85,7 +85,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
 
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
-                <Image
+                <OptimizedImage
                   src={t("advantages.items.3.icon")}
                   alt={`innovative-solutions Icon`}
                   className="h-16 w-16 mx-auto "
@@ -102,7 +102,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
             </div>
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
-                <Image
+                <OptimizedImage
                   src={t("advantages.items.4.icon")}
                   alt={`reliable-partnership Icon`}
                   className="h-16 w-16 mx-auto "
@@ -129,7 +129,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
               <div className="flex items-center space-x-12">
                 <div className="relative w-1/3 h-36 md:h-48">
                   <div className="absolute -top-4 -right-4 w-full h-full bg-purple-600 -z-10 rounded-lg"></div>
-                  <Image
+                  <OptimizedImage
                     src={t("cooperationTerms.items.0.image")}
                     alt={`trade-organizations Icon`}
                     className="h-64 w-64 mx-auto rounded-lg"
@@ -153,7 +153,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
               <div className="flex items-center space-x-12">
                 <div className="relative w-1/3 h-36 md:h-48">
                   <div className="absolute -top-4 -right-4 w-full h-full bg-purple-600 -z-10 rounded-lg"></div>
-                  <Image
+                  <OptimizedImage
                     src={t("cooperationTerms.items.1.image")}
                     alt={`business-owner Icon`}
                     className="h-64 w-64 mx-auto rounded-lg"
@@ -178,13 +178,12 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
               <div className="flex items-center space-x-12">
                 <div className="relative w-1/3 h-36 md:h-48">
                   <div className="absolute -top-4 -right-4 w-full h-full bg-purple-600 -z-10 rounded-lg"></div>
-                  <Image
+                  <OptimizedImage
                     src={t("cooperationTerms.items.2.image")}
                     alt={`designers-and-design-bureaus Icon`}
-                    className="h-64 w-64 mx-auto rounded-lg"
+                    className="h-64 w-64 mx-auto rounded-lg object-cover"
                     fill
                     sizes="(max-width: 576px) 33vw, 192px"
-                    objectFit="cover"
                   />
                 </div>
 

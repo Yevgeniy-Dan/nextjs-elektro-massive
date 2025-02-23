@@ -1,8 +1,9 @@
 import { dir } from "i18next";
 
+import React from "react";
+
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,11 +22,11 @@ import { Providers } from "../providers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../utils/authOptions";
 import { ToastContainer } from "react-toastify";
-import SignInModal from "@/components/shared/SignInModal";
-import ShoppingCartModal from "@/components/shared/ShoppingCartModal";
 import { Analytics } from "@vercel/analytics/react";
 import { languages } from "../i18n/settings";
 import { GoogleAnalytic } from "@/components/services/GoogleAnalytic";
+
+import dynamic from "next/dynamic";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -36,9 +37,20 @@ export const metadata: Metadata = {
     "ELEKTRO-MASSIVE - широкий асортимент електротоварів, сантехніки та будматеріалів. Замовляйте онлайн з доставкою по Україні. Вигідні ціни та висока якість.",
 };
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
 }
+
+const SignInModal = dynamic(() => import("@/components/shared/SignInModal"), {
+  ssr: false,
+});
+
+const ShoppingCartModal = dynamic(
+  () => import("@/components/shared/ShoppingCartModal"),
+  {
+    ssr: false,
+  }
+);
 
 export default async function RootLayout({
   children,
@@ -69,7 +81,6 @@ export default async function RootLayout({
           <ToastContainer />
         </Providers>
       </body>
-      {/* <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} /> */}
     </html>
   );
 }

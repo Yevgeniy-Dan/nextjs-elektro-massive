@@ -23,5 +23,5 @@
     { "name": "Вероніка", "phone": "+380 (98) 039 28 53" },
     { "name": "Олександр", "phone": "+380 (68) 555 94 73" }
   ],
-  "copyright": "© ELEKTRO MASSIVE, 2017-2024. Усі права захищені."
+  "copyright": "© ELEKTRO MASSIVE, {{year}}. Усі права захищені."
 }

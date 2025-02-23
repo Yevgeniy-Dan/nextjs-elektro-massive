@@ -1,7 +1,7 @@
 import LocalizedLink from "@/components/shared/LocalizedLink";
-import Image from "next/image";
 import { fallbackLng, Language } from "@/app/i18n/settings";
 import { cookies } from "next/headers";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 export default function NotFound() {
   const cookieStore = cookies();
@@ -15,7 +15,7 @@ export default function NotFound() {
         style={{ backgroundColor: "#5C5CA2" }}
       >
         <div className="text-center">
-          <Image
+          <OptimizedImage
             src={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/not_found_d5098ab0eb.png`}
             alt="404 not found"
             sizes="(max-width: 500px) 500px, (max-width: 750px) 750px, (max-width: 1000px) 1000px, 1280px"

@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "@apollo/client";
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";

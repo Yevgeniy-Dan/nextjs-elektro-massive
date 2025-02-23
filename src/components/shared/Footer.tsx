@@ -1,10 +1,10 @@
 "use client";
 
 import { useTranslation } from "@/app/i18n/client";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import LocalizedLink from "./LocalizedLink";
+import OptimizedImage from "./OptimizedImage";
 
 interface CompanyLink {
   href: string;
@@ -40,13 +40,12 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
           <div className="relative  mb-6 sm:mb-0 mx-auto sm:m-0">
             <div className="relative w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 z-10">
-              <Image
+              <OptimizedImage
                 src="/logo-footer.png"
                 alt="Elektro Massive Logo"
                 fill
                 sizes="(max-width: 640px) 128px, (max-width: 768px) 192px, 256px"
                 className="mb-4"
-                priority
               />
             </div>
           </div>
@@ -86,13 +85,12 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                 href="https://t.me/elektromassive"
                 className="text-white hover:text-gray-300 hover:opacity-75 transition-opacity"
               >
-                <Image
+                <OptimizedImage
                   className="w-10 h-10"
                   src="/telegram.png"
                   alt="Telegram icon"
                   width={48}
                   height={48}
-                  priority
                 />
               </Link>
 
@@ -100,26 +98,24 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
                 href="https://www.tiktok.com/@elektromassive"
                 className="text-white hover:text-gray-300  hover:opacity-75 transition-opacity"
               >
-                <Image
+                <OptimizedImage
                   className="w-10 h-10"
                   src="/tiktok.png"
                   alt="TikTok icon"
                   width={48}
                   height={48}
-                  priority
                 />
               </Link>
               <Link
                 href="https://www.instagram.com/elektromassive"
                 className="text-white hover:text-gray-300  hover:opacity-75 transition-opacity"
               >
-                <Image
+                <OptimizedImage
                   className="w-10 h-10"
                   src="/instagram.png"
                   alt="Instagram icon"
                   width={48}
                   height={48}
-                  priority
                 />
               </Link>
             </div>
@@ -136,7 +132,9 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
           </div>
         </div>
         <div className="mt-12 text-center">
-          <p className="text-sm">{t("copyright")}</p>
+          <p className="text-sm">
+            {t("copyright", { year: `2017-${new Date().getFullYear()}` })}
+          </p>
         </div>
       </div>
     </footer>

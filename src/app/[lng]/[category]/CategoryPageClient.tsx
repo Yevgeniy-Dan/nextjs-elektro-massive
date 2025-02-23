@@ -56,19 +56,21 @@ const CategoryPageClient: React.FC<CategoryPageClientProps> = ({
 
   useEffect(() => {
     if (categoryData && !isLoading && !error) {
-      window.gtag("event", "view_item_list", {
-        item_list_name: "Subcategory",
-        item_list_id: categoryData.categories?.data[0].id,
-        item_list_category: categoryData.categories?.data[0].attributes?.slug,
-        items:
-          categoryData.categories?.data[0].attributes?.subcategories?.data.map(
-            (subcategory) => ({
-              item_id: subcategory.id,
-              item_name: subcategory.attributes?.title,
-              item_category: subcategory.attributes?.slug,
-            })
-          ) || [],
-      });
+      if (typeof window !== "undefined" && typeof window.gtag === "function") {
+        window.gtag("event", "view_item_list", {
+          item_list_name: "Subcategory",
+          item_list_id: categoryData.categories?.data[0].id,
+          item_list_category: categoryData.categories?.data[0].attributes?.slug,
+          items:
+            categoryData.categories?.data[0].attributes?.subcategories?.data.map(
+              (subcategory) => ({
+                item_id: subcategory.id,
+                item_name: subcategory.attributes?.title,
+                item_category: subcategory.attributes?.slug,
+              })
+            ) || [],
+        });
+      }
     }
   }, [categoryData, isLoading, error]);
 

@@ -16,6 +16,7 @@ export const GET_PRODUCT = gql`
           description
           discount
           slug
+          locale
           additional_images {
             id
             link
@@ -24,6 +25,19 @@ export const GET_PRODUCT = gql`
           subcategory {
             data {
               id
+              attributes {
+                slug
+                locale
+              }
+            }
+          }
+          category {
+            data {
+              id
+              attributes {
+                slug
+                locale
+              }
             }
           }
         }
@@ -50,6 +64,7 @@ export const GET_PRODUCT_BY_SLUG = gql`
           description
           discount
           slug
+          locale
           langMatches
           additional_images {
             id
@@ -61,11 +76,13 @@ export const GET_PRODUCT_BY_SLUG = gql`
               id
               attributes {
                 slug
+                locale
                 title
                 categories {
                   data {
                     id
                     attributes {
+                      locale
                       slug
                       name
                     }
@@ -79,6 +96,7 @@ export const GET_PRODUCT_BY_SLUG = gql`
               id
               attributes {
                 slug
+                locale
                 title
               }
             }

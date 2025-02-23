@@ -1,5 +1,5 @@
-import Image from "next/image";
 import LocalizedLink from "./LocalizedLink";
+import OptimizedImage from "./OptimizedImage";
 
 interface LogoProps {
   lng: string;
@@ -12,7 +12,7 @@ const Logo: React.FC<LogoProps> = ({ lng }) => {
       href={`/`}
       className="relative w-48 h-16 md:w-64 md:h-24"
     >
-      <Image
+      <OptimizedImage
         src="/logo-label.png"
         alt="ElektroMassive Label"
         fill

@@ -1,23 +1,16 @@
 "use client";
 
-import { useQuery } from "@apollo/client";
-import Image from "next/image";
 import React from "react";
 import Slider from "react-slick";
-import { GET_BANNERS } from "@/graphql/queries/common";
-import { GetBannersQuery } from "@/gql/graphql";
-import { BannerImage } from "@/types/types";
 
-const BannerPlaceholder = () => (
-  <div className="rounded-t-2xl overflow-hidden">
-    <div className="w-full h-[15rem] md:h-[30rem] bg-gray-200 animate-pulse"></div>
-  </div>
-);
+import { BannerImage, BannersData } from "@/types/types";
+import OptimizedImage from "../shared/OptimizedImage";
 
-const Banner = () => {
-  const { data, loading } = useQuery<GetBannersQuery>(GET_BANNERS);
+interface BannerProps {
+  banners: BannersData;
+}
 
-  const banners = data?.banners?.data || [];
+const Banner: React.FC<BannerProps> = ({ banners }) => {
   const singleBanner = banners.length === 1;
 
   const settings = {
@@ -45,20 +38,6 @@ const Banner = () => {
     return `${baseUrl}${image.data?.attributes?.url}`;
   };
 
-  if (loading) {
-    return (
-      <div className="relative py-2">
-        <div className="rounded-t-2xl overflow-x-hidden pb-8">
-          <Slider {...settings}>
-            {[1, 2, 3].map((index) => (
-              <BannerPlaceholder key={`placeholder-${index}`} />
-            ))}
-          </Slider>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="relative py-2">
       <div className="rounded-t-2xl overflow-x-hidden pb-8">
@@ -69,7 +48,7 @@ const Banner = () => {
 
             return (
               <div key={banner.id} className="rounded-t-2xl overflow-hidden">
-                <Image
+                <OptimizedImage
                   src={getResponsiveImage(image)}
                   alt={banner.attributes?.altText || ""}
                   sizes="(max-width: 500px) 500px, (max-width: 750px) 750px, (max-width: 1000px) 1000px, 1280px"

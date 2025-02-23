@@ -8,6 +8,7 @@ export const GET_SUBCATEGORY_BY_SLUG = gql`
         attributes {
           title
           slug
+          locale
           description
           metaTitle
           metaDescription
@@ -24,6 +25,7 @@ export const GET_SUBCATEGORY_BY_SLUG = gql`
               id
               attributes {
                 slug
+                locale
                 name
               }
             }

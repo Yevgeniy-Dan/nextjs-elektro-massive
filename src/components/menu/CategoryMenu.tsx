@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { FaChevronDown } from "react-icons/fa6";
@@ -10,6 +12,7 @@ import { CategoryMenuQuery, CategoryMenuQueryVariables } from "@/gql/graphql";
 import { useTranslation } from "@/app/i18n/client";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
 import LocalizedLink from "../shared/LocalizedLink";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface CategoryMenuProps {
   lng: string;
@@ -56,6 +59,9 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
     GET_CATEGORY_MENU,
     {
       variables: { locale: lng },
+      onError(error) {
+        console.error(error);
+      },
     }
   );
 
@@ -124,7 +130,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
             </span>
           </div>
           <div className="relative md:block w-6 h-6">
-            <Image
+            <OptimizedImage
               src="/menu-hamburger.png"
               alt="Menu icon"
               className="h-6 w-6 invert hover:invert-[80%]"
@@ -165,7 +171,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                       onClick={() => handleCategoryClick(index)}
                     >
                       <div className="flex-shrink-0 w-9 h-9">
-                        <Image
+                        <OptimizedImage
                           src={`${
                             category.attributes?.icon?.data
                               ? process.env.NEXT_PUBLIC_STRAPI_URL +
@@ -176,7 +182,6 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                           width={36}
                           height={36}
                           className="rounded-sm object-cover"
-                          priority
                         />
                       </div>
                       <div className="flex items-center justify-between w-full">

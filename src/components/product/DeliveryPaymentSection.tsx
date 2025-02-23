@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import OptimizedImage from "../shared/OptimizedImage";
 
 const DeliveryPaymentSection: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ const DeliveryPaymentSection: React.FC = () => {
         </h3>
         <ul className="text-sm">
           <li className="flex items-start gap-2">
-            <Image
+            <OptimizedImage
               src="/novaposhta.jpg"
               width={24}
               height={24}
@@ -30,7 +30,7 @@ const DeliveryPaymentSection: React.FC = () => {
         </h3>
         <ul className="text-sm flex flex-col gap-2">
           <li className="flex items-center gap-2">
-            <Image
+            <OptimizedImage
               src="/mastercard.png"
               width={48}
               height={48}
@@ -42,7 +42,7 @@ const DeliveryPaymentSection: React.FC = () => {
             </div>
           </li>
           <li className="flex items-center gap-2">
-            <Image
+            <OptimizedImage
               src="/product-page/transfer-to-account.jpg"
               width={48}
               height={48}
@@ -54,7 +54,7 @@ const DeliveryPaymentSection: React.FC = () => {
             </div>
           </li>
           <li className="flex items-center gap-2">
-            <Image
+            <OptimizedImage
               src="/product-page/cash-on-delivery.png"
               width={48}
               height={48}

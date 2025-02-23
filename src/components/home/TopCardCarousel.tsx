@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import TopCard from "./TopCard";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -59,72 +59,71 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
   const responsiveCardHeight = "h-80 lg:h-96";
   const responsiveCardWidth = "w-56 lg:w-64";
 
-  const PlaceHolderCard = () => (
-    <div className="flex flex-col items-center px-2">
-      <div className={`${responsiveCardWidth} ${responsiveCardHeight} p-1`}>
-        <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg"></div>
-      </div>
-    </div>
-  );
+  const memoizedCards = useMemo(() => {
+    if (isLoading) {
+      return Array(6)
+        .fill(null)
+        .map((_, index) => (
+          <div
+            key={`placehodler-${index}`}
+            className="flex flex-col items-center px-2"
+          >
+            <div
+              className={`${responsiveCardWidth} ${responsiveCardHeight} p-1`}
+            >
+              <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg"></div>
+            </div>
+          </div>
+        ));
+    }
 
-  const placeholders = Array(6)
-    .fill(null)
-    .map((_, index) => <PlaceHolderCard key={`placehodler-${index}`} />);
+    return products.map((card, index) => (
+      <div
+        key={card.id}
+        className={`embla__slide flex-shrink-0 ${responsiveCardWidth} ${responsiveCardHeight} my-4 p-2 ${
+          products && index === products.length - 1 ? "pl-4" : ""
+        }`}
+      >
+        <TopCard
+          lng={lng}
+          id={card.id ?? ""}
+          subcategoryId={card.attributes?.subcategory?.data?.id ?? ""}
+          {...card.attributes}
+          label={label}
+          product={{
+            id: card.id ?? "",
+            currency: card.attributes?.currency ?? "",
+            discount: card.attributes?.discount ?? 0,
+            image_link: card.attributes?.image_link ?? "",
+            retail: card.attributes?.retail ?? 0,
+            title: card.attributes?.title ?? "",
+            params: card.attributes?.params ?? [],
+            part_number: card.attributes?.part_number ?? "",
+            slug: card.attributes?.slug ?? "",
+          }}
+          productSlug={card.attributes?.slug ?? ""}
+          categorySlug={
+            card.attributes?.subcategory?.data?.attributes?.categories?.data[0]
+              .attributes?.slug ?? ""
+          }
+          subcategorySlug={
+            card.attributes?.subcategory?.data?.attributes?.slug ?? ""
+          }
+          productTypeSlug={
+            card.attributes?.product_types?.data[0]?.attributes?.slug ?? ""
+          }
+          productTypeId={card.attributes?.product_types?.data[0]?.id ?? ""}
+        />
+      </div>
+    ));
+  }, [products, isLoading, lng, label]);
 
   return (
     <div className="my-12">
       <h2 className="text-2xl font-bold mb-4">{title}</h2>
       <div className="relative">
         <div className="embla overflow-hidden" ref={emblaRef}>
-          <div className="embla__container flex mx-4">
-            {isLoading
-              ? placeholders
-              : products.map((card, index) => (
-                  <div
-                    key={card.id}
-                    className={`embla__slide flex-shrink-0 ${responsiveCardWidth} ${responsiveCardHeight} my-4 p-2 ${
-                      products && index === products.length - 1 ? "pl-4" : ""
-                    }`}
-                  >
-                    <TopCard
-                      lng={lng}
-                      id={card.id ?? ""}
-                      subcategoryId={
-                        card.attributes?.subcategory?.data?.id ?? ""
-                      }
-                      {...card.attributes}
-                      label={label}
-                      product={{
-                        id: card.id ?? "",
-                        currency: card.attributes?.currency ?? "",
-                        discount: card.attributes?.discount ?? 0,
-                        image_link: card.attributes?.image_link ?? "",
-                        retail: card.attributes?.retail ?? 0,
-                        title: card.attributes?.title ?? "",
-                        params: card.attributes?.params ?? [],
-                        part_number: card.attributes?.part_number ?? "",
-                        slug: card.attributes?.slug ?? "",
-                      }}
-                      productSlug={card.attributes?.slug ?? ""}
-                      categorySlug={
-                        card.attributes?.subcategory?.data?.attributes
-                          ?.categories?.data[0].attributes?.slug ?? ""
-                      }
-                      subcategorySlug={
-                        card.attributes?.subcategory?.data?.attributes?.slug ??
-                        ""
-                      }
-                      productTypeSlug={
-                        card.attributes?.product_types?.data[0]?.attributes
-                          ?.slug ?? ""
-                      }
-                      productTypeId={
-                        card.attributes?.product_types?.data[0]?.id ?? ""
-                      }
-                    />
-                  </div>
-                ))}
-          </div>
+          <div className="embla__container flex mx-4">{memoizedCards}</div>
         </div>
         <button
           onClick={scrollPrev}

@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { useTranslation } from "@/app/i18n/client";
+import OptimizedImage from "./OptimizedImage";
 
 interface SearchBarProps {
   lng: string;
@@ -55,7 +55,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ lng }) => {
         />
         <button className="absolute inset-y-0 right-0 flex items-center pointer-events-none">
           <div className="bg-transparent p-2 pr-4 rounded-r-full rounded-l-2xl">
-            <Image
+            <OptimizedImage
               src="/search.png"
               alt="Search icon"
               className="h-6 w-6 invert"

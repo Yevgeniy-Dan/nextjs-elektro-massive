@@ -15,7 +15,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { useCookies } from "react-cookie";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 export const useFavorites = () => {
   const [cookies] = useCookies(["i18next"]);
@@ -37,11 +37,16 @@ export const useFavorites = () => {
           locale: cookies.i18next,
         }
       ),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  const totalCount = useMemo(() => {
-    return favorites?.userFavorites?.favoriteProducts?.length ?? 0;
+  const memoizedFavorites = useMemo(() => {
+    return favorites?.userFavorites?.favoriteProducts ?? [];
   }, [favorites?.userFavorites?.favoriteProducts]);
+
+  const totalCount = useMemo(() => {
+    return memoizedFavorites.length;
+  }, [memoizedFavorites]);
 
   const addToFavorites = useMutation<
     AddToFavoritesMutation,
@@ -88,30 +93,36 @@ export const useFavorites = () => {
     },
   });
 
-  const handleAddToFavorites = (productId: string, productTypeId: string) => {
-    addToFavorites.mutate({
-      input: {
-        productId,
-        productTypeId,
-      },
-      locale: cookies.i18next,
-    });
-  };
+  const handleAddToFavorites = useCallback(
+    (productId: string, productTypeId: string) => {
+      addToFavorites.mutate({
+        input: {
+          productId,
+          productTypeId,
+        },
+        locale: cookies.i18next,
+      });
+    },
+    [addToFavorites, cookies.i18next]
+  );
 
-  const handleRemoveFromFavorites = (productId: string) => {
-    removeFromFavorites.mutate({
-      input: {
-        productId,
-      },
-      locale: cookies.i18next,
-    });
-  };
+  const handleRemoveFromFavorites = useCallback(
+    (productId: string) => {
+      removeFromFavorites.mutate({
+        input: {
+          productId,
+        },
+        locale: cookies.i18next,
+      });
+    },
+    [removeFromFavorites, cookies.i18next]
+  );
 
   return {
     isLoading,
     isError,
     error,
-    favorites: favorites?.userFavorites?.favoriteProducts ?? [],
+    favorites: memoizedFavorites,
     totalCount,
     handleAddToFavorites,
     handleRemoveFromFavorites,

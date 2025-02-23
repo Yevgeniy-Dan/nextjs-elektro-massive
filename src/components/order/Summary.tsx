@@ -155,17 +155,22 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
       if (result.success && result.redirectUrl) {
         window.location.href = result.redirectUrl;
 
-        window.gtag("event", "purchase", {
-          transaction_id: result.orderNumber,
-          items: cartItems.map((item) => ({
-            item_id: item.id,
-            item_name: item.product.title,
-            price: item.product.retail,
-            quantity: item.quantity,
-          })),
-          value: calculateTotal - calculateDiscountTotal,
-          currency: "UAH",
-        });
+        if (
+          typeof window !== "undefined" &&
+          typeof window.gtag === "function"
+        ) {
+          window.gtag("event", "purchase", {
+            transaction_id: result.orderNumber,
+            items: cartItems.map((item) => ({
+              item_id: item.id,
+              item_name: item.product.title,
+              price: item.product.retail,
+              quantity: item.quantity,
+            })),
+            value: calculateTotal - calculateDiscountTotal,
+            currency: "UAH",
+          });
+        }
       } else {
         showErrorToast(result.message || "Помилка при оформленні замовлення");
         console.log("Server validation failed:", result.message);

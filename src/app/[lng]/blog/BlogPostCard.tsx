@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
 import { BlogPost } from "@/types/types";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/navigation";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 interface BlogPostCardProps {
   posts: BlogPost[];
@@ -65,7 +64,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
               >
                 <article className="h-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="block relative pt-[66.66%]">
-                    <Image
+                    <OptimizedImage
                       src={
                         process.env.NEXT_PUBLIC_STRAPI_URL +
                           post.attributes?.image.data?.attributes?.url || ""

@@ -8,6 +8,7 @@ export const GET_CATEGORY_MENU = gql`
         attributes {
           name
           slug
+          locale
           description
           icon {
             data {
@@ -23,6 +24,7 @@ export const GET_CATEGORY_MENU = gql`
               attributes {
                 title
                 slug
+                locale
                 description
                 icon {
                   data {
@@ -49,6 +51,7 @@ export const GET_CATEGORIES = gql`
         attributes {
           name
           slug
+          locale
           description
           icon {
             data {
@@ -72,6 +75,7 @@ export const GET_CATEGORIES = gql`
               attributes {
                 title
                 slug
+                locale
                 description
                 icon {
                   data {
@@ -98,6 +102,7 @@ export const GET_CATEGORY_BY_SLUG = gql`
         attributes {
           name
           slug
+          locale
           description
           langMatches
           metaTitle
@@ -124,6 +129,7 @@ export const GET_CATEGORY_BY_SLUG = gql`
               attributes {
                 title
                 slug
+                locale
                 description
                 metaTitle
                 metaDescription

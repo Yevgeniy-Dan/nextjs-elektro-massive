@@ -1,5 +1,5 @@
-import Image from "next/image";
 import React from "react";
+import OptimizedImage from "../shared/OptimizedImage";
 
 const features = [
   { icon: "/collaboration.png", text: "Вигідні умови співпраці" },
@@ -17,13 +17,12 @@ const WhyUsSection = () => {
             key={index}
             className="flex flex-col items-center text-center  text-white"
           >
-            <Image
+            <OptimizedImage
               src={feature.icon}
               alt={`${feature.text} Icon`}
               className="h-16 w-16 mx-auto mb-4 invert"
               width={64}
               height={64}
-              priority
             />
             <span className="text-sm sm:text-base">{feature.text}</span>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo, useRef } from "react";
+import React, { useState, useCallback, useMemo, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@apollo/client";
 import ProductTypeSelector from "./ProductTypeSelector";
@@ -11,7 +11,6 @@ import {
   GET_PRODUCT_TYPES,
 } from "@/graphql/queries/productType";
 import ProductFilterSection from "./ProductFilterSection";
-import ProductGrid from "./ProductGrid";
 import {
   GetBrandsQuery,
   GetMaxPriceQuery,
@@ -22,7 +21,6 @@ import {
   GetProductTypesQueryVariables,
 } from "@/gql/graphql";
 
-import ReactMarkdown from "react-markdown";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setAppliedFilters } from "@/store/productGridSlice";
 import { Filter, X } from "lucide-react";
@@ -34,6 +32,24 @@ import { useScrollToElement } from "@/hooks/useScrollToElement";
 import { useRouter } from "next/navigation";
 import ProductSorting from "./ProductSorting";
 import { GET_MAX_PRICE } from "@/graphql/queries/products";
+import dynamic from "next/dynamic";
+
+const ProductGrid = dynamic(() => import("./ProductGrid"), {
+  loading: () => <div>Loading...</div>,
+  ssr: true,
+});
+
+const ReactMarkdown = dynamic(() => import("react-markdown"), {
+  loading: () => <div>Loading markdown...</div>,
+});
+
+const MemoizedMarkdown: React.FC<{ children: string }> = memo(
+  ({ children }) => (
+    <ReactMarkdown className="text-md">{children}</ReactMarkdown>
+  )
+);
+
+MemoizedMarkdown.displayName = "MemoizedMarkdown";
 
 function isFiltersEmpty(filters: Record<string, string[]>) {
   return Object.keys(filters).length === 0;
@@ -120,25 +136,30 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     dispatch(setAppliedFilters({ subcategoryId, filters: {} }));
   }, [dispatch, subcategoryId, productTypeId]);
 
-  const handleProductTypeChange = (
-    newProductTypeSlug: string,
-    newProductTypeTitle: string
-  ) => {
-    const currentProductTypeSlug = productTypeSlug;
-    if (currentProductTypeSlug === newProductTypeSlug) {
-      router.push(`/${lng}/${categorySlug}/${subcategorySlug}`);
-    } else {
-      window.gtag("event", "navigation", {
-        event_category: "Navigation",
-        event_action: "Product Type Click",
-        event_label: newProductTypeSlug,
-        page_path: `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`,
-      });
-      router.push(
-        `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`
-      );
-    }
-  };
+  const handleProductTypeChange = useCallback(
+    (newProductTypeSlug: string) => {
+      const currentProductTypeSlug = productTypeSlug;
+      if (currentProductTypeSlug === newProductTypeSlug) {
+        router.push(`/${lng}/${categorySlug}/${subcategorySlug}`);
+      } else {
+        if (
+          typeof window !== "undefined" &&
+          typeof window.gtag === "function"
+        ) {
+          window.gtag("event", "navigation", {
+            event_category: "Navigation",
+            event_action: "Product Type Click",
+            event_label: newProductTypeSlug,
+            page_path: `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`,
+          });
+        }
+        router.push(
+          `/${lng}/${categorySlug}/${subcategorySlug}/${newProductTypeSlug}`
+        );
+      }
+    },
+    [router, lng, categorySlug, subcategorySlug, productTypeSlug]
+  );
 
   const handleOutsideClick = useCallback(() => {
     setIsFilterOpen(false);
@@ -182,7 +203,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   }, [brandsData, filters]);
 
   const renderDescription = (desc: string) => (
-    <ReactMarkdown className="text-md">{desc}</ReactMarkdown>
+    <MemoizedMarkdown>{desc}</MemoizedMarkdown>
   );
 
   const handleSortChange = (direction: "asc" | "desc") => {
@@ -271,6 +292,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
             )}
           </>
         </div>
+        {/* <Suspense fallback={<div>Loading...</div>}> */}
         <ProductGrid
           subcategoryId={subcategoryId}
           productTypeId={productTypeId}
@@ -284,6 +306,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           lng={lng}
           priceRange={priceFilters}
         />
+        {/* </Suspense> */}
       </div>
       {subcategoryDescription
         ? renderDescription(subcategoryDescription)

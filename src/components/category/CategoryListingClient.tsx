@@ -1,9 +1,9 @@
 import React from "react";
 
 import { SubcategoryData } from "@/types/types";
-import Image from "next/image";
 import Breadcrumbs from "../shared/Breadcrumbs";
 import LocalizedLink from "../shared/LocalizedLink";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface CategoryListingClientProps {
   categoryId: string;
@@ -85,12 +85,17 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
               key={subcategory.id}
               href={`/${categorySlug}/${subcategorySlug}`}
               onClick={() => {
-                window.gtag("event", "navigation", {
-                  event_category: "Navigation",
-                  event_action: "Subcategory Click",
-                  event_label: subcategory.attributes?.title,
-                  page_path: `/${categorySlug}/${subcategorySlug}`,
-                });
+                if (
+                  typeof window !== "undefined" &&
+                  typeof window.gtag === "function"
+                ) {
+                  window.gtag("event", "navigation", {
+                    event_category: "Navigation",
+                    event_action: "Subcategory Click",
+                    event_label: subcategory.attributes?.title,
+                    page_path: `/${categorySlug}/${subcategorySlug}`,
+                  });
+                }
               }}
               className="block transition-transform hover:scale-105 cursor-pointer"
             >
@@ -98,13 +103,12 @@ const CategoryListingClient: React.FC<CategoryListingClientProps> = ({
                 <div className="relative flex flex-col items-center justify-center">
                   <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full md:rounded-lg overflow-hidden">
                     {iconUrl && (
-                      <Image
+                      <OptimizedImage
                         src={process.env.NEXT_PUBLIC_STRAPI_URL + iconUrl}
                         alt={title || "Category"}
                         fill
                         sizes="(max-width: 224px) 100vw, 224px"
                         className="object-cover"
-                        priority
                       />
                     )}
                   </div>

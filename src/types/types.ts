@@ -3,6 +3,7 @@ import {
   CartProductFieldsFragment,
   GetBannersQuery,
   GetBlogPostsQuery,
+  GetCategoriesQuery,
   GetCategoryBySlugQuery,
   GetHomePageProductsQuery,
   GetOrderByOrderNumberQuery,
@@ -29,6 +30,10 @@ export type ProductData = NonNullable<
 
 export type CategoryData = NonNullable<
   NonNullable<GetCategoryBySlugQuery["categories"]>["data"][number]
+>;
+
+export type CategoriesData = NonNullable<
+  NonNullable<GetCategoriesQuery["categories"]>["data"]
 >;
 
 export type SubcategoryData = NonNullable<
@@ -58,6 +63,10 @@ export type HomePageProductEntity =
 
 export type ShopReview = NonNullable<
   NonNullable<GetShopReviewsQuery["shopReviews"]>["data"][number]
+>;
+
+export type BannersData = NonNullable<
+  NonNullable<GetBannersQuery["banners"]>["data"]
 >;
 
 export type BannerImage = NonNullable<

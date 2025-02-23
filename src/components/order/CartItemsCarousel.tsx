@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CartItemType } from "@/types/types";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface CartItemsCarouselProps {
   cartItems: CartItemType[];
@@ -60,7 +60,7 @@ const CartItemsCarousel: React.FC<CartItemsCarouselProps> = ({ cartItems }) => {
               className="flex-shrink-0 w-72 mr-4 border border-gray-300 rounded-md  p-4"
             >
               <div className="flex items-center">
-                <Image
+                <OptimizedImage
                   src={item?.product?.image_link ?? ""}
                   alt={item?.product?.title ?? ""}
                   width={60}

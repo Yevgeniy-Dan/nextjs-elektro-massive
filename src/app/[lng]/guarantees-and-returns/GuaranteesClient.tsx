@@ -2,7 +2,7 @@
 
 import { useTranslation } from "@/app/i18n/client";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
-import Image from "next/image";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 interface GuaranteeReturnsProps {
   params: {
@@ -97,7 +97,7 @@ const GuaranteeReturnsPageClient: React.FC<GuaranteeReturnsProps> = ({
           </div>
         </div>
         <div className="mt-[60%] -ml-2 sm:-ml-4 md:-ml-6 lg:-ml-8">
-          <Image
+          <OptimizedImage
             src={"/payment_delivery/Е.png"}
             alt="E sign icon"
             width={200}

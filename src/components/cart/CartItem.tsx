@@ -1,9 +1,9 @@
 import React from "react";
 import QuantityAdjuster from "./QuantityAdjuster";
 import { Trash2 } from "lucide-react";
-import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
 import { CartItemType } from "@/types/types";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface CartItemProps {
   item: CartItemType;
@@ -22,13 +22,12 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
       </button>
 
       <div className="flex-shrink-0 mr-4">
-        <Image
+        <OptimizedImage
           src={item?.product?.image_link ?? ""}
           alt={item?.product?.title ?? ""}
           width={100}
           height={100}
           className="object-cover"
-          priority
         />
       </div>
 

@@ -30,14 +30,14 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customLabels = {} }) => {
             ? "Product Type"
             : "Product";
 
-    console.log("eventAction", eventAction);
-
-    window.gtag("event", "navigation", {
-      event_category: "Navigation",
-      event_action: `${eventAction} Click`,
-      event_label: pathSegments[index],
-      page_path: href,
-    });
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", "navigation", {
+        event_category: "Navigation",
+        event_action: `${eventAction} Click`,
+        event_label: pathSegments[index],
+        page_path: href,
+      });
+    }
   };
 
   // TODO: add lang support

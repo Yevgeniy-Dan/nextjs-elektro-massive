@@ -1,19 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 
 import useEmblaCarousel from "embla-carousel-react";
 
-import { useQuery } from "@apollo/client";
-import { GET_CATEGORIES } from "@/graphql/queries/categories";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { GetCategoriesQuery, GetCategoriesQueryVariables } from "@/gql/graphql";
-import CategoryGridPlaceholder from "./CategoryGridPlaceholder";
 import LocalizedLink from "../shared/LocalizedLink";
-
+import { CategoriesData } from "@/types/types";
+import Image from "next/image";
+import OptimizedImage from "../shared/OptimizedImage";
 interface CategoryGridProps {
   lng: string;
+  data?: CategoriesData;
 }
 type CategoryEntity = NonNullable<
   NonNullable<GetCategoriesQuery["categories"]>["data"][number]
@@ -69,12 +68,17 @@ const CategoryCarousel = ({
                 lng={lng}
                 href={`/${category.attributes?.slug}/${subcategory.attributes?.slug}`}
                 onClick={() => {
-                  window.gtag("event", "navigation", {
-                    event_category: "Navigation",
-                    event_action: "Subcategory Click",
-                    event_label: subcategory.attributes?.title,
-                    page_path: `/${category.attributes?.slug}/${subcategory.attributes?.slug}`,
-                  });
+                  if (
+                    typeof window !== "undefined" &&
+                    typeof window.gtag === "function"
+                  ) {
+                    window.gtag("event", "navigation", {
+                      event_category: "Navigation",
+                      event_action: "Subcategory Click",
+                      event_label: subcategory.attributes?.title,
+                      page_path: `/${category.attributes?.slug}/${subcategory.attributes?.slug}`,
+                    });
+                  }
                 }}
                 className="flex-shrink-0 w-48 md:w-64 flex flex-col items-center px-2 cursor-pointer"
                 key={subcategory.id}
@@ -82,7 +86,7 @@ const CategoryCarousel = ({
                 <div className="relative flex flex-col items-center justify-center">
                   <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full md:rounded-lg overflow-hidden">
                     {subcategory.attributes?.icon?.data?.attributes?.url && (
-                      <Image
+                      <OptimizedImage
                         src={
                           process.env.NEXT_PUBLIC_STRAPI_URL +
                           subcategory.attributes.icon.data.attributes.url
@@ -91,7 +95,6 @@ const CategoryCarousel = ({
                         fill
                         sizes="(max-width: 768px) 160px, 224px"
                         className="object-cover"
-                        priority
                       />
                     )}
                   </div>
@@ -122,21 +125,21 @@ const CategoryCarousel = ({
   );
 };
 
-const CategoryGrid: React.FC<CategoryGridProps> = ({ lng }) => {
-  const { data, loading } = useQuery<
-    GetCategoriesQuery,
-    GetCategoriesQueryVariables
-  >(GET_CATEGORIES, {
-    variables: {
-      locale: lng,
-    },
-  });
+const CategoryGrid: React.FC<CategoryGridProps> = ({ lng, data }) => {
+  // const { data, loading } = useQuery<
+  //   GetCategoriesQuery,
+  //   GetCategoriesQueryVariables
+  // >(GET_CATEGORIES, {
+  //   variables: {
+  //     locale: lng,
+  //   },
+  // });
 
-  if (loading) return <CategoryGridPlaceholder />;
+  // if (loading) return <CategoryGridPlaceholder />;
 
   return (
     <div className=" text-white">
-      {data?.categories?.data?.map((category) => (
+      {data?.map((category) => (
         <CategoryCarousel key={category.id} category={category} lng={lng} />
       ))}
     </div>

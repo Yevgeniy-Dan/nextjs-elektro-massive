@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { UseFormRegister, FieldError, UseFormSetValue } from "react-hook-form";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface PhoneInputProps {
   register: UseFormRegister<any>;
@@ -44,7 +44,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
       </label>
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <Image
+          <OptimizedImage
             src="/ukrainian-flag.png"
             alt="Ukrainian flag"
             width={20}

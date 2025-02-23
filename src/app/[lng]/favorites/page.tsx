@@ -1,10 +1,24 @@
 "use server";
 
 import { Suspense } from "react";
-import CenteredSpinner from "@/components/shared/CenteredSpinner";
 
-import FavoriteProductsList from "@/components/products/FavoriteProducts";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
+
+const CenteredSpinner = dynamic(
+  () => import("@/components/shared/CenteredSpinner"),
+  {
+    ssr: false,
+  }
+);
+
+const FavoriteProductsList = dynamic(
+  () => import("@/components/products/FavoriteProducts"),
+  {
+    loading: () => <CenteredSpinner />,
+    ssr: false,
+  }
+);
 
 interface FavoritesPageProps {
   params: {

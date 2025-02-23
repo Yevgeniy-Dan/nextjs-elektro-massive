@@ -29,7 +29,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useCookies } from "react-cookie";
 import { CartItemType } from "@/types/types";
 
@@ -64,6 +64,7 @@ export const useCart = () => {
       }
     },
     refetchOnMount: "always",
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const updateCartItemMutation = useMutation<
@@ -158,35 +159,41 @@ export const useCart = () => {
     },
   });
 
-  const handleUpdateItem = (product: CartItemType, increaseQtyBy: number) => {
-    updateCartItemMutation.mutate({
-      product: product,
-      qtyChange: increaseQtyBy,
-    });
-  };
+  const handleUpdateItem = useCallback(
+    (product: CartItemType, increaseQtyBy: number) => {
+      updateCartItemMutation.mutate({
+        product: product,
+        qtyChange: increaseQtyBy,
+      });
+    },
+    [updateCartItemMutation]
+  );
 
-  const handleRemoveItem = (product: CartItemType["product"]) => {
-    removeFromCartMutation.mutate({
-      product: product,
-    });
-  };
+  const handleRemoveItem = useCallback(
+    (product: CartItemType["product"]) => {
+      removeFromCartMutation.mutate({
+        product: product,
+      });
+    },
+    [removeFromCartMutation]
+  );
 
-  const handleClearCart = async () => {
+  const handleClearCart = useCallback(() => {
     clearCartMutation.mutate();
-  };
+  }, [clearCartMutation]);
 
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     if (status === "unauthenticated") {
       dispatch(openSignInModal("/checkout"));
     } else if (status === "authenticated") {
       router.push("/checkout");
     }
     dispatch(closeModal());
-  };
+  }, [status, dispatch, router]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     dispatch(closeModal());
-  };
+  }, [dispatch]);
 
   const calculateTotal = useMemo(() => {
     return cartItems?.reduce(

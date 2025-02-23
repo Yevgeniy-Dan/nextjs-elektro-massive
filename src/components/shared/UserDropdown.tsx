@@ -4,10 +4,9 @@ import { openSignInModal } from "@/store/signInModalSlice";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { LogIn, LogOut, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import OptimizedImage from "./OptimizedImage";
 
 interface UserDropdownProps {
   lng: string;
@@ -34,7 +33,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ lng }) => {
     <Menu as="div" className="relative inline-block text-left">
       <MenuButton>
         <div className="hover:text-gray-300 w-6 sm:w-8 h-6 sm:h-8 relative">
-          <Image
+          <OptimizedImage
             src="/avatar.png"
             alt="Avatar"
             fill

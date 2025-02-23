@@ -14,6 +14,7 @@ export const GET_PRODUCTS = gql`
           currency
           image_link
           slug
+          locale
           params
           additional_images {
             link
@@ -23,6 +24,7 @@ export const GET_PRODUCTS = gql`
               id
               attributes {
                 slug
+                locale
               }
             }
           }
@@ -31,6 +33,7 @@ export const GET_PRODUCTS = gql`
               id
               attributes {
                 slug
+                locale
               }
             }
           }
@@ -79,11 +82,13 @@ export const GET_FILTERED_PRODUCTS = gql`
         }
         discount
         slug
+        locale
         product_types {
           data {
             id
             attributes {
               slug
+              locale
             }
           }
         }
@@ -92,11 +97,13 @@ export const GET_FILTERED_PRODUCTS = gql`
             id
             attributes {
               slug
+              locale
               categories {
                 data {
                   id
                   attributes {
                     slug
+                    locale
                     name
                   }
                 }
@@ -177,7 +184,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
     }
     newProducts: products(
       sort: "createdAt:desc"
-      pagination: { limit: 200 }
+      pagination: { limit: $limit }
       locale: $locale
     ) {
       data {

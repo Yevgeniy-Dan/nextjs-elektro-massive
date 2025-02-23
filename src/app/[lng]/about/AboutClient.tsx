@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 
 import { useTranslation } from "@/app/i18n/client";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 interface AboutPageProps {
   params: { lng: string };
@@ -43,7 +43,7 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
             </div>
             <div className="w-full md:w-1/2">
               <div className="relative aspect-video w-full h-full">
-                <Image
+                <OptimizedImage
                   src="/about/about_company.png"
                   alt="Image 1"
                   fill
@@ -58,7 +58,7 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
           <div className="flex flex-col md:flex-row items-center justify-between  relative mt-10  h-auto ">
             <div className="w-full md:w-1/2  my-4 md:my-0">
               <div className="relative aspect-video w-full h-full">
-                <Image
+                <OptimizedImage
                   src="/about/development.jpg"
                   alt="Image 1"
                   fill
@@ -90,7 +90,7 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
               </span>
             </p>
             <div className="relative w-3/5 -my-2 rounded-xl">
-              <Image
+              <OptimizedImage
                 src="/about/achievments.jpg"
                 alt="Image 1"
                 fill
@@ -103,7 +103,7 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
           {/* INNOVATIONS AND THE FUTURE */}
           <div className="flex justify-between  relative mt-10  h-auto ">
             <div className="relative w-3/5 -my-2 rounded-xl">
-              <Image
+              <OptimizedImage
                 src="/about/innovations.jpg"
                 alt="Image 1"
                 fill

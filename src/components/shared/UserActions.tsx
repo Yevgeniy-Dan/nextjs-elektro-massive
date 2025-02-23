@@ -1,15 +1,14 @@
-import Image from "next/image";
 import Dropdown from "../home/Dropdown";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { openModal } from "@/store/storeSlice";
 import { useCart } from "@/hooks/useCart";
-import Link from "next/link";
 import { Heart } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 import { useTranslation } from "@/app/i18n/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import LanguageToggler from "./LanguageToggler";
 import LocalizedLink from "./LocalizedLink";
+import OptimizedImage from "./OptimizedImage";
 
 interface UserActionsProps {
   lng: string;
@@ -40,7 +39,7 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
           onClick={() => dispatch(openModal())}
         >
           <div className="w-6 sm:w-8 h-6 sm:h-8 relative mr-2">
-            <Image
+            <OptimizedImage
               src="/bucket.png"
               alt="Bucket"
               fill

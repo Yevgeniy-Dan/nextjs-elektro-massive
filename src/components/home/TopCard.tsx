@@ -9,6 +9,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import LocalizedLink from "../shared/LocalizedLink";
+import OptimizedImage from "../shared/OptimizedImage";
 
 //TODO: change to CartItem type
 export type TopCardProduct = {
@@ -124,12 +125,16 @@ const TopCard: React.FC<ITopCardProps> = ({
     );
     dispatch(openModal());
 
-    window.gtag("event", "add_to_cart", {
-      event_category: "CTA",
-      event_label: "Купить",
-      value: retail,
-      quantity: 1,
-    });
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      (window as any).gtag("event", "add_to_cart", {
+        event_category: "CTA",
+        event_label: "Купить",
+        value: retail,
+        quantity: 1,
+      });
+    } else {
+      console.warn("Google Analytics не загружен или `gtag` недоступен.");
+    }
   }, [
     handleUpdateItem,
     id,
@@ -154,22 +159,26 @@ const TopCard: React.FC<ITopCardProps> = ({
         lng={lng}
         href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
         onClick={() => {
-          window.gtag("event", "navigation", {
-            event_category: "Navigation",
-            event_action: "Product Click",
-            event_label: title,
-            page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
-          });
+          if (
+            typeof window !== "undefined" &&
+            typeof window.gtag === "function"
+          ) {
+            window.gtag("event", "navigation", {
+              event_category: "Navigation",
+              event_action: "Product Click",
+              event_label: title,
+              page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
+            });
+          }
         }}
         className="relative pt-[100%] block"
       >
-        <Image
+        <OptimizedImage
           src={`${product.image_link}`}
           alt="Product Image"
           className="absolute top-0 left-0 w-full h-full object-contain"
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          priority
         />
         <div className="absolute top-2 right-2 flex gap-x-1 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Heart
@@ -189,13 +198,12 @@ const TopCard: React.FC<ITopCardProps> = ({
               handleBuyClick();
             }}
           >
-            <Image
+            <OptimizedImage
               src="/bucket.png"
               alt="Bucket icon"
               className="h-6 w-6 cursor-pointer"
               width={32}
               height={32}
-              priority
             />
           </button>
         </div>
@@ -207,13 +215,12 @@ const TopCard: React.FC<ITopCardProps> = ({
 
         {(label === "new" || label === "sale") && (
           <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
-            <Image
+            <OptimizedImage
               src={label === "new" ? "/new-product-label.png" : "/sale.png"}
               alt={label === "new" ? "new product label" : "sale product label"}
               fill
               sizes="33vw"
               className="object-contain"
-              priority
             />
           </div>
         )}
@@ -226,12 +233,17 @@ const TopCard: React.FC<ITopCardProps> = ({
             lng={lng}
             href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
             onClick={() => {
-              window.gtag("event", "navigation", {
-                event_category: "Navigation",
-                event_action: "Product Click",
-                event_label: title,
-                page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
-              });
+              if (
+                typeof window !== "undefined" &&
+                typeof window.gtag === "function"
+              ) {
+                window.gtag("event", "navigation", {
+                  event_category: "Navigation",
+                  event_action: "Product Click",
+                  event_label: title,
+                  page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
+                });
+              }
             }}
           >
             <h2 className="text-sm font-normal line-clamp-2">{title}</h2>
@@ -253,12 +265,17 @@ const TopCard: React.FC<ITopCardProps> = ({
             lng={lng}
             href={`/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`}
             onClick={() => {
-              window.gtag("event", "navigation", {
-                event_category: "Navigation",
-                event_action: "Product Click",
-                event_label: title,
-                page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
-              });
+              if (
+                typeof window !== "undefined" &&
+                typeof window.gtag === "function"
+              ) {
+                window.gtag("event", "navigation", {
+                  event_category: "Navigation",
+                  event_action: "Product Click",
+                  event_label: title,
+                  page_path: `/${categorySlug}/${subcategorySlug}/${productTypeSlug}/${productSlug}`,
+                });
+              }
             }}
           >
             <h2

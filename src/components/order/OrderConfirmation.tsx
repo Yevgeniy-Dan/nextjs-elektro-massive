@@ -7,11 +7,11 @@ import {
   Enum_Order_Paymentmethod,
 } from "@/gql/graphql";
 import { ArrowLeft } from "lucide-react";
-import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
 import LocalizedLink from "../shared/LocalizedLink";
 import { useCookies } from "react-cookie";
 import { fallbackLng, Language } from "@/app/i18n/settings";
+import OptimizedImage from "../shared/OptimizedImage";
 
 const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
   order,
@@ -48,7 +48,7 @@ const OrderConfirmation: React.FC<{ order: OrderAttributes | null }> = ({
           </h1>
           <p className="text-lg">Дякуємо, що вибрали наш магазин!</p>
           <div className="absolute top-4 right-4">
-            <Image
+            <OptimizedImage
               src={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/heart_f559c57931.png`}
               alt="Heart"
               width={120}

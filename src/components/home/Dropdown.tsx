@@ -1,9 +1,9 @@
 import React from "react";
 import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import { ChevronDown } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "@/app/i18n/client";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface MenuItems {
   href: string;
@@ -44,14 +44,19 @@ const Dropdown: React.FC<DropdownProps> = ({
               href={`viber://chat?number=+380964992448`}
               className="flex items-center"
               onClick={() => {
-                window.gtag("event", "support_service_click", {
-                  event_category: "Support Service",
-                  event_action: "Click",
-                  event_label: "Viber Chat",
-                });
+                if (
+                  typeof window !== "undefined" &&
+                  typeof window.gtag === "function"
+                ) {
+                  window.gtag("event", "support_service_click", {
+                    event_category: "Support Service",
+                    event_action: "Click",
+                    event_label: "Viber Chat",
+                  });
+                }
               }}
             >
-              <Image
+              <OptimizedImage
                 src="/viber-black-white-icon.png"
                 alt="Viber"
                 className="mr-4"
@@ -64,14 +69,19 @@ const Dropdown: React.FC<DropdownProps> = ({
               href={`https://t.me/Elektro_Massive`}
               className="flex items-center"
               onClick={() => {
-                window.gtag("event", "support_service_click", {
-                  event_category: "Support Service",
-                  event_action: "Click",
-                  event_label: "Telegram Chat",
-                });
+                if (
+                  typeof window !== "undefined" &&
+                  typeof window.gtag === "function"
+                ) {
+                  window.gtag("event", "support_service_click", {
+                    event_category: "Support Service",
+                    event_action: "Click",
+                    event_label: "Telegram Chat",
+                  });
+                }
               }}
             >
-              <Image
+              <OptimizedImage
                 src="/telegram-black-white-icon.png"
                 alt="Telegram"
                 className="mr-4"
@@ -84,14 +94,19 @@ const Dropdown: React.FC<DropdownProps> = ({
               href={`mailto:elektromassive@gmail.com`}
               className="flex items-center"
               onClick={() => {
-                window.gtag("event", "support_service_click", {
-                  event_category: "Support Service",
-                  event_action: "Click",
-                  event_label: "E-mail",
-                });
+                if (
+                  typeof window !== "undefined" &&
+                  typeof window.gtag === "function"
+                ) {
+                  window.gtag("event", "support_service_click", {
+                    event_category: "Support Service",
+                    event_action: "Click",
+                    event_label: "E-mail",
+                  });
+                }
               }}
             >
-              <Image
+              <OptimizedImage
                 src="/wing-black-white-icon.png"
                 alt="Mail"
                 className="mr-4"
@@ -105,14 +120,19 @@ const Dropdown: React.FC<DropdownProps> = ({
               href="tel:+380980392853"
               className="flex items-center"
               onClick={() => {
-                window.gtag("event", "support_service_click", {
-                  event_category: "Support Service",
-                  event_action: "Click",
-                  event_label: "Phone",
-                });
+                if (
+                  typeof window !== "undefined" &&
+                  typeof window.gtag === "function"
+                ) {
+                  window.gtag("event", "support_service_click", {
+                    event_category: "Support Service",
+                    event_action: "Click",
+                    event_label: "Phone",
+                  });
+                }
               }}
             >
-              <Image
+              <OptimizedImage
                 src="/phone.png"
                 alt="Phone Icon"
                 className="mr-1"
@@ -127,14 +147,19 @@ const Dropdown: React.FC<DropdownProps> = ({
               href="tel:+380976323159"
               className="flex items-center"
               onClick={() => {
-                window.gtag("event", "support_service_click", {
-                  event_category: "Support Service",
-                  event_action: "Click",
-                  event_label: "Phone",
-                });
+                if (
+                  typeof window !== "undefined" &&
+                  typeof window.gtag === "function"
+                ) {
+                  window.gtag("event", "support_service_click", {
+                    event_category: "Support Service",
+                    event_action: "Click",
+                    event_label: "Phone",
+                  });
+                }
               }}
             >
-              <Image
+              <OptimizedImage
                 src="/phone.png"
                 alt="Phone Icon"
                 className="mr-1"

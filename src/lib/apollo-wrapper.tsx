@@ -17,7 +17,6 @@ function makeClient() {
   });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    console.log("HEYHEYH");
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, extensions, locations, path }) => {
         console.log(`[GraphQL error]: Message: ${message}, Path: ${path}`);
@@ -36,7 +35,40 @@ function makeClient() {
   });
 
   return new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Category: {
+          keyFields: ["slug", "locale"],
+        },
+        // CategoryEntity: {
+        //   keyFields: ["slug", "locale"],
+        // },
+        Subcategory: {
+          keyFields: ["slug", "locale"],
+        },
+        // SubcategoryEntity: {
+        //   keyFields: ["slug", "locale"],
+        //   // fields: {
+        //   //   attributes: {
+        //   //     merge(existing, incoming, { variables }) {
+        //   //       console.log("🔍 MERGE CALLED for attributes", {
+        //   //         existing,
+        //   //         incoming,
+        //   //         variables,
+        //   //       });
+        //   //       return { ...existing, ...incoming };
+        //   //     },
+        //   //   },
+        //   // },
+        // },
+        Product: {
+          keyFields: ["slug", "locale"],
+        },
+        ProductEntity: {
+          keyFields: ["slug", "locale"],
+        },
+      },
+    }),
     link: from([errorLink, httpLink]),
   });
 }

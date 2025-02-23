@@ -2,9 +2,9 @@ import React from "react";
 
 import { useExtendedFormContext } from "@/hooks/extendedFormContext";
 import { OrderFormData } from "@/hooks/useOrderForm";
-import Image from "next/image";
 import { Check, Edit, Home, MapPin, Truck } from "lucide-react";
 import { Enum_Order_Deliverymethod } from "@/gql/graphql";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface DeliveryProps {
   isActive: boolean;
@@ -83,7 +83,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         <div className="mt-2 text-sm text-gray-600 flex">
           {deliveryMethod === "novaPoshta" ? (
             <>
-              <Image
+              <OptimizedImage
                 src="/novaposhta.jpg"
                 width={24}
                 height={24}
@@ -140,7 +140,7 @@ const Delivery: React.FC<DeliveryProps> = ({
               handleDeliveryMethodChange(Enum_Order_Deliverymethod.NovaPoshta)
             }
           />
-          <Image
+          <OptimizedImage
             src="/novaposhta.jpg"
             width={24}
             height={24}

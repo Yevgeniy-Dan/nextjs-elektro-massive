@@ -1,5 +1,5 @@
-import Image from "next/image";
 import React from "react";
+import OptimizedImage from "../shared/OptimizedImage";
 
 interface IServiceCard {
   title: string;
@@ -17,7 +17,7 @@ const ServiceCard: React.FC<IServiceCard> = ({
   return (
     <div className="flex flex-col h-full bg-white rounded-lg shadow-lg overflow-hidden">
       <div className="relative w-full h-48">
-        <Image
+        <OptimizedImage
           src={imageUrl || "/images/placeholder.jpg"}
           alt={title}
           fill
@@ -39,7 +39,7 @@ const ServiceCard: React.FC<IServiceCard> = ({
         </div>
         <div className="flex flex-row">
           <a href="#" className="text-blue-500 mr-2">
-            <Image
+            <OptimizedImage
               className="w-6 h-6"
               src="/viber.png"
               alt="Viber icon"
@@ -48,7 +48,7 @@ const ServiceCard: React.FC<IServiceCard> = ({
             />
           </a>
           <a href="#" className="text-blue-500">
-            <Image
+            <OptimizedImage
               className="w-6 h-6"
               src="/telegram.png"
               alt="Telegram icon"

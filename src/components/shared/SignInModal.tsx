@@ -7,13 +7,12 @@ import { closeSignInModal } from "@/store/signInModalSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
-import CenteredSpinner from "./CenteredSpinner";
 import Spinner from "./Spinner";
 import { useTranslation } from "@/app/i18n/client";
+import OptimizedImage from "./OptimizedImage";
 
 const phoneSchema = z.object({
   phone: z
@@ -93,7 +92,9 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
 
   const handleOtpSignIn = async () => {
     setIsLoading(true);
-    window.gtag("event", "login", { method: "Phone OTP" });
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", "login", { method: "Phone OTP" });
+    }
     try {
       const result = await signIn("phoneOtp", {
         phone: phoneSchema.parse({ phone: phoneNumber }).phone,
@@ -116,8 +117,9 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
 
   const handleGoogleSignIn = async () => {
     try {
-      window.gtag("event", "login", { method: "Google" });
-
+      if (typeof window !== "undefined" && typeof window.gtag === "function") {
+        window.gtag("event", "login", { method: "Google" });
+      }
       await signIn("google", {
         callbackUrl: redirectUrl || window.location.href,
       });
@@ -170,12 +172,11 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
             </div>
           </div>
           <div className="py-4 px-4 flex justify-center">
-            <Image
+            <OptimizedImage
               src="/logo.png"
               alt="Your Company Logo"
               width={120}
               height={120}
-              priority
             />
           </div>
           {/* PHONE NUMBER INPUT */}
@@ -189,12 +190,11 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Image
+                  <OptimizedImage
                     src="/ukrainian-flag.png"
                     alt="Ukrainian flag"
                     width={20}
                     height={15}
-                    priority
                   />
                   <span className="ml-2 font-semibold">+380</span>
                 </div>

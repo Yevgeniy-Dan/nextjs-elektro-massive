@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 import ReactMarkdown from "react-markdown";
 
 import BlogBreadcrumbs from "./BlogBreadcrumbs";
@@ -10,6 +8,7 @@ import LocalizedLink from "@/components/shared/LocalizedLink";
 import { BlogMainImage, BlogPost } from "@/types/types";
 import PaginationServerComponent from "./Pagination";
 import { useTranslation } from "@/app/i18n/client";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 interface BlogListClientProps {
   lng: string;
@@ -61,7 +60,7 @@ export default function BlogClientPage({
             <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow h-full">
               <div className="relative pt-[66.66%]">
                 {post.attributes?.image?.data?.attributes && (
-                  <Image
+                  <OptimizedImage
                     src={getResponsiveImage(post.attributes?.image)}
                     alt={
                       post.attributes?.image.data?.attributes
@@ -70,7 +69,6 @@ export default function BlogClientPage({
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="absolute top-0 left-0 w-full h-full object-contain"
-                    priority={false}
                   />
                 )}
               </div>
