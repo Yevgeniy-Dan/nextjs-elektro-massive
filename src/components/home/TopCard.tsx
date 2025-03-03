@@ -8,6 +8,7 @@ import LocalizedLink from "../shared/LocalizedLink";
 import OptimizedImage from "../shared/OptimizedImage";
 import { useSignInModal } from "@/store/useSignInModal";
 import { useModalStore } from "@/store/useModalStore";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 //TODO: change to CartItem type
 export type TopCardProduct = {
@@ -215,7 +216,11 @@ const TopCard: React.FC<ITopCardProps> = ({
         {(label === "new" || label === "sale") && (
           <div className="absolute  -top-4 left-0 w-1/3 h-1/3 z-50">
             <OptimizedImage
-              src={label === "new" ? "/new-product-label.png" : "/sale.png"}
+              src={
+                label === "new"
+                  ? `${AWS_CDN_URL}shared/public/icons/new-product-label.png`
+                  : `${AWS_CDN_URL}shared/public/icons/sale.png`
+              }
               alt={label === "new" ? "new product label" : "sale product label"}
               fill
               sizes="33vw"

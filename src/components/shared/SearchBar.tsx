@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { useTranslation } from "@/app/i18n/client";
 import OptimizedImage from "./OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface SearchBarProps {
   lng: string;
@@ -56,7 +57,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ lng }) => {
         <button className="absolute inset-y-0 right-0 flex items-center pointer-events-none">
           <div className="bg-transparent p-2 pr-4 rounded-r-full rounded-l-2xl">
             <OptimizedImage
-              src="/search.png"
+              src={`${AWS_CDN_URL}shared/public/icons/search.png`}
               alt="Search icon"
               className="h-6 w-6 invert"
               width={32}

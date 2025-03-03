@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import SocialShare from "./SocialShare";
 import ProductHeader from "./ProductHeader";
 import { useModalStore } from "@/store/useModalStore";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 const initialParamsCount = 5;
 
@@ -142,13 +143,13 @@ const ProductDetails: React.FC<{
   const memoizedSocialIcons = useMemo(
     () => [
       {
-        src: "/telegram.png",
+        src: `${AWS_CDN_URL}shared/public/icons/telegram.png`,
         alt: "Telegram icon",
         getShareUrl: (url: string) =>
           `https://t.me/share/url?url=${encodeURIComponent(url)}`,
       },
       {
-        src: "/viber.png",
+        src: `${AWS_CDN_URL}shared/public/icons/viber.png`,
         alt: "Viber icon",
         getShareUrl: (url: string) =>
           `viber://forward?text=${encodeURIComponent(url)}`,

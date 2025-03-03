@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslation } from "@/app/i18n/client";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import OptimizedImage from "@/components/shared/OptimizedImage";
 import Image from "next/image";
@@ -100,7 +101,7 @@ const PaymentDeliveryClient: React.FC<PaymentDeliveryProps> = ({
         </div>
         <div className="mt-[60%] -ml-2 sm:-ml-4 md:-ml-6 lg:-ml-8">
           <OptimizedImage
-            src={"/payment_delivery/Е.png"}
+            src={`${AWS_CDN_URL}shared/public/payment_delivery/Е.png`}
             alt="E sign icon"
             width={200}
             height={200}

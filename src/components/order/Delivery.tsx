@@ -5,6 +5,7 @@ import { OrderFormData } from "@/hooks/useOrderForm";
 import { Check, Edit, Home, MapPin, Truck } from "lucide-react";
 import { Enum_Order_Deliverymethod } from "@/gql/graphql";
 import OptimizedImage from "../shared/OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface DeliveryProps {
   isActive: boolean;
@@ -84,7 +85,7 @@ const Delivery: React.FC<DeliveryProps> = ({
           {deliveryMethod === "novaPoshta" ? (
             <>
               <OptimizedImage
-                src="/novaposhta.jpg"
+                src={`${AWS_CDN_URL}shared/public/icons/novaposhta.jpg`}
                 width={24}
                 height={24}
                 alt="Nova Poshta"
@@ -141,7 +142,7 @@ const Delivery: React.FC<DeliveryProps> = ({
             }
           />
           <OptimizedImage
-            src="/novaposhta.jpg"
+            src={`${AWS_CDN_URL}shared/public/icons/novaposhta.jpg`}
             width={24}
             height={24}
             alt="Nova Poshta"

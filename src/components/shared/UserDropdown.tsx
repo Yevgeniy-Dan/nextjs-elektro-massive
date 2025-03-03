@@ -6,6 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import OptimizedImage from "./OptimizedImage";
 import { useSignInModal } from "@/store/useSignInModal";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface UserDropdownProps {
   lng: string;
@@ -33,7 +34,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ lng }) => {
       <MenuButton>
         <div className="hover:text-gray-300 w-6 sm:w-8 h-6 sm:h-8 relative">
           <OptimizedImage
-            src="/avatar.png"
+            src={`${AWS_CDN_URL}shared/public/icons/avatar.png`}
             alt="Avatar"
             fill
             sizes="32px"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslation } from "@/app/i18n/client";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import OptimizedImage from "@/components/shared/OptimizedImage";
 import React from "react";
@@ -34,7 +35,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
                 <OptimizedImage
-                  src={t("advantages.items.0.icon")}
+                  src={`${AWS_CDN_URL}shared/public/icons/great-quality.png`}
                   alt={`great-quality Icon`}
                   className="h-16 w-16 mx-auto "
                   width={64}
@@ -51,7 +52,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
                 <OptimizedImage
-                  src={t("advantages.items.1.icon")}
+                  src={`${AWS_CDN_URL}shared/public/icons/wide-range.png`}
                   alt={`wide-range Icon`}
                   className="h-16 w-16 mx-auto "
                   width={64}
@@ -68,7 +69,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
                 <OptimizedImage
-                  src={t("advantages.items.2.icon")}
+                  src={`${AWS_CDN_URL}shared/public/icons/certified-products.png`}
                   alt={`certified-products Icon`}
                   className="h-16 w-16 mx-auto "
                   width={64}
@@ -86,7 +87,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
                 <OptimizedImage
-                  src={t("advantages.items.3.icon")}
+                  src={`${AWS_CDN_URL}shared/public/icons/innovative-solutions.png`}
                   alt={`innovative-solutions Icon`}
                   className="h-16 w-16 mx-auto "
                   width={64}
@@ -103,7 +104,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
             <div className="space-y-4">
               <div className="flex items-center space-x-6">
                 <OptimizedImage
-                  src={t("advantages.items.4.icon")}
+                  src={`${AWS_CDN_URL}shared/public/icons/reliable-partnership.png`}
                   alt={`reliable-partnership Icon`}
                   className="h-16 w-16 mx-auto "
                   width={64}
@@ -130,12 +131,11 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
                 <div className="relative w-1/3 h-36 md:h-48">
                   <div className="absolute -top-4 -right-4 w-full h-full bg-purple-600 -z-10 rounded-lg"></div>
                   <OptimizedImage
-                    src={t("cooperationTerms.items.0.image")}
+                    src={`${AWS_CDN_URL}shared/public/partnership/organizations.jpeg`}
                     alt={`trade-organizations Icon`}
-                    className="h-64 w-64 mx-auto rounded-lg"
+                    className="h-64 w-64 mx-auto rounded-lg object-cover"
                     fill
                     sizes="33.333vw"
-                    objectFit="cover"
                   />
                 </div>
                 <div className="w-2/3">
@@ -154,12 +154,11 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
                 <div className="relative w-1/3 h-36 md:h-48">
                   <div className="absolute -top-4 -right-4 w-full h-full bg-purple-600 -z-10 rounded-lg"></div>
                   <OptimizedImage
-                    src={t("cooperationTerms.items.1.image")}
+                    src={`${AWS_CDN_URL}shared/public/partnership/business-owner.jpg`}
                     alt={`business-owner Icon`}
-                    className="h-64 w-64 mx-auto rounded-lg"
+                    className="h-64 w-64 mx-auto rounded-lg object-cover"
                     fill
                     sizes="(max-width: 768px) 33vw, 50vw"
-                    objectFit="cover"
                   />
                 </div>
 
@@ -179,7 +178,7 @@ const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
                 <div className="relative w-1/3 h-36 md:h-48">
                   <div className="absolute -top-4 -right-4 w-full h-full bg-purple-600 -z-10 rounded-lg"></div>
                   <OptimizedImage
-                    src={t("cooperationTerms.items.2.image")}
+                    src={`${AWS_CDN_URL}shared/public/partnership/designers-and-design-bureaus.jpg`}
                     alt={`designers-and-design-bureaus Icon`}
                     className="h-64 w-64 mx-auto rounded-lg object-cover"
                     fill

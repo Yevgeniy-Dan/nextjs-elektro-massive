@@ -5,6 +5,7 @@ import React from "react";
 import { useTranslation } from "@/app/i18n/client";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import OptimizedImage from "@/components/shared/OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface AboutPageProps {
   params: { lng: string };
@@ -44,7 +45,7 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
             <div className="w-full md:w-1/2">
               <div className="relative aspect-video w-full h-full">
                 <OptimizedImage
-                  src="/about/about_company.png"
+                  src={`${AWS_CDN_URL}shared/public/about/about_company.png`}
                   alt="Image 1"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -59,7 +60,7 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
             <div className="w-full md:w-1/2  my-4 md:my-0">
               <div className="relative aspect-video w-full h-full">
                 <OptimizedImage
-                  src="/about/development.jpg"
+                  src={`${AWS_CDN_URL}shared/public/about/development.jpg`}
                   alt="Image 1"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -91,7 +92,7 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
             </p>
             <div className="relative w-3/5 -my-2 rounded-xl">
               <OptimizedImage
-                src="/about/achievments.jpg"
+                src={`${AWS_CDN_URL}shared/public/about/achievments.jpg`}
                 alt="Image 1"
                 fill
                 sizes="60vw"
@@ -104,7 +105,7 @@ const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
           <div className="flex justify-between  relative mt-10  h-auto ">
             <div className="relative w-3/5 -my-2 rounded-xl">
               <OptimizedImage
-                src="/about/innovations.jpg"
+                src={`${AWS_CDN_URL}shared/public/about/innovations.jpg`}
                 alt="Image 1"
                 fill
                 sizes="60vw"

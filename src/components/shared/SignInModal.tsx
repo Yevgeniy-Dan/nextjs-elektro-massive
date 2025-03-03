@@ -13,6 +13,7 @@ import { useTranslation } from "@/app/i18n/client";
 import OptimizedImage from "./OptimizedImage";
 import { useSignInModal } from "@/store/useSignInModal";
 import { useCartStore } from "@/store/useCartStore";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 const phoneSchema = z.object({
   phone: z
@@ -171,7 +172,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
           </div>
           <div className="py-4 px-4 flex justify-center">
             <OptimizedImage
-              src="/logo.png"
+              src={`${AWS_CDN_URL}shared/public/icons/logo.png`}
               alt="Your Company Logo"
               width={120}
               height={120}
@@ -189,7 +190,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <OptimizedImage
-                    src="/ukrainian-flag.png"
+                    src={`${AWS_CDN_URL}shared/public/icons/ukrainian-flag.png`}
                     alt="Ukrainian flag"
                     width={20}
                     height={15}

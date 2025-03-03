@@ -4,6 +4,7 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "@/app/i18n/client";
 import OptimizedImage from "../shared/OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface MenuItems {
   href: string;
@@ -57,7 +58,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               }}
             >
               <OptimizedImage
-                src="/viber-black-white-icon.png"
+                src={`${AWS_CDN_URL}shared/public/icons/viber-black-white-icon.png`}
                 alt="Viber"
                 className="mr-4"
                 width={24}
@@ -82,7 +83,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               }}
             >
               <OptimizedImage
-                src="/telegram-black-white-icon.png"
+                src={`${AWS_CDN_URL}shared/public/icons/telegram-black-white-icon.png`}
                 alt="Telegram"
                 className="mr-4"
                 width={24}
@@ -133,7 +134,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               }}
             >
               <OptimizedImage
-                src="/phone.png"
+                src={`${AWS_CDN_URL}shared/public/icons/phone.png`}
                 alt="Phone Icon"
                 className="mr-1"
                 width={24}
@@ -160,7 +161,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               }}
             >
               <OptimizedImage
-                src="/phone.png"
+                src={`${AWS_CDN_URL}shared/public/icons/phone.png`}
                 alt="Phone Icon"
                 className="mr-1"
                 width={24}

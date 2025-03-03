@@ -1,5 +1,6 @@
 import React from "react";
 import OptimizedImage from "../shared/OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 const DeliveryPaymentSection: React.FC = () => {
   return (
@@ -11,7 +12,7 @@ const DeliveryPaymentSection: React.FC = () => {
         <ul className="text-sm">
           <li className="flex items-start gap-2">
             <OptimizedImage
-              src="/novaposhta.jpg"
+              src={`${AWS_CDN_URL}shared/public/icons/novaposhta.jpg`}
               width={24}
               height={24}
               alt="Nova Poshta"
@@ -31,7 +32,7 @@ const DeliveryPaymentSection: React.FC = () => {
         <ul className="text-sm flex flex-col gap-2">
           <li className="flex items-center gap-2">
             <OptimizedImage
-              src="/mastercard.png"
+              src={`${AWS_CDN_URL}shared/public/icons/mastercard.png`}
               width={48}
               height={48}
               alt="Visa"
@@ -43,7 +44,7 @@ const DeliveryPaymentSection: React.FC = () => {
           </li>
           <li className="flex items-center gap-2">
             <OptimizedImage
-              src="/product-page/transfer-to-account.jpg"
+              src={`${AWS_CDN_URL}shared/public/product-page/transfer-to-account.jpg`}
               width={48}
               height={48}
               alt="Transfer to Account"
@@ -55,7 +56,7 @@ const DeliveryPaymentSection: React.FC = () => {
           </li>
           <li className="flex items-center gap-2">
             <OptimizedImage
-              src="/product-page/cash-on-delivery.png"
+              src={`${AWS_CDN_URL}shared/public/product-page/cash-on-delivery.png`}
               width={48}
               height={48}
               alt="Cash on Delivery"

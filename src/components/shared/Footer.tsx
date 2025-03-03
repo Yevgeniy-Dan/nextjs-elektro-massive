@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from "react";
 import LocalizedLink from "./LocalizedLink";
 import OptimizedImage from "./OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface CompanyLink {
   href: string;
@@ -41,7 +42,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
           <div className="relative  mb-6 sm:mb-0 mx-auto sm:m-0">
             <div className="relative w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 z-10">
               <OptimizedImage
-                src="/logo-footer.png"
+                src={`${AWS_CDN_URL}shared/public/icons/logo-footer.png`}
                 alt="Elektro Massive Logo"
                 fill
                 sizes="(max-width: 640px) 128px, (max-width: 768px) 192px, 256px"
@@ -87,7 +88,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
               >
                 <OptimizedImage
                   className="w-10 h-10"
-                  src="/telegram.png"
+                  src={`${AWS_CDN_URL}shared/public/icons/telegram.png`}
                   alt="Telegram icon"
                   width={48}
                   height={48}
@@ -100,7 +101,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
               >
                 <OptimizedImage
                   className="w-10 h-10"
-                  src="/tiktok.png"
+                  src={`${AWS_CDN_URL}shared/public/icons/tiktok.png`}
                   alt="TikTok icon"
                   width={48}
                   height={48}
@@ -112,7 +113,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", lng }) => {
               >
                 <OptimizedImage
                   className="w-10 h-10"
-                  src="/instagram.png"
+                  src={`${AWS_CDN_URL}shared/public/icons/instagram.png`}
                   alt="Instagram icon"
                   width={48}
                   height={48}

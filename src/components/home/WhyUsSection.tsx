@@ -1,11 +1,24 @@
 import React from "react";
 import OptimizedImage from "../shared/OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 const features = [
-  { icon: "/collaboration.png", text: "Вигідні умови співпраці" },
-  { icon: "/blueprint.png", text: "Розрахунок проекту освітлення" },
-  { icon: "/idea.png", text: "Оригінальні рішення" },
-  { icon: "/quality.png", text: "Гарантія якості" },
+  {
+    icon: `${AWS_CDN_URL}shared/public/icons/collaboration.png`,
+    text: "Вигідні умови співпраці",
+  },
+  {
+    icon: `${AWS_CDN_URL}shared/public/icons/blueprint.png`,
+    text: "Розрахунок проекту освітлення",
+  },
+  {
+    icon: `${AWS_CDN_URL}shared/public/icons/idea.png`,
+    text: "Оригінальні рішення",
+  },
+  {
+    icon: `${AWS_CDN_URL}shared/public/icons/quality.png`,
+    text: "Гарантія якості",
+  },
 ];
 
 const WhyUsSection = () => {

@@ -3,6 +3,7 @@
 import React from "react";
 import { UseFormRegister, FieldError, UseFormSetValue } from "react-hook-form";
 import OptimizedImage from "../shared/OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface PhoneInputProps {
   register: UseFormRegister<any>;
@@ -45,7 +46,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <OptimizedImage
-            src="/ukrainian-flag.png"
+            src={`${AWS_CDN_URL}shared/public/icons/ukrainian-flag.png`}
             alt="Ukrainian flag"
             width={20}
             height={15}

@@ -1,5 +1,6 @@
 import React from "react";
 import OptimizedImage from "../shared/OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface IServiceCard {
   title: string;
@@ -41,7 +42,7 @@ const ServiceCard: React.FC<IServiceCard> = ({
           <a href="#" className="text-blue-500 mr-2">
             <OptimizedImage
               className="w-6 h-6"
-              src="/viber.png"
+              src={`${AWS_CDN_URL}shared/public/icons/viber.png`}
               alt="Viber icon"
               width={24}
               height={24}
@@ -50,7 +51,7 @@ const ServiceCard: React.FC<IServiceCard> = ({
           <a href="#" className="text-blue-500">
             <OptimizedImage
               className="w-6 h-6"
-              src="/telegram.png"
+              src={`${AWS_CDN_URL}shared/public/icons/telegram.png`}
               alt="Telegram icon"
               width={24}
               height={24}
