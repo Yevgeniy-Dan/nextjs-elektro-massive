@@ -1,19 +1,17 @@
 "use client";
 
-import { fallbackLng, Language } from "@/app/i18n/settings";
-import {
-  clearCartFromLocalStorage,
-  getCartItemsFromLocaleStorage,
-  removeCartItemFromLocalStorage,
-  updateCartItemInLocalStorage,
-} from "@/app/utils/cartHeplers";
+import { fallbackLng, Language, prevLngCookieName } from "@/app/i18n/settings";
+
 import {
   CLEAR_CART_MUTATION,
   GET_AUTH_USER_CART_QUERY,
+  GET_PRODUCTS_BY_IDS_QUERY,
   REMOVE_FROM_CART_MUTATION,
   UPDATE_CART_ITEM_MUTATION,
 } from "@/graphql/queries/cart";
 import {
+  GetProductsByIdsQuery,
+  GetProductsByIdsQueryVariables,
   GetUserCartQuery,
   GetUserCartQueryVariables,
   RemoveFromCartMutation,
@@ -21,9 +19,6 @@ import {
   UpdateCartItemMutation,
   UpdateCartItemMutationVariables,
 } from "@/gql/graphql";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { openSignInModal } from "@/store/signInModalSlice";
-import { closeModal } from "@/store/storeSlice";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
@@ -32,19 +27,37 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { useCookies } from "react-cookie";
 import { CartItemType } from "@/types/types";
+import { useSignInModal } from "@/store/useSignInModal";
+import { useCartStore } from "@/store/useCartStore";
+import { useModalStore } from "@/store/useModalStore";
+
+export const fetchProductsByIds = async (ids: string[], locale: Language) => {
+  return request<GetProductsByIdsQuery, GetProductsByIdsQueryVariables>(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+    GET_PRODUCTS_BY_IDS_QUERY,
+    {
+      ids,
+      locale,
+    }
+  );
+};
 
 export const useCart = () => {
-  const [cookies] = useCookies(["i18next"]);
+  const { status } = useSession();
+  const [cookies] = useCookies(["i18next", prevLngCookieName]);
   const currentLanguage = (cookies.i18next || fallbackLng) as Language;
 
   const queryClient = useQueryClient();
-  const { isModalOpen } = useAppSelector((state) => state.store);
-  const dispatch = useAppDispatch();
-  const { status } = useSession();
+
+  const { productIds, addProduct, removeProduct, clearCart } = useCartStore();
+
+  const { isModalOpen, closeModal } = useModalStore();
+
+  const { openSignInModal } = useSignInModal();
   const router = useRouter();
 
   const { data: cartItems = [], isLoading } = useQuery({
-    queryKey: ["cart", currentLanguage],
+    queryKey: ["cart", status, productIds],
     queryFn: async () => {
       if (status === "authenticated") {
         const response = await request<
@@ -60,11 +73,28 @@ export const useCart = () => {
 
         return response.userCart?.cart.cart_items as CartItemType[];
       } else {
-        return getCartItemsFromLocaleStorage(currentLanguage);
+        const response = await request<
+          GetProductsByIdsQuery,
+          GetProductsByIdsQueryVariables
+        >(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
+          GET_PRODUCTS_BY_IDS_QUERY,
+          {
+            ids: productIds.map((p) => p.productId),
+            locale: currentLanguage,
+          }
+        );
+
+        return productIds
+          .map((item) => ({
+            quantity: item.quantity,
+            product: response.products?.data.find(
+              (p) => p.id === item.productId
+            )?.attributes,
+          }))
+          .filter((item): item is CartItemType => Boolean(item.product));
       }
     },
-    refetchOnMount: "always",
-    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const updateCartItemMutation = useMutation<
@@ -72,7 +102,7 @@ export const useCart = () => {
     Error,
     { product: CartItemType; qtyChange: number }
   >({
-    mutationFn: async (variables) => {
+    mutationFn: async ({ product, qtyChange }) => {
       if (status === "authenticated") {
         const response = await request<
           UpdateCartItemMutation,
@@ -82,8 +112,8 @@ export const useCart = () => {
           UPDATE_CART_ITEM_MUTATION,
           {
             input: {
-              productId: variables.product.product.id,
-              qtyChange: variables.qtyChange,
+              productId: product.product.id,
+              qtyChange: qtyChange,
             },
             locale: currentLanguage,
           }
@@ -92,15 +122,14 @@ export const useCart = () => {
         return (response.updateCartItem?.cart.cart_items ||
           []) as CartItemType[];
       } else {
-        return updateCartItemInLocalStorage(
-          variables.product,
-          variables.qtyChange,
-          currentLanguage
-        );
+        addProduct(product.product.id, qtyChange);
+        return cartItems as CartItemType[];
       }
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["cart"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["cart"],
+      });
     },
   });
 
@@ -109,22 +138,18 @@ export const useCart = () => {
     Error,
     { product: CartItemType["product"] }
   >({
-    mutationFn: async (variables) => {
+    mutationFn: async ({ product }) => {
       if (status === "authenticated") {
         return request<RemoveFromCartMutation, RemoveFromCartMutationVariables>(
           `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
           REMOVE_FROM_CART_MUTATION,
           {
-            input: { productId: variables.product.id },
+            input: { productId: product.id },
             locale: currentLanguage,
           }
         );
       } else {
-        removeCartItemFromLocalStorage(
-          variables.product.id,
-          variables.product,
-          currentLanguage
-        );
+        removeProduct(product.id);
 
         return {
           removeFromCart: {
@@ -151,7 +176,14 @@ export const useCart = () => {
           }
         );
       } else {
-        clearCartFromLocalStorage();
+        clearCart();
+        return {
+          clearCart: {
+            cart: {
+              cart_items: [],
+            },
+          },
+        };
       }
     },
     onSuccess: () => {
@@ -159,71 +191,59 @@ export const useCart = () => {
     },
   });
 
-  const handleUpdateItem = useCallback(
-    (product: CartItemType, increaseQtyBy: number) => {
-      updateCartItemMutation.mutate({
-        product: product,
-        qtyChange: increaseQtyBy,
-      });
-    },
-    [updateCartItemMutation]
-  );
-
-  const handleRemoveItem = useCallback(
-    (product: CartItemType["product"]) => {
-      removeFromCartMutation.mutate({
-        product: product,
-      });
-    },
-    [removeFromCartMutation]
-  );
-
-  const handleClearCart = useCallback(() => {
-    clearCartMutation.mutate();
-  }, [clearCartMutation]);
-
   const handleConfirm = useCallback(() => {
     if (status === "unauthenticated") {
-      dispatch(openSignInModal("/checkout"));
+      openSignInModal("/checkout");
     } else if (status === "authenticated") {
       router.push("/checkout");
     }
-    dispatch(closeModal());
-  }, [status, dispatch, router]);
+    closeModal();
+  }, [status, router, openSignInModal, closeModal]);
 
   const handleCloseModal = useCallback(() => {
-    dispatch(closeModal());
-  }, [dispatch]);
+    closeModal();
+  }, [closeModal]);
 
-  const calculateTotal = useMemo(() => {
-    return cartItems?.reduce(
-      (total, item) => total + (item?.product?.retail ?? 0) * item.quantity,
-      0
-    );
-  }, [cartItems]);
+  const calculateTotal = useMemo(
+    () =>
+      cartItems.reduce((total, item) => {
+        return total + item.product.retail * item.quantity;
+      }, 0),
+    [cartItems]
+  );
 
-  const calculateDiscountTotal = useMemo(() => {
-    return cartItems?.reduce(
-      (total, item) =>
-        total +
-        (((item?.product?.retail ?? 0) * (item?.product?.discount ?? 0)) /
-          100) *
-          item.quantity,
-      0
-    );
-  }, [cartItems]);
+  const calculateDiscountTotal = useMemo(
+    () =>
+      cartItems.reduce((total, item) => {
+        const discount = item.product.discount || 0;
+        const discountedPrice =
+          item.product.retail - (item.product.retail * discount) / 100;
+        return total + discountedPrice * item.quantity;
+      }, 0),
+    [cartItems]
+  );
 
-  const totalCount = useMemo(() => {
-    return cartItems?.reduce((total, item) => total + (item?.quantity || 0), 0);
-  }, [cartItems]);
+  const totalCount = useMemo(
+    () => cartItems?.reduce((total, item) => total + (item.quantity || 0), 0),
+    [cartItems]
+  );
 
   return {
     isModalOpen,
     cartItems,
     isLoading,
-    handleUpdateItem,
-    handleRemoveItem,
-    handleClearCart,
+    handleUpdateItem: (product: CartItemType, qtyChange: number) => {
+      updateCartItemMutation.mutate({
+        product,
+        qtyChange,
+      });
+    },
+    handleRemoveItem: (product: CartItemType["product"]) => {
+      removeFromCartMutation.mutate({
+        product,
+      });
+    },
+    handleClearCart: () => clearCartMutation.mutate(),
     handleConfirm,
     handleCloseModal,
     calculateTotal,

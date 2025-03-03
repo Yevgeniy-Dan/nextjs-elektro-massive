@@ -16,7 +16,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ lng }) => {
         <p className="flex justify-between">
           <span>{t("discount")}:</span>{" "}
           <span className="font-bold text-md">
-            {calculateDiscountTotal.toFixed(2)} грн
+            {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
           </span>
         </p>
       )}
@@ -27,7 +27,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ lng }) => {
             {calculateDiscountTotal !== 0 && calculateTotal.toFixed(2) + "грн"}
           </span>
           <span className="font-bold">
-            {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
+            {calculateDiscountTotal.toFixed(2)} грн
           </span>
         </div>
       </div>

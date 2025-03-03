@@ -2,8 +2,6 @@
 
 import { sendOtp } from "@/app/actions";
 import useOutsideClick from "@/hooks/useOutsideClick";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { closeSignInModal } from "@/store/signInModalSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { signIn } from "next-auth/react";
@@ -13,6 +11,8 @@ import { z } from "zod";
 import Spinner from "./Spinner";
 import { useTranslation } from "@/app/i18n/client";
 import OptimizedImage from "./OptimizedImage";
+import { useSignInModal } from "@/store/useSignInModal";
+import { useCartStore } from "@/store/useCartStore";
 
 const phoneSchema = z.object({
   phone: z
@@ -27,11 +27,9 @@ interface SignInModalProps {
 
 const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
   const { t } = useTranslation(lng, "common");
-  const dispatch = useAppDispatch();
 
-  const isOpen = useAppSelector((state) => state.signInModal.isOpen);
-
-  const redirectUrl = useAppSelector((state) => state.signInModal.redirectUrl);
+  const { isOpen, redirectUrl, closeSignInModal } = useSignInModal();
+  const { syncCartWithServer } = useCartStore();
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
@@ -136,7 +134,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
     setOtp("");
     setPhoneNumber("");
     setPhoneNumberError(null);
-    dispatch(closeSignInModal());
+    closeSignInModal();
   };
 
   const modalRef = useOutsideClick(handleClose);

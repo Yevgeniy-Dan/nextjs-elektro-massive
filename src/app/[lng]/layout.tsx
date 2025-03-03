@@ -30,6 +30,22 @@ import dynamic from "next/dynamic";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
+// TODO:
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
+
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
+
+//  <body
+//   className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+// >
+// <div className="font-[family-name:var(--font-geist-sans)]">
+
 export const metadata: Metadata = {
   title:
     "ELEKTRO-MASSIVE | Електротовари, Сантехніка, Будматеріали для дому та ремонту",

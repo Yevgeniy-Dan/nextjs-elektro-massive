@@ -1,6 +1,4 @@
 import Dropdown from "../home/Dropdown";
-import { useAppDispatch } from "@/store/hooks";
-import { openModal } from "@/store/storeSlice";
 import { useCart } from "@/hooks/useCart";
 import { Heart } from "lucide-react";
 import UserDropdown from "./UserDropdown";
@@ -9,6 +7,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import LanguageToggler from "./LanguageToggler";
 import LocalizedLink from "./LocalizedLink";
 import OptimizedImage from "./OptimizedImage";
+import { useModalStore } from "@/store/useModalStore";
 
 interface UserActionsProps {
   lng: string;
@@ -17,12 +16,8 @@ interface UserActionsProps {
 const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
   const { t } = useTranslation(lng, "header");
 
-  const dispatch = useAppDispatch();
-  const {
-    calculateTotal,
-    calculateDiscountTotal,
-    totalCount: cartTotalCount,
-  } = useCart();
+  const { openModal } = useModalStore();
+  const { calculateDiscountTotal, totalCount: cartTotalCount } = useCart();
   const { totalCount: favoritesTotalCount } = useFavorites();
 
   return (
@@ -34,10 +29,7 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
         items={[]}
       />
       <div className="flex justify-center items-center gap-1 sm:gap-2">
-        <button
-          className="flex items-center"
-          onClick={() => dispatch(openModal())}
-        >
+        <button className="flex items-center" onClick={() => openModal()}>
           <div className="w-6 sm:w-8 h-6 sm:h-8 relative mr-2">
             <OptimizedImage
               src="/bucket.png"
@@ -54,7 +46,7 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
             )}
           </div>
           <span className="hidden sm:inline text-base">
-            {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
+            {calculateDiscountTotal.toFixed(2)} грн
           </span>
         </button>
         {/* <div className="flex items-center"> */}

@@ -3,6 +3,15 @@ import GoogleProvider from "next-auth/providers/google";
 import { StrapiErrorT } from "@/types/strapi/StrapiError";
 import { StrapiLoginResponseT } from "@/types/User";
 import PhoneOtpProvider from "./PhoneOtpProvider";
+import { useCartStore } from "@/store/useCartStore";
+import request from "graphql-request";
+import {
+  SyncCartBySignInMutation,
+  SyncCartBySignInMutationVariables,
+} from "@/gql/graphql";
+import { SYNC_CART_MUTATION } from "@/graphql/queries/cart";
+import { languages } from "../i18n/settings";
+import { cookies, headers } from "next/headers";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -65,6 +74,8 @@ export const authOptions: NextAuthOptions = {
       session.user.strapiUserId = token.strapiUserId;
       session.user.blocked = token.blocked;
 
+      const lang = cookies().get("i18next")?.value || "uk";
+
       return session;
     },
     async redirect({ url, baseUrl }) {
@@ -72,7 +83,7 @@ export const authOptions: NextAuthOptions = {
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       // Allows callback URLs on the same origin
       else if (new URL(url).origin === baseUrl) return url;
-      console.log("redirect error", url, baseUrl);
+
       return baseUrl;
     },
   },

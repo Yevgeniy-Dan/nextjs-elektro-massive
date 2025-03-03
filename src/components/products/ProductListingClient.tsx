@@ -21,18 +21,17 @@ import {
   GetProductTypesQueryVariables,
 } from "@/gql/graphql";
 
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setAppliedFilters } from "@/store/productGridSlice";
 import { Filter, X } from "lucide-react";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import Breadcrumbs from "../shared/Breadcrumbs";
 import BrandFilter from "../shared/BrandFilter";
-import { selectAppliedFiltersForSubcategory } from "@/store/productGridSelectors";
+
 import { useScrollToElement } from "@/hooks/useScrollToElement";
 import { useRouter } from "next/navigation";
 import ProductSorting from "./ProductSorting";
 import { GET_MAX_PRICE } from "@/graphql/queries/products";
 import dynamic from "next/dynamic";
+import { useProductGridStore } from "@/store/useProductGridStore";
 
 const ProductGrid = dynamic(() => import("./ProductGrid"), {
   loading: () => <div>Loading...</div>,
@@ -82,12 +81,14 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 }) => {
   const productListingRef = useRef<HTMLDivElement>(null);
   const { scrollToElement } = useScrollToElement();
-  const dispatch = useAppDispatch();
+
   const pageSize = 40;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   const [priceFilters, setPriceFilters] = useState<number[] | null>(null);
+
+  const { appliedFilters, setAppliedFilters } = useProductGridStore();
 
   const handlePriceChange = (minPrice: number, maxPrice: number) => {
     setPriceFilters([minPrice, maxPrice]);
@@ -100,10 +101,6 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     [subcategorySlug]: subcategoryTitle,
     [productTypeSlug || ""]: productTypeTitle || "",
   };
-
-  const appliedFilters = useAppSelector((state) =>
-    selectAppliedFiltersForSubcategory(state, subcategoryId)
-  );
 
   const { data: brandsData } = useQuery<GetBrandsQuery>(GET_BRANDS);
 
@@ -133,8 +130,8 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   });
 
   React.useEffect(() => {
-    dispatch(setAppliedFilters({ subcategoryId, filters: {} }));
-  }, [dispatch, subcategoryId, productTypeId]);
+    setAppliedFilters(subcategoryId, {});
+  }, [setAppliedFilters, subcategoryId, productTypeId]);
 
   const handleProductTypeChange = useCallback(
     (newProductTypeSlug: string) => {
@@ -167,18 +164,25 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const handleBrandsSelect = useCallback(
     (brandName: string) => {
-      const newFilters = { ...appliedFilters };
+      const currentFilters = appliedFilters[subcategoryId] || {};
+      const newFilters = { ...currentFilters };
+      const currentBrands = newFilters["Бренд"] || [];
 
-      if (newFilters["Бренд"]?.includes(brandName)) {
-        newFilters["Бренд"] = newFilters["Бренд"].filter(
+      if (currentBrands.includes(brandName)) {
+        newFilters["Бренд"] = currentBrands.filter(
           (brand) => brand !== brandName
         );
       } else {
-        newFilters["Бренд"] = [brandName];
+        newFilters["Бренд"] = [...currentBrands, brandName];
       }
-      dispatch(setAppliedFilters({ subcategoryId, filters: newFilters }));
+
+      if (newFilters["Бренд"]?.length === 0) {
+        delete newFilters["Бренд"];
+      }
+
+      setAppliedFilters(subcategoryId, newFilters);
     },
-    [appliedFilters, dispatch, subcategoryId]
+    [appliedFilters, setAppliedFilters, subcategoryId]
   );
 
   const filterPanelRef = useOutsideClick(handleOutsideClick);
@@ -237,7 +241,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
       {brandsData?.brands?.data && (
         <BrandFilter
           brands={brandsFilters || []}
-          selectedBrand={appliedFilters["Бренд"]?.[0] || null}
+          selectedBrand={appliedFilters[subcategoryId]?.["Бренд"]?.[0] || null}
           onBrandSelect={handleBrandsSelect}
         />
       )}

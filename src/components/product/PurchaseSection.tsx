@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Heart, BarChart2, ShoppingCart } from "lucide-react";
+import React, { useState } from "react";
+import { Heart } from "lucide-react";
 import { ProductAttributes } from "@/types/types";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { useAppDispatch } from "@/store/hooks";
-import { openSignInModal } from "@/store/signInModalSlice";
+import { useSignInModal } from "@/store/useSignInModal";
 
 interface PurchaseSectionProps {
   id: string;
@@ -25,10 +24,10 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
   const { retail } = product;
   const [quantity, setQuantity] = useState(1);
 
-  const dispatch = useAppDispatch();
+  const { openSignInModal } = useSignInModal();
 
   const handleLogin = () => {
-    dispatch(openSignInModal(`${pathname}`));
+    openSignInModal(`${pathname}`);
   };
 
   const { favorites, handleAddToFavorites, handleRemoveFromFavorites } =

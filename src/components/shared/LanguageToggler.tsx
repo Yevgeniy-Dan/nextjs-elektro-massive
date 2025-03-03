@@ -5,8 +5,15 @@ import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 
-import { languages } from "@/app/i18n/settings";
+import { Language, languages } from "@/app/i18n/settings";
 import { LANG_MATCHES_KEY } from "@/app/utils/constants";
+import { useSession } from "next-auth/react";
+import { CartProductStore, useCartStore } from "@/store/useCartStore";
+import { fetchProductsByIds } from "@/hooks/useCart";
+import { FragmentType } from "@/gql";
+import { CART_PRODUCT_FIELDS } from "@/graphql/queries/cart";
+import { CartProductFieldsFragment } from "@/gql/graphql";
+import { queryClient } from "@/lib/queryClient";
 
 export type AvailableLanguages = (typeof languages)[number];
 
@@ -21,6 +28,40 @@ type LangMatches = {
 const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { status } = useSession();
+  const { productIds, getProductIds, setProductIds } = useCartStore();
+
+  const updateProductIds = async (newLanguage: Language) => {
+    if (status === "unauthenticated") {
+      try {
+        const response = await fetchProductsByIds(getProductIds(), lng);
+
+        const updatedIds = productIds
+          .map((item) => {
+            const product = response.products?.data.find(
+              (p) => p.id === item.productId
+            );
+
+            const attributes = product?.attributes as CartProductFieldsFragment;
+
+            const newId = attributes?.localizations?.data.find(
+              (l) => l.attributes?.locale === newLanguage
+            )?.id;
+
+            return {
+              productId: newId,
+              quantity: item.quantity,
+            };
+          })
+          .filter((item): item is CartProductStore => Boolean(item.productId));
+
+        setProductIds(updatedIds);
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+      } catch (error) {
+        console.error("Error fetching products: ", error);
+      }
+    }
+  };
 
   /**
    * Retrieves the translated path for the specified language from langMatches.
@@ -39,9 +80,9 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
    * @param event - Change event from the select element
    * @returns {void}
    */
-  const handleLanguageChange = (
+  const handleLanguageChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
-  ): void => {
+  ): Promise<void> => {
     const newLang = event.target.value;
     const currentPathname = pathname;
     const pathWithoutLang = currentPathname.replace(new RegExp(`^/${lng}`), ""); // Remove the current language prefix from the path
@@ -54,6 +95,7 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
 
         if (translatedPath) {
           const newPath = `/${newLang}/${translatedPath}`;
+          await updateProductIds(newLang as Language);
           router.push(newPath);
           return;
         }
@@ -64,6 +106,7 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
 
     // If no translation is available, create a fallback path
     const newPath = `/${newLang}${pathWithoutLang || "/"}`.replace(/\/+/g, "/");
+    await updateProductIds(newLang as Language);
     router.push(newPath);
     return;
   };

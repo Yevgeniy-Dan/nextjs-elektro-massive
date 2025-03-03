@@ -1,12 +1,11 @@
+import React from "react";
 import { useTranslation } from "@/app/i18n/client";
-import { useAppDispatch } from "@/store/hooks";
-import { openSignInModal } from "@/store/signInModalSlice";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { LogIn, LogOut, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
 import OptimizedImage from "./OptimizedImage";
+import { useSignInModal } from "@/store/useSignInModal";
 
 interface UserDropdownProps {
   lng: string;
@@ -17,10 +16,10 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ lng }) => {
   const { status } = useSession();
   const pathname = usePathname();
 
-  const dispatch = useAppDispatch();
+  const { openSignInModal } = useSignInModal();
 
   const handleLogin = () => {
-    dispatch(openSignInModal(`${pathname}`));
+    openSignInModal(`${pathname}`);
   };
 
   const handleLogout = async () => {

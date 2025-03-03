@@ -3,8 +3,6 @@
 import ProductParams from "./ProductParams";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
-import { useAppDispatch } from "@/store/hooks";
-import { openModal } from "@/store/storeSlice";
 import { ProductAttributes } from "@/types/types";
 import { ComponentImagesImages } from "@/gql/graphql";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -13,6 +11,7 @@ import { useCart } from "@/hooks/useCart";
 import dynamic from "next/dynamic";
 import SocialShare from "./SocialShare";
 import ProductHeader from "./ProductHeader";
+import { useModalStore } from "@/store/useModalStore";
 
 const initialParamsCount = 5;
 
@@ -46,10 +45,10 @@ const ProductDetails: React.FC<{
   productTypeTitle,
   subcategoryTitle,
 }) => {
-  const dispatch = useAppDispatch();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [currentUrl, setCurrentUrl] = useState("");
+  const { openModal } = useModalStore();
 
   const { handleUpdateItem } = useCart();
 
@@ -123,7 +122,7 @@ const ProductDetails: React.FC<{
 
       handleUpdateItem(addedCartItem, Math.max(qty, 1));
 
-      dispatch(openModal());
+      openModal();
     },
     [
       id,
@@ -136,7 +135,7 @@ const ProductDetails: React.FC<{
       part_number,
       slug,
       handleUpdateItem,
-      dispatch,
+      openModal,
     ]
   );
 

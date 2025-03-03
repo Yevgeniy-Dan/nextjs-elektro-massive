@@ -11,6 +11,7 @@ export const CART_PRODUCT_FIELDS = gql`
     params
     part_number
     slug
+    locale
     localizations {
       data {
         id
@@ -21,6 +22,21 @@ export const CART_PRODUCT_FIELDS = gql`
       }
     }
   }
+`;
+
+// FOR CART ZUZTAND STORE IF USER IS NOT AUTH
+export const GET_PRODUCTS_BY_IDS_QUERY = gql`
+  query GetProductsByIds($ids: [ID!]!, $locale: I18NLocaleCode!) {
+    products(filters: { id: { in: $ids } }, locale: $locale) {
+      data {
+        id
+        attributes {
+          ...CartProductFields
+        }
+      }
+    }
+  }
+  ${CART_PRODUCT_FIELDS}
 `;
 
 export const CART_ITEM_FIELDS = gql`

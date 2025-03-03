@@ -8,21 +8,8 @@ import {
   GetFilteredProductsQuery,
   GetFilteredProductsQueryVariables,
 } from "@/gql/graphql";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  setAppliedFilters,
-  setCurrentPage,
-  setLastFilters,
-  setLastProductType,
-  setLastSubcategoryId,
-} from "@/store/productGridSlice";
-import {
-  selectAppliedFilters,
-  selectCurrentPage,
-  selectLastFilters,
-  selectLastProductType,
-  selectLastSubcategoryId,
-} from "@/store/productGridSelectors";
+
+import { useProductGridStore } from "@/store/useProductGridStore";
 
 interface ProductGridProps {
   productTypeId?: string;
@@ -47,31 +34,27 @@ const ProductGrid = ({
   sortDirection,
   onScrollToUp,
 }: ProductGridProps) => {
-  const dispatch = useAppDispatch();
+  const {
+    currentPages,
+    appliedFilters,
+    lastFilters,
+    lastProductTypes,
+    lastSubcategoryId,
+    setCurrentPage,
+    setLastProductType,
+    setLastFilters,
+    setAppliedFilters,
+    setLastSubcategoryId,
+  } = useProductGridStore();
 
-  const currentPage = useAppSelector((state) =>
-    selectCurrentPage(state, subcategoryId)
-  );
-
-  const lastProductType = useAppSelector((state) =>
-    selectLastProductType(state, subcategoryId)
-  );
-
-  const lastFilters = useAppSelector((state) =>
-    selectLastFilters(state, subcategoryId)
-  );
-
-  const lastSubcategoryId = useAppSelector(selectLastSubcategoryId);
-
-  const appliedFilters = useAppSelector((state) =>
-    selectAppliedFilters(state, subcategoryId)
-  );
+  const currentPage = currentPages[subcategoryId] || 1;
 
   const transformedFilters = useMemo(() => {
-    return Object.entries(appliedFilters).flatMap(([key, values]) =>
+    const filters = appliedFilters[subcategoryId] || {};
+    return Object.entries(filters).flatMap(([key, values]) =>
       values.map((value) => ({ key, value }))
     );
-  }, [appliedFilters]);
+  }, [appliedFilters, subcategoryId]);
 
   const { data, loading, error, fetchMore, networkStatus, refetch } = useQuery<
     GetFilteredProductsQuery,
@@ -106,45 +89,54 @@ const ProductGrid = ({
   }, [data, subcategorySlug, productTypeSlug, currentPage, loading, error]);
 
   useEffect(() => {
-    dispatch(setAppliedFilters({ subcategoryId, filters: appliedFilters }));
-  }, [dispatch, subcategoryId, appliedFilters]);
+    setAppliedFilters(subcategoryId, appliedFilters[subcategoryId] || {});
+  }, [subcategoryId, appliedFilters, setAppliedFilters]);
 
   useEffect(() => {
     const currentProductType = productTypeId || "";
-    const previousProductType = lastProductType || "";
+    const previousProductType = lastProductTypes[subcategoryId] || "";
 
-    const shouldResetPage =
-      (currentProductType || previousProductType
-        ? currentProductType !== previousProductType
-        : false) ||
-      JSON.stringify(appliedFilters) !== JSON.stringify(lastFilters) ||
-      subcategoryId !== lastSubcategoryId;
-
-    if (shouldResetPage) {
-      dispatch(setCurrentPage({ subcategoryId, page: 1 }));
+    if (
+      currentProductType !== previousProductType ||
+      subcategoryId !== lastSubcategoryId
+    ) {
+      setCurrentPage(subcategoryId, 1);
+      setLastProductType(subcategoryId, currentProductType);
+      setLastSubcategoryId(subcategoryId);
+      refetch();
     }
-
-    dispatch(
-      setLastProductType({ subcategoryId, productTypeId: productTypeId || "" })
-    );
-    dispatch(setLastFilters({ subcategoryId, filters: appliedFilters }));
-    dispatch(setLastSubcategoryId(subcategoryId));
-
-    refetch();
   }, [
-    dispatch,
     productTypeId,
+    subcategoryId,
+    lastProductTypes,
+    lastSubcategoryId,
+    setCurrentPage,
+    setLastProductType,
+    setLastSubcategoryId,
+    refetch,
+  ]);
+
+  useEffect(() => {
+    const currentFilters = JSON.stringify(appliedFilters[subcategoryId]);
+    const prevFilters = JSON.stringify(lastFilters[subcategoryId]);
+
+    if (currentFilters !== prevFilters) {
+      setCurrentPage(subcategoryId, 1);
+      setLastFilters(subcategoryId, appliedFilters[subcategoryId] || {});
+      refetch();
+    }
+  }, [
     appliedFilters,
     subcategoryId,
-    lastProductType,
     lastFilters,
-    lastSubcategoryId,
+    setCurrentPage,
+    setLastFilters,
     refetch,
   ]);
 
   const handlePageChange = (newPage: number) => {
     onScrollToUp();
-    dispatch(setCurrentPage({ subcategoryId, page: newPage }));
+    setCurrentPage(subcategoryId, newPage);
 
     fetchMore({
       variables: {

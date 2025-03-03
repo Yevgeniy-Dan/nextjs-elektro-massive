@@ -1,7 +1,6 @@
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { updateAppliedFilter } from "@/store/productGridSlice";
 import React, { useCallback } from "react";
 import FilterGroup from "./FilterGroup";
+import { useProductGridStore } from "@/store/useProductGridStore";
 
 interface Filter {
   id: string;
@@ -18,27 +17,19 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   filters,
   subcategoryId,
 }) => {
-  const dispatch = useAppDispatch();
-  const appliedFilters = useAppSelector(
-    (state) => state.productGrid.appliedFilters[subcategoryId] || {}
-  );
+  const { appliedFilters, updateAppliedFilter } = useProductGridStore();
 
   const handleFilterChange = useCallback(
     (filterName: string, value: string, checked: boolean) => {
-      const currentValues = appliedFilters[filterName] || [];
+      const currentValues: string[] =
+        appliedFilters[subcategoryId]?.[filterName] || [];
       const newValues = checked
         ? [...currentValues, value]
         : currentValues.filter((v) => v !== value);
 
-      dispatch(
-        updateAppliedFilter({
-          subcategoryId,
-          filterName,
-          values: newValues,
-        })
-      );
+      updateAppliedFilter(subcategoryId, filterName, newValues);
     },
-    [appliedFilters, dispatch, subcategoryId]
+    [appliedFilters, subcategoryId, updateAppliedFilter]
   );
 
   return (
@@ -48,7 +39,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
           key={filter.id}
           title={filter.title}
           values={filter.values}
-          appliedValues={appliedFilters[filter.title] || []}
+          appliedValues={appliedFilters[subcategoryId]?.[filter.title] || []}
           onChange={(value, checked) =>
             handleFilterChange(filter.title, value, checked)
           }

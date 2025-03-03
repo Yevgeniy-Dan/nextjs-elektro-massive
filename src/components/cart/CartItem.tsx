@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import QuantityAdjuster from "./QuantityAdjuster";
 import { Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { CartItemType } from "@/types/types";
 import OptimizedImage from "../shared/OptimizedImage";
+import { it } from "node:test";
 
 interface CartItemProps {
   item: CartItemType;
@@ -11,6 +12,14 @@ interface CartItemProps {
 
 const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
   const { handleRemoveItem, handleUpdateItem } = useCart();
+
+  const discountedPrice = useMemo(() => {
+    const discount = item.product.discount || 0;
+    return (
+      (item.product.retail - (item.product.retail * discount) / 100) *
+      item.quantity
+    );
+  }, [item.product.retail, item.product.discount, item.quantity]);
 
   return (
     <div key={item.id} className="flex items-center mb-4 border-b pb-2">
@@ -47,12 +56,7 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
                   {(item.product.retail * item.quantity).toFixed(2)} грн
                 </p>
                 <p className="font-bold text-red-800 my-0">
-                  {(
-                    (item.product.retail -
-                      (item.product.retail * item.product.discount) / 100) *
-                    item.quantity
-                  ).toFixed(2)}{" "}
-                  грн
+                  {discountedPrice.toFixed(2)} грн
                 </p>
               </>
             ) : (

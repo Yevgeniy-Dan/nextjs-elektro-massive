@@ -1,15 +1,13 @@
 import { useCart } from "@/hooks/useCart";
 import { useFavorites } from "@/hooks/useFavorites";
-import { useAppDispatch } from "@/store/hooks";
-import { openSignInModal } from "@/store/signInModalSlice";
-import { openModal } from "@/store/storeSlice";
 import { Heart } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import LocalizedLink from "../shared/LocalizedLink";
 import OptimizedImage from "../shared/OptimizedImage";
+import { useSignInModal } from "@/store/useSignInModal";
+import { useModalStore } from "@/store/useModalStore";
 
 //TODO: change to CartItem type
 export type TopCardProduct = {
@@ -50,9 +48,12 @@ const TopCard: React.FC<ITopCardProps> = ({
 }) => {
   const { status } = useSession();
   const pathname = usePathname();
+  const { openModal } = useModalStore();
+
+  const { openSignInModal } = useSignInModal();
 
   const handleLogin = () => {
-    dispatch(openSignInModal(`${pathname}`));
+    openSignInModal(`${pathname}`);
   };
 
   const { favorites, handleAddToFavorites, handleRemoveFromFavorites } =
@@ -70,8 +71,6 @@ const TopCard: React.FC<ITopCardProps> = ({
       handleAddToFavorites(product.id, productTypeId);
     }
   };
-
-  const dispatch = useAppDispatch();
 
   const {
     currency,
@@ -123,7 +122,7 @@ const TopCard: React.FC<ITopCardProps> = ({
       },
       1
     );
-    dispatch(openModal());
+    openModal();
 
     if (typeof window !== "undefined" && typeof window.gtag === "function") {
       (window as any).gtag("event", "add_to_cart", {
@@ -146,7 +145,7 @@ const TopCard: React.FC<ITopCardProps> = ({
     params,
     part_number,
     slug,
-    dispatch,
+    openModal,
   ]);
 
   return (
