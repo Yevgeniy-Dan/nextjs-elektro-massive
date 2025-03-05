@@ -10,10 +10,15 @@ import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
 import Spinner from "./Spinner";
 import { useTranslation } from "@/app/i18n/client";
-import OptimizedImage from "./OptimizedImage";
 import { useSignInModal } from "@/store/useSignInModal";
 import { useCartStore } from "@/store/useCartStore";
 import { AWS_CDN_URL } from "@/app/utils/constants";
+import dynamic from "next/dynamic";
+
+const OptimizedImage = dynamic(() => import("./OptimizedImage"), {
+  loading: () => <div>Loading...</div>,
+  ssr: false,
+});
 
 const phoneSchema = z.object({
   phone: z
@@ -30,7 +35,6 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
   const { t } = useTranslation(lng, "common");
 
   const { isOpen, redirectUrl, closeSignInModal } = useSignInModal();
-  const { syncCartWithServer } = useCartStore();
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);

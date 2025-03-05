@@ -296,7 +296,6 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
             )}
           </>
         </div>
-        {/* <Suspense fallback={<div>Loading...</div>}> */}
         <ProductGrid
           subcategoryId={subcategoryId}
           productTypeId={productTypeId}
@@ -310,7 +309,6 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
           lng={lng}
           priceRange={priceFilters}
         />
-        {/* </Suspense> */}
       </div>
       {subcategoryDescription
         ? renderDescription(subcategoryDescription)

@@ -1,14 +1,19 @@
-import Banner from "@/components/home/Banner";
-import CategoryGrid from "@/components/home/CategoryGrid";
-import HomePageProductsSection from "@/components/home/HomePageProductsSection";
-import { getBanners, getCategories, getHomePageProducts } from "./actions";
 import dynamic from "next/dynamic";
+
+import { getBanners, getCategories, getHomePageProducts } from "./actions";
 
 interface HomeProps {
   params: {
     lng: string;
   };
 }
+
+const Banner = dynamic(() => import("@/components/home/Banner"));
+
+const HomePageProductsSection = dynamic(
+  () => import("@/components/home/HomePageProductsSection")
+);
+const CategoryGrid = dynamic(() => import("@/components/home/CategoryGrid"));
 
 const WhyUsSection = dynamic(() => import("@/components/home/WhyUsSection"), {
   ssr: false,

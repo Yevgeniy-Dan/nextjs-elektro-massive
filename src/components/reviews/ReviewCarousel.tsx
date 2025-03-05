@@ -9,14 +9,18 @@ import {
   GetShopReviewsQuery,
   GetShopReviewsQueryVariables,
 } from "@/gql/graphql";
-import ReviewCard from "./ReviewCard";
 import { GET_SHOP_REVIEWS } from "@/graphql/queries/review";
 import { useTranslation } from "@/app/i18n/client";
 import LocalizedLink from "../shared/LocalizedLink";
+import dynamic from "next/dynamic";
 
 interface ReviewCarouselProps {
   lng: string;
 }
+
+const ReviewCard = dynamic(() => import("./ReviewCard"), {
+  loading: () => <div>Loading...</div>,
+});
 
 const ReviewCarousel: React.FC<ReviewCarouselProps> = ({ lng }) => {
   const { t } = useTranslation(lng, "common");
