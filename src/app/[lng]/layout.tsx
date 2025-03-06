@@ -79,6 +79,9 @@ export default async function RootLayout({
 
   return (
     <html lang={lng} dir={dir(lng)}>
+      <head>
+        <link rel="preconnect" href="https://decyx998ihuuw.cloudfront.net" />
+      </head>
       <body className={`${roboto.className} flex flex-col min-h-screen`}>
         <GoogleAnalytic />
         <Providers session={session}>
