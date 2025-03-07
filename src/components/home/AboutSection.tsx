@@ -28,7 +28,7 @@ const AboutSection = () => {
           <div className="relative w-2/5 -my-2 rounded-xl">
             <ImageWithLoader
               loading="lazy"
-              src={`${AWS_CDN_URL}/shared/main_page_1.jpg`}
+              src={`${AWS_CDN_URL}shared/main_page_1.jpg`}
               alt="Image 1"
               fill
               sizes="(max-width: 640px) 40vw, (max-width: 1024px) 40vw"
@@ -46,7 +46,7 @@ const AboutSection = () => {
           <div className="relative w-2/5 -my-2 rounded-xl">
             <ImageWithLoader
               loading="lazy"
-              src={`${AWS_CDN_URL}/shared/main_page_2.jpg`}
+              src={`${AWS_CDN_URL}shared/main_page_2.jpg`}
               alt="Image 1"
               fill
               sizes="(max-width: 1024px) 40vw"
@@ -72,7 +72,7 @@ const AboutSection = () => {
           <div className="relative w-2/5 -my-2 rounded-xl">
             <ImageWithLoader
               loading="lazy"
-              src={`${AWS_CDN_URL}/shared/main_page_3.png`}
+              src={`${AWS_CDN_URL}shared/main_page_3.jpg`}
               alt="Image 1"
               fill
               sizes="(max-width: 1024px) 40vw"
@@ -90,7 +90,7 @@ const AboutSection = () => {
         <div className="rounded-lg overflow-hidden absolute inset-0">
           <ImageWithLoader
             loading="lazy"
-            src={`${AWS_CDN_URL}/shared/main_page_1.png`}
+            src={`${AWS_CDN_URL}shared/main_page_1.jpg`}
             alt="Image 1"
             fill
             sizes="(min-width: 1024px) 50vw"
@@ -100,7 +100,7 @@ const AboutSection = () => {
         <div className="absolute w-1/3 h-full bottom-[-70%] left-[10%] z-10 rounded-lg overflow-hidden">
           <ImageWithLoader
             loading="lazy"
-            src={`${AWS_CDN_URL}/shared/main_page_2.png`}
+            src={`${AWS_CDN_URL}shared/main_page_2.jpg`}
             alt="Image 2"
             fill
             sizes="(min-width: 1024px) 33vw"
@@ -110,7 +110,7 @@ const AboutSection = () => {
         <div className="absolute w-1/2 h-1/2 left-[65%] top-[115%] transform -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg overflow-hidden">
           <ImageWithLoader
             loading="lazy"
-            src={`${AWS_CDN_URL}/shared/main_page_3.png`}
+            src={`${AWS_CDN_URL}shared/main_page_3.png`}
             alt="Image 3"
             fill
             sizes="(min-width: 1024px) 25vw"
