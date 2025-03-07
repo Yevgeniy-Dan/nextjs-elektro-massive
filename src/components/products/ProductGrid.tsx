@@ -1,5 +1,11 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import TopCard from "../home/TopCard";
 import Pagination from "../shared/Pagination";
 import { GET_FILTERED_PRODUCTS } from "@/graphql/queries/products";
@@ -10,6 +16,7 @@ import {
 } from "@/gql/graphql";
 
 import { useProductGridStore } from "@/store/useProductGridStore";
+import { FilteredProduct } from "@/types/types";
 
 interface ProductGridProps {
   productTypeId?: string;
@@ -134,6 +141,35 @@ const ProductGrid = ({
     refetch,
   ]);
 
+  const renderProductCards = useCallback(
+    (products: FilteredProduct[]) => {
+      return products.map((product) => (
+        <TopCard
+          lng={lng}
+          id={product?.id}
+          key={product?.id}
+          product={product}
+          productSlug={product.slug ?? ""}
+          categorySlug={
+            product.subcategory?.data?.attributes?.categories?.data[0]
+              .attributes?.slug ?? ""
+          }
+          subcategoryId={subcategoryId}
+          subcategorySlug={subcategorySlug}
+          productTypeSlug={
+            productTypeSlug ||
+            product.product_types?.data[0].attributes?.slug ||
+            ""
+          }
+          productTypeId={
+            productTypeId || product.product_types?.data[0].id || ""
+          }
+        />
+      ));
+    },
+    [lng, subcategoryId, subcategorySlug, productTypeSlug, productTypeId]
+  );
+
   const handlePageChange = (newPage: number) => {
     onScrollToUp();
     setCurrentPage(subcategoryId, newPage);
@@ -189,30 +225,7 @@ const ProductGrid = ({
   return (
     <div className="w-full md:w-3/4">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4  gap-4">
-        {data &&
-          data.filteredProducts.products.map((product) => (
-            <TopCard
-              lng={lng}
-              id={product?.id}
-              key={product?.id}
-              product={product}
-              productSlug={product.slug ?? ""}
-              categorySlug={
-                product.subcategory?.data?.attributes?.categories?.data[0]
-                  .attributes?.slug ?? ""
-              }
-              subcategoryId={subcategoryId}
-              subcategorySlug={subcategorySlug}
-              productTypeSlug={
-                productTypeSlug ||
-                product.product_types?.data[0].attributes?.slug ||
-                ""
-              }
-              productTypeId={
-                productTypeId || product.product_types?.data[0].id || ""
-              }
-            />
-          ))}
+        {data && renderProductCards(data.filteredProducts.products)}
       </div>
 
       {data && (

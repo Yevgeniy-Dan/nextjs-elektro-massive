@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { FaChevronDown } from "react-icons/fa6";
 import { useQuery } from "@apollo/client";
 import { GET_CATEGORY_MENU } from "@/graphql/queries/categories";
 import CategorySubmenu from "./CategorySubmenu";
@@ -13,6 +11,8 @@ import { useTranslation } from "@/app/i18n/client";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
 import LocalizedLink from "../shared/LocalizedLink";
 import OptimizedImage from "../shared/OptimizedImage";
+import { AWS_CDN_URL } from "@/app/utils/constants";
+import { ChevronDown } from "lucide-react";
 
 interface CategoryMenuProps {
   lng: string;
@@ -131,7 +131,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
           </div>
           <div className="relative md:block w-6 h-6">
             <OptimizedImage
-              src="/menu-hamburger.png"
+              src={`${AWS_CDN_URL}shared/public/icons/menu-hamburger.png`}
               alt="Menu icon"
               className="h-6 w-6 invert hover:invert-[80%]"
               fill
@@ -186,7 +186,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                       </div>
                       <div className="flex items-center justify-between w-full">
                         <p>{category.attributes?.name}</p>
-                        <FaChevronDown
+                        <ChevronDown
                           className={`ml-2 transition-transform sm:hidden ${
                             openSubmenu === index ? "rotate-180" : ""
                           }`}

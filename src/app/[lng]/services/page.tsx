@@ -1,13 +1,16 @@
 "use server";
 
 import { Metadata } from "next";
-import ServicePageClient from "./Services";
-
+import dynamic from "next/dynamic";
 interface ServicePageProps {
   params: {
     lng: string;
   };
 }
+
+const ServicePageClient = dynamic(() => import("./Services"), {
+  ssr: false,
+});
 
 export async function generateMetadata({
   params,

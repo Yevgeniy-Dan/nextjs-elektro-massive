@@ -1,5 +1,9 @@
+import dynamic from "next/dynamic";
 import React from "react";
-import ProductFilters from "./ProductFilters";
+
+const ProductFilters = dynamic(() => import("./ProductFilters"), {
+  loading: () => <div>Loading filters...</div>,
+});
 
 interface ProductFilterSectionProps {
   filters: Record<string, string[]>;

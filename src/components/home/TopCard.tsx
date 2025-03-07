@@ -9,19 +9,7 @@ import OptimizedImage from "../shared/OptimizedImage";
 import { useSignInModal } from "@/store/useSignInModal";
 import { useModalStore } from "@/store/useModalStore";
 import { AWS_CDN_URL } from "@/app/utils/constants";
-
-//TODO: change to CartItem type
-export type TopCardProduct = {
-  id: string;
-  title: string;
-  part_number: string;
-  retail: number;
-  currency: string;
-  image_link?: string | null;
-  slug: string;
-  discount?: number | null;
-  params?: any | null;
-};
+import { FilteredProduct } from "@/types/types";
 
 export interface ITopCardProps {
   id: string;
@@ -31,7 +19,8 @@ export interface ITopCardProps {
   productTypeSlug: string;
   productTypeId: string;
   productSlug: string;
-  product: TopCardProduct;
+  //TODO: change to CartItem type , but not sure
+  product: FilteredProduct;
   label?: "top" | "new" | "sale";
   lng: string;
 }
@@ -199,7 +188,7 @@ const TopCard: React.FC<ITopCardProps> = ({
             }}
           >
             <OptimizedImage
-              src="/bucket.png"
+              src={`${AWS_CDN_URL}shared/public/icons/bucket.png`}
               alt="Bucket icon"
               className="h-6 w-6 cursor-pointer"
               width={32}

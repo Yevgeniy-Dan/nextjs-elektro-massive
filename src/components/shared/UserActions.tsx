@@ -8,6 +8,7 @@ import LanguageToggler from "./LanguageToggler";
 import LocalizedLink from "./LocalizedLink";
 import OptimizedImage from "./OptimizedImage";
 import { useModalStore } from "@/store/useModalStore";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface UserActionsProps {
   lng: string;
@@ -32,7 +33,7 @@ const UserActions: React.FC<UserActionsProps> = ({ lng }) => {
         <button className="flex items-center" onClick={() => openModal()}>
           <div className="w-6 sm:w-8 h-6 sm:h-8 relative mr-2">
             <OptimizedImage
-              src="/bucket.png"
+              src={`${AWS_CDN_URL}shared/public/icons/bucket.png`}
               alt="Bucket"
               fill
               sizes="32px"

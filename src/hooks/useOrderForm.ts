@@ -70,19 +70,6 @@ const orderFormSchema = z
         errorMap: () => ({ message: "Виберіть метод оплати" }),
       })
       .default(Enum_Order_Paymentmethod.Card),
-    // cardData: z.object({
-    //   number: z.string().refine((val) => valid.number(val).isValid, {
-    //     message: "Невірний номер карти",
-    //   }),
-    //   expiry: z.string().refine((val) => valid.expirationDate(val).isValid, {
-    //     message: "Невірна дата закінчення терміну",
-    //   }),
-    //   cvc: z.string().refine((val) => valid.cvv(val).isValid, {
-    //     message: "Невірний CVC",
-    //   }),
-    //   name: z.string().min(1, "Ім'я власника картки є обов'язковим"),
-    //   focus: z.string(),
-    // }),
   })
   .refine(
     (data) => {

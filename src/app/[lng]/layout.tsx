@@ -1,6 +1,6 @@
 import { dir } from "i18next";
 
-import React from "react";
+import React, { Suspense } from "react";
 
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
@@ -8,43 +8,16 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-
-import Header from "@/components/shared/Header";
-import Footer from "@/components/shared/Footer";
 import { Providers } from "../providers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../utils/authOptions";
-import { ToastContainer } from "react-toastify";
-import { Analytics } from "@vercel/analytics/react";
 import { languages } from "../i18n/settings";
-import { GoogleAnalytic } from "@/components/services/GoogleAnalytic";
 
 import dynamic from "next/dynamic";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
-// TODO:
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
-//  <body
-//   className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-// >
-// <div className="font-[family-name:var(--font-geist-sans)]">
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title:
@@ -57,6 +30,21 @@ export function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
 }
 
+const ToastContainer = dynamic(
+  () => import("react-toastify").then((mod) => mod.ToastContainer),
+  { loading: () => null }
+);
+
+const GoogleAnalytic = dynamic(
+  () =>
+    import("@/components/services/GoogleAnalytic").then(
+      (mod) => mod.GoogleAnalytic
+    ),
+  {
+    ssr: false,
+  }
+);
+
 const SignInModal = dynamic(() => import("@/components/shared/SignInModal"), {
   ssr: false,
 });
@@ -67,6 +55,16 @@ const ShoppingCartModal = dynamic(
     ssr: false,
   }
 );
+
+const Footer = dynamic(() => import("@/components/shared/Footer"), {
+  ssr: false,
+  loading: () => <div className="h-40 bg-gray-100" />,
+});
+
+const Header = dynamic(() => import("@/components/shared/Header"), {
+  ssr: true,
+  loading: () => <div className="h-16 bg-gray-100" />,
+});
 
 export default async function RootLayout({
   children,
@@ -83,22 +81,25 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://decyx998ihuuw.cloudfront.net" />
       </head>
       <body className={`${roboto.className} flex flex-col min-h-screen`}>
-        <GoogleAnalytic />
-        <Providers session={session}>
-          <div className="flex-grow">
-            <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
-              <Header lng={lng} />
-              <div className="max-w-7xl mx-auto">
-                {children}
-                <Analytics />
+        <Suspense fallback={<div className="min-h-screen bg-gray-50" />}>
+          <Providers session={session}>
+            <div className="flex-grow">
+              <div className="px-4 sm:px-6 md:px-8 lg:px-16 relative">
+                <Header lng={lng} />
+                <div className="max-w-7xl mx-auto">{children}</div>
               </div>
             </div>
-          </div>
-          <Footer className="flex-shrink-0" lng={lng} />
-          <ShoppingCartModal lng={lng} />
-          <SignInModal lng={lng} />
-          <ToastContainer />
-        </Providers>
+            <Footer className="flex-shrink-0" lng={lng} />
+            <Suspense fallback={null}>
+              <ShoppingCartModal lng={lng} />
+              <SignInModal lng={lng} />
+              <ToastContainer />
+            </Suspense>
+            <Suspense fallback={null}>
+              <GoogleAnalytic />
+            </Suspense>
+          </Providers>
+        </Suspense>
       </body>
     </html>
   );

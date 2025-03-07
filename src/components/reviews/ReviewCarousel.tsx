@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 
 import { ChevronLeft, ChevronRight, PenTool } from "lucide-react";
@@ -12,6 +12,7 @@ import {
 import { GET_SHOP_REVIEWS } from "@/graphql/queries/review";
 import { useTranslation } from "@/app/i18n/client";
 import LocalizedLink from "../shared/LocalizedLink";
+
 import dynamic from "next/dynamic";
 
 interface ReviewCarouselProps {
@@ -29,6 +30,9 @@ const ReviewCarousel: React.FC<ReviewCarouselProps> = ({ lng }) => {
     dragFree: true,
     containScroll: "trimSnaps",
     align: "start",
+    skipSnaps: true,
+    watchDrag: false,
+    watchResize: false,
   });
 
   const { data, loading, error } = useQuery<

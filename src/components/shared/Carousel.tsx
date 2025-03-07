@@ -1,6 +1,7 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { CSSProperties } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { useSnapCarousel } from "react-snap-carousel";
+//TODO: delete react-snap-carousel and use embla carousel
 
 // https://github.com/richardscarrott/react-snap-carousel
 
@@ -112,7 +113,7 @@ export const Carousel = <T extends any>({
         onClick={() => prev()}
         className="absolute left-[-10px] top-1/2 -translate-y-[80%]"
       >
-        <FaChevronLeft className="text-[#990000] text-5xl" />
+        <ChevronLeft className="text-[#990000] text-5xl" />
       </button>
       <button
         style={{
@@ -125,7 +126,7 @@ export const Carousel = <T extends any>({
         onClick={() => next()}
         className="absolute right-[-10px] top-1/2 -translate-y-[80%]"
       >
-        <FaChevronRight className="text-[#990000] text-5xl" />
+        <ChevronRight className="text-[#990000] text-5xl" />
       </button>
     </div>
   );

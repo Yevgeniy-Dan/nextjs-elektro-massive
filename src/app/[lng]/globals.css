@@ -32,15 +32,6 @@ p {
   min-width: 0;
 }
 
-/* @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-} */
-
 @layer utilities {
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;

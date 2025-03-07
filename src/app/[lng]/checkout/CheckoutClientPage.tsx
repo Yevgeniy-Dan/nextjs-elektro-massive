@@ -2,19 +2,32 @@
 
 import React, { useState } from "react";
 
-import ContactDetails from "@/components/order/ContactDetails";
-import Delivery from "@/components/order/Delivery";
-import Payment from "@/components/order/Payment";
-import Summary from "@/components/order/Summary";
 import { ExtendedFormProvider } from "@/hooks/extendedFormContext";
 import { OrderFormData, useOrderForm } from "@/hooks/useOrderForm";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import dynamic from "next/dynamic";
 
 interface CheckoutPageProps {
   params: {
     lng: string;
   };
 }
+
+const ContactDetails = dynamic(
+  () => import("@/components/order/ContactDetails"),
+  {
+    ssr: false,
+  }
+);
+const Delivery = dynamic(() => import("@/components/order/Delivery"), {
+  ssr: false,
+});
+const Payment = dynamic(() => import("@/components/order/Payment"), {
+  ssr: false,
+});
+const Summary = dynamic(() => import("@/components/order/Summary"), {
+  ssr: false,
+});
 
 const CheckoutPage: React.FC<CheckoutPageProps> = ({ params }) => {
   const methods = useOrderForm();

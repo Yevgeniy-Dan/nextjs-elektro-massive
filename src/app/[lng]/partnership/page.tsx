@@ -1,5 +1,9 @@
 import { Metadata } from "next";
-import PartnershipPageClient from "./Partnership";
+import dynamic from "next/dynamic";
+
+const PartnershipPageClient = dynamic(() => import("./Partnership"), {
+  ssr: false,
+});
 
 interface PartnershipPageProps {
   params: { lng: string };

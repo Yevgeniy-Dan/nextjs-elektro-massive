@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
+import GoogleLogo from "@/assets/google.svg";
 import Spinner from "./Spinner";
 import { useTranslation } from "@/app/i18n/client";
 import { useSignInModal } from "@/store/useSignInModal";
@@ -275,7 +275,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ lng }) => {
                 onClick={handleGoogleSignIn}
                 className="w-full flex justify-center items-center py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-100 focus:bg-gray-100"
               >
-                <FcGoogle className="h-8 w-8 mr-2" />
+                <GoogleLogo />
                 Google
               </button>
               {googleSignInError && (

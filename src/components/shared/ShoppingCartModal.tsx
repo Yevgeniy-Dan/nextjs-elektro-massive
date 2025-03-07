@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import useOutsideClick from "@/hooks/useOutsideClick";
 
-import React from "react";
+import React, { Suspense } from "react";
 
 import CartHeader from "../cart/CartHeader";
 import CartItemList from "../cart/CartItemList";
@@ -38,13 +38,19 @@ const ShoppingCartModal: React.FC<ShoppingCartModalProps> = ({ lng }) => {
             ref={modalRef}
             className="bg-white p-6 rounded-lg shadow-md max-w-xl w-full mx-auto flex flex-col max-h-[90vh]"
           >
-            <CartHeader
-              lng={lng}
-              onClose={handleCloseModal}
-              onClearCart={handleClearCart}
-            />
-            <CartItemList lng={lng} isLoading={isLoading} items={cartItems} />
-            <CartFooter lng={lng} />
+            <Suspense fallback={<div>Loading cart header...</div>}>
+              <CartHeader
+                lng={lng}
+                onClose={handleCloseModal}
+                onClearCart={handleClearCart}
+              />
+            </Suspense>
+            <Suspense fallback={<div>Loading cart items...</div>}>
+              <CartItemList lng={lng} isLoading={isLoading} items={cartItems} />
+            </Suspense>
+            <Suspense fallback={<div>Loading cart footer...</div>}>
+              <CartFooter lng={lng} />
+            </Suspense>
           </div>
         </motion.div>
       )}

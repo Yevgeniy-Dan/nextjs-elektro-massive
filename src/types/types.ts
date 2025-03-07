@@ -3,8 +3,10 @@ import {
   CartProductFieldsFragment,
   GetBannersQuery,
   GetBlogPostsQuery,
+  GetBrandsQuery,
   GetCategoriesQuery,
   GetCategoryBySlugQuery,
+  GetFilteredProductsQuery,
   GetHomePageProductsQuery,
   GetOrderByOrderNumberQuery,
   GetProductBySlugQuery,
@@ -26,6 +28,10 @@ export type ProductTypeBySlug = NonNullable<
 
 export type ProductData = NonNullable<
   NonNullable<GetProductBySlugQuery["products"]>["data"][number]
+>;
+
+export type FilteredProduct = NonNullable<
+  NonNullable<GetFilteredProductsQuery["filteredProducts"]>["products"][number]
 >;
 
 export type CategoryData = NonNullable<
@@ -89,3 +95,7 @@ export type CartItemType = Omit<
   CartItemFieldsFragment,
   "__typename" | " $fragmentName"
 > & { product: CartProductType };
+
+export type Brand = NonNullable<
+  NonNullable<GetBrandsQuery["brands"]>["data"][number]
+>;

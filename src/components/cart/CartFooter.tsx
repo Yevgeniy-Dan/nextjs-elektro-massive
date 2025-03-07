@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 import CartTotals from "./CartTotals";
 import { useCart } from "@/hooks/useCart";
 import { useTranslation } from "@/app/i18n/client";
@@ -26,7 +26,9 @@ const CartFooter: React.FC<CartFooterProps> = ({ lng }) => {
         </div>
 
         <div>
-          <CartTotals lng={lng} />
+          <Suspense fallback={<div>Loading cart totals...</div>}>
+            <CartTotals lng={lng} />
+          </Suspense>
           <button
             onClick={() => handleConfirm()}
             disabled={!cartItems.length}

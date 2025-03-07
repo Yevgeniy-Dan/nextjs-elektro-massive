@@ -1,16 +1,22 @@
 "use client";
 
-import React, { useState, useCallback, useMemo, useRef, memo } from "react";
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  memo,
+  Suspense,
+  useEffect,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@apollo/client";
-import ProductTypeSelector from "./ProductTypeSelector";
 
 import { GET_BRANDS } from "@/graphql/queries/common";
 import {
   GET_PRODUCT_TYPE_FILTERS,
   GET_PRODUCT_TYPES,
 } from "@/graphql/queries/productType";
-import ProductFilterSection from "./ProductFilterSection";
 import {
   GetBrandsQuery,
   GetMaxPriceQuery,
@@ -28,14 +34,17 @@ import BrandFilter from "../shared/BrandFilter";
 
 import { useScrollToElement } from "@/hooks/useScrollToElement";
 import { useRouter } from "next/navigation";
-import ProductSorting from "./ProductSorting";
 import { GET_MAX_PRICE } from "@/graphql/queries/products";
 import dynamic from "next/dynamic";
 import { useProductGridStore } from "@/store/useProductGridStore";
+import CenteredSpinner from "../shared/CenteredSpinner";
+
+const ProductFilterSection = dynamic(() => import("./ProductFilterSection"));
+const ProductSorting = dynamic(() => import("./ProductSorting"));
+const ProductTypeSelector = dynamic(() => import("./ProductTypeSelector"));
 
 const ProductGrid = dynamic(() => import("./ProductGrid"), {
-  loading: () => <div>Loading...</div>,
-  ssr: true,
+  loading: () => <CenteredSpinner />,
 });
 
 const ReactMarkdown = dynamic(() => import("react-markdown"), {
@@ -88,6 +97,9 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const [priceFilters, setPriceFilters] = useState<number[] | null>(null);
 
+  const [filterWorker, setFilterWorker] = useState<Worker | null>(null);
+  const [brandsFilters, setBrandsFilters] = useState<string[]>([]);
+
   const { appliedFilters, setAppliedFilters } = useProductGridStore();
 
   const handlePriceChange = (minPrice: number, maxPrice: number) => {
@@ -129,9 +141,33 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     variables: { productTypeId, subcategoryId, locale: lng },
   });
 
-  React.useEffect(() => {
+  const filters = useMemo(
+    () => filtersData?.productTypeFilters || {},
+    [filtersData]
+  );
+
+  useEffect(() => {
     setAppliedFilters(subcategoryId, {});
   }, [setAppliedFilters, subcategoryId, productTypeId]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const newWorker = new Worker(
+        new URL("@/workers/filterWorker.ts", import.meta.url)
+      );
+      setFilterWorker(newWorker);
+      return () => newWorker.terminate();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (filterWorker && brandsData?.brands?.data && filters) {
+      filterWorker.postMessage({ filters, brands: brandsData.brands.data });
+      filterWorker.onmessage = (e) => {
+        setBrandsFilters(e.data);
+      };
+    }
+  }, [filterWorker, brandsData, filters]);
 
   const handleProductTypeChange = useCallback(
     (newProductTypeSlug: string) => {
@@ -190,21 +226,6 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const selectedProductType = productTypesData?.productTypes?.data.find(
     (type) => type.id === productTypeId
   );
-
-  const filters = useMemo(
-    () => filtersData?.productTypeFilters || {},
-    [filtersData]
-  );
-
-  const brandsFilters = useMemo(() => {
-    if (!brandsData || !filters) return [];
-
-    const allFitlerValues = new Set(Object.values(filters).flat());
-
-    return brandsData.brands?.data.filter((brand) =>
-      allFitlerValues.has(brand.attributes?.title.trim())
-    );
-  }, [brandsData, filters]);
 
   const renderDescription = (desc: string) => (
     <MemoizedMarkdown>{desc}</MemoizedMarkdown>
@@ -296,19 +317,21 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
             )}
           </>
         </div>
-        <ProductGrid
-          subcategoryId={subcategoryId}
-          productTypeId={productTypeId}
-          productTypeSlug={productTypeSlug}
-          subcategorySlug={subcategorySlug}
-          pageSize={pageSize}
-          sortDirection={sortDirection}
-          onScrollToUp={() => {
-            scrollToElement(productListingRef);
-          }}
-          lng={lng}
-          priceRange={priceFilters}
-        />
+        <Suspense fallback={<div>Loading product grid...</div>}>
+          <ProductGrid
+            subcategoryId={subcategoryId}
+            productTypeId={productTypeId}
+            productTypeSlug={productTypeSlug}
+            subcategorySlug={subcategorySlug}
+            pageSize={pageSize}
+            sortDirection={sortDirection}
+            onScrollToUp={() => {
+              scrollToElement(productListingRef);
+            }}
+            lng={lng}
+            priceRange={priceFilters}
+          />
+        </Suspense>
       </div>
       {subcategoryDescription
         ? renderDescription(subcategoryDescription)

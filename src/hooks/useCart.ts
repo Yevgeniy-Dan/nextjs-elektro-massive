@@ -24,12 +24,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { CartItemType } from "@/types/types";
 import { useSignInModal } from "@/store/useSignInModal";
 import { useCartStore } from "@/store/useCartStore";
 import { useModalStore } from "@/store/useModalStore";
+
+interface CalculatedValues {
+  total: number;
+  discountTotal: number;
+  itemCount: number;
+}
 
 export const fetchProductsByIds = async (ids: string[], locale: Language) => {
   return request<GetProductsByIdsQuery, GetProductsByIdsQueryVariables>(
@@ -54,7 +60,27 @@ export const useCart = () => {
   const { isModalOpen, closeModal } = useModalStore();
 
   const { openSignInModal } = useSignInModal();
+
+  const [cartWorker, setCartWorker] = useState<Worker | null>(null);
+  const [calculatedValues, setCalculatedValues] = useState<CalculatedValues>({
+    total: 0,
+    discountTotal: 0,
+    itemCount: 0,
+  });
+
   const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const newWorker = new Worker(
+        new URL("@/workers/cartCalculationsWorker.ts", import.meta.url)
+      );
+      setCartWorker(newWorker);
+      return () => {
+        newWorker.terminate();
+      };
+    }
+  }, []);
 
   const { data: cartItems = [], isLoading } = useQuery({
     queryKey: ["cart", status, productIds],
@@ -96,6 +122,16 @@ export const useCart = () => {
       }
     },
   });
+
+  useEffect(() => {
+    if (cartWorker) {
+      cartWorker.postMessage({ cartItems });
+      cartWorker.onmessage = (e) => {
+        const { total, discountTotal, itemCount } = e.data;
+        setCalculatedValues({ total, discountTotal, itemCount });
+      };
+    }
+  }, [cartWorker, cartItems]);
 
   const updateCartItemMutation = useMutation<
     CartItemType[],
@@ -204,30 +240,6 @@ export const useCart = () => {
     closeModal();
   }, [closeModal]);
 
-  const calculateTotal = useMemo(
-    () =>
-      cartItems.reduce((total, item) => {
-        return total + item.product.retail * item.quantity;
-      }, 0),
-    [cartItems]
-  );
-
-  const calculateDiscountTotal = useMemo(
-    () =>
-      cartItems.reduce((total, item) => {
-        const discount = item.product.discount || 0;
-        const discountedPrice =
-          item.product.retail - (item.product.retail * discount) / 100;
-        return total + discountedPrice * item.quantity;
-      }, 0),
-    [cartItems]
-  );
-
-  const totalCount = useMemo(
-    () => cartItems?.reduce((total, item) => total + (item.quantity || 0), 0),
-    [cartItems]
-  );
-
   return {
     isModalOpen,
     cartItems,
@@ -246,8 +258,8 @@ export const useCart = () => {
     handleClearCart: () => clearCartMutation.mutate(),
     handleConfirm,
     handleCloseModal,
-    calculateTotal,
-    calculateDiscountTotal,
-    totalCount,
+    calculateTotal: calculatedValues.total,
+    calculateDiscountTotal: calculatedValues.discountTotal,
+    totalCount: calculatedValues.itemCount,
   };
 };

@@ -1,28 +1,31 @@
 "use client";
 
-import React from "react";
-import Slider from "react-slick";
+import React, { useCallback } from "react";
 
 import { BannerImage, BannersData } from "@/types/types";
 import OptimizedImage from "../shared/OptimizedImage";
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface BannerProps {
   banners: BannersData;
 }
 
 const Banner: React.FC<BannerProps> = ({ banners }) => {
-  const singleBanner = banners.length === 1;
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    containScroll: "trimSnaps",
+  });
 
-  const settings = {
-    dots: !singleBanner,
-    infinite: !singleBanner,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: false,
-  };
+  const scrollPrev = useCallback(
+    () => emblaApi && emblaApi.scrollPrev(),
+    [emblaApi]
+  );
+  const scrollNext = useCallback(
+    () => emblaApi && emblaApi.scrollNext(),
+    [emblaApi]
+  );
 
   const getResponsiveImage = (image: BannerImage) => {
     const formats = image?.data?.attributes?.formats;
@@ -39,29 +42,42 @@ const Banner: React.FC<BannerProps> = ({ banners }) => {
   };
 
   return (
-    <div className="relative py-2">
-      <div className="rounded-t-2xl overflow-x-hidden pb-8">
-        <Slider {...settings}>
+    <div className="relative w-full py-2">
+      <div className="overflow-hidden rounded-lg" ref={emblaRef}>
+        <div className="flex">
           {banners.map((banner) => {
             const image = banner.attributes?.image;
             if (!image?.data?.attributes) return null;
 
             return (
-              <div key={banner.id} className="rounded-t-2xl overflow-hidden">
+              <div
+                key={banner.id}
+                className="flex-[0_0_100%] min-w-0 relative aspect-[21/9]"
+              >
                 <OptimizedImage
                   src={getResponsiveImage(image)}
                   alt={banner.attributes?.altText || ""}
-                  sizes="(max-width: 500px) 500px, (max-width: 750px) 750px, (max-width: 1000px) 1000px, 1280px"
-                  className="w-full h-full object-contain"
-                  width={Number(image.data.attributes.width)}
-                  height={Number(image.data.attributes.height)}
+                  fill
+                  className="object-cover rounded-lg"
                   priority
                 />
               </div>
             );
           })}
-        </Slider>
+        </div>
       </div>
+      <button
+        onClick={scrollPrev}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full"
+      >
+        <ChevronLeft />
+      </button>
+      <button
+        onClick={scrollNext}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full"
+      >
+        <ChevronRight />
+      </button>
     </div>
   );
 };

@@ -34,7 +34,6 @@
     "clsx": "^2.1.1",
     "cookies-next": "^4.3.0",
     "credit-card-type": "^10.0.1",
-    "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",

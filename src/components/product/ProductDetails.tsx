@@ -161,47 +161,47 @@ const ProductDetails: React.FC<{
   return (
     <div className="mx-auto p-4">
       <Breadcrumbs customLabels={customLabels} />
-      <Suspense fallback={<div>Loading...</div>}>
-        <div className="md:float-left md:w-1/2 md:pr-8">
-          <h1 className="text-2xl font-bold mb-2 border-b-2 md:border-0 md:hidden">
-            {title}
-          </h1>
+      <div className="md:float-left md:w-1/2 md:pr-8">
+        <h1 className="text-2xl font-bold mb-2 border-b-2 md:border-0 md:hidden">
+          {title}
+        </h1>
 
-          <ImageCarousel images={images} title={title} />
+        <ImageCarousel images={images} title={title} />
 
-          <SocialShare
-            currentUrl={currentUrl}
-            socialIcons={memoizedSocialIcons}
-          />
-        </div>
+        <SocialShare
+          currentUrl={currentUrl}
+          socialIcons={memoizedSocialIcons}
+        />
+      </div>
 
-        <div className="md:float-right md:w-1/2 md:pl-8">
-          <ProductHeader
-            title={title}
-            part_number={part_number}
-            params={params}
-            initialParamsCount={initialParamsCount}
-            product={product}
-            onBuyClick={handleBuyClick}
-            productTypeId={productTypeId}
-            id={id}
-          />
-        </div>
+      <div className="md:float-right md:w-1/2 md:pl-8">
+        <ProductHeader
+          title={title}
+          part_number={part_number}
+          params={params}
+          initialParamsCount={initialParamsCount}
+          product={product}
+          onBuyClick={handleBuyClick}
+          productTypeId={productTypeId}
+          id={id}
+        />
+      </div>
 
-        <div className="w-full md:hidden mt-4">
-          <ProductParams
-            params={{ Артикул: part_number, ...params }}
-            initialParamsCount={initialParamsCount}
-          />
-        </div>
+      <div className="w-full md:hidden mt-4">
+        <ProductParams
+          params={{ Артикул: part_number, ...params }}
+          initialParamsCount={initialParamsCount}
+        />
+      </div>
 
-        <div className="md:pl-8 md:clear-right">
+      <div className="md:pl-8 md:clear-right">
+        <Suspense fallback={<div>Loading description...</div>}>
           <div className="pt-4">
             <h2 className="font-bold mb-2">Опис:</h2>
             <ReactMarkdown className="text-md">{description}</ReactMarkdown>
           </div>
-        </div>
-      </Suspense>
+        </Suspense>
+      </div>
     </div>
   );
 };

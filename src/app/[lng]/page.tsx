@@ -1,6 +1,9 @@
 import dynamic from "next/dynamic";
 
 import { getBanners, getCategories, getHomePageProducts } from "./actions";
+import { Suspense } from "react";
+
+export const revalidate = 3600;
 
 interface HomeProps {
   params: {
@@ -8,7 +11,9 @@ interface HomeProps {
   };
 }
 
-const Banner = dynamic(() => import("@/components/home/Banner"));
+const Banner = dynamic(() => import("@/components/home/Banner"), {
+  ssr: false,
+});
 
 const HomePageProductsSection = dynamic(
   () => import("@/components/home/HomePageProductsSection")
@@ -25,6 +30,7 @@ const ReviewCarousel = dynamic(
   () => import("@/components/reviews/ReviewCarousel"),
   {
     ssr: false,
+    loading: () => <div>Loading...</div>,
   }
 );
 
@@ -38,9 +44,11 @@ export default async function Home({ params: { lng } }: HomeProps) {
       <Banner banners={banners ?? []} />
       <HomePageProductsSection lng={lng} homePageProducts={products} />
       <CategoryGrid lng={lng} data={categories ?? []} />
-      <WhyUsSection />
-      <AboutSection />
-      <ReviewCarousel lng={lng} />
+      <Suspense fallback={<div>Loading additional content...</div>}>
+        <WhyUsSection />
+        <AboutSection />
+        <ReviewCarousel lng={lng} />
+      </Suspense>
     </div>
   );
 }

@@ -3,14 +3,19 @@
 import React from "react";
 
 import CategoryMenu from "../menu/CategoryMenu";
-import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import UserActions from "./UserActions";
 import SearchBar from "./SearchBar";
+import dynamic from "next/dynamic";
 
 interface HeaderProps {
   lng: string;
 }
+
+const Logo = dynamic(() => import("./Logo"), {
+  ssr: false,
+  loading: () => <div className="w-48 h-16 md:w-64 md:h-24 bg-gray-100" />,
+});
 
 const Header: React.FC<HeaderProps> = ({ lng }) => {
   return (

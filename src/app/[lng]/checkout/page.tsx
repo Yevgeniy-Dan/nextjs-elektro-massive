@@ -1,11 +1,15 @@
 import { Metadata } from "next";
-import CheckoutPage from "./CheckoutClientPage";
+import dynamic from "next/dynamic";
 
 interface CheckoutPageProps {
   params: {
     lng: string;
   };
 }
+
+const CheckoutPage = dynamic(() => import("./CheckoutClientPage"), {
+  ssr: false,
+});
 
 export async function generateMetadata({
   params,
