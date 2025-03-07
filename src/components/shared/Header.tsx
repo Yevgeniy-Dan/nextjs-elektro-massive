@@ -14,7 +14,7 @@ interface HeaderProps {
 
 const Logo = dynamic(() => import("./Logo"), {
   ssr: false,
-  loading: () => <div className="w-48 h-16 md:w-64 md:h-24 bg-gray-100" />,
+  loading: () => <div className="w-48 h-16 md:w-64 md:h-24 bg-elektro-red" />,
 });
 
 const Header: React.FC<HeaderProps> = ({ lng }) => {
