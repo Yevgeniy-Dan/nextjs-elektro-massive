@@ -6,6 +6,7 @@ import { BannerImage, BannersData } from "@/types/types";
 import OptimizedImage from "../shared/OptimizedImage";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AWS_CDN_URL } from "@/app/utils/constants";
 
 interface BannerProps {
   banners: BannersData;
@@ -29,16 +30,24 @@ const Banner: React.FC<BannerProps> = ({ banners }) => {
 
   const getResponsiveImage = (image: BannerImage) => {
     const formats = image?.data?.attributes?.formats;
-    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+
+    const getAWSPath = (url: string) => {
+      const match = url.match(/\/uploads\/(.+)$/);
+      if (match && match[1]) {
+        return `strapi-uploads/${match[1]}`;
+      }
+
+      return `strapi-uploads/${url}`;
+    };
 
     if (formats?.small?.width < 500) {
-      return `${baseUrl}${formats.small.url}`;
+      return `${AWS_CDN_URL}${getAWSPath(formats.small.url)}`;
     } else if (formats?.medium?.width < 750) {
-      return `${baseUrl}${formats.medium.url}`;
+      return `${AWS_CDN_URL}${getAWSPath(formats.medium.url)}`;
     } else if (formats?.large?.width < 1000) {
-      return `${baseUrl}${formats.large.url}`;
+      return `${AWS_CDN_URL}${getAWSPath(formats.large.url)}`;
     }
-    return `${baseUrl}${image.data?.attributes?.url}`;
+    return `${AWS_CDN_URL}${getAWSPath(image.data?.attributes?.url || "")}`;
   };
 
   return (

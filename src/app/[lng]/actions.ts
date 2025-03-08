@@ -10,7 +10,6 @@ import { GET_CATEGORIES } from "@/graphql/queries/categories";
 import { GET_BANNERS } from "@/graphql/queries/common";
 import { GET_HOME_PAGE_PRODUCTS } from "@/graphql/queries/products";
 import { getClient } from "@/lib/apollo-client";
-import { HomePageProductEntity } from "@/types/types";
 
 export async function getBanners() {
   try {
