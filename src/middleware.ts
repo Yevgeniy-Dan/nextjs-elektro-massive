@@ -21,6 +21,12 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(`${origin}`, 301);
   }
 
+  if (pathname === "/search") {
+    return NextResponse.rewrite(
+      new URL(`/uk/search${req.nextUrl.search || ""}`, req.url)
+    );
+  }
+
   // URL с /uk делаем rewrite на версию без префикса
   if (pathname.startsWith("/uk/") && !pathname.startsWith("/uk/search")) {
     return NextResponse.redirect(
@@ -31,7 +37,10 @@ export function middleware(req: NextRequest) {
 
   // Обработка поискового запроса с параметром q
   if (pathname === "/uk/search") {
-    return NextResponse.next();
+    return NextResponse.redirect(
+      new URL(`/search${req.nextUrl.search || ""}`, req.url),
+      301
+    );
   }
 
   // Другие языки оставляем как есть

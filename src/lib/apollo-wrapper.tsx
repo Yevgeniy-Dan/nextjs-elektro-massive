@@ -40,27 +40,27 @@ function makeClient() {
         Category: {
           keyFields: ["slug", "locale"],
         },
-        // CategoryEntity: {
-        //   keyFields: ["slug", "locale"],
-        // },
+        CategoryEntity: {
+          keyFields: ["slug", "locale"],
+        },
         Subcategory: {
           keyFields: ["slug", "locale"],
         },
-        // SubcategoryEntity: {
-        //   keyFields: ["slug", "locale"],
-        //   // fields: {
-        //   //   attributes: {
-        //   //     merge(existing, incoming, { variables }) {
-        //   //       console.log("🔍 MERGE CALLED for attributes", {
-        //   //         existing,
-        //   //         incoming,
-        //   //         variables,
-        //   //       });
-        //   //       return { ...existing, ...incoming };
-        //   //     },
-        //   //   },
-        //   // },
-        // },
+        SubcategoryEntity: {
+          keyFields: ["slug", "locale"],
+          fields: {
+            attributes: {
+              merge(existing, incoming, { variables }) {
+                console.log("🔍 MERGE CALLED for attributes", {
+                  existing,
+                  incoming,
+                  variables,
+                });
+                return { ...existing, ...incoming };
+              },
+            },
+          },
+        },
         Product: {
           keyFields: ["slug", "locale"],
         },
