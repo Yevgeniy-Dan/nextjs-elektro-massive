@@ -11,7 +11,10 @@ const NavLinks: React.FC<NavLinks> = ({ lng }) => {
   const { t } = useTranslation(lng, "header");
 
   return (
-    <div className="hidden md:flex flex-wrap justify-center items-center text-white gap-2 sm:gap-4 mb-4 lg:mb-0">
+    <div
+      className="invisible md:visible opacity-0 md:opacity-100 absolute md:relative h-0 md:h-auto overflow-hidden md:overflow-visible flex flex-wrap justify-center items-center text-white gap-2 sm:gap-4 mb-4 lg:mb-0 transition-opacity duration-200"
+      aria-hidden="true"
+    >
       <LocalizedLink
         lng={lng}
         href={"/services"}

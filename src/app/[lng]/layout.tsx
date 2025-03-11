@@ -15,7 +15,13 @@ import { languages } from "../i18n/settings";
 
 import dynamic from "next/dynamic";
 
-const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+  preload: true,
+  variable: "--font-roboto",
+});
 
 export const revalidate = 1800;
 
@@ -80,7 +86,7 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://decyx998ihuuw.cloudfront.net" />
       </head>
-      <body className={`${roboto.className} flex flex-col min-h-screen`}>
+      <body className={`${roboto.variable} flex flex-col min-h-screen`}>
         <Suspense fallback={<div className="min-h-screen bg-gray-50" />}>
           <Providers session={session}>
             <div className="flex-grow">

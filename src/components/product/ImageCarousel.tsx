@@ -22,7 +22,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, title }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="rounded-xl">
+    <div className="rounded-xl aspect-w-1 aspect-h-1 min-h-[300px]">
       <Carousel
         images={images}
         title={title}

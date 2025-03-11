@@ -6,6 +6,16 @@ p {
   margin: 1rem 0;
 }
 
+img,
+picture,
+videoideo,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 /* Collage styles for about us section on the main page */
 
 .slick-dots li button:before {
