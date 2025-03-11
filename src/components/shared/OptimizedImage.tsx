@@ -6,7 +6,7 @@ const OptimizedImage = memo(({ src, alt, priority, ...props }: ImageProps) => {
     <Image
       src={src}
       alt={alt}
-      loading={priority ? undefined : "lazy"}
+      loading={priority ? "eager" : "lazy"}
       {...props}
     />
   );

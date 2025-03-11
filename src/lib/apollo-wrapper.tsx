@@ -13,7 +13,6 @@ import { signOut } from "next-auth/react";
 function makeClient() {
   const httpLink = createHttpLink({
     uri: "/api/graphql",
-    fetchOptions: { cache: "no-store" },
   });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {

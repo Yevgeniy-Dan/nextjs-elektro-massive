@@ -6,7 +6,6 @@ import { getServerSession } from "next-auth";
 
 const httpLink = new HttpLink({
   uri: `${process.env.NEXT_PUBLIC_API_URL}/api/graphql`,
-  fetchOptions: { cache: "no-store" },
 });
 
 const authLink = setContext(async (_, { headers }) => {
