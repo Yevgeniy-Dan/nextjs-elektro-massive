@@ -6,21 +6,11 @@ import CategoryMenu from "../menu/CategoryMenu";
 import NavLinks from "./NavLinks";
 import UserActions from "./UserActions";
 import SearchBar from "./SearchBar";
-import dynamic from "next/dynamic";
+import Logo from "./Logo";
 
 interface HeaderProps {
   lng: string;
 }
-
-const Logo = dynamic(() => import("./Logo"), {
-  ssr: false,
-  loading: () => (
-    <div
-      className="w-48 h-16 md:w-64 md:h-24 bg-transparent"
-      aria-hidden="true"
-    />
-  ),
-});
 
 const Header: React.FC<HeaderProps> = ({ lng }) => {
   return (
