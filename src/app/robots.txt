@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: uk
-Disallow: uk/
+Disallow: /uk
+Disallow: /uk/
 
 Sitemap: https://elektromassive.com/sitemap.xml
