@@ -219,13 +219,13 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
           <div className="flex justify-between items-center">
             <span>Знижка</span>
             <span className="font-semibold text-green-600">
-              {calculateDiscountTotal.toFixed(2)} грн
+              {(calculateTotal - calculateDiscountTotal).toFixed(2)} грн
             </span>
           </div>
           <div className="flex justify-between items-center pt-2 border-t border-gray-200">
             <span className="font-semibold">До сплати</span>
             <span className="font-semibold text-xl">
-              {(calculateTotal - calculateDiscountTotal).toFixed(2)}
+              {calculateDiscountTotal.toFixed(2)}
               грн
             </span>
           </div>
@@ -233,9 +233,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
 
         <button
           onClick={handleBuyClick}
-          disabled={
-            isSubmitting || calculateTotal - calculateDiscountTotal === 0
-          }
+          disabled={isSubmitting || calculateDiscountTotal === 0}
           className="w-full mt-4 bg-green-500 text-white py-3 rounded-md font-semibold hover:bg-green-600 transition-colors"
         >
           {isSubmitting ? "Обробка" : "Купити"}

@@ -24,7 +24,8 @@ const CartTotals: React.FC<CartTotalsProps> = ({ lng }) => {
         <p className="my-0">{t("cartTotal")}:</p>
         <div className="flex flex-col text-right">
           <span className="text-gray-400 text-sm line-through">
-            {calculateDiscountTotal !== 0 && calculateTotal.toFixed(2) + "грн"}
+            {calculateTotal - calculateDiscountTotal !== 0 &&
+              calculateTotal.toFixed(2) + "грн"}
           </span>
           <span className="font-bold">
             {calculateDiscountTotal.toFixed(2)} грн
