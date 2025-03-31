@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
+
+Allow: /sitemap.xml
+Allow: /sitemap-*.xml
+
 Disallow: /uk
 Disallow: /uk/
 

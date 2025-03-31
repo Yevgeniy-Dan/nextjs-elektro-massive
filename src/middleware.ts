@@ -14,11 +14,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.rewrite(new URL(`/uk`, req.url));
   }
 
-  if (pathname === "/sitemap.xml") {
-    return NextResponse.redirect(
-      "https://elektromassivebucketproduction.s3.amazonaws.com/sitemap/sitemap.xml",
-      301
-    );
+  if (pathname === "/sitemap.xml" || pathname.startsWith("/sitemap-")) {
+    return;
   }
 
   if (pathname === "/uk") {
