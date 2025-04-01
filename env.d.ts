@@ -23,7 +23,7 @@ namespace NodeJS {
     AWS_SECRET_ACCESS_KEY: string;
     AWS_REGION: string;
     NEXT_PUBLIC_AWS_BUCKET_NAME: string;
-    SITEMAP_URL: string;
+    AWS_SITEMAP_FOLDER_URL: string;
 
     NEXT_PUBLIC_GA_ID: string;
   }

@@ -5,8 +5,7 @@ export async function GET() {
   try {
     // URL твоего sitemap.xml в S3
     const s3SitemapUrl =
-      "https://elektromassivebucketproduction.s3.amazonaws.com/sitemap/sitemap.xml?t=" +
-      Date.now();
+      `${process.env.AWS_SITEMAP_FOLDER_URL}/sitemap.xml?t=` + Date.now();
 
     console.log("Fetching main sitemap from:", s3SitemapUrl);
 

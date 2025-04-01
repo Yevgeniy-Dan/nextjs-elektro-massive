@@ -1,9 +1,12 @@
 import { fallbackLng, languages } from "@/app/i18n/settings";
 import { NextRequest, NextResponse } from "next/server";
 
+import axios from "axios";
+
 export const config = {
   matcher: [
     "/((?!api|_next/static|_next/image|assets|favicon.ico|robots.txt|sw.js|site.webmanifest|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\jpeg$).*)",
+    "/:path*.xml",
   ],
 };
 
@@ -14,11 +17,9 @@ export async function middleware(req: NextRequest) {
     return NextResponse.rewrite(new URL(`/uk`, req.url));
   }
 
-  if (pathname.startsWith("/sitemap")) {
+  if (pathname === "/sitemap.xml") {
     return NextResponse.next();
   }
-
-  console.log(`Middleware triggered for path: ${pathname}`);
 
   if (pathname === "/uk") {
     return NextResponse.redirect(`${origin}`, 301);
@@ -90,6 +91,18 @@ export async function middleware(req: NextRequest) {
 
     // Для других языков просто пропускаем дальше
     return NextResponse.next();
+  }
+
+  if (!hasLng && pathname.endsWith(".xml")) {
+    const data = await getAWSS3Sitemap(pathname);
+
+    return new NextResponse(data, {
+      headers: {
+        "Content-Type": "application/xml; charset=utf-8",
+        "X-Robots-Tag": "index, follow",
+        "Cache-Control": "public, max-age=3600",
+      },
+    });
   }
 
   const [categorySlug, subcategorySlug, productTypeSlug, productSlug] = hasLng
@@ -234,3 +247,21 @@ async function checkExists(
     (!parentSlug || isProductTypeInProduct)
   );
 }
+
+const getAWSS3Sitemap = async (pathname: string) => {
+  try {
+    const s3SitemapUrl = `${process.env.AWS_SITEMAP_FOLDER_URL}${pathname}?t=${Date.now()}`;
+
+    const response = await axios.get(s3SitemapUrl, {
+      responseType: "text",
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+      },
+    });
+
+    return response.data;
+  } catch (error: any) {
+    return error?.response?.data || "Error fetching sitemap";
+  }
+};
