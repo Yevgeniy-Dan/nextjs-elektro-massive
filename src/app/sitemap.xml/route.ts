@@ -27,8 +27,9 @@ export async function GET() {
     // Создаем ответ с правильными заголовками
     return new NextResponse(response.data, {
       headers: {
-        "Content-Type": "text/xml",
-        "Cache-Control": "no-store, max-age=0",
+        "Content-Type": "application/xml; charset=utf-8",
+        "X-Robots-Tag": "index, follow",
+        "Cache-Control": "no-store, max-age=3600",
       },
     });
   } catch (error) {

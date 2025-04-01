@@ -14,9 +14,11 @@ export async function middleware(req: NextRequest) {
     return NextResponse.rewrite(new URL(`/uk`, req.url));
   }
 
-  if (pathname === "/sitemap.xml" || pathname.startsWith("/sitemap-")) {
-    return;
+  if (pathname.startsWith("/sitemap")) {
+    return NextResponse.next();
   }
+
+  console.log(`Middleware triggered for path: ${pathname}`);
 
   if (pathname === "/uk") {
     return NextResponse.redirect(`${origin}`, 301);
@@ -176,38 +178,38 @@ async function checkExists(
       query = `query { categories(filters: { slug: { eq: "${slug}" }}, locale: "${lng}") { data { id } } }`;
       break;
     case "subcategory":
-      query = `query { 
-    subcategories(filters: { slug: { eq: "${slug}" } }, locale: "${lng}") { 
-      data { 
-        id 
-      } 
-    } 
-  }`;
+      query = `query {
+      subcategories(filters: { slug: { eq: "${slug}" } }, locale: "${lng}") {
+        data {
+          id
+        }
+      }
+    }`;
       break;
     case "productType":
-      query = `query { 
-    productTypes(filters: { slug: { eq: "${slug}" } }, locale: "${lng}") { 
-      data { 
-        id 
-      } 
-    } 
-  }`;
+      query = `query {
+      productTypes(filters: { slug: { eq: "${slug}" } }, locale: "${lng}") {
+        data {
+          id
+        }
+      }
+    }`;
       break;
     case "product":
       query = `query {
-    products(filters: { slug: { eq: "${slug}" } }, locale: "${lng}") {
-      data {
-        id
-        attributes {
-          product_types(filters: { slug: { eq: "${parentSlug}" } })  {
-            data {
-              id
+      products(filters: { slug: { eq: "${slug}" } }, locale: "${lng}") {
+        data {
+          id
+          attributes {
+            product_types(filters: { slug: { eq: "${parentSlug}" } })  {
+              data {
+                id
+              }
             }
           }
         }
       }
-    }
-  }`;
+    }`;
       break;
     default:
       console.error(`Unknown type: ${type}`);
