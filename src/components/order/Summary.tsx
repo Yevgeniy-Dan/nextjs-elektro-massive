@@ -145,10 +145,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
 
       // Add cart data and totals
       formData.append("cartItems", JSON.stringify(cartItems));
-      formData.append(
-        "totalAmount",
-        String(calculateTotal - calculateDiscountTotal)
-      );
+      formData.append("totalAmount", String(calculateDiscountTotal));
 
       const result = await buyAction(formData);
 
@@ -167,7 +164,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
               price: item.product.retail,
               quantity: item.quantity,
             })),
-            value: calculateTotal - calculateDiscountTotal,
+            value: calculateDiscountTotal,
             currency: "UAH",
           });
         }
