@@ -7,6 +7,7 @@ import ProductTypePageClient from "./ProductTypePageClient";
 import { getSubcategory } from "../actions";
 import { getCategory } from "../../actions";
 import { languages } from "@/app/i18n/settings";
+import { getTrimmedMetaDescription } from "@/app/utils/strapiDataTransformations";
 
 interface ProductTypePageProps {
   params: {
@@ -60,8 +61,9 @@ export async function generateMetadata({
   return {
     title: `${productTypeData.productType?.attributes?.metaTitle} | ELEKTRO-MASSIVE`,
     description:
-      productTypeData.productType?.attributes?.metaDescription?.slice(0, 155) +
-      " | ELEKTRO-MASSIVE",
+      getTrimmedMetaDescription(
+        productTypeData.productType?.attributes?.metaDescription
+      ) + " | ELEKTRO-MASSIVE",
     alternates,
   };
 }

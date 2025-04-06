@@ -6,6 +6,7 @@ import { getSubcategory } from "./actions";
 import SubcategoryPageClient from "./SubcategoryPageClient";
 import { getCategory } from "../actions";
 import { languages } from "@/app/i18n/settings";
+import { getTrimmedMetaDescription } from "@/app/utils/strapiDataTransformations";
 
 interface SubcategoryPageProps {
   params: {
@@ -54,7 +55,7 @@ export async function generateMetadata({
   return {
     title: subcategory.attributes?.metaTitle + " | ELEKTRO-MASSIVE",
     description:
-      subcategory.attributes?.metaDescription?.slice(0, 155) +
+      getTrimmedMetaDescription(subcategory.attributes?.metaDescription) +
       " | ELEKTRO-MASSIVE",
     alternates,
   };

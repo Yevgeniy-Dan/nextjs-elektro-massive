@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { getCategory } from "./actions";
 import CategoryPageClient from "./CategoryPageClient";
 import { languages } from "@/app/i18n/settings";
+import { getTrimmedMetaDescription } from "@/app/utils/strapiDataTransformations";
 
 interface CategoryPageProps {
   params: {
@@ -33,7 +34,9 @@ export async function generateMetadata({
   const category = await getCategory(categorySlug, lng);
 
   const name = category?.attributes?.metaTitle;
-  const description = category?.attributes?.metaDescription;
+  const metaDescription = getTrimmedMetaDescription(
+    category?.attributes?.metaDescription
+  );
 
   if (!category) {
     return {
@@ -54,7 +57,7 @@ export async function generateMetadata({
 
   return {
     title: name + " | ELEKTRO-MASSIVE",
-    description: description.slice(0, 155) + " | ELEKTRO-MASSIVE",
+    description: metaDescription + " | ELEKTRO-MASSIVE",
     alternates,
   };
 }

@@ -62,10 +62,14 @@ export async function generateMetadata({
     };
   }
 
+  const description = productData.attributes?.description
+    .replace(/\n/g, " ")
+    .trim()
+    .slice(0, 155);
+
   return {
     title: `${productData?.attributes?.title} | ELEKTRO-MASSIVE`,
-    description:
-      productData.attributes?.description?.slice(0, 155) + " | ELEKTRO-MASSIVE",
+    description: description + " | ELEKTRO-MASSIVE",
     alternates,
   };
 }
