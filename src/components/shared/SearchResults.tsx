@@ -72,7 +72,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
               retail: attributes?.retail ?? 0,
               image_link: attributes?.image_link,
               title: attributes?.title ?? "",
-              params: attributes?.params,
+              parameter_values: attributes?.parameter_values,
               slug: attributes?.slug ?? "",
             }}
             categorySlug={

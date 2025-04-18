@@ -6,7 +6,7 @@ import PurchaseSection from "./PurchaseSection";
 interface ProductHeaderProps {
   title: string;
   part_number: string;
-  params: Record<string, string>;
+  params: ProductAttributes["parameter_values"];
   initialParamsCount: number;
   product: ProductAttributes;
   onBuyClick: (qty: number) => void;
@@ -33,7 +33,8 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
       <div className="w-full lg:w-2/3 pr-4">
         <div className="hidden md:block">
           <ProductParams
-            params={{ Артикул: part_number, ...params }}
+            part_number={part_number}
+            params={params}
             initialParamsCount={initialParamsCount}
           />
         </div>

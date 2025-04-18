@@ -429,7 +429,7 @@ export async function getProductsParams(cartItems: CartItemForShipment[]) {
 
   cartItems.forEach((item, index) => {
     const { volume, weight, width, length, height } =
-      calculateProductDimensions(item.product.params);
+      calculateProductDimensions(item.product);
 
     totalWeight += weight * item.quantity;
     totalVolume += volume * item.quantity;

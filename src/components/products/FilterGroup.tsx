@@ -4,9 +4,9 @@ import ExpandButton from "./ExpandButton";
 
 interface FilterGroupProps {
   title: string;
-  values: string[];
+  values: { value: string; code: string }[];
   appliedValues: string[];
-  onChange: (value: string, checked: boolean) => void;
+  onChange: (value: string, code: string, checked: boolean) => void;
 }
 
 const FilterGroup = memo(
@@ -25,10 +25,11 @@ const FilterGroup = memo(
         >
           {displayValues.map((value) => (
             <FilterCheckbox
-              key={value}
-              value={value}
+              key={value.code}
+              value={value.value}
+              code={value.code}
               onChange={onChange}
-              checked={appliedValues.includes(value)}
+              checked={appliedValues.includes(value.code)}
             />
           ))}
         </div>

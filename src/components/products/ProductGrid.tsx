@@ -50,17 +50,24 @@ const ProductGrid = ({
     setCurrentPage,
     setLastProductType,
     setLastFilters,
-    setAppliedFilters,
     setLastSubcategoryId,
   } = useProductGridStore();
 
   const currentPage = currentPages[subcategoryId] || 1;
 
   const transformedFilters = useMemo(() => {
-    const filters = appliedFilters[subcategoryId] || {};
-    return Object.entries(filters).flatMap(([key, values]) =>
-      values.map((value) => ({ key, value }))
-    );
+    try {
+      const filters = appliedFilters[subcategoryId] || {};
+
+      return Object.entries(filters).flatMap(([key, codes]) => {
+        if (!Array.isArray(codes)) return [];
+
+        return codes.map((code) => ({ key, code }));
+      });
+    } catch (e) {
+      console.error("Error in transformedFilters:", e);
+      return [];
+    }
   }, [appliedFilters, subcategoryId]);
 
   const { data, loading, error, fetchMore, networkStatus, refetch } = useQuery<
@@ -71,7 +78,6 @@ const ProductGrid = ({
       productTypeId: productTypeId || undefined,
       subcategoryId,
       filters: transformedFilters,
-      // cursor: null,
       page: currentPage,
       pageSize,
       sort: [sortDirection === "asc" ? "retail:asc" : "retail:desc"],
@@ -94,10 +100,6 @@ const ProductGrid = ({
       }
     }
   }, [data, subcategorySlug, productTypeSlug, currentPage, loading, error]);
-
-  useEffect(() => {
-    setAppliedFilters(subcategoryId, appliedFilters[subcategoryId] || {});
-  }, [subcategoryId, appliedFilters, setAppliedFilters]);
 
   useEffect(() => {
     const currentProductType = productTypeId || "";

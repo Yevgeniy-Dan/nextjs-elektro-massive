@@ -140,6 +140,7 @@ export const useCart = () => {
   >({
     mutationFn: async ({ product, qtyChange }) => {
       if (status === "authenticated") {
+        console.log(`Product: `, JSON.stringify(product.product.id));
         const response = await request<
           UpdateCartItemMutation,
           UpdateCartItemMutationVariables
@@ -166,6 +167,9 @@ export const useCart = () => {
       await queryClient.invalidateQueries({
         queryKey: ["cart"],
       });
+    },
+    onError: (error) => {
+      console.error("Error updating cart item:", error);
     },
   });
 

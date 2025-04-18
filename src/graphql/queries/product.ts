@@ -21,7 +21,24 @@ import { gql } from "@apollo/client";
 //             id
 //             link
 //           }
-//           params
+//           parameter_values {
+//             data {
+//               id
+//               attributes {
+//                 value
+//                 code
+//                 parameter_type {
+//                   data {
+//                     id
+//                     attributes {
+//                       name
+//                       slug
+//                     }
+//                   }
+//                 }
+//               }
+//             }
+//           }
 //           subcategory {
 //             data {
 //               id
@@ -70,7 +87,24 @@ export const GET_PRODUCT_BY_SLUG = gql`
             id
             link
           }
-          params
+          parameter_values {
+            data {
+              id
+              attributes {
+                value
+                code
+                parameter_type {
+                  data {
+                    id
+                    attributes {
+                      name
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
           subcategory {
             data {
               id

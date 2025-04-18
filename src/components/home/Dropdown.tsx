@@ -108,7 +108,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               }}
             >
               <OptimizedImage
-                src="/wing-black-white-icon.png"
+                src={`${AWS_CDN_URL}shared/public/icons/wing-black-white-icon.png`}
                 alt="Mail"
                 className="mr-4"
                 width={24}

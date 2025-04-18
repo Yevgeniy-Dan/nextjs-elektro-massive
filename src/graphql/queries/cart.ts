@@ -8,7 +8,24 @@ export const CART_PRODUCT_FIELDS = gql`
     currency
     discount
     image_link
-    params
+    parameter_values {
+      data {
+        id
+        attributes {
+          value
+          code
+          parameter_type {
+            data {
+              id
+              attributes {
+                name
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
     part_number
     slug
     locale

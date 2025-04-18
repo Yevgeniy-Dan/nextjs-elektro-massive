@@ -39,7 +39,10 @@ export async function middleware(req: NextRequest) {
   // URL с /uk делаем rewrite на версию без префикса
   if (pathname.startsWith("/uk/") && !pathname.startsWith("/uk/search")) {
     return NextResponse.redirect(
-      new URL(pathname.replace(/^\/uk/, ""), req.url),
+      new URL(
+        pathname.replace(/^\/uk/, "").concat(req.nextUrl.search || ""),
+        req.url
+      ),
       301
     );
   }
@@ -86,7 +89,9 @@ export async function middleware(req: NextRequest) {
   ) {
     // Если это URL без языкового префикса, делаем rewrite на украинскую версию
     if (!hasLng && !pathname.startsWith("/_next")) {
-      return NextResponse.rewrite(new URL(`/uk${pathname}`, req.url));
+      return NextResponse.rewrite(
+        new URL(`/uk${pathname}${req.nextUrl.search || ""}`, req.url)
+      );
     }
 
     // Для других языков просто пропускаем дальше
@@ -158,7 +163,9 @@ export async function middleware(req: NextRequest) {
 
   // Для URL без префикса используем украинский контент
   if (!lng && !pathname.startsWith("/_next")) {
-    return NextResponse.rewrite(new URL(`/uk${pathname}`, req.url));
+    return NextResponse.rewrite(
+      new URL(`/uk${pathname}${req.nextUrl.search || ""}`, req.url)
+    );
   }
 
   // Для URL с другими языками (если они прошли проверку exists)

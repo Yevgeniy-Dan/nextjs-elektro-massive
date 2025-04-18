@@ -6,22 +6,35 @@ const ProductFilters = dynamic(() => import("./ProductFilters"), {
 });
 
 interface ProductFilterSectionProps {
-  filters: Record<string, string[]>;
+  filters: Record<
+    string,
+    { slug: string; values: { value: string; code: string }[] }
+  >;
   subcategoryId: string;
+  lng: string;
 }
 
 const ProductFilterSection = ({
   subcategoryId,
   filters,
+  lng,
 }: ProductFilterSectionProps) => {
-  const formattedFilters = Object.entries(filters).map(([key, values]) => ({
+  const formattedFilters = Object.entries(filters).map(([key, data]) => ({
     id: key,
     title: key,
-    values,
+    slug: data.slug,
+    values: data.values.map((item) => ({
+      value: item.value,
+      code: item.code,
+    })),
   }));
 
   return (
-    <ProductFilters filters={formattedFilters} subcategoryId={subcategoryId} />
+    <ProductFilters
+      filters={formattedFilters}
+      subcategoryId={subcategoryId}
+      lng={lng}
+    />
   );
 };
 

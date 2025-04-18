@@ -65,7 +65,7 @@ const ProductDetails: React.FC<{
     additional_images,
     currency,
     image_link,
-    params,
+    parameter_values,
     part_number,
     retail,
     title,
@@ -115,7 +115,7 @@ const ProductDetails: React.FC<{
           image_link: image_link ?? "",
           retail,
           title,
-          params,
+          parameter_values,
           part_number,
           slug,
         },
@@ -132,7 +132,7 @@ const ProductDetails: React.FC<{
       image_link,
       retail,
       title,
-      params,
+      parameter_values,
       part_number,
       slug,
       handleUpdateItem,
@@ -178,7 +178,7 @@ const ProductDetails: React.FC<{
         <ProductHeader
           title={title}
           part_number={part_number}
-          params={params}
+          params={parameter_values}
           initialParamsCount={initialParamsCount}
           product={product}
           onBuyClick={handleBuyClick}
@@ -189,7 +189,8 @@ const ProductDetails: React.FC<{
 
       <div className="w-full md:hidden mt-4">
         <ProductParams
-          params={{ Артикул: part_number, ...params }}
+          part_number={part_number}
+          params={parameter_values}
           initialParamsCount={initialParamsCount}
         />
       </div>

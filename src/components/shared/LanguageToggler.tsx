@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getCookie } from "cookies-next";
 
 import { Language, languages } from "@/app/i18n/settings";
@@ -10,8 +10,6 @@ import { LANG_MATCHES_KEY } from "@/app/utils/constants";
 import { useSession } from "next-auth/react";
 import { CartProductStore, useCartStore } from "@/store/useCartStore";
 import { fetchProductsByIds } from "@/hooks/useCart";
-import { FragmentType } from "@/gql";
-import { CART_PRODUCT_FIELDS } from "@/graphql/queries/cart";
 import { CartProductFieldsFragment } from "@/gql/graphql";
 import { queryClient } from "@/lib/queryClient";
 
@@ -28,6 +26,8 @@ type LangMatches = {
 const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const currentParams = useSearchParams();
+
   const { status } = useSession();
   const { productIds, getProductIds, setProductIds } = useCartStore();
 
@@ -86,6 +86,8 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
     const newLang = event.target.value;
     const currentPathname = pathname;
     const pathWithoutLang = currentPathname.replace(new RegExp(`^/${lng}`), ""); // Remove the current language prefix from the path
+    const queryString = currentParams.toString();
+    const queryPart = queryString ? `?${queryString}` : "";
 
     const langMatchesCookie = getCookie(LANG_MATCHES_KEY);
     if (langMatchesCookie) {
@@ -94,8 +96,10 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
         let translatedPath = getSlug(newLang, langMatches);
 
         if (translatedPath) {
-          const newPath = `/${newLang}/${translatedPath}`;
+          const newPath = `/${newLang}/${translatedPath}${queryPart}`;
           await updateProductIds(newLang as Language);
+          console.log("Redirecting to:", newPath);
+          console.log("Language matches:", langMatches);
           router.push(newPath);
           return;
         }
@@ -106,8 +110,9 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
 
     // If no translation is available, create a fallback path
     const newPath = `/${newLang}${pathWithoutLang || "/"}`.replace(/\/+/g, "/");
+    const fullPath = newPath + queryPart;
     await updateProductIds(newLang as Language);
-    router.push(newPath);
+    router.push(fullPath);
     return;
   };
 

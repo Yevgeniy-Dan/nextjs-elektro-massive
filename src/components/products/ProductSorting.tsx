@@ -12,6 +12,7 @@ interface ProductSortingProps {
   onPriceRangeChange: (minPrice: number, maxPrice: number) => void;
   currentSort?: SortOption;
   maxPrice: number;
+  values: number[];
 }
 
 const ProductSorting: React.FC<ProductSortingProps> = ({
@@ -19,12 +20,19 @@ const ProductSorting: React.FC<ProductSortingProps> = ({
   onSortChange,
   onPriceRangeChange,
   maxPrice,
+  values,
 }) => {
-  const [sliderValues, setSliderValues] = useState([0, maxPrice]);
+  const [sliderValues, setSliderValues] = useState(
+    values.length > 0 ? values : [0, maxPrice]
+  );
   const [isDragging, setIsDragging] = useState(false);
   useEffect(() => {
-    setSliderValues([0, maxPrice]);
-  }, [maxPrice]);
+    if (values.length > 0) {
+      setSliderValues(values);
+    } else if (maxPrice > 0) {
+      setSliderValues([0, maxPrice]);
+    }
+  }, [values, maxPrice]);
 
   const handleSortClick = () => {
     const newDirection = currentSort?.direction === "asc" ? "desc" : "asc";

@@ -1,13 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUp, ChevronDown } from "lucide-react";
+import { ProductAttributes } from "@/types/types";
+import { transformProductParams } from "@/app/utils/transformProductParams";
 
 interface ProductParamsProps {
-  params: Record<string, string>;
+  part_number: string;
+  params: ProductAttributes["parameter_values"];
   initialParamsCount: number;
 }
 
 const ProductParams: React.FC<ProductParamsProps> = ({
+  part_number,
   params,
   initialParamsCount,
 }) => {
@@ -19,7 +23,12 @@ const ProductParams: React.FC<ProductParamsProps> = ({
     setShowAllParams(!showAllParams);
   };
 
-  const paramsToShow = Object.entries(params);
+  const transformedParams = {
+    ...transformProductParams(params),
+    Артикул: part_number,
+  };
+
+  const paramsToShow = Object.entries(transformedParams);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -52,7 +61,7 @@ const ProductParams: React.FC<ProductParamsProps> = ({
         </AnimatePresence>
       </motion.div>
 
-      {Object.keys(params).length > initialParamsCount && (
+      {Object.keys(transformedParams).length > initialParamsCount && (
         <motion.button
           onClick={toggleParams}
           className="w-full mt-2 p-2 flex justify-center items-center border-t border-b font-semibold text-lg"

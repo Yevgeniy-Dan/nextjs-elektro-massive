@@ -15,7 +15,24 @@ export const GET_PRODUCTS = gql`
           image_link
           slug
           locale
-          params
+          parameter_values {
+            data {
+              id
+              attributes {
+                value
+                code
+                parameter_type {
+                  data {
+                    id
+                    attributes {
+                      name
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
           additional_images {
             link
           }
@@ -75,7 +92,24 @@ export const GET_FILTERED_PRODUCTS = gql`
         part_number
         retail
         image_link
-        params
+        parameter_values {
+          data {
+            id
+            attributes {
+              value
+              code
+              parameter_type {
+                data {
+                  id
+                  attributes {
+                    name
+                    slug
+                  }
+                }
+              }
+            }
+          }
+        }
         currency
         additional_images {
           link
@@ -151,7 +185,24 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           currency
           image_link
           slug
-          params
+          parameter_values {
+            data {
+              id
+              attributes {
+                value
+                code
+                parameter_type {
+                  data {
+                    id
+                    attributes {
+                      name
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
           discount
           salesCount
           subcategory {
@@ -196,7 +247,24 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           currency
           image_link
           slug
-          params
+          parameter_values {
+            data {
+              id
+              attributes {
+                value
+                code
+                parameter_type {
+                  data {
+                    id
+                    attributes {
+                      name
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
           discount
           salesCount
           createdAt
@@ -243,7 +311,24 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           currency
           image_link
           slug
-          params
+          parameter_values {
+            data {
+              id
+              attributes {
+                value
+                code
+                parameter_type {
+                  data {
+                    id
+                    attributes {
+                      name
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
           discount
           salesCount
           subcategory {

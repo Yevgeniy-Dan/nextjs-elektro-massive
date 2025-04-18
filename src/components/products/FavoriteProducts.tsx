@@ -1,7 +1,6 @@
 "use client";
 
 import { useFavorites } from "@/hooks/useFavorites";
-import { Heart } from "lucide-react";
 import { useTranslation } from "@/app/i18n/client";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
@@ -62,7 +61,7 @@ const FavoriteProductsList: React.FC<FavoriteProductsListProps> = ({ lng }) => {
               retail: f.product?.data?.attributes?.retail ?? 0,
               image_link: f.product?.data?.attributes?.image_link,
               title: f.product?.data?.attributes?.title ?? "",
-              params: f.product?.data?.attributes?.params,
+              parameter_values: f.product?.data?.attributes?.parameter_values,
               slug: f.product?.data?.attributes?.slug ?? "",
             }}
             categorySlug={

@@ -2,14 +2,15 @@ import { memo } from "react";
 
 interface FilterCheckboxProps {
   value: string;
+  code: string;
   checked: boolean;
-  onChange: (value: string, checked: boolean) => void;
+  onChange: (value: string, code: string, checked: boolean) => void;
 }
 
 const FilterCheckbox = memo(
-  ({ value, checked, onChange }: FilterCheckboxProps) => {
+  ({ value, code, checked, onChange }: FilterCheckboxProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(value, e.target.checked);
+      onChange(value, code, e.target.checked);
     };
 
     return (

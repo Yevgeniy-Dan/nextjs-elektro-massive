@@ -67,7 +67,24 @@ export const SEARCH_PRODUCTS = gql`
           currency
           image_link
           slug
-          params
+          parameter_values {
+            data {
+              id
+              attributes {
+                value
+                code
+                parameter_type {
+                  data {
+                    id
+                    attributes {
+                      name
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
           additional_images {
             link
           }
@@ -81,7 +98,7 @@ export const SEARCH_PRODUCTS = gql`
                   data {
                     id
                     attributes {
-                    locale
+                      locale
                       slug
                       name
                     }
@@ -94,12 +111,27 @@ export const SEARCH_PRODUCTS = gql`
             data {
               id
               attributes {
-              locale
+                locale
                 slug
               }
             }
           }
           discount
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FILTER_URL_MAPPINGS = gql`
+  query GetFilterUrlMappings {
+    urlFilterMappings(pagination: { limit: -1 }) {
+      data {
+        id
+        attributes {
+          latin_key
+          uk
+          ru
         }
       }
     }

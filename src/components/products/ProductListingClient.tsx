@@ -33,7 +33,7 @@ import Breadcrumbs from "../shared/Breadcrumbs";
 import BrandFilter from "../shared/BrandFilter";
 
 import { useScrollToElement } from "@/hooks/useScrollToElement";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { GET_MAX_PRICE } from "@/graphql/queries/products";
 import dynamic from "next/dynamic";
 import { useProductGridStore } from "@/store/useProductGridStore";
@@ -88,6 +88,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   productTypeTitle,
   lng,
 }) => {
+  const pathname = usePathname();
   const productListingRef = useRef<HTMLDivElement>(null);
   const { scrollToElement } = useScrollToElement();
 
@@ -104,9 +105,22 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const handlePriceChange = (minPrice: number, maxPrice: number) => {
     setPriceFilters([minPrice, maxPrice]);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.delete("minPrice");
+    params.delete("maxPrice");
+
+    params.append("minPrice", minPrice.toString());
+    params.append("maxPrice", maxPrice.toString());
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+    router.push(newUrl, { scroll: false });
   };
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const customLabels: Record<string, string> = {
     [categorySlug]: categoryTitle,
@@ -147,9 +161,60 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
   );
 
   useEffect(() => {
-    setAppliedFilters(subcategoryId, {});
-  }, [setAppliedFilters, subcategoryId, productTypeId]);
+    const urlFilters: Record<string, string[]> = {};
+    let hasFilters = false;
 
+    const slugToFitlerName: Record<string, string> = {};
+
+    if (filtersData?.productTypeFilters) {
+      Object.entries(filtersData.productTypeFilters).forEach(
+        ([filterName, filterData]: [string, any]) => {
+          slugToFitlerName[filterData.slug] = filterName;
+        }
+      );
+    }
+
+    searchParams.forEach((value, key) => {
+      const filterName = slugToFitlerName[key];
+      if (filterName) {
+        if (!urlFilters[filterName]) {
+          urlFilters[filterName] = [];
+        }
+
+        urlFilters[filterName].push(value);
+        hasFilters = true;
+      }
+
+      if (key === "sort" && (value === "asc" || value === "desc")) {
+        setSortDirection(value);
+      }
+    });
+
+    const minPriceParam = searchParams.get("minPrice");
+    const maxPriceParam = searchParams.get("maxPrice");
+
+    if (minPriceParam && maxPriceParam) {
+      const minPrice = parseInt(minPriceParam, 10);
+      const maxPrice = parseInt(maxPriceParam, 10);
+
+      if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+        setPriceFilters([minPrice, maxPrice]);
+      }
+    }
+
+    if (hasFilters) {
+      setAppliedFilters(subcategoryId, urlFilters);
+    } else {
+      setAppliedFilters(subcategoryId, {});
+    }
+  }, [
+    setAppliedFilters,
+    subcategoryId,
+    productTypeId,
+    searchParams,
+    filtersData,
+    lng,
+  ]);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const newWorker = new Worker(
@@ -202,18 +267,11 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     (brandName: string) => {
       const currentFilters = appliedFilters[subcategoryId] || {};
       const newFilters = { ...currentFilters };
-      const currentBrands = newFilters["Бренд"] || [];
 
-      if (currentBrands.includes(brandName)) {
-        newFilters["Бренд"] = currentBrands.filter(
-          (brand) => brand !== brandName
-        );
-      } else {
-        newFilters["Бренд"] = [...currentBrands, brandName];
-      }
+      newFilters["brend"] = [brandName];
 
-      if (newFilters["Бренд"]?.length === 0) {
-        delete newFilters["Бренд"];
+      if (newFilters["brend"]?.length === 0) {
+        delete newFilters["brend"];
       }
 
       setAppliedFilters(subcategoryId, newFilters);
@@ -233,6 +291,17 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
 
   const handleSortChange = (direction: "asc" | "desc") => {
     setSortDirection(direction);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.delete("sort");
+
+    params.append("sort", direction);
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
+    router.push(newUrl, { scroll: false });
   };
 
   return (
@@ -262,7 +331,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
       {brandsData?.brands?.data && (
         <BrandFilter
           brands={brandsFilters || []}
-          selectedBrand={appliedFilters[subcategoryId]?.["Бренд"]?.[0] || null}
+          selectedBrand={appliedFilters[subcategoryId]?.["brend"]?.[0] || null}
           onBrandSelect={handleBrandsSelect}
         />
       )}
@@ -290,11 +359,13 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
                   onSortChange={handleSortChange}
                   onPriceRangeChange={handlePriceChange}
                   maxPrice={maxPriceData?.maxProductPrice || 0}
+                  values={priceFilters || []}
                 />
                 {!isFiltersEmpty(filters) && (
                   <ProductFilterSection
                     filters={filters}
                     subcategoryId={subcategoryId}
+                    lng={lng}
                   />
                 )}
               </div>
@@ -308,11 +379,13 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
               onSortChange={handleSortChange}
               onPriceRangeChange={handlePriceChange}
               maxPrice={maxPriceData?.maxProductPrice || 0}
+              values={priceFilters || []}
             />
             {!isFiltersEmpty(filters) && (
               <ProductFilterSection
                 filters={filters}
                 subcategoryId={subcategoryId}
+                lng={lng}
               />
             )}
           </>
