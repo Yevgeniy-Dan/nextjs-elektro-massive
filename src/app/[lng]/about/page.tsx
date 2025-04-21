@@ -2,6 +2,7 @@
 
 import { Metadata } from "next";
 import AboutPageClient from "./AboutClient";
+import { languages } from "@/app/i18n/settings";
 
 interface AboutPageProps {
   params: { lng: string };
@@ -38,5 +39,14 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: AboutPageProps) {
-  return <AboutPageClient params={params} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `about`,
+    }),
+    {}
+  );
+  return (
+    <AboutPageClient params={params} fullTranslatedPath={fullTranslatedPath} />
+  );
 }

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import ThankYouPage from "./ThankYouPage";
+import { languages } from "@/app/i18n/settings";
 
 interface ThankyouPageProps {
   params: { lng: string };
@@ -29,5 +30,13 @@ export async function generateMetadata({
 }
 
 export default function Page() {
-  return <ThankYouPage />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `thankyou`,
+    }),
+    {}
+  );
+
+  return <ThankYouPage fullTranslatedPath={fullTranslatedPath} />;
 }

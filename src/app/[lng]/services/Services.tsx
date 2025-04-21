@@ -3,16 +3,24 @@
 import { useTranslation } from "@/app/i18n/client";
 import ServiceCardGroup from "@/components/services/ServiceCardGroup";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
+import { useLangMatches } from "@/hooks/useLangMatches";
 import React from "react";
 
 interface ServicePageProps {
   params: {
     lng: string;
   };
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
-const ServicePageClient: React.FC<ServicePageProps> = ({ params: { lng } }) => {
+const ServicePageClient: React.FC<ServicePageProps> = ({
+  params: { lng },
+  fullTranslatedPath,
+}) => {
   const { t, i18n } = useTranslation(lng, "services");
+
+  useLangMatches(fullTranslatedPath);
 
   const customLabels = {
     services: t("breadcrumbs.services"),

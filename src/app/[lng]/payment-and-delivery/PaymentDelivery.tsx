@@ -3,7 +3,9 @@
 import { useTranslation } from "@/app/i18n/client";
 import { AWS_CDN_URL } from "@/app/utils/constants";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 import OptimizedImage from "@/components/shared/OptimizedImage";
+import { useLangMatches } from "@/hooks/useLangMatches";
 import Image from "next/image";
 import React from "react";
 
@@ -11,6 +13,7 @@ interface PaymentDeliveryProps {
   params: {
     lng: string;
   };
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 interface Section {
@@ -29,8 +32,10 @@ interface Subsection {
 
 const PaymentDeliveryClient: React.FC<PaymentDeliveryProps> = ({
   params: { lng },
+  fullTranslatedPath,
 }) => {
   const { t } = useTranslation(lng, "paymentDelivery");
+  useLangMatches(fullTranslatedPath);
 
   const customLabels = {
     "payment-and-delivery": t("breadcrumb"),

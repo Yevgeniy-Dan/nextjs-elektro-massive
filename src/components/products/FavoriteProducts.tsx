@@ -4,6 +4,8 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useTranslation } from "@/app/i18n/client";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import { AvailableLanguages } from "../shared/LanguageToggler";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 const TopCard = dynamic(() => import("@/components/home/TopCard"), {
   loading: () => <div className="animate-pulse h-48 bg-gray-200 rounded-lg" />,
@@ -23,10 +25,16 @@ const CenteredSpinner = dynamic(
 
 interface FavoriteProductsListProps {
   lng: string;
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
-const FavoriteProductsList: React.FC<FavoriteProductsListProps> = ({ lng }) => {
+const FavoriteProductsList: React.FC<FavoriteProductsListProps> = ({
+  lng,
+  fullTranslatedPath,
+}) => {
   const { status } = useSession();
+
+  useLangMatches(fullTranslatedPath);
 
   const { favorites, isLoading } = useFavorites();
   const { t } = useTranslation(lng, "common");

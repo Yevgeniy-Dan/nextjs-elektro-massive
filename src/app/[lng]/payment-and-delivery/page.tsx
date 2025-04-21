@@ -3,6 +3,7 @@
 import { Metadata } from "next";
 import React from "react";
 import PaymentDeliveryClient from "./PaymentDelivery";
+import { languages } from "@/app/i18n/settings";
 
 interface PaymentDeliveryProps {
   params: {
@@ -41,5 +42,18 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: PaymentDeliveryProps) {
-  return <PaymentDeliveryClient params={params} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `payment-and-delivery`,
+    }),
+    {}
+  );
+
+  return (
+    <PaymentDeliveryClient
+      params={params}
+      fullTranslatedPath={fullTranslatedPath}
+    />
+  );
 }

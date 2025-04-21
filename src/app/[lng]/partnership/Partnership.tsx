@@ -3,16 +3,21 @@
 import { useTranslation } from "@/app/i18n/client";
 import { AWS_CDN_URL } from "@/app/utils/constants";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 import OptimizedImage from "@/components/shared/OptimizedImage";
+import { useLangMatches } from "@/hooks/useLangMatches";
 import React from "react";
 
 interface PartnershipPageProps {
   params: { lng: string };
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 const PartnershipPageClient: React.FC<PartnershipPageProps> = ({
   params: { lng },
+  fullTranslatedPath,
 }) => {
+  useLangMatches(fullTranslatedPath);
   const { t } = useTranslation(lng, "partnership");
 
   const customLabels = {

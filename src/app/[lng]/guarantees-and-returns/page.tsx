@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import GuaranteeReturnsPageClient from "./GuaranteesClient";
+import { languages } from "@/app/i18n/settings";
 
 interface GuaranteeReturnsProps {
   params: {
@@ -38,5 +39,18 @@ export async function generateMetadata({
 }
 
 export default function Page({ params }: GuaranteeReturnsProps) {
-  return <GuaranteeReturnsPageClient params={params} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `guarantees-and-returns`,
+    }),
+    {}
+  );
+
+  return (
+    <GuaranteeReturnsPageClient
+      params={params}
+      fullTranslatedPath={fullTranslatedPath}
+    />
+  );
 }

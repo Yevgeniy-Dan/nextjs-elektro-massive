@@ -3,12 +3,15 @@
 import { useTranslation } from "@/app/i18n/client";
 import { AWS_CDN_URL } from "@/app/utils/constants";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 import OptimizedImage from "@/components/shared/OptimizedImage";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 interface GuaranteeReturnsProps {
   params: {
     lng: string;
   };
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 interface Section {
@@ -27,7 +30,9 @@ interface Subsection {
 
 const GuaranteeReturnsPageClient: React.FC<GuaranteeReturnsProps> = ({
   params: { lng },
+  fullTranslatedPath,
 }) => {
+  useLangMatches(fullTranslatedPath);
   const { t } = useTranslation(lng, "guaranteesReturns");
 
   const customLabels = {

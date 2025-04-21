@@ -13,14 +13,22 @@ import ErrorMessage from "./ErrorMessage";
 import TopCard from "../home/TopCard";
 import { Box } from "lucide-react";
 import { useTranslation } from "@/app/i18n/client";
+import { AvailableLanguages } from "./LanguageToggler";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 interface SearchResultsProps {
   query: string;
   lng: string;
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({ query, lng }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({
+  query,
+  lng,
+  fullTranslatedPath,
+}) => {
   const { t } = useTranslation(lng, "header");
+  useLangMatches(fullTranslatedPath);
   const { data, isLoading, error } = useQuery<
     GetSearchProductsQuery,
     GetSearchProductsQueryVariables

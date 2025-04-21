@@ -9,11 +9,14 @@ import { BlogMainImage, BlogPost } from "@/types/types";
 import PaginationServerComponent from "./Pagination";
 import { useTranslation } from "@/app/i18n/client";
 import OptimizedImage from "@/components/shared/OptimizedImage";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 interface BlogListClientProps {
   lng: string;
   posts: BlogPost[];
   pagination: React.ReactNode;
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 const getResponsiveImage = (image: BlogMainImage) => {
@@ -34,7 +37,9 @@ export default function BlogClientPage({
   lng,
   posts,
   pagination,
+  fullTranslatedPath,
 }: BlogListClientProps) {
+  useLangMatches(fullTranslatedPath);
   const { t } = useTranslation(lng, "blog");
 
   if (!posts.length) {

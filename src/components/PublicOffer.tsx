@@ -1,10 +1,18 @@
 import React from "react";
 import LocalizedLink from "./shared/LocalizedLink";
+import { AvailableLanguages } from "./shared/LanguageToggler";
+import { useLangMatches } from "@/hooks/useLangMatches";
+import LangMatchesSetter from "./shared/LangMatchesSetter";
+
+interface PublicOfferProps {
+  fullTranslatedPath: Record<AvailableLanguages, string>;
+}
 
 //TODO: add lnag support
-const PublicOffer = () => {
+const PublicOffer: React.FC<PublicOfferProps> = ({ fullTranslatedPath }) => {
   return (
     <div className="max-w-4xl mx-auto p-6 font-sans text-gray-800">
+      <LangMatchesSetter translatedPaths={fullTranslatedPath} />
       <h1 className="text-3xl font-bold text-center mb-6">
         ПУБЛІЧНИЙ ДОГОВІР (ОФЕРТА)
       </h1>

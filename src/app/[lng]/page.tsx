@@ -2,6 +2,8 @@ import dynamic from "next/dynamic";
 
 import { getBanners, getCategories, getHomePageProducts } from "./actions";
 import { Suspense } from "react";
+import { languages } from "../i18n/settings";
+import LangMatchesSetter from "@/components/shared/LangMatchesSetter";
 
 export const revalidate = 3600;
 
@@ -110,8 +112,17 @@ export default async function Home({ params: { lng } }: HomeProps) {
   const products = await getHomePageProducts(lng);
   const categories = await getCategories(lng);
 
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: "",
+    }),
+    {}
+  );
+
   return (
     <div className="w-full">
+      <LangMatchesSetter translatedPaths={fullTranslatedPath} />
       <Banner banners={banners ?? []} />
       <HomePageProductsSection lng={lng} homePageProducts={products} />
       <CategoryGrid lng={lng} data={categories ?? []} />

@@ -6,11 +6,14 @@ import { ExtendedFormProvider } from "@/hooks/extendedFormContext";
 import { OrderFormData, useOrderForm } from "@/hooks/useOrderForm";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import dynamic from "next/dynamic";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 interface CheckoutPageProps {
   params: {
     lng: string;
   };
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
 const ContactDetails = dynamic(
@@ -29,7 +32,12 @@ const Summary = dynamic(() => import("@/components/order/Summary"), {
   ssr: false,
 });
 
-const CheckoutPage: React.FC<CheckoutPageProps> = ({ params }) => {
+const CheckoutPage: React.FC<CheckoutPageProps> = ({
+  params,
+  fullTranslatedPath,
+}) => {
+  useLangMatches(fullTranslatedPath);
+
   const methods = useOrderForm();
   const [activeSection, setActiveSection] = React.useState<number>(1);
   const [showError, setShowError] = useState<boolean>(false);

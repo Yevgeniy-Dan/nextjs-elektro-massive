@@ -53,6 +53,7 @@ export const GET_BLOG_POST_BY_SLUG = gql`
           slug
           metaTitle
           metaDescription
+          langMatches
           image {
             data {
               attributes {

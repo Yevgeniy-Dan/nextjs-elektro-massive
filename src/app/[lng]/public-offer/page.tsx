@@ -1,3 +1,4 @@
+import { languages } from "@/app/i18n/settings";
 import PublicOffer from "@/components/PublicOffer";
 import { Metadata } from "next";
 
@@ -26,5 +27,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function PublicOfferPage() {
-  return <PublicOffer />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `public-offer`,
+    }),
+    {}
+  );
+  return <PublicOffer fullTranslatedPath={fullTranslatedPath} />;
 }

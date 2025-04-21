@@ -1,5 +1,6 @@
 "use server";
 
+import { languages } from "@/app/i18n/settings";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 interface ServicePageProps {
@@ -43,5 +44,18 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: ServicePageProps) {
-  return <ServicePageClient params={params} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `services`,
+    }),
+    {}
+  );
+
+  return (
+    <ServicePageClient
+      params={params}
+      fullTranslatedPath={fullTranslatedPath}
+    />
+  );
 }

@@ -96,6 +96,10 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ lng }) => {
         let translatedPath = getSlug(newLang, langMatches);
 
         if (translatedPath) {
+          if (translatedPath.includes("?")) {
+            translatedPath = translatedPath.split("?")[0];
+          }
+
           const newPath = `/${newLang}/${translatedPath}${queryPart}`;
           await updateProductIds(newLang as Language);
           console.log("Redirecting to:", newPath);

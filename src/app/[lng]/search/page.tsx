@@ -1,4 +1,4 @@
-import { fallbackLng } from "@/app/i18n/settings";
+import { fallbackLng, languages } from "@/app/i18n/settings";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
 import SearchResults from "@/components/shared/SearchResults";
 import { Metadata } from "next";
@@ -41,9 +41,21 @@ const SearchPage: React.FC<SearchPageProps> = ({ searchParams, params }) => {
   const query = searchParams.q || "";
   const lng = params.lng || fallbackLng;
 
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `search${query ? `?q=${encodeURIComponent(query)}` : ""}`,
+    }),
+    {}
+  );
+
   return (
     <Suspense fallback={<CenteredSpinner />}>
-      <SearchResults query={query} lng={lng} />
+      <SearchResults
+        query={query}
+        lng={lng}
+        fullTranslatedPath={fullTranslatedPath}
+      />
     </Suspense>
   );
 };

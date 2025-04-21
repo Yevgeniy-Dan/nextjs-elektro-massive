@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import LocalizedLink from "@/components/shared/LocalizedLink";
 import { useTranslation } from "@/app/i18n/client";
 import BlogClientPage from "./BlogClientPage";
+import { languages } from "@/app/i18n/settings";
 
 interface BlogListProps {
   params: {
@@ -69,7 +70,20 @@ export default async function BlogList({
       />
     ) : null;
 
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `blog`,
+    }),
+    {}
+  );
+
   return (
-    <BlogClientPage lng={lng} pagination={paginationComponent} posts={posts} />
+    <BlogClientPage
+      lng={lng}
+      pagination={paginationComponent}
+      posts={posts}
+      fullTranslatedPath={fullTranslatedPath}
+    />
   );
 }

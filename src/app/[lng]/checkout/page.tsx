@@ -1,3 +1,5 @@
+import { languages } from "@/app/i18n/settings";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
@@ -35,5 +37,15 @@ export async function generateMetadata({
 }
 
 export default function Page({ params }: CheckoutPageProps) {
-  return <CheckoutPage params={params} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `checkout`,
+    }),
+    {}
+  );
+
+  return (
+    <CheckoutPage params={params} fullTranslatedPath={fullTranslatedPath} />
+  );
 }

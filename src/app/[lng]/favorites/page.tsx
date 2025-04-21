@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { languages } from "@/app/i18n/settings";
 
 const CenteredSpinner = dynamic(
   () => import("@/components/shared/CenteredSpinner"),
@@ -57,9 +58,20 @@ export async function generateMetadata({
 }
 
 const FavoritesPage = async ({ params }: FavoritesPageProps) => {
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `favorites`,
+    }),
+    {}
+  );
+
   return (
     <Suspense fallback={<CenteredSpinner />}>
-      <FavoriteProductsList lng={params.lng} />
+      <FavoriteProductsList
+        lng={params.lng}
+        fullTranslatedPath={fullTranslatedPath}
+      />
     </Suspense>
   );
 };

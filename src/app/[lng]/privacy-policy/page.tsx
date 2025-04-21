@@ -1,3 +1,5 @@
+import { languages } from "@/app/i18n/settings";
+import LangMatchesSetter from "@/components/shared/LangMatchesSetter";
 import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
@@ -15,8 +17,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const PrivacyPolicy = () => {
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `privacy-policy`,
+    }),
+    {}
+  );
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      <LangMatchesSetter translatedPaths={fullTranslatedPath} />
       <h1 className="text-3xl font-bold mb-8">Privacy Policy</h1>
 
       <div className="text-sm text-gray-600 mb-8">

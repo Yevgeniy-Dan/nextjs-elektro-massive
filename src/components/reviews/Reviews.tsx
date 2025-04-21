@@ -13,12 +13,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import ErrorMessage from "../shared/ErrorMessage";
 import { useTranslation } from "@/app/i18n/client";
+import { AvailableLanguages } from "../shared/LanguageToggler";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
 interface ReviewProps {
   lng: string;
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
-const Reviews: React.FC<ReviewProps> = ({ lng }) => {
+const Reviews: React.FC<ReviewProps> = ({ lng, fullTranslatedPath }) => {
+  useLangMatches(fullTranslatedPath);
+
   const { t } = useTranslation(lng, "common");
   const queryClient = useQueryClient();
   const [mutationError, setMutationError] = useState<string | null>(null);

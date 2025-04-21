@@ -8,8 +8,16 @@ import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import OrderConfirmation from "@/components/order/OrderConfirmation";
 import CenteredSpinner from "@/components/shared/CenteredSpinner";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
+import { useLangMatches } from "@/hooks/useLangMatches";
 
-const ThankYouPage: React.FC = () => {
+interface ThankYouPageProps {
+  fullTranslatedPath: Record<AvailableLanguages, string>;
+}
+
+const ThankYouPage: React.FC<ThankYouPageProps> = ({ fullTranslatedPath }) => {
+  useLangMatches(fullTranslatedPath);
+
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get("orderNumber");
 

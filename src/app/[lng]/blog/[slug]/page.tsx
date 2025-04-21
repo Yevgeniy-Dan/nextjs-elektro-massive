@@ -7,6 +7,10 @@ import ReactMarkdown from "react-markdown";
 
 import { BlogArticleBreadcrumbs } from "../BlogBreadcrumbs";
 import { getBlogPostBySlug } from "../actions";
+import { languages } from "@/app/i18n/settings";
+import { LANG_MATCHES_KEY } from "@/app/utils/constants";
+import { cookies } from "next/headers";
+import LangMatchesSetter from "@/components/shared/LangMatchesSetter";
 
 export const dynamic = "force-static";
 export const revalidate = 1500;
@@ -68,8 +72,17 @@ export default async function BlogPost({
     notFound();
   }
 
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `blog/${post.attributes?.langMatches?.[l]}`,
+    }),
+    {}
+  );
+
   return (
     <div className="container mx-auto px-4 py-8">
+      <LangMatchesSetter translatedPaths={fullTranslatedPath} />
       {post.attributes && (
         <BlogArticleBreadcrumbs
           lng={lng}

@@ -1,3 +1,4 @@
+import { languages } from "@/app/i18n/settings";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
@@ -40,5 +41,18 @@ export async function generateMetadata({
 }
 
 export default function Page({ params }: PartnershipPageProps) {
-  return <PartnershipPageClient params={params} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `partnership`,
+    }),
+    {}
+  );
+
+  return (
+    <PartnershipPageClient
+      params={params}
+      fullTranslatedPath={fullTranslatedPath}
+    />
+  );
 }

@@ -6,12 +6,19 @@ import { useTranslation } from "@/app/i18n/client";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import OptimizedImage from "@/components/shared/OptimizedImage";
 import { AWS_CDN_URL } from "@/app/utils/constants";
+import { useLangMatches } from "@/hooks/useLangMatches";
+import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 
 interface AboutPageProps {
   params: { lng: string };
+  fullTranslatedPath: Record<AvailableLanguages, string>;
 }
 
-const AboutPageClient: React.FC<AboutPageProps> = ({ params: { lng } }) => {
+const AboutPageClient: React.FC<AboutPageProps> = ({
+  params: { lng },
+  fullTranslatedPath,
+}) => {
+  useLangMatches(fullTranslatedPath);
   const { t } = useTranslation(lng, "about");
 
   const customLabels = {

@@ -1,5 +1,6 @@
 "use server";
 
+import { languages } from "@/app/i18n/settings";
 import Reviews from "@/components/reviews/Reviews";
 import { Metadata } from "next";
 
@@ -40,7 +41,15 @@ export async function generateMetadata({
 }
 
 const ReviewsPage: React.FC<ReviewsPageProps> = ({ params }) => {
-  return <Reviews lng={params.lng} />;
+  const fullTranslatedPath = languages.reduce(
+    (acc, l) => ({
+      ...acc,
+      [l]: `reviews`,
+    }),
+    {}
+  );
+
+  return <Reviews lng={params.lng} fullTranslatedPath={fullTranslatedPath} />;
 };
 
 export default ReviewsPage;
