@@ -15,18 +15,25 @@ export const GET_FAVORITE_PRODUCTS = gql`
               image_link
               slug
               discount
-              parameter_values {
+              product_parameters {
                 data {
                   id
                   attributes {
-                    value
-                    code
-                    parameter_type {
+                    parameter_value {
                       data {
                         id
                         attributes {
-                          name
-                          slug
+                          value
+                          code
+                          parameter_type {
+                            data {
+                              id
+                              attributes {
+                                name
+                                slug
+                              }
+                            }
+                          }
                         }
                       }
                     }

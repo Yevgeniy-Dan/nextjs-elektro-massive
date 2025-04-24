@@ -2,7 +2,7 @@ import { CartProductFieldsFragment, Product } from "@/gql/graphql";
 import { transformProductParams } from "./transformProductParams";
 
 export function calculateProductDimensions(
-  product: Pick<CartProductFieldsFragment, "parameter_values">
+  product: Pick<CartProductFieldsFragment, "product_parameters">
 ): {
   volume: number;
   weight: number;
@@ -15,7 +15,7 @@ export function calculateProductDimensions(
   let length = 10;
   let height = 10;
 
-  const params = transformProductParams(product.parameter_values);
+  const params = transformProductParams(product.product_parameters);
 
   if (params["Вага"]) {
     const weightStr = params["Вага"].toLowerCase();

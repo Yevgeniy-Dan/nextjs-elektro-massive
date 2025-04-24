@@ -21,18 +21,25 @@ import { gql } from "@apollo/client";
 //             id
 //             link
 //           }
-//           parameter_values {
+//           product_parameters {
 //             data {
 //               id
 //               attributes {
-//                 value
-//                 code
-//                 parameter_type {
+//                 parameter_value {
 //                   data {
 //                     id
 //                     attributes {
-//                       name
-//                       slug
+//                       value
+//                       code
+//                       parameter_type {
+//                         data {
+//                           id
+//                           attributes {
+//                             name
+//                             slug
+//                           }
+//                         }
+//                       }
 //                     }
 //                   }
 //                 }
@@ -87,18 +94,25 @@ export const GET_PRODUCT_BY_SLUG = gql`
             id
             link
           }
-          parameter_values {
+          product_parameters {
             data {
               id
               attributes {
-                value
-                code
-                parameter_type {
+                parameter_value {
                   data {
                     id
                     attributes {
-                      name
-                      slug
+                      value
+                      code
+                      parameter_type {
+                        data {
+                          id
+                          attributes {
+                            name
+                            slug
+                          }
+                        }
+                      }
                     }
                   }
                 }

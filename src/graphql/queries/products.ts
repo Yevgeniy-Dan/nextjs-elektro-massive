@@ -15,18 +15,25 @@ export const GET_PRODUCTS = gql`
           image_link
           slug
           locale
-          parameter_values {
+          product_parameters {
             data {
               id
               attributes {
-                value
-                code
-                parameter_type {
+                parameter_value {
                   data {
                     id
                     attributes {
-                      name
-                      slug
+                      value
+                      code
+                      parameter_type {
+                        data {
+                          id
+                          attributes {
+                            name
+                            slug
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -92,18 +99,25 @@ export const GET_FILTERED_PRODUCTS = gql`
         part_number
         retail
         image_link
-        parameter_values {
+        product_parameters {
           data {
             id
             attributes {
-              value
-              code
-              parameter_type {
+              parameter_value {
                 data {
                   id
                   attributes {
-                    name
-                    slug
+                    value
+                    code
+                    parameter_type {
+                      data {
+                        id
+                        attributes {
+                          name
+                          slug
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -185,18 +199,25 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           currency
           image_link
           slug
-          parameter_values {
+          product_parameters {
             data {
               id
               attributes {
-                value
-                code
-                parameter_type {
+                parameter_value {
                   data {
                     id
                     attributes {
-                      name
-                      slug
+                      value
+                      code
+                      parameter_type {
+                        data {
+                          id
+                          attributes {
+                            name
+                            slug
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -247,18 +268,25 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           currency
           image_link
           slug
-          parameter_values {
+          product_parameters {
             data {
               id
               attributes {
-                value
-                code
-                parameter_type {
+                parameter_value {
                   data {
                     id
                     attributes {
-                      name
-                      slug
+                      value
+                      code
+                      parameter_type {
+                        data {
+                          id
+                          attributes {
+                            name
+                            slug
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -311,18 +339,25 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           currency
           image_link
           slug
-          parameter_values {
+          product_parameters {
             data {
               id
               attributes {
-                value
-                code
-                parameter_type {
+                parameter_value {
                   data {
                     id
                     attributes {
-                      name
-                      slug
+                      value
+                      code
+                      parameter_type {
+                        data {
+                          id
+                          attributes {
+                            name
+                            slug
+                          }
+                        }
+                      }
                     }
                   }
                 }

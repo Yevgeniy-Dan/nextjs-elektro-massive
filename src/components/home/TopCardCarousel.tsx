@@ -97,7 +97,9 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
             image_link: card.attributes?.image_link ?? "",
             retail: card.attributes?.retail ?? 0,
             title: card.attributes?.title ?? "",
-            parameter_values: card.attributes?.parameter_values ?? { data: [] },
+            product_parameters: card.attributes?.product_parameters ?? {
+              data: [],
+            },
             part_number: card.attributes?.part_number ?? "",
             slug: card.attributes?.slug ?? "",
           }}

@@ -6,7 +6,7 @@ import PurchaseSection from "./PurchaseSection";
 interface ProductHeaderProps {
   title: string;
   part_number: string;
-  params: ProductAttributes["parameter_values"];
+  params: ProductAttributes["product_parameters"];
   initialParamsCount: number;
   product: ProductAttributes;
   onBuyClick: (qty: number) => void;

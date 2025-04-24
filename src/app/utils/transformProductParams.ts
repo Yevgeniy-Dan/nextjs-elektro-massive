@@ -5,12 +5,14 @@ export interface ProductParams {
 }
 
 export const transformProductParams = (
-  parameter_values: ProductAttributes["parameter_values"]
+  product_parameters: ProductAttributes["product_parameters"]
 ): ProductParams => {
-  const params = parameter_values?.data.reduce((acc, paramValue) => {
+  const params = product_parameters?.data.reduce((acc, productParam) => {
     const name =
-      paramValue.attributes?.parameter_type?.data?.attributes?.name || "";
-    const value = paramValue.attributes?.value || "";
+      productParam.attributes?.parameter_value?.data?.attributes?.parameter_type
+        ?.data?.attributes?.name || "";
+    const value =
+      productParam.attributes?.parameter_value?.data?.attributes?.value || "";
     return {
       ...acc,
       [name]: value,

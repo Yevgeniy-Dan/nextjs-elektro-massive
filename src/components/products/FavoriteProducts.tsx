@@ -69,7 +69,8 @@ const FavoriteProductsList: React.FC<FavoriteProductsListProps> = ({
               retail: f.product?.data?.attributes?.retail ?? 0,
               image_link: f.product?.data?.attributes?.image_link,
               title: f.product?.data?.attributes?.title ?? "",
-              parameter_values: f.product?.data?.attributes?.parameter_values,
+              product_parameters:
+                f.product?.data?.attributes?.product_parameters,
               slug: f.product?.data?.attributes?.slug ?? "",
             }}
             categorySlug={

@@ -6,7 +6,7 @@ import { transformProductParams } from "@/app/utils/transformProductParams";
 
 interface ProductParamsProps {
   part_number: string;
-  params: ProductAttributes["parameter_values"];
+  params: ProductAttributes["product_parameters"];
   initialParamsCount: number;
 }
 
