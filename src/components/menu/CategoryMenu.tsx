@@ -176,7 +176,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                             category.attributes?.icon?.data
                               ? process.env.NEXT_PUBLIC_STRAPI_URL +
                                 category.attributes.icon.data.attributes?.url
-                              : "https://via.placeholder.com/24x24"
+                              : "https://placehold.co/24x24"
                           }`}
                           alt={category.attributes?.name ?? ""}
                           width={36}

@@ -51,7 +51,7 @@ const SubcategoryGrid: React.FC<SubcategoryGridProps> = ({
             src={`${
               isImage
                 ? process.env.NEXT_PUBLIC_STRAPI_URL + isImage.attributes?.url
-                : "https://via.placeholder.com/48x48"
+                : "https://placehold.co/48x48"
             }`}
             alt={subcategory.attributes?.title ?? ""}
             width={80}

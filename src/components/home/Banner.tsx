@@ -67,7 +67,7 @@ const Banner: React.FC<BannerProps> = ({ banners }) => {
                   src={getResponsiveImage(image)}
                   alt={banner.attributes?.altText || ""}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 50vw"
+                  sizes="(max-width: 500px) 100vw, (max-width: 750px) 100vw, (max-width: 1000px) 100vw, 100vw"
                   className="object-cover rounded-lg"
                   priority
                 />
