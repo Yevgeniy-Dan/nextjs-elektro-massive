@@ -311,9 +311,7 @@ const ProductListingClient: React.FC<ProductListingClientProps> = ({
     >
       <Breadcrumbs customLabels={customLabels} />
       <h1 className="text-gray-700 font-medium mb-2 py-5 md:text-2xl lg:text-3xl">
-        {productTypeSlug
-          ? `${productTypeTitle} ${subcategoryTitle.toLowerCase()}`
-          : subcategoryTitle}
+        {productTypeSlug ? `${productTypeTitle}` : subcategoryTitle}
       </h1>
       <ProductTypeSelector
         types={productTypesData?.productTypes?.data || []}
