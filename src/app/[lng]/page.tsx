@@ -16,7 +16,9 @@ interface HomeProps {
 const Banner = dynamic(() => import("@/components/home/Banner"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[300px] md:h-[400px] lg:h-[500px] bg-gray-100 animate-pulse rounded-md pt-5"></div>
+    <div className="relative w-full py-2">
+      <div className="w-full h-[300px] md:h-[400px] lg:h-[500px] bg-gray-100 animate-pulse rounded-md py-2"></div>
+    </div>
   ),
 });
 
