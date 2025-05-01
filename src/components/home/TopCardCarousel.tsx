@@ -106,7 +106,7 @@ const TopCardCarousel: React.FC<TopCardCarousel> = ({
           productSlug={card.attributes?.slug ?? ""}
           categorySlug={
             card.attributes?.subcategory?.data?.attributes?.categories?.data[0]
-              .attributes?.slug ?? ""
+              ?.attributes?.slug ?? ""
           }
           subcategorySlug={
             card.attributes?.subcategory?.data?.attributes?.slug ?? ""

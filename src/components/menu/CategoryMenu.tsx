@@ -27,6 +27,8 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
   const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  const [submenuPosition, setSubmenuPosition] = useState<number>(0);
+
   const categoryRefs = useRef<Array<HTMLDivElement | null>>([]);
   const delayTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -84,6 +86,14 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
 
   const handleCategoryHover = (index: number) => {
     setOpenSubmenu(index);
+
+    if (categoryRefs.current[index]) {
+      const menuTop = menuRef.current?.getBoundingClientRect().top || 0;
+      const categoryTop =
+        categoryRefs.current[index]?.getBoundingClientRect().top || 0;
+
+      setSubmenuPosition(categoryTop - menuTop - 43);
+    }
   };
 
   const handleCategoryClick = (index: number) => {
@@ -161,7 +171,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                     onMouseEnter={() => handleCategoryHover(index)}
                   >
                     <div
-                      className={`flex items-center justify-start space-x-5 p-6 py-5 text-black font-semibold border-b border-black sm:border-none hover:bg-white invert hover:invert-0 ${
+                      className={`flex items-center justify-start space-x-5 p-6 py-3 text-black font-semibold border-b border-black sm:border-none hover:bg-white invert hover:invert-0 ${
                         index === 0 && "rounded-tl-2xl"
                       } ${
                         index === (menuItems?.categories?.data.length ?? 0) - 1
@@ -176,7 +186,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                             category.attributes?.icon?.data
                               ? process.env.NEXT_PUBLIC_STRAPI_URL +
                                 category.attributes.icon.data.attributes?.url
-                              : "https://via.placeholder.com/24x24"
+                              : "https://placehold.co/24x24"
                           }`}
                           alt={category.attributes?.name ?? ""}
                           width={36}
@@ -202,6 +212,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ lng }) => {
                         toggleMenu(e);
                       }}
                       toggleMenu={toggleMenu}
+                      position={submenuPosition}
                     />
                   </div>
                 ))

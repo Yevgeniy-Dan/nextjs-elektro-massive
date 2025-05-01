@@ -5,6 +5,7 @@ import SubcategoryGrid from "./SubcategoryGrid";
 interface CategoryProps {
   category: Category;
   isOpen: boolean;
+  position?: number;
   toggleMenu: (e: React.MouseEvent) => void;
   toggleCategory: (e: React.MouseEvent) => void;
   lng: string;
@@ -13,6 +14,7 @@ interface CategoryProps {
 const CategorySubmenu: React.FC<CategoryProps> = ({
   category,
   isOpen,
+  position = 0,
   toggleCategory,
   toggleMenu,
   lng,
@@ -36,7 +38,8 @@ const CategorySubmenu: React.FC<CategoryProps> = ({
 
       {/* Container for large screens */}
       <div
-        className={`hidden sm:block absolute top-0 left-full bg-gray-800 text-white rounded-r-2xl ${isOpen ? "" : "invisible"}`}
+        className={`hidden sm:block absolute left-full bg-gray-800 text-white rounded-r-2xl ${isOpen ? "" : "invisible"}`}
+        style={{ top: `${position}px`, transition: "top 0.2s ease-out" }}
       >
         <div className="w-screen max-w-screen-xl sm:w-auto sm:min-w-[500px] lg:min-w-[700px] xl:min-w-[900px]">
           <SubcategoryGrid
