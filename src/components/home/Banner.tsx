@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { BannerImage, BannersData } from "@/types/types";
 import OptimizedImage from "../shared/OptimizedImage";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AWS_CDN_URL } from "@/app/utils/constants";
 import { dynamicBlurDataUrl } from "@/app/utils/dynamicBlurDataUrl";
@@ -24,11 +25,19 @@ const Banner: React.FC<BannerProps> = ({ banners }) => {
   const [data, setData] = useState<BannerData[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "start",
-    containScroll: "trimSnaps",
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+      containScroll: "trimSnaps",
+    },
+    [
+      Autoplay({
+        delay: 5000,
+        stopOnInteraction: false,
+      }),
+    ]
+  );
 
   const scrollPrev = useCallback(
     () => emblaApi && emblaApi.scrollPrev(),
