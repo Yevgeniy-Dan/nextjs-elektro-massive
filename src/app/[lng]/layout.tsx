@@ -25,12 +25,41 @@ const roboto = Roboto({
 
 export const revalidate = 1800;
 
-export const metadata: Metadata = {
-  title:
-    "ELEKTRO-MASSIVE | Електротовари, Сантехніка, Будматеріали для дому та ремонту",
-  description:
-    "ELEKTRO-MASSIVE - широкий асортимент електротоварів, сантехніки та будматеріалів. Замовляйте онлайн з доставкою по Україні. Вигідні ціни та висока якість.",
-};
+interface LayoutProps {
+  params: {
+    lng: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: LayoutProps): Promise<Metadata> {
+  const canonicalPath = `/`;
+  const canonicalUrl = `${process.env.NEXT_PUBLIC_API_URL}${canonicalPath}`;
+
+  const title =
+    params.lng === "uk"
+      ? "ELEKTRO-MASSIVE | Електротовари, Сантехніка, Будматеріали для дому та ремонту"
+      : "ELEKTRO-MASSIVE | Электротовары, Сантехника, Стройматериалы для дома и ремонта";
+
+  const description =
+    params.lng === "uk"
+      ? "ELEKTRO-MASSIVE - широкий асортимент електротоварів, сантехніки та будматеріалів. Замовляйте онлайн з доставкою по Україні. Вигідні ціни та висока якість."
+      : "ELEKTRO-MASSIVE – широкий ассортимент электротоваров, сантехники и стройматериалов. Заказывайте онлайн с доставкой по Украине. Выгодные цены и высокое качество.";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        uk: `${process.env.NEXT_PUBLIC_API_URL}/uk${canonicalPath}`,
+        ru: `${process.env.NEXT_PUBLIC_API_URL}/ru${canonicalPath}`,
+        "x-default": canonicalUrl,
+      },
+    },
+  };
+}
 
 export function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
