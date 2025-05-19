@@ -15,6 +15,7 @@ export const GET_PRODUCTS = gql`
           image_link
           slug
           locale
+          in_stock
           product_parameters {
             data {
               id
@@ -98,6 +99,7 @@ export const GET_FILTERED_PRODUCTS = gql`
         title
         part_number
         retail
+        in_stock
         image_link
         product_parameters {
           data {
@@ -197,6 +199,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           part_number
           retail
           currency
+          in_stock
           image_link
           slug
           product_parameters {
@@ -266,6 +269,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           part_number
           retail
           currency
+          in_stock
           image_link
           slug
           product_parameters {
@@ -337,6 +341,7 @@ export const GET_HOME_PAGE_PRODUCTS = gql`
           part_number
           retail
           currency
+          in_stock
           image_link
           slug
           product_parameters {

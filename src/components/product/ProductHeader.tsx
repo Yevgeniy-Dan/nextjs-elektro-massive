@@ -31,6 +31,20 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
     <div className="hidden md:block border-t-2 -ml-16 border-gray-300 mb-2"></div>
     <div className="lg:flex ">
       <div className="w-full lg:w-2/3 pr-4">
+        <div className="flex items-center gap-2 mb-2">
+          <span
+            className={`${
+              (product?.in_stock ?? 0) > 0 ? "text-green-500" : "text-red-800"
+            }`}
+          >
+            {(product?.in_stock ?? 0) > 0 ? "В наявності" : "Немає в наявності"}
+          </span>
+          <div
+            className={`w-4 h-4 rounded-full ${
+              (product?.in_stock ?? 0) > 0 ? "bg-green-500" : "bg-red-500"
+            }`}
+          ></div>
+        </div>
         <div className="hidden md:block">
           <ProductParams
             part_number={part_number}

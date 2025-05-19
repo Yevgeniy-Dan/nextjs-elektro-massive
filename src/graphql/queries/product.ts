@@ -15,6 +15,7 @@ import { gql } from "@apollo/client";
 //           image_link
 //           description
 //           discount
+//           in_stock
 //           slug
 //           locale
 //           additional_images {
@@ -87,6 +88,7 @@ export const GET_PRODUCT_BY_SLUG = gql`
           image_link
           description
           discount
+          in_stock
           slug
           locale
           langMatches
