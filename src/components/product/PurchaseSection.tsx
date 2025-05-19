@@ -55,7 +55,19 @@ const PurchaseSection: React.FC<PurchaseSectionProps> = ({
           >
             -
           </button>
-          <span className="w-8 text-center">{quantity}</span>
+          <input
+            type="number"
+            className="w-14 text-center outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            value={quantity}
+            min={1}
+            onChange={(e) => setQuantity(parseInt(e.target.value))}
+            onBlur={(e) => {
+              const value = parseInt(e.target.value);
+              if (isNaN(value) || value < 1) {
+                setQuantity(1);
+              }
+            }}
+          />
           <button
             onClick={() => setQuantity(quantity + 1)}
             className="px-3 py-1 border rounded"
