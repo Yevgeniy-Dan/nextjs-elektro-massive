@@ -10,14 +10,15 @@ export function calculateProductDimensions(
   length: number;
   height: number;
 } {
-  let weight = 0.1; // Default weight in kg
-  let width = 10; // Default dimensions in cm
-  let length = 10;
-  let height = 10;
+  let weight = 0.01; // Default weight in kg
+  let width = 5; // Default dimensions in cm
+  let length = 5;
+  let height = 5;
 
   const params = transformProductParams(product.product_parameters);
 
   if (params["Вага"]) {
+    //FIXME: move to constants and see the key for Вага in the strapi backend filters
     const weightStr = params["Вага"].toLowerCase();
     const weightMatch = weightStr.match(/(\d+(\.\d+)?)\s*(г|кг|g|kg)?/);
 
@@ -35,6 +36,7 @@ export function calculateProductDimensions(
   }
 
   if (params["Розміри"]) {
+    //FIXME: move to constants and see the key for Розміри in the strapi backend filters
     const dimensionsStr = params["Розміри"].replace(/mm/g, "");
 
     const dimensions = dimensionsStr
@@ -52,6 +54,11 @@ export function calculateProductDimensions(
       }
     }
   }
+
+  weight = Math.max(weight, 0.01);
+  width = Math.max(width, 0.5);
+  length = Math.max(length, 0.5);
+  height = Math.max(height, 0.5);
 
   const volume = (width * length * height) / 1000000; // Convert cm³ to m³
 

@@ -26,7 +26,7 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid },
     trigger,
     clearErrors,
   } = useExtendedFormContext<OrderFormData>();
@@ -230,8 +230,8 @@ const Summary: React.FC<SummaryProps> = ({ onErrors, lng }) => {
 
         <button
           onClick={handleBuyClick}
-          disabled={isSubmitting || calculateDiscountTotal === 0}
-          className="w-full mt-4 bg-green-500 text-white py-3 rounded-md font-semibold hover:bg-green-600 transition-colors"
+          disabled={isSubmitting || calculateDiscountTotal === 0 || !isValid}
+          className="w-full mt-4 bg-green-500 text-white py-3 rounded-md font-semibold hover:bg-green-600 transition-colors disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed disabled::hover:bg-gray-400"
         >
           {isSubmitting ? "Обробка" : "Купити"}
         </button>

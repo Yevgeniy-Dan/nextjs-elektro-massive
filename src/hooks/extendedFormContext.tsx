@@ -1,14 +1,18 @@
-import { UseFormReturn, FieldValues } from "react-hook-form";
+import {
+  UseFormReturn,
+  FieldValues,
+  UseFormSetError,
+  UseFormClearErrors,
+} from "react-hook-form";
 import React, { createContext, useContext, PropsWithChildren } from "react";
 import { ICity, IWarehouse } from "@/app/actions/nova-poshta";
 
 export type ExtendedUseFormReturn<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any
+  TContext = any,
 > = UseFormReturn<TFieldValues, TContext> & {
   handleCardInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCardFocus: (event: React.FocusEvent<HTMLInputElement>) => void;
-  cardType: string;
 
   handleCityInput: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -17,13 +21,16 @@ export type ExtendedUseFormReturn<
   handleWarehouseSelect: (warehouse: IWarehouse) => void;
   cities: ICity[];
   warehouses: IWarehouse[];
+  cardType: string;
+  setError: UseFormSetError<TFieldValues>;
+  clearErrors: UseFormClearErrors<TFieldValues>;
 };
 
 const FormContext = createContext<ExtendedUseFormReturn<any, any> | null>(null);
 
 export const ExtendedFormProvider = <
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any
+  TContext = any,
 >({
   children,
   methods,
@@ -37,7 +44,7 @@ export const ExtendedFormProvider = <
 
 export const useExtendedFormContext = <
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any
+  TContext = any,
 >(): ExtendedUseFormReturn<TFieldValues, TContext> => {
   const context = useContext(FormContext);
   if (!context) {

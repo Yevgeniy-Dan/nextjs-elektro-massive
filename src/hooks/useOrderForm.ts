@@ -23,9 +23,6 @@ import {
   Enum_Order_Paymentmethod,
 } from "@/gql/graphql";
 
-const WEIGHT_THRESHOLD = 30;
-const CARGO_WAREHOUSE_REF = "9a68df70-0267-42a8-bb5c-37f427e36ee4";
-
 const orderFormSchema = z
   .object({
     contactData: z.object({
@@ -107,7 +104,7 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
     mode: "onTouched",
   });
 
-  const { setValue, trigger } = methods;
+  const { setValue, trigger, setError, clearErrors } = methods;
 
   const calculateTotalWeight = useCallback(async () => {
     const { totalWeight } = await getProductsParams(cartItems);
@@ -178,22 +175,31 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
       shouldValidate: true,
     });
     setCities([]);
+    setWarehouses([]);
+
+    setValue("addressData.warehouseRef", "", {
+      shouldValidate: false,
+    });
+    setValue("addressData.warehouseDescription", "", {
+      shouldValidate: false,
+    });
 
     try {
-      const warehouseData = await getNovaPoshtaWarehouses(city.Ref);
       const totalWeight = await calculateTotalWeight();
-
-      // if (totalWeight > WEIGHT_THRESHOLD) {
-      //   const filteredWarehouses = warehouseData.filter(
-      //     (warehouse) => warehouse.TypeOfWarehouse === CARGO_WAREHOUSE_REF
-      //   );
-      //   setWarehouses(filteredWarehouses);
-      // } else {
-      console.log("Все отделения: ", warehouseData);
-      setWarehouses(warehouseData);
-      // }
+      const result = await getNovaPoshtaWarehouses(city.Ref, totalWeight);
+      if (result.error) {
+        setError("addressData.warehouseRef", {
+          message: result.error,
+        });
+      } else {
+        clearErrors("addressData.warehouseRef");
+        setWarehouses(result.warehouses);
+      }
     } catch (err) {
       console.error("Error fetching warehouses:", err);
+      setError("addressData.warehouseRef", {
+        message: "Не вдалося отримати відділення Нової Пошти.",
+      });
       setWarehouses([]);
     }
   };
@@ -217,5 +223,7 @@ export const useOrderForm = (): ExtendedUseFormReturn<OrderFormData> => {
     warehouses,
     cities,
     cardType,
+    setError,
+    clearErrors,
   };
 };

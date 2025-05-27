@@ -12,6 +12,8 @@ import { CartItemType } from "@/types/types";
 
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const API_KEY = process.env.NOVA_POSHTA_API_KEY;
+const WEIGHT_THRESHOLD = 30;
+const CARGO_WAREHOUSE_REF = "9a68df70-0267-42a8-bb5c-37f427e36ee4"; // Вантажне відділення
 
 interface INovaPoshtaMethodProperties {
   PayerType: string;
@@ -154,8 +156,9 @@ async function getWarehousesByType(
 }
 
 export async function getNovaPoshtaWarehouses(
-  cityRef: string
-): Promise<IWarehouse[]> {
+  cityRef: string,
+  totalWeight: number
+): Promise<{ warehouses: IWarehouse[]; error?: string }> {
   const warehouseTypes = [
     "9a68df70-0267-42a8-bb5c-37f427e36ee4", // Вантажне відділення
     "841339c7-591a-42e2-8233-7a0a00f0ed6f", // Відділення
@@ -167,12 +170,34 @@ export async function getNovaPoshtaWarehouses(
     //   getWarehousesByType(cityRef, type)
     // );
     const warehouses = await getWarehousesByType(cityRef);
-    const warehouseArrays = await Promise.all(warehouses);
+    let warehouseArrays = await Promise.all(warehouses);
 
-    return warehouseArrays.flat();
+    warehouseArrays = warehouseArrays.flat();
+
+    let filteredWarehouses: IWarehouse[] = [];
+
+    if (totalWeight > WEIGHT_THRESHOLD) {
+      filteredWarehouses = warehouseArrays.filter(
+        (warehouse) => warehouse.TypeOfWarehouse === CARGO_WAREHOUSE_REF
+      );
+      if (filteredWarehouses.length === 0) {
+        return {
+          warehouses: [],
+          error:
+            "У цьому місті немає грузових відділень для посилок вагою понад 30 кг. Виберіть інше найближче до вас місто.", //FIXME: lang support
+        };
+      }
+    } else {
+      filteredWarehouses = warehouseArrays;
+    }
+
+    return { warehouses: filteredWarehouses };
   } catch (error) {
     console.error("Error fetching warehouses:", error);
-    return [];
+    return {
+      warehouses: [],
+      error: "Не вдалося отримати відділення Нової Пошти", //FIXME: lang support
+    };
   }
 }
 
@@ -193,6 +218,19 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     optionsSeat /*if you plan to create an EN with/to a post office*/,
     totalVolume,
   } = await getProductsParams(data.cartItems);
+
+  const senderAddress =
+    totalWeight > WEIGHT_THRESHOLD
+      ? process.env.NOVA_POSHTA_SENDER_ADDRESS_CARGO
+      : process.env.NOVA_POSHTA_SENDER_ADDRESS_REGULAR;
+
+  if (!senderAddress) {
+    throw new Error(
+      totalWeight > WEIGHT_THRESHOLD
+        ? "Вантажне відділення відправника не налаштоване"
+        : "Звичайне відділення відправника не налаштоване"
+    );
+  }
 
   const description =
     data.cartItems.reduce((acc, item) => {
@@ -216,7 +254,7 @@ export async function createNovaPoshtaShipment(data: IShipmentData) {
     Cost: Math.ceil(data.totalAmount).toString(),
     CitySender: await getSenderCityRef("Ізмаїл"),
     Sender: process.env.NOVA_POSHTA_SENDER_REF,
-    SenderAddress: "37de97e8-30c7-11ec-b7f0-b8830365bd14",
+    SenderAddress: senderAddress,
     ContactSender: contactSender.Ref,
     SendersPhone: contactSender.Phones,
     CityRecipient: data.cityRef,
