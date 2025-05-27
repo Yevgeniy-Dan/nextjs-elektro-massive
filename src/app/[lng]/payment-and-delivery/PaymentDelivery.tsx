@@ -6,8 +6,8 @@ import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import { AvailableLanguages } from "@/components/shared/LanguageToggler";
 import OptimizedImage from "@/components/shared/OptimizedImage";
 import { useLangMatches } from "@/hooks/useLangMatches";
-import Image from "next/image";
 import React from "react";
+import ReactMarkdown from "react-markdown";
 
 interface PaymentDeliveryProps {
   params: {
@@ -46,12 +46,33 @@ const PaymentDeliveryClient: React.FC<PaymentDeliveryProps> = ({
   const renderContent = (content: string | string[] | undefined) => {
     if (!content) return null;
     if (typeof content === "string") {
-      return <p className="text-base lg:text-lg">{content}</p>;
+      return (
+        <ReactMarkdown
+          className="text-base lg:text-lg"
+          components={{
+            p: ({ children }) => <span>{children}</span>,
+            strong: ({ children }) => (
+              <strong className="font-bold">{children}</strong>
+            ),
+          }}
+        >
+          {content}
+        </ReactMarkdown>
+      );
     }
     return content.map((paragraph, index) => (
-      <p key={index} className="text-base lg:text-lg">
+      <ReactMarkdown
+        key={index}
+        className="text-base lg:text-lg"
+        components={{
+          p: ({ children }) => <span>{children}</span>,
+          strong: ({ children }) => (
+            <strong className="font-bold">{children}</strong>
+          ),
+        }}
+      >
         {paragraph}
-      </p>
+      </ReactMarkdown>
     ));
   };
 
