@@ -97,26 +97,26 @@ const AboutPageClient: React.FC<AboutPageProps> = ({
                 {t("sections.achievements.content")}
               </span>
             </p>
-            <div className="relative w-3/5 -my-2 rounded-xl">
+            <div className="w-full md:w-3/5 aspect-video rounded-xl overflow-hidden">
               <OptimizedImage
                 src={`${AWS_CDN_URL}shared/public/about/achievments.jpg`}
                 alt="Image 1"
                 fill
-                sizes="60vw"
-                className=" object-cover rounded-xl"
+                sizes="(max-width: 768px) 100vw, 60vw"
+                className="w-full h-auto object-cover rounded-xl"
               />
             </div>
           </div>
 
           {/* INNOVATIONS AND THE FUTURE */}
           <div className="flex justify-between  relative mt-10  h-auto ">
-            <div className="relative w-3/5 -my-2 rounded-xl">
+            <div className="w-full md:w-3/5 aspect-video rounded-xl overflow-hidden">
               <OptimizedImage
                 src={`${AWS_CDN_URL}shared/public/about/innovations.jpg`}
                 alt="Image 1"
                 fill
-                sizes="60vw"
-                className=" object-cover rounded-xl"
+                sizes="(max-width: 768px) 100vw, 60vw"
+                className="w-full h-auto object-cover rounded-xl"
               />
             </div>
             <p className="flex flex-col items-center bg-gray-200 text-gray-950 font-thin  text-sm sm:text-lg text-justify max-w-prose  w-2/5  overflow-hidden rounded-2xl">
