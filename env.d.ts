@@ -21,9 +21,6 @@ namespace NodeJS {
     NOVA_POSHTA_SENDER_ADDRESS_REGULAR: string;
     NOVA_POSHTA_SENDER_ADDRESS_CARGO: string;
 
-    AWS_ACCESS_KEY_ID: string;
-    AWS_SECRET_ACCESS_KEY: string;
-    AWS_REGION: string;
     NEXT_PUBLIC_AWS_BUCKET_NAME: string;
     AWS_SITEMAP_FOLDER_URL: string;
 
