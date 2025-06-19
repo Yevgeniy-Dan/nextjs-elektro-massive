@@ -17,7 +17,7 @@ export async function POST(request: Request) {
         `Bearer ${process.env.STRAPI_API_TOKEN}`;
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/graphql`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL?.replace(/\/+$/, "")}/graphql`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
